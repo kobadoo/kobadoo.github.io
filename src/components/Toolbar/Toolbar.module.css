@@ -1,0 +1,24 @@
+.Toolbar {
+    height: 56px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: aquamarine;
+    display: flex;
+    justify-content:space-evenly;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.ToolbarItem {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.Logo {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color:teal;
+}
