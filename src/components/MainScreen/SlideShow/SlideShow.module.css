@@ -1,0 +1,10 @@
+.SlideShow {
+    top: 56px;
+    position: absolute;
+    display: block;
+    width: 100%;
+    margin: auto;
+    height: 100%;
+    overflow: scroll;
+    text-align: center;
+}
