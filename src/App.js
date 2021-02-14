@@ -15,7 +15,7 @@ class App extends Component {
 
   startGameHandler = () => {
     this.setState({hasGameStarted: true});
-}
+  }
 
   render() {
     return (
@@ -25,6 +25,7 @@ class App extends Component {
           level = {this.state.level} 
           score = {this.state.score} />
         <MainScreen 
+          level = {this.state.level}
           startGame = {this.startGameHandler}
           hasGameStarted = {this.state.hasGameStarted}/>
       </Layout>

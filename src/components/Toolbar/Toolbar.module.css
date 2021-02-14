@@ -21,3 +21,8 @@
     font-size: 1.3rem;
     color:teal;
 }
+
+.Logo a {
+    color:teal;
+    text-decoration: none;
+}
