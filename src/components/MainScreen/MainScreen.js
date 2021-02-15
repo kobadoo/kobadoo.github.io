@@ -3,6 +3,7 @@ import classes from './MainScreen.module.css';
 import StartScreen from './StartScreen/StartScreen';
 import PlayScreen from './PlayScreen/PlayScreen';
 import TransitionScreen from './TransitionScreen/TransitionScreen';
+import EndScreen from './EndScreen/EndScreen';
 
 
 class MainScreen extends Component {
@@ -20,10 +21,21 @@ class MainScreen extends Component {
             }
         }
         else {
-            return <PlayScreen 
-                    level = {this.props.level}
-                    updateScore = {this.props.updateScore}
-                    updateLevel = {this.props.updateLevel} />;
+            if (!this.props.hasGameEnded) {
+                return <PlayScreen 
+                        level = {this.props.level}
+                        updateScore = {this.props.updateScore}
+                        updateLevel = {this.props.updateLevel} 
+                        endGame = {this.props.endGame}
+                        />
+            }
+            else {
+                return <EndScreen 
+                        level = {this.props.level}
+                        score = {this.props.score}
+                        restartGame = {this.props.restartGame}
+                        />
+            }
         }
     }
 }

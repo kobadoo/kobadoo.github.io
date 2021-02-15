@@ -10,11 +10,23 @@ class App extends Component {
   state = {
     level: 0,
     score: 0,
-    hasGameStarted: false
+    hasGameStarted: false,
+    hasGameEnded: false
   }
 
   startGameHandler = () => {
-    this.setState({hasGameStarted: true});
+    this.setState(
+      { hasGameStarted: true });
+  }
+
+  restartGameHandler = () => {
+    this.setState(
+      { 
+        level: 0,
+        score: 0,
+        hasGameStarted: true,
+        hasGameEnded: false 
+      });
   }
 
   updateScoreHandler = (addedScore) => {
@@ -26,6 +38,10 @@ class App extends Component {
       hasGameStarted: false,
       level: prevState.level + 1
     })));
+  }
+
+  endGameHandler = () => {
+    this.setState({hasGameEnded: true});
   }
 
   render() {
@@ -40,7 +56,12 @@ class App extends Component {
           updateLevel = {this.updateLevelHandler}
           level = {this.state.level}
           startGame = {this.startGameHandler}
-          hasGameStarted = {this.state.hasGameStarted}/>
+          restartGame = {this.restartGameHandler}
+          hasGameStarted = {this.state.hasGameStarted}
+          endGame = {this.endGameHandler}
+          hasGameEnded = {this.state.hasGameEnded}
+          score = {this.state.score}
+        />
       </Layout>
     );
   }

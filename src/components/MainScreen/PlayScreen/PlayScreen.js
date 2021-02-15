@@ -3,9 +3,9 @@ import classes from './PlayScreen.module.css';
 import SlideShow from './SlideShow/SlideShow';
 import AnswerScreen from './AnswerScreen/AnswerScreen';
 
-const EMOJIS_LEVEL_0 = 1;
+const EMOJIS_LEVEL_0 = 2;
 const TOTAL_NUM_EMOJIS = 100;
-const MAX_NUM_EMOJIS = 50;
+const MAX_NUM_EMOJIS = 49;
 
 function getRandomSubarray(arr, size) {
     var shuffled = arr.slice(0), i = arr.length, min = i - size, temp, index;
@@ -62,6 +62,7 @@ class PlayScreen extends Component {
                     emojis={this.state.emojis}
                     updateScore = {this.props.updateScore}
                     updateLevel = {this.props.updateLevel}
+                    endGame = {this.props.endGame}
                />
             );
         }

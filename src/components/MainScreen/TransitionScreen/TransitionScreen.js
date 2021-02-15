@@ -9,6 +9,10 @@ class TransitionScreen extends Component {
         }, 2000);
     }
 
+    componentWillUnmount() {
+        clearInterval(this.timeout);
+    }
+
     render() {
         return (
             <div className={classes.TransitionScreen}>

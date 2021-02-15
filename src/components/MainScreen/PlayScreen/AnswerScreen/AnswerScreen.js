@@ -23,7 +23,7 @@ class AnswerScreen extends Component {
             });            
         } 
         else {
-            console.log('perdiste');
+            this.props.endGame();
         }
     }
 
