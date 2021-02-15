@@ -5,8 +5,8 @@ const endScreen = (props) => (
     <div className={classes.EndScreen}>
         <div>
             <h2>Game Over!</h2>
-            <h3>Level: <strong>{props.level}</strong></h3>
-            <h3>Score: <strong>{props.score}</strong></h3>
+            <h3>Level: <div className={classes.Results}>{props.level}</div></h3>
+            <h3>Score: <div className={classes.Results}>{props.score}</div></h3>
         </div>
         <div>
             <button 

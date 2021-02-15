@@ -14,14 +14,20 @@
     color: white;
     font-size: 1.2rem;
     padding: 5px;
-    width: 120px;
+    width: 150px;
     border: 1px solid green;
     cursor: pointer;
     outline: none;
     left: 50%;
+    margin-top: 20px;
 }
 
 .RestartButton:hover {
     background-color: aquamarine;
     color: white;
+}
+
+.Results {
+    display: inline;
+    color: green;
 }
