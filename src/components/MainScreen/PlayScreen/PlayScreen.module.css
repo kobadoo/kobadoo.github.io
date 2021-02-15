@@ -10,7 +10,16 @@
 }
 
 .SlideShow {
-    font-family: inherit;
     font-size: 15rem;
-    font-weight: 800;
 }
+
+.AnswerScreenEmoji {
+    font-size: 3rem;
+ }
+
+ .EmojisLeft {
+    color: red;
+    bottom: 10px;
+    position: fixed;
+    width: inherit;
+ }

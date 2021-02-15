@@ -11,7 +11,7 @@ const EMOJI_MAP = [
     0x1F635,
     0x1F60E,
     0x1F913,
-    0x2639,
+    0x1F641,
     0x1F62D,
     0x1F631,
     0x1F621,
@@ -21,11 +21,11 @@ const EMOJI_MAP = [
     0x1F648,
     0x1F649,
     0x1F64A,
-    0x2764,
+    0x1F941,
     0x1F4AB,
     0x1F44B,
     0x1F44C,
-    0x270C,
+    0x1F3AC,
     0x1F91F,
     0x1F44D,
     0x1F44E,
@@ -88,15 +88,15 @@ const EMOJI_MAP = [
     0x1F698,
     0x1F6A6,
     0x1F6A4,
-    0x2708,
+    0x1F48D,
     0x1F681,
     0x1F680,
-    0x23F3,
-    0x2600,
-    0x2B50,
+    0x1F3A8,
+    0x1F31E,
+    0x1F3B2,
     0x1F308,
-    0x2744,
-    0x2603,
+    0x1F3C0,
+    0x1F383,
     0x1F525,
     0x1F389,
     0x1F381,
@@ -104,7 +104,7 @@ const EMOJI_MAP = [
 ];
 
 const emoji = (props) => (
-    <span role="img" className={props.className}>
+    <span role="img" className={props.className} onClick={props.clickHandler}>
         <span>{String.fromCodePoint(EMOJI_MAP[props.num])}</span>
     </span>
 );

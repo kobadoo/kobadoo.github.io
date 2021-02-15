@@ -17,6 +17,17 @@ class App extends Component {
     this.setState({hasGameStarted: true});
   }
 
+  updateScoreHandler = (addedScore) => {
+    this.setState((prevState => ({score: prevState.score + addedScore})));
+  }
+
+  updateLevelHandler = () => {
+    this.setState((prevState => ({
+      hasGameStarted: false,
+      level: prevState.level + 1
+    })));
+  }
+
   render() {
     return (
       <Layout>
@@ -25,6 +36,8 @@ class App extends Component {
           level = {this.state.level} 
           score = {this.state.score} />
         <MainScreen 
+          updateScore = {this.updateScoreHandler}
+          updateLevel = {this.updateLevelHandler}
           level = {this.state.level}
           startGame = {this.startGameHandler}
           hasGameStarted = {this.state.hasGameStarted}/>
