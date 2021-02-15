@@ -11,7 +11,7 @@ const endScreen = (props) => (
         <div>
             <button 
                 className={classes.RestartButton} 
-                onClick={props.restartGame}>Start Game</button>
+                onClick={props.restartGame}>Restart Game</button>
         </div>
     </div>
 );

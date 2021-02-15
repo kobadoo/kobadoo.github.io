@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import classes from '../PlayScreen.module.css';
+import classes from './AnswerScreen.module.css';
 import Emoji from '../../../../utils/Emoji/Emoji';
 
 const POINTS_PER_CORRECT_ANSWER = 20;
@@ -8,10 +8,16 @@ const POINTS_PER_COMPLETED_LEVEL = 100;
 class AnswerScreen extends Component {
 
     state = {
-        correctEmojis: 0
+        correctEmojis: 0,
+        disabled: []
     }
 
-    emojiClickHandler = (value) => {
+    emojiClickHandler = (index, value) => {
+
+        this.setState({
+            disabled: [...this.state.disabled, index]
+        });
+
         if (this.props.emojis[this.state.correctEmojis] === value) {
             this.setState((prevState => ({correctEmojis: prevState.correctEmojis + 1 }))
             ,() => {
@@ -27,20 +33,26 @@ class AnswerScreen extends Component {
         }
     }
 
+
     render() {
         return (
-            <div className={classes.PlayScreen}>
+            <div className={classes.AnswerScreen}>
                 <div>
-                    <h2>Select the emojis in the right order</h2>
+                    <h2>Select in the right order</h2>
                 </div>
                 {this.props.totalEmojis.map((value, index) => {
-                    return <Emoji 
-                            className={classes.AnswerScreenEmoji} 
-                            clickHandler={() => this.emojiClickHandler(value)}
-                            key={index} 
-                            num = {value} />
+                    if(this.state.disabled.indexOf(index) === -1) {
+                        return <Emoji 
+                                className={classes.AnswerScreenEmoji} 
+                                clickHandler={() => this.emojiClickHandler(index, value)}
+                                key={index} 
+                                num = {value} />
+                    }
+                    else {
+                        return false;
+                    }
                 })}
-                <div className={classes.EmojisLeft}>{this.props.numEmojis - this.state.correctEmojis} emojis left</div>
+                <div className={classes.EmojisLeft}><strong>{this.props.numEmojis - this.state.correctEmojis}</strong> emojis left</div>
             </div>
         );
     }

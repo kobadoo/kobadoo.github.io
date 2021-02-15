@@ -1,4 +1,4 @@
-.PlayScreen {
+.AnswerScreen {
     top: 56px;
     position: absolute;
     display: block;
@@ -8,3 +8,14 @@
     overflow: scroll;
     text-align: center;
 }
+
+.AnswerScreenEmoji {
+    font-size: 3rem;
+ }
+
+ .EmojisLeft {
+    color: red;
+    bottom: 10px;
+    position: fixed;
+    width: inherit;
+ }

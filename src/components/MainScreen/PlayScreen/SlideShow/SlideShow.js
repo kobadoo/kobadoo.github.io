@@ -1,10 +1,10 @@
 import React from 'react';
-import classes from '../PlayScreen.module.css';
+import classes from './SlideShow.module.css';
 import Emoji from '../../../../utils/Emoji/Emoji';
 
 const slideShow = (props) => (
-    <div className={classes.PlayScreen}>
-        <Emoji className={classes.SlideShow} num={props.emoji} />
+    <div className={classes.SlideShowScreen}>
+        <Emoji className={classes.SlideShowFont} num={props.emoji} />
     </div>
 );
 

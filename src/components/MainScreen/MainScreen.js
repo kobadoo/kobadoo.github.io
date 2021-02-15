@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import classes from './MainScreen.module.css';
 import StartScreen from './StartScreen/StartScreen';
 import PlayScreen from './PlayScreen/PlayScreen';
 import TransitionScreen from './TransitionScreen/TransitionScreen';
