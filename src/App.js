@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import ReactGA from 'react-ga';
 import Layout from './components/Layout/Layout';
 import Toolbar from './components/Toolbar/Toolbar';
 import MainScreen from './components/MainScreen/MainScreen';
+import {PageView, initGA, eventGA} from './utils/Analytics';
+
 
 const APP_NAME = 'KOBADOO';
 
@@ -13,6 +14,11 @@ class App extends Component {
     score: 0,
     hasGameStarted: false,
     hasGameEnded: false
+  }
+
+  componentDidMount() {
+    initGA('G-653945K255');
+    PageView();
   }
 
   startGameHandler = () => {
@@ -43,16 +49,9 @@ class App extends Component {
 
   endGameHandler = () => {
     this.setState({hasGameEnded: true});
-    ReactGA.event({
-      category: 'Score',
-      action: 'End Game',
-      value: this.state.score
-    });
-    ReactGA.event({
-      category: 'Level',
-      action: 'End Game',
-      value: this.state.level
-    });
+    initGA();
+    eventGA('Score', 'End Game', this.state.score);
+    eventGA('Level', 'End Game', this.state.level);
   }
 
   render() {
