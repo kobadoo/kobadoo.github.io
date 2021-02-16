@@ -17,7 +17,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    initGA('G-653945K255');
+    initGA('UA-189831762-1');
     PageView();
   }
 
