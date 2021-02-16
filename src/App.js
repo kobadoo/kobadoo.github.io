@@ -15,11 +15,6 @@ class App extends Component {
     hasGameEnded: false
   }
 
-  componentDidMount () {
-    ReactGA.initialize('G-653945K255');
-    ReactGA.pageview(window.location.pathname + window.location.search);
-  }
-
   startGameHandler = () => {
     this.setState(
       { hasGameStarted: true });
