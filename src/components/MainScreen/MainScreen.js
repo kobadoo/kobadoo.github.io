@@ -8,7 +8,7 @@ import EndScreen from './EndScreen/EndScreen';
 class MainScreen extends Component {
     render () {
         if (!this.props.hasGameStarted) {
-            if (this.props.level === 0) {
+            if (this.props.level === 1) {
                 return <StartScreen 
                     startGame = {this.props.startGame} />;
             }

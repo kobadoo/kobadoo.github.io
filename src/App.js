@@ -8,7 +8,7 @@ const APP_NAME = 'KOBADOO';
 class App extends Component {
 
   state = {
-    level: 0,
+    level: 1,
     score: 0,
     hasGameStarted: false,
     hasGameEnded: false
@@ -22,7 +22,7 @@ class App extends Component {
   restartGameHandler = () => {
     this.setState(
       { 
-        level: 0,
+        level: 1,
         score: 0,
         hasGameStarted: true,
         hasGameEnded: false 

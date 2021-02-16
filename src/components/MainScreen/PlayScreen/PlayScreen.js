@@ -3,7 +3,7 @@ import classes from './PlayScreen.module.css';
 import SlideShow from './SlideShow/SlideShow';
 import AnswerScreen from './AnswerScreen/AnswerScreen';
 
-const EMOJIS_LEVEL_0 = 2;
+const EMOJIS_LEVEL_1 = 2;
 const TOTAL_NUM_EMOJIS = 100;
 const MAX_NUM_EMOJIS = 42;
 
@@ -22,7 +22,7 @@ class PlayScreen extends Component {
 
     state = {
         item: 0,
-        numEmojis: EMOJIS_LEVEL_0 + parseInt(this.props.level / 3),
+        numEmojis: EMOJIS_LEVEL_1 + parseInt((this.props.level -1) / 3),
         totalEmojis: getRandomSubarray([...Array(TOTAL_NUM_EMOJIS).keys()], MAX_NUM_EMOJIS).sort((a, b) => a - b),
         showAnswerScreen: false,
         emojis: [0]

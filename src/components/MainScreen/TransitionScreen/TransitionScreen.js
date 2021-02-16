@@ -16,7 +16,7 @@ class TransitionScreen extends Component {
     render() {
         return (
             <div className={classes.TransitionScreen}>
-                <h2>Level {this.props.level} completed!</h2>
+                <h2>Level {this.props.level - 1} completed!</h2>
             </div>
         );
     }
