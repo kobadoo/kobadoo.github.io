@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import Layout from './components/Layout/Layout';
 import Toolbar from './components/Toolbar/Toolbar';
 import MainScreen from './components/MainScreen/MainScreen';
@@ -12,6 +13,11 @@ class App extends Component {
     score: 0,
     hasGameStarted: false,
     hasGameEnded: false
+  }
+
+  componentDidMount () {
+    ReactGA.initialize('G-653945K255');
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   startGameHandler = () => {
@@ -42,6 +48,16 @@ class App extends Component {
 
   endGameHandler = () => {
     this.setState({hasGameEnded: true});
+    ReactGA.event({
+      category: 'Score',
+      action: 'End Game',
+      value: this.state.score
+    });
+    ReactGA.event({
+      category: 'Level',
+      action: 'End Game',
+      value: this.state.level
+    });
   }
 
   render() {
