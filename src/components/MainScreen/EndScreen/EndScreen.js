@@ -6,11 +6,13 @@ import {
     EmailShareButton,
     WhatsappShareButton,
     LinkedinShareButton,
+    ViberShareButton,
     FacebookIcon,
     TwitterIcon,
     EmailIcon,
     WhatsappIcon,
-    LinkedinIcon
+    LinkedinIcon,
+    ViberIcon
   } from 'react-share'
 
 const URL = 'http://www.kobadoo.com';
