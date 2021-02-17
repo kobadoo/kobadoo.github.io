@@ -41,7 +41,10 @@
 }
 
 .ShareButtons {
-    justify-content: space-evenly;
+    text-align: center;
     margin-top: 20px;
-    display: flex;
+}
+
+.ShareButton {
+    padding: 5px;
 }

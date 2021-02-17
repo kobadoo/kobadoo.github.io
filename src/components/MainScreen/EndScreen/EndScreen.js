@@ -33,19 +33,19 @@ const endScreen = (props) => (
         <div className={classes.ShareText}>Share with your friends!</div>
         <div className={classes.ShareButtons}>
             <WhatsappShareButton url={URL} title={QUOTE}>
-                <WhatsappIcon size={ICON_SIZE} />
+                <WhatsappIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
             </WhatsappShareButton>
             <FacebookShareButton url={URL} quote={QUOTE} hashtag={HASHTAG}>
-                <FacebookIcon size={ICON_SIZE} />
+                <FacebookIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
             </FacebookShareButton>
             <TwitterShareButton url={URL} title={QUOTE + ' ' + HASHTAG + ' '}>
-                <TwitterIcon size={ICON_SIZE} />
+                <TwitterIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
             </TwitterShareButton>
             <LinkedinShareButton url={URL} title={QUOTE}>
-                <LinkedinIcon size={ICON_SIZE} />
+                <LinkedinIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
             </LinkedinShareButton>
             <EmailShareButton url={URL} subject={QUOTE}>
-                <EmailIcon size={ICON_SIZE} />
+                <EmailIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
             </EmailShareButton>
         </div>
     </div>
