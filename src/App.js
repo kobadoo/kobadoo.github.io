@@ -49,7 +49,6 @@ class App extends Component {
 
   endGameHandler = () => {
     this.setState({hasGameEnded: true});
-    initGA();
     eventGA('Game Results', this.state.level, this.state.score);
   }
 
