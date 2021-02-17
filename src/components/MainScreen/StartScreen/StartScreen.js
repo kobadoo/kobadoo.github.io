@@ -18,12 +18,13 @@ const startScreen = (props) => (
                 onClick={props.startGame}>Start Game</button>
         </div>
 
+        { /*
         <Adsense 
             client="ca-pub-xxxxxxxxxx" 
             slot="xxxxxxxxxx" 
             format="auto" 
             wrapperDivStyle={style}
-        />
+        /> */ }
 
     </div>
 );
