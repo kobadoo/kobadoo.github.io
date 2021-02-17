@@ -1,5 +1,22 @@
 import React from 'react';
 import classes from './EndScreen.module.css';
+import { 
+    FacebookShareButton, 
+    TwitterShareButton,
+    EmailShareButton,
+    WhatsappShareButton,
+    LinkedinShareButton,
+    FacebookIcon,
+    TwitterIcon,
+    EmailIcon,
+    WhatsappIcon,
+    LinkedinIcon
+  } from 'react-share'
+
+const URL = 'http://www.kobadoo.com';
+const QUOTE = 'Kobadoo - Free memory game to train your brain using funny emojis.';
+const HASHTAG = '#kobadoo';
+const ICON_SIZE = 40;
 
 const endScreen = (props) => (
     <div className={classes.EndScreen}>
@@ -12,6 +29,24 @@ const endScreen = (props) => (
             <button 
                 className={classes.RestartButton} 
                 onClick={props.restartGame}>Restart Game</button>
+        </div>
+        <div className={classes.ShareText}>Share with your friends!</div>
+        <div className={classes.ShareButtons}>
+            <WhatsappShareButton url={URL} title={QUOTE}>
+                <WhatsappIcon size={ICON_SIZE} />
+            </WhatsappShareButton>
+            <FacebookShareButton url={URL} quote={QUOTE} hashtag={HASHTAG}>
+                <FacebookIcon size={ICON_SIZE} />
+            </FacebookShareButton>
+            <TwitterShareButton url={URL} title={QUOTE + ' ' + HASHTAG + ' '}>
+                <TwitterIcon size={ICON_SIZE} />
+            </TwitterShareButton>
+            <LinkedinShareButton url={URL} title={QUOTE}>
+                <LinkedinIcon size={ICON_SIZE} />
+            </LinkedinShareButton>
+            <EmailShareButton url={URL} subject={QUOTE}>
+                <EmailIcon size={ICON_SIZE} />
+            </EmailShareButton>
         </div>
     </div>
 );
