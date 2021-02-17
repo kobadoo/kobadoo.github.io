@@ -44,9 +44,13 @@ const endScreen = (props) => (
             <LinkedinShareButton url={URL} title={QUOTE}>
                 <LinkedinIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
             </LinkedinShareButton>
+            <ViberShareButton url={URL} title={QUOTE}>
+                <ViberIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
+            </ViberShareButton>
             <EmailShareButton url={URL} subject={QUOTE}>
                 <EmailIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
             </EmailShareButton>
+            
         </div>
     </div>
 );
