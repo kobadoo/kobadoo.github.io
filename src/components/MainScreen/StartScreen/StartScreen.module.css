@@ -5,8 +5,24 @@
     width: 100%;
     margin: auto;
     height: 100%;
-    overflow: scroll;
+    overflow: hidden;
     text-align: center;
+}
+
+.HeaderText {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 10px 10px;
+}
+
+.BenefitsText {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 5px 20px;
+    text-align: center;
+    margin-top: 30px;
 }
 
 .StartButton {
@@ -19,9 +35,27 @@
     cursor: pointer;
     outline: none;
     left: 50%;
+    margin-top: 30px;
 }
 
 .StartButton:hover {
     background-color: aquamarine;
     color: white;
+}
+
+.BrainImage {
+    width: 150px;
+}
+
+.Footer {
+    bottom: 10px;
+    position: fixed;
+    width: 100%;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.8rem;
+}
+
+.FooterItem {
+    display: inline;
+    padding: 0 10px;
 }
