@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import {PageView, initGA, eventGA} from './utils/Analytics';
+import axios from './utils/axios-stats';
 import Layout from './components/Layout/Layout';
 import Toolbar from './components/Toolbar/Toolbar';
 import MainScreen from './components/MainScreen/MainScreen';
-import {PageView, initGA, eventGA} from './utils/Analytics';
-
 
 const APP_NAME = 'KOBADOO';
 
@@ -49,6 +49,15 @@ class App extends Component {
 
   endGameHandler = () => {
     this.setState({hasGameEnded: true});
+    const today = new Date();
+    const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    const stats = {
+      level: this.state.level,
+      score: this.state.score,
+      timestamp: date + ' ' + time
+    }
+    axios.post('/stats.json', stats);
     eventGA('Game Results', this.state.level, this.state.score);
   }
 
