@@ -10,6 +10,9 @@
     align-items: center;
     box-sizing: border-box;
     z-index: 100;
+    /* for iOS 9 and below */
+    display: -webkit-flex;
+    -webkit-justify-content: space-evenly;
 }
 
 .ToolbarItem {
