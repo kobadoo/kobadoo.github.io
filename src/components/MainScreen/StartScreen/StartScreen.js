@@ -45,8 +45,8 @@ const startScreen = (props) => (
             <div className={classes.FooterItem}><a href="https://twitter.com/kobadooApp" target="_new"><FontAwesomeIcon icon={faTwitter} size="2x" /></a></div>
             <div className={classes.FooterItem}><a href="https://facebook.com/kobadooApp" target="_new"><FontAwesomeIcon icon={faFacebook} size="2x" /></a></div>
             <div className={classes.FooterItem}><a href="https://instagram.com/kobadoo" target="_new"><FontAwesomeIcon icon={faInstagram} size="2x" /></a></div>
-            <div className={classes.FooterItem}><a href="terms.html" target="_new">Terms and Conditions</a></div>
-            <div className={classes.FooterItem}><a href="privacy.html" target="_new">Privacy Policy</a></div>
+            <div className={classes.FooterItem}><a href="terms.html" target="_new">Terms</a></div>
+            <div className={classes.FooterItem}><a href="privacy.html" target="_new">Privacy</a></div>
             <div className={classes.FooterItem}><a href="credits.html" target="_new">Credits</a></div>
         </div>
 
