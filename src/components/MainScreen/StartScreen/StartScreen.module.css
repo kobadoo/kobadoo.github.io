@@ -4,7 +4,7 @@
     display: block;
     width: 100%;
     margin: auto;
-    height: calc(100% + 100px);
+    height: 800px;
     overflow: auto;
     text-align: center;
 }
