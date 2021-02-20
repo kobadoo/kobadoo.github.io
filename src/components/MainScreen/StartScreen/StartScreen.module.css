@@ -72,3 +72,9 @@
     display: inline;
     padding: 0 10px;
 }
+
+.SocialIcons {
+    height: 25px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+}
