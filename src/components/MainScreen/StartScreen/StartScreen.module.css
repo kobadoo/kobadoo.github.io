@@ -63,7 +63,7 @@
     font-size: 0.8rem;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
     height: 28px;
     z-index: 100;
 }
