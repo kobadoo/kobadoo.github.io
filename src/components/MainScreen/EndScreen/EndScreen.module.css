@@ -34,10 +34,22 @@
 
 .ShareText {
     text-align: center;
-    margin-top: 100px;
-    font-family: inherit;
+    margin-top: 50px;
+    font-family: 'Open Sans', sans-serif;
     font-size: 1.2rem;
     font-weight: normal;
+}
+
+.Stats {
+    text-align: center;
+    margin-top: 30px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: lighter;
+}
+
+.Stats p {
+    margin: 0px
 }
 
 .ShareButtons {
