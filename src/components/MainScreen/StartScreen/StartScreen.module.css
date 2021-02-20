@@ -64,17 +64,19 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    height: 25px;
+    height: 28px;
     z-index: 100;
+}
+
+.Footer a {
+    color: darkslategrey;
+}
+
+.Footer :hover {
+    color:darkcyan
 }
 
 .FooterItem {
     display: inline;
     padding: 0 10px;
-}
-
-.SocialIcons {
-    height: 25px !important;
-    padding: 0px !important;
-    margin: 0px !important;
 }
