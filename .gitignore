@@ -18,9 +18,6 @@
 .env.test.local
 .env.production.local
 
-# stats
-/public/stats.html
-
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
