@@ -4,8 +4,8 @@
     display: block;
     width: 100%;
     margin: auto;
-    height: 100%;
-    overflow: hidden;
+    height: calc(100% + 100px);
+    overflow: auto;
     text-align: center;
 }
 
@@ -55,11 +55,17 @@
 }
 
 .Footer {
-    bottom: 10px;
     position: fixed;
+    bottom: 0;
+    background-color: white;
     width: 100%;
     font-family: 'Open Sans', sans-serif;
     font-size: 0.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 25px;
+    z-index: 100;
 }
 
 .FooterItem {
