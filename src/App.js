@@ -10,6 +10,9 @@ import Privacy from './components/Legal/Privacy';
 import Terms from './components/Legal/Terms';
 import ScrollToTop from './utils/ScrollToTop';
 
+const MAX_NUM_EMOJIS = 42;
+const MAX_LEVEL = (MAX_NUM_EMOJIS -1) * 3;
+
 class App extends Component {
 
   state = {
@@ -53,10 +56,15 @@ class App extends Component {
   }
 
   updateLevelHandler = () => {
-    this.setState((prevState => ({
-      hasGameStarted: false,
-      level: prevState.level + 1
-    })));
+    if (this.state.level === MAX_LEVEL) {
+      this.endGameHandler();
+    }
+    else {
+      this.setState((prevState => ({
+        hasGameStarted: false,
+        level: prevState.level + 1
+      })));
+    }
   }
 
   endGameHandler = () => {
@@ -101,6 +109,7 @@ class App extends Component {
                   endGame = {this.endGameHandler}
                   hasGameEnded = {this.state.hasGameEnded}
                   score = {this.state.score}
+                  maxNumEmojis = {MAX_NUM_EMOJIS}
                 />
               )}
             />

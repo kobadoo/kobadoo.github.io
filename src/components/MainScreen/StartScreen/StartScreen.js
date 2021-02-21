@@ -31,7 +31,7 @@ const startScreen = (props) => (
         <div className={classes.BenefitsText}>
             <img className={classes.BrainImage} src={BrainImg} />
             <h4>Why is Kobadoo good for your mind?</h4>
-            <p>Playing memory games help sharpen certain brain functions that tend to wane with age, such as <strong>attention</strong> to detail, <strong>concentration</strong>, <strong>reaction time</strong>, <strong>decision making</strong>, and <strong>working memory</strong>. <i>Kobadoo</i> has been created in <strong>cooperation with a Norwegian neuropsychologist</strong>.</p>
+            <p>Playing memory games help sharpen certain brain functions that tend to wane with age, such as <strong>attention</strong> to detail, <strong>concentration</strong>, <strong>reaction time</strong>, <strong>decision making</strong>, and <strong>working memory</strong>. <i>Kobadoo</i> has been created in <strong>cooperation with a specialist in medical neuropsychology</strong>.</p>
         </div>
 
         <div className={classes.BenefitsText}>

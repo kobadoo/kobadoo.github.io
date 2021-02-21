@@ -26,6 +26,7 @@ class MainScreen extends Component {
                         updateScore = {this.props.updateScore}
                         updateLevel = {this.props.updateLevel} 
                         endGame = {this.props.endGame}
+                        maxNumEmojis = {this.props.maxNumEmojis}
                         />
             }
             else {
