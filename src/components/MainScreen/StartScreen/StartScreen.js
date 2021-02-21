@@ -2,6 +2,8 @@ import React from 'react';
 import classes from './StartScreen.module.css';
 import Adsense from '../../../utils/Adsense';
 import Footer from '../../Footer/Footer';
+import BrainImg from '../../../../public/images/brain.png';
+import ThinkingImg from '../../../../public/images/thinking.png';
 
 const style = {
     marginTop: '15px',
@@ -27,13 +29,13 @@ const startScreen = (props) => (
         </div>
 
         <div className={classes.BenefitsText}>
-            <img className={classes.BrainImage} src='/images/brain.png' />
+            <img className={classes.BrainImage} src={BrainImg} />
             <h4>Why is Kobadoo good for your mind?</h4>
             <p>Playing memory games help sharpen certain brain functions that tend to wane with age, such as <strong>attention</strong> to detail, <strong>concentration</strong>, <strong>reaction time</strong>, <strong>decision making</strong>, and <strong>working memory</strong>. <i>Kobadoo</i> has been created in <strong>cooperation with a Norwegian neuropsychologist</strong>.</p>
         </div>
 
         <div className={classes.BenefitsText}>
-            <img className={classes.BrainImage} src='/images/thinking.png' />
+            <img className={classes.BrainImage} src={ThinkingImg} />
             <h4>What is the <i>working memory</i> and why should you train it?</h4>
             <p>Working memory is a form of short-term memory, where you temporarily hold information in your mind while processing it. When you play <i>Kobadoo</i> you are actively using your working memory. There are several scientific studies that suggest training of working memory has <strong>beneficial effects</strong> and can <strong>increase your cognitive functions</strong>. So <strong>have fun</strong> while you also train your working memory and attention!</p>
         </div>
