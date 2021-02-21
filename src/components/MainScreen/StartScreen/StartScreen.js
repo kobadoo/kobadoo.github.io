@@ -2,8 +2,8 @@ import React from 'react';
 import classes from './StartScreen.module.css';
 import Adsense from '../../../utils/Adsense';
 import Footer from '../../Footer/Footer';
-import BrainImg from '../../../../public/images/brain.png';
-import ThinkingImg from '../../../../public/images/thinking.png';
+import BrainImg from '../../../images/brain.png';
+import ThinkingImg from '../../../images/thinking.png';
 
 const style = {
     marginTop: '15px',
