@@ -1,13 +1,11 @@
-<html>
-    <head>
-        <title>Terms and Conditions</title>
-    </head>
+import React from 'react';
+import classes from './Legal.module.css';
 
-    <body>
+const terms = () => (
 
-        <h2><strong>Terms and Conditions</strong></h2>
-
-        <p>Welcome to Kobadoo!</p>
+    <div className={classes.Legal}>
+    
+        <h2>Terms and Conditions</h2>
 
         <p>These terms and conditions outline the rules and regulations for the use of Kobadoo's Website, located at Kobadoo.com.</p>
 
@@ -129,5 +127,7 @@
 
         <p>As long as the website and the information and services on the website are provided free of charge, we will not be liable for any loss or damage of any nature.</p>
 
-    </body>
-</html>
+    </div>
+);
+
+export default terms;

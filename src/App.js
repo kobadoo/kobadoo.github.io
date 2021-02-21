@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import {PageView, initGA, eventGA} from './utils/Analytics';
+import { BrowserRouter, Route } from 'react-router-dom';
 import axios from './utils/axios-stats';
 import Layout from './components/Layout/Layout';
 import Toolbar from './components/Toolbar/Toolbar';
 import MainScreen from './components/MainScreen/MainScreen';
-
-const APP_NAME = 'KOBADOO';
+import Credits from './components/Legal/Credits';
+import Privacy from './components/Legal/Privacy';
+import Terms from './components/Legal/Terms';
+import ScrollToTop from './utils/ScrollToTop';
 
 class App extends Component {
 
@@ -63,23 +66,37 @@ class App extends Component {
 
   render() {
     return (
-      <Layout>
-        <Toolbar
-          appName = {APP_NAME} 
-          level = {this.state.level} 
-          score = {this.state.score} />
-        <MainScreen 
-          updateScore = {this.updateScoreHandler}
-          updateLevel = {this.updateLevelHandler}
-          level = {this.state.level}
-          startGame = {this.startGameHandler}
-          restartGame = {this.restartGameHandler}
-          hasGameStarted = {this.state.hasGameStarted}
-          endGame = {this.endGameHandler}
-          hasGameEnded = {this.state.hasGameEnded}
-          score = {this.state.score}
-        />
-      </Layout>
+      <BrowserRouter>
+        <ScrollToTop>
+          <Layout>
+            <Toolbar
+              level = {this.state.level} 
+              score = {this.state.score} />
+
+            <Route path="/credits" exact component={Credits} onUpdate={() => window.scrollTo(0, 0)}></Route>
+            <Route path="/terms" exact component={Terms} onUpdate={() => window.scrollTo(0, 0)}></Route>
+            <Route path="/privacy" exact component={Privacy}></Route>
+
+            <Route
+              path='/'
+              exact
+              render={() => (
+                <MainScreen 
+                  updateScore = {this.updateScoreHandler}
+                  updateLevel = {this.updateLevelHandler}
+                  level = {this.state.level}
+                  startGame = {this.startGameHandler}
+                  restartGame = {this.restartGameHandler}
+                  hasGameStarted = {this.state.hasGameStarted}
+                  endGame = {this.endGameHandler}
+                  hasGameEnded = {this.state.hasGameEnded}
+                  score = {this.state.score}
+                />
+              )}
+            />
+          </Layout>
+        </ScrollToTop>
+      </BrowserRouter>
     );
   }
 }

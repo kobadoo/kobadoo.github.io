@@ -1,6 +1,6 @@
 .StartScreen {
     top: 56px;
-    position: absolute;
+    position: relative;
     display: block;
     width: 100%;
     margin: auto;
@@ -53,44 +53,3 @@
     width: 150px;
     margin-bottom: 10px;
 }
-
-.Footer {
-    position: fixed;
-    bottom: 0;
-    background-color: white;
-    width: 100%;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 0.8rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 30px;
-    z-index: 100;
-}
-
-.Footer a {
-    color: darkslategrey;
-}
-
-.Footer :hover {
-    color:darkcyan
-}
-
-.FooterItem {
-    display: inline;
-    padding: 0 10px;
-}
-
-@media screen and (max-width: 800px) {
-    .Footer {
-        position: absolute;
-        background-color: white;
-        width: 100%;
-        font-family: 'Open Sans', sans-serif;
-        font-size: 0.8rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 20px;
-    }
-  }
