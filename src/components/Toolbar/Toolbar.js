@@ -6,7 +6,7 @@ const APP_NAME = 'KOBADOO';
 
 const toolbar = (props) => (
         <div className={classes.Toolbar}>
-            <div className={classes.Logo}><Link to="/">{APP_NAME}</Link></div>
+            <div className={classes.Logo} onClick={props.endGame}><Link to="/">{APP_NAME}</Link></div>
             <div className={classes.ToolbarItem}>Level: <strong>{props.level}</strong></div>
             <div className={classes.ToolbarItem}>Score: <strong>{props.score}</strong></div>
         </div>

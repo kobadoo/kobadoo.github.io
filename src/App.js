@@ -24,6 +24,15 @@ class App extends Component {
     PageView();
   }
 
+  goToHomePageHandler = () => {
+    this.setState({ 
+      level: 1,
+      score: 0,
+      hasGameStarted: false,
+      hasGameEnded: false
+    });
+  }
+
   startGameHandler = () => {
     this.setState(
       { hasGameStarted: true });
@@ -70,6 +79,7 @@ class App extends Component {
         <ScrollToTop>
           <Layout>
             <Toolbar
+              endGame = {this.goToHomePageHandler}
               level = {this.state.level} 
               score = {this.state.score} />
 
