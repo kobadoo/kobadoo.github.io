@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {PageView, initGA, eventGA} from './utils/Analytics';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { PageView, initGA, eventGA } from './utils/Analytics';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import axios from './utils/axios-stats';
 import Layout from './components/Layout/Layout';
 import Toolbar from './components/Toolbar/Toolbar';
@@ -90,29 +90,28 @@ class App extends Component {
               endGame = {this.goToHomePageHandler}
               level = {this.state.level} 
               score = {this.state.score} />
-
-            <Route path="/credits" exact component={Credits} onUpdate={() => window.scrollTo(0, 0)}></Route>
-            <Route path="/terms" exact component={Terms} onUpdate={() => window.scrollTo(0, 0)}></Route>
-            <Route path="/privacy" exact component={Privacy}></Route>
-
-            <Route
-              path='/'
-              exact
-              render={() => (
-                <MainScreen 
-                  updateScore = {this.updateScoreHandler}
-                  updateLevel = {this.updateLevelHandler}
-                  level = {this.state.level}
-                  startGame = {this.startGameHandler}
-                  restartGame = {this.restartGameHandler}
-                  hasGameStarted = {this.state.hasGameStarted}
-                  endGame = {this.endGameHandler}
-                  hasGameEnded = {this.state.hasGameEnded}
-                  score = {this.state.score}
-                  maxNumEmojis = {MAX_NUM_EMOJIS}
-                />
-              )}
-            />
+            <Switch>
+              <Route path="/credits" exact component={Credits} onUpdate={() => window.scrollTo(0, 0)}></Route>
+              <Route path="/terms" exact component={Terms} onUpdate={() => window.scrollTo(0, 0)}></Route>
+              <Route path="/privacy" exact component={Privacy}></Route>
+              <Route
+                path='/'
+                render={() => (
+                  <MainScreen 
+                    updateScore = {this.updateScoreHandler}
+                    updateLevel = {this.updateLevelHandler}
+                    level = {this.state.level}
+                    startGame = {this.startGameHandler}
+                    restartGame = {this.restartGameHandler}
+                    hasGameStarted = {this.state.hasGameStarted}
+                    endGame = {this.endGameHandler}
+                    hasGameEnded = {this.state.hasGameEnded}
+                    score = {this.state.score}
+                    maxNumEmojis = {MAX_NUM_EMOJIS}
+                  />
+                )}
+              />
+            </Switch>
           </Layout>
         </ScrollToTop>
       </BrowserRouter>
