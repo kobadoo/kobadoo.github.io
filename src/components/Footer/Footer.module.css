@@ -1,5 +1,5 @@
 .Footer {
-    position: absolute;
+    position: relative;
     background-color: white;
     width: 100%;
     font-family: 'Open Sans', sans-serif;
@@ -8,6 +8,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 20px;
+    padding-bottom: 10px;
 }
 
 .Footer a {
