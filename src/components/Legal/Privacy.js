@@ -9,7 +9,7 @@ const privacy = () => (
 
         <p>At Kobadoo, accessible from Kobadoo.com, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Kobadoo and how we use it.</p>
 
-        <p>If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.</p>
+        <p>If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us on kobadooapp@gmail.com.</p>
 
         <p>This Privacy Policy applies only to our online activities and is valid for visitors to our website with regards to the information that they shared and/or collect in Kobadoo. This policy is not applicable to any information collected offline or via channels other than this website. Our Privacy Policy was created with the help of the <a href="https://www.privacypolicyonline.com/privacy-policy-generator/">Free Privacy Policy Generator</a>.</p>
 
