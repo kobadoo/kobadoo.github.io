@@ -78,7 +78,8 @@ class App extends Component {
       timestamp: date + ' ' + time
     }
     axios.post('/stats.json', stats);
-    eventGA('Game Results', this.state.level, this.state.score);
+    const score = String(this.state.score);
+    eventGA('Game Results', this.state.level, score);
   }
 
   render() {

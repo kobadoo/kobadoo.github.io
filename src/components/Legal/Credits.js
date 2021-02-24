@@ -10,6 +10,7 @@ const credits = () => (
             <li>Visuals in collaboration with <a href="https://www.aimade.art" title="aimade.art" target="_new">aimade.art</a></li>
             <li>Icons made by <a href="https://www.freepik.com" title="Freepik" target="_new">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_new">www.flaticon.com</a></li>
         </ul>
+        <p><i>(c) Kobadoo.com, 2021. All rights reserved.</i></p>
     </div>
 );
 
