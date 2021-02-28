@@ -1,7 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import classes from './StartScreen.module.css';
 import Adsense from '../../../utils/Adsense';
 import Footer from '../../Footer/Footer';
+import * as actionTypes from '../../../store/actions';
 import BrainImg from '../../../images/brain.png';
 import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
@@ -19,7 +21,7 @@ const startScreen = (props) => (
         <div>
             <button 
                 className={classes.StartButton} 
-                onClick={props.startGame}>Start Game</button>
+                onClick={props.onStartLevel}>Start Game</button>
         </div>
 
         <div className={classes.BenefitsText}>
@@ -55,4 +57,10 @@ const startScreen = (props) => (
     </div>
 );
 
-export default startScreen;
+const mapDispatchToProps = dispatch => {
+    return {
+        onStartLevel: () => dispatch({type: actionTypes.START_LEVEL}),
+    }
+}
+
+export default connect(null, mapDispatchToProps)(startScreen);

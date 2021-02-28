@@ -1,12 +1,16 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import classes from './TransitionScreen.module.css';
+import * as actionTypes from '../../../store/actions';
+
+const INTERVAL_BETWEEN_LEVELS = 2000;
 
 class TransitionScreen extends Component {
 
     componentDidMount() {
         this.timeout = setInterval(() => {
-            this.props.startGame();
-        }, 2000);
+            this.props.onStartLevel();
+        }, INTERVAL_BETWEEN_LEVELS);
     }
 
     componentWillUnmount() {
@@ -16,10 +20,22 @@ class TransitionScreen extends Component {
     render() {
         return (
             <div className={classes.TransitionScreen}>
-                <h2>Level {this.props.level - 1} completed!</h2>
+                <h2>Level {this.props.lvl - 1} completed!</h2>
             </div>
         );
     }
 }
 
-export default TransitionScreen;
+const mapStateToProps = state => {
+    return {
+        lvl: state.level
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onStartLevel: () => dispatch({type: actionTypes.START_LEVEL})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TransitionScreen);

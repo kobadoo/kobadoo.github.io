@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import classes from './PlayScreen.module.css';
+import { connect } from 'react-redux';
 import SlideShow from './SlideShow/SlideShow';
 import AnswerScreen from './AnswerScreen/AnswerScreen';
 
+const MAX_NUM_EMOJIS = 42;
+const MAX_LEVEL = (MAX_NUM_EMOJIS -1) * 3;
 const EMOJIS_LEVEL_1 = 2;
 const TOTAL_NUM_EMOJIS = 100;
 
@@ -21,8 +23,8 @@ class PlayScreen extends Component {
 
     state = {
         item: 0,
-        numEmojis: EMOJIS_LEVEL_1 + parseInt((this.props.level -1) / 3),
-        totalEmojis: getRandomSubarray([...Array(TOTAL_NUM_EMOJIS).keys()], this.props.maxNumEmojis).sort((a, b) => a - b),
+        numEmojis: EMOJIS_LEVEL_1 + parseInt((this.props.lvl -1) / 3),
+        totalEmojis: getRandomSubarray([...Array(TOTAL_NUM_EMOJIS).keys()], MAX_NUM_EMOJIS).sort((a, b) => a - b),
         showAnswerScreen: false,
         emojis: [0]
     }
@@ -59,13 +61,17 @@ class PlayScreen extends Component {
                     numEmojis={this.state.numEmojis}
                     totalEmojis={this.state.totalEmojis}
                     emojis={this.state.emojis}
-                    updateScore = {this.props.updateScore}
-                    updateLevel = {this.props.updateLevel}
-                    endGame = {this.props.endGame}
+                    isLastLevel={this.props.lvl === MAX_LEVEL}
                />
             );
         }
     } 
 }
 
-export default PlayScreen;
+const mapStateToProps = state => {
+    return {
+        lvl: state.level
+    }
+}
+
+export default connect(mapStateToProps)(PlayScreen);

@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import classes from './AnswerScreen.module.css';
 import Emoji from '../../../../utils/Emoji/Emoji';
+import * as actionTypes from '../../../../store/actions';
 
 const POINTS_PER_CORRECT_ANSWER = 20;
-const POINTS_PER_COMPLETED_LEVEL = 100;
 
 class AnswerScreen extends Component {
 
@@ -21,15 +22,17 @@ class AnswerScreen extends Component {
         if (this.props.emojis[this.state.correctEmojis] === value) {
             this.setState((prevState => ({correctEmojis: prevState.correctEmojis + 1 }))
             ,() => {
-                this.props.updateScore(POINTS_PER_CORRECT_ANSWER);
+                this.props.onScoreIncreased(POINTS_PER_CORRECT_ANSWER);
                 if(this.state.correctEmojis === this.props.numEmojis) {
-                    this.props.updateLevel();
-                    this.props.updateScore(POINTS_PER_COMPLETED_LEVEL);
+                    this.props.onLevelPassed();
+                    if(this.props.isLastLevel) {
+                        this.props.onEndGame();
+                    }
                 }
             });            
         } 
         else {
-            this.props.endGame();
+            this.props.onEndGame();
         }
     }
 
@@ -58,4 +61,12 @@ class AnswerScreen extends Component {
     }
 }
 
-export default AnswerScreen;
+const mapDispatchToProps = dispatch => {
+    return {
+        onLevelPassed: () => dispatch({type: actionTypes.PASS_LEVEL}),
+        onEndGame: () => dispatch({type: actionTypes.END_GAME}),
+        onScoreIncreased: (addedScr) => dispatch({type: actionTypes.INCREASE_SCORE, addedScore: addedScr})
+    }
+}
+
+export default connect(null, mapDispatchToProps)(AnswerScreen);

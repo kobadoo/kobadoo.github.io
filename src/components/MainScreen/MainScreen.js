@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import StartScreen from './StartScreen/StartScreen';
 import PlayScreen from './PlayScreen/PlayScreen';
 import TransitionScreen from './TransitionScreen/TransitionScreen';
@@ -7,37 +8,31 @@ import EndScreen from './EndScreen/EndScreen';
 
 class MainScreen extends Component {
     render () {
-        if (!this.props.hasGameStarted) {
-            if (this.props.level === 1) {
-                return <StartScreen 
-                    startGame = {this.props.startGame} />;
+        if (!this.props.startedLevel) {
+            if (this.props.lvl === 1) {
+                return <StartScreen />;
             }
             else {
-                return <TransitionScreen
-                    level = {this.props.level}
-                    startGame = {this.props.startGame}
-                />
+                return <TransitionScreen />
             }
         }
         else {
-            if (!this.props.hasGameEnded) {
-                return <PlayScreen 
-                        level = {this.props.level}
-                        updateScore = {this.props.updateScore}
-                        updateLevel = {this.props.updateLevel} 
-                        endGame = {this.props.endGame}
-                        maxNumEmojis = {this.props.maxNumEmojis}
-                        />
+            if (!this.props.endedGame) {
+                return <PlayScreen />
             }
             else {
-                return <EndScreen 
-                        level = {this.props.level}
-                        score = {this.props.score}
-                        restartGame = {this.props.restartGame}
-                        />
+                return <EndScreen />
             }
         }
     }
 }
 
-export default MainScreen;
+const mapStateToProps = state => {
+    return {
+        lvl: state.level,
+        startedLevel: state.hasLevelStarted,
+        endedGame: state.hasGameEnded
+    }
+}
+
+export default connect(mapStateToProps)(MainScreen);

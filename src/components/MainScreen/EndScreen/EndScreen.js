@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import * as actionTypes from '../../../store/actions';
+
 import classes from './EndScreen.module.css';
 import { 
     FacebookShareButton, 
@@ -15,7 +18,7 @@ import {
     ViberIcon
   } from 'react-share'
 
-const URL = 'http://www.kobadoo.com';
+const URL = 'https://www.kobadoo.com';
 const QUOTE = 'Kobadoo - Free memory game to train your brain using funny emojis.';
 const HASHTAG = '#kobadoo';
 const ICON_SIZE = 40;
@@ -24,13 +27,13 @@ const endScreen = (props) => (
     <div className={classes.EndScreen}>
         <div>
             <h2>Game Over!</h2>
-            <h3>Level: <div className={classes.Results}>{props.level}</div></h3>
-            <h3>Score: <div className={classes.Results}>{props.score}</div></h3>
+            <h3>Level: <div className={classes.Results}>{props.lvl}</div></h3>
+            <h3>Score: <div className={classes.Results}>{props.scr}</div></h3>
         </div>
         <div>
             <button 
                 className={classes.RestartButton} 
-                onClick={props.restartGame}>Restart Game</button>
+                onClick={props.onRestartGame}>Restart Game</button>
         </div>
         <div className={classes.Stats}>
             <p>The average user on <i>Kobadoo</i> reaches <strong>Level 9</strong>.</p>
@@ -61,4 +64,17 @@ const endScreen = (props) => (
     </div>
 );
 
-export default endScreen;
+const mapStateToProps = state => {
+    return {
+        lvl: state.level,
+        scr: state.score
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onRestartGame: () => dispatch({type: actionTypes.RESTART_GAME})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(endScreen);
