@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actionTypes from '../../../store/actions';
+import { restartGame } from '../../../store/actions/actions';
 
 import classes from './EndScreen.module.css';
 import { 
@@ -68,13 +68,13 @@ const mapStateToProps = state => {
     return {
         lvl: state.level,
         scr: state.score
-    }
-}
+    };
+};
 
 const mapDispatchToProps = dispatch => {
     return {
-        onRestartGame: () => dispatch({type: actionTypes.RESTART_GAME})
-    }
-}
+        onRestartGame: () => dispatch(restartGame)
+    };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(endScreen);

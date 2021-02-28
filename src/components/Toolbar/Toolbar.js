@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classes from './Toolbar.module.css';
-import * as actionTypes from '../../store/actions';
+import { abortGame } from '../../store/actions/actions';
 
 const APP_NAME = 'KOBADOO';
 
@@ -18,13 +18,13 @@ const mapStateToProps = state => {
     return {
         lvl: state.level,
         scr: state.score
-    }
-}
+    };
+};
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAbortGame: () => dispatch({type: actionTypes.ABORT_GAME})
-    }
-}
+        onAbortGame: () => dispatch(abortGame())
+    };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(toolbar);

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classes from './StartScreen.module.css';
 import Adsense from '../../../utils/Adsense';
 import Footer from '../../Footer/Footer';
-import * as actionTypes from '../../../store/actions';
+import { startLevel } from '../../../store/actions/actions';
 import BrainImg from '../../../images/brain.png';
 import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
@@ -59,8 +59,8 @@ const startScreen = (props) => (
 
 const mapDispatchToProps = dispatch => {
     return {
-        onStartLevel: () => dispatch({type: actionTypes.START_LEVEL}),
-    }
-}
+        onStartLevel: () => dispatch(startLevel())
+    };
+};
 
 export default connect(null, mapDispatchToProps)(startScreen);

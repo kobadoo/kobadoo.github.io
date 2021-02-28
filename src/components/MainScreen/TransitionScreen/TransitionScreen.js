@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import classes from './TransitionScreen.module.css';
-import * as actionTypes from '../../../store/actions';
+import { startLevel } from '../../../store/actions/actions';
 
 const INTERVAL_BETWEEN_LEVELS = 2000;
 
@@ -34,8 +34,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onStartLevel: () => dispatch({type: actionTypes.START_LEVEL})
-    }
-}
+        onStartLevel: () => dispatch(startLevel())
+    };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TransitionScreen);

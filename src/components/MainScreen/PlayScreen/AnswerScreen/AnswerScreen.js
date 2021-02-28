@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import classes from './AnswerScreen.module.css';
 import Emoji from '../../../../utils/Emoji/Emoji';
-import * as actionTypes from '../../../../store/actions';
+import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
 
 const POINTS_PER_CORRECT_ANSWER = 20;
 
@@ -63,10 +63,10 @@ class AnswerScreen extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onLevelPassed: () => dispatch({type: actionTypes.PASS_LEVEL}),
-        onEndGame: () => dispatch({type: actionTypes.END_GAME}),
-        onScoreIncreased: (addedScr) => dispatch({type: actionTypes.INCREASE_SCORE, addedScore: addedScr})
-    }
-}
+        onLevelPassed: () => dispatch(passLevel()),
+        onEndGame: () => dispatch(endGame()),
+        onScoreIncreased: (addedScr) => dispatch(increaseScore(addedScr))
+    };
+};
 
 export default connect(null, mapDispatchToProps)(AnswerScreen);
