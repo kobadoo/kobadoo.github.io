@@ -73,7 +73,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onRestartGame: () => dispatch(restartGame)
+        onRestartGame: () => dispatch(restartGame())
     };
 };
 

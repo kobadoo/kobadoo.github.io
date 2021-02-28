@@ -28,13 +28,9 @@ export const endGame = () => {
         }
         const score = String(state.score);
         eventGA('Game Results', state.level, score);
-        axios.post('/stats.json', stats)
-        .then ( () => {
-            dispatch({type: actionTypes.END_GAME});
-        })
-        .catch( error => {
-            console.log('ERROR: The result was not saved');
-        });
+        // No need to wait for response since it's just stats
+        axios.post('/stats.json', stats);
+        dispatch({type: actionTypes.END_GAME});
     };
 };
 
