@@ -17,6 +17,8 @@ export const passLevel = () => {
 
 export const endGame = () => {
     return (dispatch, getState) => {
+        dispatch({type: actionTypes.END_GAME});
+        // Send stats without waiting for it
         const state = getState();
         const today = new Date();
         const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
@@ -28,9 +30,7 @@ export const endGame = () => {
         }
         const score = String(state.score);
         eventGA('Game Results', state.level, score);
-        // No need to wait for response since it's just stats
         axios.post('/stats.json', stats);
-        dispatch({type: actionTypes.END_GAME});
     };
 };
 
