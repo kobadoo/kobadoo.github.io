@@ -4,6 +4,8 @@ import classes from './Legal.module.css';
 const terms = () => (
 
     <div className={classes.Legal}>
+
+        <div id="ezoic-pub-ad-placeholder-110"> </div>
     
         <h2>Terms and Conditions</h2>
 

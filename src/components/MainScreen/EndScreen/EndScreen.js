@@ -35,6 +35,7 @@ const endScreen = (props) => (
                 className={classes.RestartButton} 
                 onClick={props.onRestartGame}>Restart Game</button>
         </div>
+        <div id="ezoic-pub-ad-placeholder-105"> </div>
         <div className={classes.Stats}>
             <p>The average user on <i>Kobadoo</i> reaches <strong>Level 9</strong>.</p>
             <p>The all-time record on <i>Kobadoo</i> is <strong>Level 20</strong>.</p>

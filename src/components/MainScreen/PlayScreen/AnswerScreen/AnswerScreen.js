@@ -56,6 +56,7 @@ class AnswerScreen extends Component {
                     }
                 })}
                 <div className={classes.EmojisLeft}><strong>{this.props.numEmojis - this.state.correctEmojis}</strong> emojis left</div>
+                <div id="ezoic-pub-ad-placeholder-106"> </div>
             </div>
         );
     }

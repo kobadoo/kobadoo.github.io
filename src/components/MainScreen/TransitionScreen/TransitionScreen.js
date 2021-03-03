@@ -21,6 +21,7 @@ class TransitionScreen extends Component {
         return (
             <div className={classes.TransitionScreen}>
                 <h2>Level {this.props.lvl - 1} completed!</h2>
+                <div id="ezoic-pub-ad-placeholder-104"> </div>
             </div>
         );
     }

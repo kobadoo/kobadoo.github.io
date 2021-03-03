@@ -4,6 +4,7 @@ import classes from './Legal.module.css';
 const privacy = () => (
 
     <div className={classes.Legal}>
+        <div id="ezoic-pub-ad-placeholder-109"> </div>
         
         <h2>Privacy Policy</h2>
 

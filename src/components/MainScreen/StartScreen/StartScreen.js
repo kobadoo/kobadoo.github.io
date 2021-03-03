@@ -15,6 +15,9 @@ const style = {
 
 const startScreen = (props) => (
     <div className={classes.StartScreen}>
+
+         <div id="ezoic-pub-ad-placeholder-101"> </div>
+
          <div className={classes.HeaderText}>
              <strong>Kobadoo</strong> is a free memory game that trains your brain using funny emojis.
          </div>
@@ -23,6 +26,8 @@ const startScreen = (props) => (
                 className={classes.StartButton} 
                 onClick={props.onStartLevel}>Start Game</button>
         </div>
+
+        <div id="ezoic-pub-ad-placeholder-103"> </div>
 
         <div className={classes.BenefitsText}>
             <img className={classes.StartImage} src={MonkeyImg} />
@@ -51,6 +56,8 @@ const startScreen = (props) => (
             format="auto" 
             wrapperDivStyle={style}
         /> */ }
+
+        <div id="ezoic-pub-ad-placeholder-102"> </div>
 
         <Footer />
 
