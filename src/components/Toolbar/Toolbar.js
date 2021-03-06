@@ -7,17 +7,18 @@ import { abortGame } from '../../store/actions/actions';
 const APP_NAME = 'KOBADOO';
 
 const toolbar = (props) => (
-        <div className={classes.Toolbar}>
-            <div className={classes.Logo} onClick={props.onAbortGame}><Link to="/">{APP_NAME}</Link></div>
-            <div className={classes.ToolbarItem}>Level: <strong>{props.lvl}</strong></div>
-            <div className={classes.ToolbarItem}>Score: <strong>{props.scr}</strong></div>
-        </div>
+    <div className={classes.Toolbar}>
+        <div className={classes.Logo} onClick={props.onAbortGame}><Link to={props.iframe ? "/iframe" : "/"}>{APP_NAME}</Link></div>
+        <div className={classes.ToolbarItem}>Level: <strong>{props.lvl}</strong></div>
+        <div className={classes.ToolbarItem}>Score: <strong>{props.scr}</strong></div>
+    </div>
 );
 
 const mapStateToProps = state => {
     return {
         lvl: state.level,
-        scr: state.score
+        scr: state.score,
+        iframe: state.isOnIframe
     };
 };
 

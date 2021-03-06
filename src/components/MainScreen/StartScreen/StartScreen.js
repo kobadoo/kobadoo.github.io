@@ -6,6 +6,7 @@ import Footer from '../../Footer/Footer';
 import { startLevel } from '../../../store/actions/actions';
 import BrainImg from '../../../images/brain.png';
 import MonkeyImg from '../../../images/monkey.png';
+import BulbImg from '../../../images/bulb.png';
 import TrainImg from '../../../images/train.png';
 
 const style = {
@@ -16,8 +17,6 @@ const style = {
 const startScreen = (props) => (
     <div className={classes.StartScreen}>
 
-         <div id="ezoic-pub-ad-placeholder-101"> </div>
-
          <div className={classes.HeaderText}>
              <strong>Kobadoo</strong> is a free memory game that trains your brain using funny emojis.
          </div>
@@ -26,8 +25,6 @@ const startScreen = (props) => (
                 className={classes.StartButton} 
                 onClick={props.onStartLevel}>Start Game</button>
         </div>
-
-        <div id="ezoic-pub-ad-placeholder-103"> </div>
 
         <div className={classes.BenefitsText}>
             <img className={classes.StartImage} src={MonkeyImg} />
@@ -44,9 +41,16 @@ const startScreen = (props) => (
         </div>
 
         <div className={classes.BenefitsText}>
-            <img className={classes.StartImage} src={TrainImg} />
-            <h3>What is the <i>working memory</i> and why should you train it?</h3>
+            <img className={classes.StartImage} src={BulbImg} />
+            <h3>What is the <i>working memory</i>?</h3>
             <p>Working memory is a form of short-term memory, where you temporarily hold information in your mind while processing it. When you play <i>Kobadoo</i> you are actively using your working memory. There are several scientific studies that suggest training of working memory has <strong>beneficial effects</strong> and can <strong>increase your cognitive functions</strong>. So <strong>have fun</strong> while you also train your working memory and attention!</p>
+        </div>
+
+        <div className={classes.BenefitsText}>
+            <img className={classes.StartImage} src={TrainImg} />
+            <h3>Why should you train your <i>working memory</i>?</h3>
+            <p>Some programs to train the working memory have shown improvements in everyday functioning, including your <strong>concentration</strong>. It can be especially beneficial to some clinical groups like people with ADHD, that suffer impaired working memory and inattentiveness. One example is the possibility to improve the <strong>school performance</strong> of children with ADHD.</p>
+            <p>Some adults have also improved their brain functions through this kind of exercises. <strong>Age-related decline</strong> can be improved by training working memory, and it can also help older adults perform everyday tasks <strong>more efficiently</strong>. Finally, some studies suggest that training your working memory can <strong>improve your mood</strong> by releasing dopamine in the brain.</p>
         </div>
 
         { /*
@@ -56,8 +60,6 @@ const startScreen = (props) => (
             format="auto" 
             wrapperDivStyle={style}
         /> */ }
-
-        <div id="ezoic-pub-ad-placeholder-102"> </div>
 
         <Footer />
 

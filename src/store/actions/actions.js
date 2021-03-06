@@ -51,3 +51,9 @@ export const abortGame = () => {
         type: actionTypes.ABORT_GAME
     };
 };
+
+export const startIframe = () => {
+    return {
+        type: actionTypes.START_IFRAME
+    };
+};

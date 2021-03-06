@@ -35,40 +35,45 @@ const endScreen = (props) => (
                 className={classes.RestartButton} 
                 onClick={props.onRestartGame}>Restart Game</button>
         </div>
-        <div id="ezoic-pub-ad-placeholder-105"> </div>
         <div className={classes.Stats}>
             <p>The average user on <i>Kobadoo</i> reaches <strong>Level 9</strong>.</p>
             <p>The all-time record on <i>Kobadoo</i> is <strong>Level 20</strong>.</p>
         </div>
-        <div className={classes.ShareText}>Share with your friends!</div>
-        <div className={classes.ShareButtons}>
-            <WhatsappShareButton url={URL} title={QUOTE}>
-                <WhatsappIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
-            </WhatsappShareButton>
-            <FacebookShareButton url={URL} quote={QUOTE} hashtag={HASHTAG}>
-                <FacebookIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
-            </FacebookShareButton>
-            <TwitterShareButton url={URL} title={QUOTE + ' ' + HASHTAG + ' '}>
-                <TwitterIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
-            </TwitterShareButton>
-            <LinkedinShareButton url={URL} title={QUOTE}>
-                <LinkedinIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
-            </LinkedinShareButton>
-            <ViberShareButton url={URL} title={QUOTE}>
-                <ViberIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
-            </ViberShareButton>
-            <EmailShareButton url={URL} subject={QUOTE}>
-                <EmailIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
-            </EmailShareButton>
-            
-        </div>
+        {!props.iframe?
+            <React.Fragment>
+                <div className={classes.ShareText}>Share with your friends!</div>
+                <div className={classes.ShareButtons}>
+                    <WhatsappShareButton url={URL} title={QUOTE}>
+                        <WhatsappIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
+                    </WhatsappShareButton>
+                    <FacebookShareButton url={URL} quote={QUOTE} hashtag={HASHTAG}>
+                        <FacebookIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
+                    </FacebookShareButton>
+                    <TwitterShareButton url={URL} title={QUOTE + ' ' + HASHTAG + ' '}>
+                        <TwitterIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
+                    </TwitterShareButton>
+                    <LinkedinShareButton url={URL} title={QUOTE}>
+                        <LinkedinIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
+                    </LinkedinShareButton>
+                    <ViberShareButton url={URL} title={QUOTE}>
+                        <ViberIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
+                    </ViberShareButton>
+                    <EmailShareButton url={URL} subject={QUOTE}>
+                        <EmailIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
+                    </EmailShareButton>
+                </div>
+            </React.Fragment>
+        :
+        <div/> 
+        }
     </div>
 );
 
 const mapStateToProps = state => {
     return {
         lvl: state.level,
-        scr: state.score
+        scr: state.score,
+        iframe: state.isOnIframe
     };
 };
 

@@ -5,7 +5,8 @@ const initialState = {
     level: 1,
     score: 0,
     hasLevelStarted: false,
-    hasGameEnded: false
+    hasGameEnded: false,
+    isOnIframe: false
 };
 
 const POINTS_PER_COMPLETED_LEVEL = 100;
@@ -60,6 +61,14 @@ const abortGame = (state, action) => {
     return updateObject(state, updatedState);
 };
 
+const startIframe = (state, action) => {
+    const updatedState = {
+        hasLevelStarted: true,
+        isOnIframe: true
+    };
+    return updateObject(state, updatedState);
+};
+
 
 const reducer = (state = initialState, action) => {
 
@@ -82,6 +91,9 @@ const reducer = (state = initialState, action) => {
         
         case actionTypes.ABORT_GAME:
             return abortGame(state, action);
+
+        case actionTypes.START_IFRAME:
+            return startIframe(state, action);
 
         default:
             return state;

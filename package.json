@@ -42,6 +42,9 @@
       "react-app/jest"
     ]
   },
+  "reactSnap": {
+    "inlineCss": true
+  },
   "browserslist": {
     "production": [
       ">0.2%",

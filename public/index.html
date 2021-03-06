@@ -27,31 +27,26 @@
     -->
     <title>Kobadoo - Memory game</title>
 
-    <!-- Ezoic Code -->
-    <script>var ezoicId = 250764;</script>
-    <script type="text/javascript" src="//go.ezoic.net/ezoic/ezoic.js"></script>
-    <!-- Ezoic Code -->
-
     <!-- Google Adsense -->
     <script data-ad-client="ca-pub-5925249540053809" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-    <!-- Cookie consent banner -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.css"/>
-    <script src="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.js"></script>
-    <script>
-        window.addEventListener("load", function(){
-            window.wpcc.init({
-                "border":"thin",
-                "corners":"small",
-                "colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},
-                "position":"bottom"
-            })
-        });
-    </script>
 
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <!-- Cookie consent banner -->
+    <script>
+      if (window.self === window.top) {
+        console.log(window.frameElement);
+        var head = document.getElementsByTagName('head')[0];
+        var js = document.createElement("script");
+        js.type = "text/javascript";
+        js.src = 'https://cdn.jsdelivr.net/npm/cookie-bar/cookiebar-latest.min.js?forceLang=en&theme=flying&tracking=1&thirdparty=1&noGeoIp=1&hideDetailsBtn=1'; 
+        head.appendChild(js);
+      }
+    </script>
+    <!-- script type="text/javascript" src="https://cdn.jsdelivr.net/npm/cookie-bar/cookiebar-latest.min.js?forceLang=en&theme=flying&tracking=1&thirdparty=1&noGeoIp=1&hideDetailsBtn=1"></script -->
+
     <div id="root"></div>
     <!--
       This HTML file is a template.

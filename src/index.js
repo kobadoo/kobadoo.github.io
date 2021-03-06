@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { hydrate, render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { BrowserRouter } from 'react-router-dom';
@@ -9,11 +9,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import reducer from './store/reducers/reducer';
 
-const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
+ const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
 
 const store = createStore(reducer, composeEnhancers(
   applyMiddleware(thunk)
 ));
+
+// Tell react-snap how to save Redux state
+//window.snapSaveState = () => ({
+//  __PRELOADED_STATE__: store.getState()
+//});
 
 const app = (
   <React.StrictMode>
@@ -25,7 +30,13 @@ const app = (
   </React.StrictMode>
 );
 
-ReactDOM.render(app, document.getElementById('root'));
+const rootElement = document.getElementById("root");
+
+//if (rootElement.hasChildNodes()) {
+//  hydrate(app, rootElement);
+//} else {
+  render(app, rootElement);
+//}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

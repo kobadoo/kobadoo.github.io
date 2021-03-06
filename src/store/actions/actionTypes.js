@@ -4,3 +4,4 @@ export const END_GAME = 'END_GAME';
 export const START_LEVEL = 'START_LEVEL';
 export const RESTART_GAME = 'RESTART_GAME';
 export const ABORT_GAME = 'ABORT_GAME';
+export const START_IFRAME = 'START_IFRAME';

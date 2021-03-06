@@ -4,8 +4,6 @@ import classes from './Legal.module.css';
 const privacy = () => (
 
     <div className={classes.Legal}>
-        <div id="ezoic-pub-ad-placeholder-109"> </div>
-        
         <h2>Privacy Policy</h2>
 
         <p>At Kobadoo, accessible from Kobadoo.com, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Kobadoo and how we use it.</p>
