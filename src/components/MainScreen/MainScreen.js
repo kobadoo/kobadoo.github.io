@@ -6,6 +6,7 @@ import TransitionScreen from './TransitionScreen/TransitionScreen';
 import EndScreen from './EndScreen/EndScreen';
 
 class MainScreen extends Component {
+    
     render () {
         if (!this.props.startedLevel) {
             if (this.props.lvl === 1) {

@@ -14,17 +14,7 @@ const style = {
     marginBottom: '20px'
 };
 
-const StartScreen = (props) => {
-    
-    useEffect(() => {
-        const script = document.createElement('script');  
-        script.src = "https://cdn.jsdelivr.net/npm/cookie-bar/cookiebar-latest.min.js?forceLang=en&theme=flying&tracking=1&thirdparty=1&noGeoIp=1&hideDetailsBtn=1";
-        script.async = true;
-        document.body.appendChild(script);
-        return () => {
-          document.body.removeChild(script);
-        }
-    }, []);
+const startScreen = (props) => {
     
     return (
         <div className={classes.StartScreen}>
@@ -84,4 +74,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(null, mapDispatchToProps)(StartScreen);
+export default connect(null, mapDispatchToProps)(startScreen);
