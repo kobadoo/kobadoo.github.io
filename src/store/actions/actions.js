@@ -52,8 +52,8 @@ export const abortGame = () => {
     };
 };
 
-export const startIframe = () => {
+export const setIframe = () => {
     return {
-        type: actionTypes.START_IFRAME
+        type: actionTypes.SET_IFRAME
     };
 };

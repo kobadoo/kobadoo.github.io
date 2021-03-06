@@ -14,6 +14,7 @@ const footer = () => (
         <div className={classes.FooterItem}><Link to="/terms">Terms</Link></div>
         <div className={classes.FooterItem}><Link to="/privacy">Privacy</Link></div>
         <div className={classes.FooterItem}><Link to="/credits">Credits</Link></div>
+        <div><Link to="/iframe"></Link></div>
     </div>  
 );
 

@@ -61,9 +61,8 @@ const abortGame = (state, action) => {
     return updateObject(state, updatedState);
 };
 
-const startIframe = (state, action) => {
+const setIframe = (state, action) => {
     const updatedState = {
-        hasLevelStarted: true,
         isOnIframe: true
     };
     return updateObject(state, updatedState);
@@ -92,8 +91,8 @@ const reducer = (state = initialState, action) => {
         case actionTypes.ABORT_GAME:
             return abortGame(state, action);
 
-        case actionTypes.START_IFRAME:
-            return startIframe(state, action);
+        case actionTypes.SET_IFRAME:
+            return setIframe(state, action);
 
         default:
             return state;
