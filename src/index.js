@@ -15,6 +15,11 @@ const store = createStore(reducer, composeEnhancers(
   applyMiddleware(thunk)
 ));
 
+// Tell react-snap how to save Redux state
+window.snapSaveState = () => ({
+  __PRELOADED_STATE__: store.getState()
+});
+
 const app = (
   <React.StrictMode>
     <Provider store={store}>
@@ -27,8 +32,11 @@ const app = (
 
 const rootElement = document.getElementById("root");
 
-
-render(app, rootElement);
+if (rootElement.hasChildNodes()) {
+  hydrate(app, rootElement);
+} else {
+  render(app, rootElement);
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
