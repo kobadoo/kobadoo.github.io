@@ -1,28 +1,26 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import StartScreen from './StartScreen/StartScreen';
 import PlayScreen from './PlayScreen/PlayScreen';
 import TransitionScreen from './TransitionScreen/TransitionScreen';
 import EndScreen from './EndScreen/EndScreen';
 
-class MainScreen extends Component {
+const MainScreen = (props) => {
     
-    render () {
-        if (!this.props.startedLevel) {
-            if (this.props.lvl === 1) {
-                return <StartScreen />;
-            }
-            else {
-                return <TransitionScreen />
-            }
+    if (!props.startedLevel) {
+        if (props.lvl === 1) {
+            return <StartScreen />;
         }
         else {
-            if (!this.props.endedGame) {
-                return <PlayScreen />
-            }
-            else {
-                return <EndScreen />
-            }
+            return <TransitionScreen />
+        }
+    }
+    else {
+        if (!props.endedGame) {
+            return <PlayScreen />
+        }
+        else {
+            return <EndScreen />
         }
     }
 }

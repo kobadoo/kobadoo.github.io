@@ -1,29 +1,28 @@
-import React, {Component} from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import classes from './TransitionScreen.module.css';
 import { startLevel } from '../../../store/actions/actions';
 
 const INTERVAL_BETWEEN_LEVELS = 2000;
 
-class TransitionScreen extends Component {
 
-    componentDidMount() {
-        this.timeout = setInterval(() => {
-            this.props.onStartLevel();
+const TransitionScreen = (props) => {
+
+    useEffect(() => {
+        const timeout = setInterval(() => {
+            props.onStartLevel();
         }, INTERVAL_BETWEEN_LEVELS);
-    }
+      
+        // Returned function will be called on component unmount 
+        return () => {
+            clearInterval(timeout);        }
+    }, [])
 
-    componentWillUnmount() {
-        clearInterval(this.timeout);
-    }
-
-    render() {
-        return (
-            <div className={classes.TransitionScreen}>
-                <h2>Level {this.props.lvl - 1} completed!</h2>
-            </div>
-        );
-    }
+    return (
+        <div className={classes.TransitionScreen}>
+            <h2>Level {props.lvl - 1} completed!</h2>
+        </div>
+    );
 }
 
 const mapStateToProps = state => {

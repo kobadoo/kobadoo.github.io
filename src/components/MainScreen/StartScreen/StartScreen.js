@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import classes from './StartScreen.module.css';
-import Adsense from '../../../utils/Adsense';
 import Footer from '../../Footer/Footer';
 import { startLevel } from '../../../store/actions/actions';
 import BrainImg from '../../../images/brain.png';
@@ -9,10 +8,6 @@ import MonkeyImg from '../../../images/monkey.png';
 import BulbImg from '../../../images/bulb.png';
 import TrainImg from '../../../images/train.png';
 
-const style = {
-    marginTop: '15px',
-    marginBottom: '20px'
-};
 
 const startScreen = (props) => {
     
@@ -54,14 +49,6 @@ const startScreen = (props) => {
                 <p>Some programs to train the working memory have shown improvements in everyday functioning, including your <strong>concentration</strong>. It can be especially beneficial to some clinical groups like people with ADHD, that suffer impaired working memory and inattentiveness. One example is the possibility to improve the <strong>school performance</strong> of children with ADHD.</p>
                 <p>Some adults have also improved their brain functions through this kind of exercises. <strong>Age-related decline</strong> can be improved by training working memory, and it can also help older adults perform everyday tasks <strong>more efficiently</strong>. Finally, some studies suggest that training your working memory can <strong>improve your mood</strong> by releasing dopamine in the brain.</p>
             </div>
-
-            { /*
-            <Adsense 
-                client="ca-pub-xxxxxxxxxx" 
-                slot="xxxxxxxxxx" 
-                format="auto" 
-                wrapperDivStyle={style}
-            /> */ }
 
             <Footer />
         </div>
