@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.dec7161d.chunk.css",
+    "main.css": "/static/css/main.d546757b.chunk.css",
     "main.js": "/static/js/main.460f2e58.chunk.js",
     "main.js.map": "/static/js/main.460f2e58.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.eee951fd.js",
@@ -10,7 +10,7 @@
     "static/js/3.ec1aed84.chunk.js": "/static/js/3.ec1aed84.chunk.js",
     "static/js/3.ec1aed84.chunk.js.map": "/static/js/3.ec1aed84.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/main.dec7161d.chunk.css.map": "/static/css/main.dec7161d.chunk.css.map",
+    "static/css/main.d546757b.chunk.css.map": "/static/css/main.d546757b.chunk.css.map",
     "static/js/2.064f6501.chunk.js.LICENSE.txt": "/static/js/2.064f6501.chunk.js.LICENSE.txt",
     "static/media/brain.75e7e41c.png": "/static/media/brain.75e7e41c.png",
     "static/media/bulb.cade1cbf.png": "/static/media/bulb.cade1cbf.png",
@@ -20,7 +20,7 @@
   "entrypoints": [
     "static/js/runtime-main.eee951fd.js",
     "static/js/2.064f6501.chunk.js",
-    "static/css/main.dec7161d.chunk.css",
+    "static/css/main.d546757b.chunk.css",
     "static/js/main.460f2e58.chunk.js"
   ]
 }
