@@ -1,12 +1,16 @@
 .EndScreen {
     top: 56px;
-    position: absolute;
+    position: relative;
     display: block;
     width: 100%;
     margin: auto;
     height: 100%;
-    overflow: scroll;
+    overflow: hidden;
     text-align: center;
+}
+
+.EndScreen h3 {
+    margin: 5px 0px;
 }
 
 .RestartButton {
@@ -19,7 +23,7 @@
     cursor: pointer;
     outline: none;
     left: 50%;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .RestartButton:hover {
@@ -34,7 +38,7 @@
 
 .ShareText {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 15px;
     font-family: 'Open Sans', sans-serif;
     font-size: 1.2rem;
     font-weight: normal;
@@ -42,7 +46,7 @@
 
 .Stats {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 10px;
     font-family: 'Open Sans', sans-serif;
     font-size: 0.8rem;
     font-weight: lighter;
@@ -54,9 +58,26 @@
 
 .ShareButtons {
     text-align: center;
-    margin-top: 20px;
+    margin: 0px;
 }
 
 .ShareButton {
     padding: 5px;
+}
+
+.Ad300x250 {
+    position: relative;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.Ad728x90 {
+    display: inline-block;
+}
+
+@media only screen and (max-width: 727px) {
+    
+    .Ad728x90 {
+        display: none;
+    }
 }

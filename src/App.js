@@ -15,16 +15,6 @@ const App = () => {
   useEffect(() => {
     initGA('UA-189831762-1');
     PageView();
-    // Load cookie banner if not in an iframe
-    if(window.self === window.top) {
-      const script = document.createElement('script');  
-      script.src = "https://cdn.jsdelivr.net/npm/cookie-bar/cookiebar-latest.min.js?forceLang=en&theme=flying&tracking=1&thirdparty=1&noGeoIp=1&hideDetailsBtn=1";
-      script.async = true;
-      document.body.appendChild(script);
-      return () => {
-        document.body.removeChild(script);
-      }
-    }
   }, []);
 
   return (

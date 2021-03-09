@@ -7,6 +7,7 @@ const MAX_NUM_EMOJIS = 42;
 const MAX_LEVEL = (MAX_NUM_EMOJIS -1) * 3;
 const EMOJIS_LEVEL_1 = 2;
 const TOTAL_NUM_EMOJIS = 100;
+const INTERVAL_BETWEEN_EMOJIS = 1000;
 
 function getRandomSubarray(arr, size) {
     var shuffled = arr.slice(0), i = arr.length, min = i - size, temp, index;
@@ -21,28 +22,30 @@ function getRandomSubarray(arr, size) {
 
 class PlayScreen extends Component {
 
+    numEmojis = EMOJIS_LEVEL_1 + parseInt((this.props.lvl -1) / 3);
+    totalEmojis = getRandomSubarray([...Array(TOTAL_NUM_EMOJIS).keys()], MAX_NUM_EMOJIS).sort((a, b) => a - b);
+
     state = {
         item: 0,
-        numEmojis: EMOJIS_LEVEL_1 + parseInt((this.props.lvl -1) / 3),
-        totalEmojis: getRandomSubarray([...Array(TOTAL_NUM_EMOJIS).keys()], MAX_NUM_EMOJIS).sort((a, b) => a - b),
         showAnswerScreen: false,
         emojis: [0]
     }
 
     componentDidMount() {
-        this.setState(prevState => ({
-            emojis: getRandomSubarray(prevState.totalEmojis, prevState.numEmojis)
-        }));
+        this.setState({
+            emojis: getRandomSubarray(this.totalEmojis, this.numEmojis)
+        });
         this.timeout = setInterval(() => {
-            if (this.state.item < this.state.numEmojis - 1) {
+            if (this.state.item < this.numEmojis - 1) {
                 this.setState(prevState => ({
                     item: prevState.item + 1
                 }));
             }
             else {
                 this.setState({showAnswerScreen: true})
+                clearInterval(this.timeout);
             }
-        }, 1000);
+        }, INTERVAL_BETWEEN_EMOJIS);
     }
 
     componentWillUnmount() {
@@ -58,8 +61,8 @@ class PlayScreen extends Component {
         else {
             return (
                 <AnswerScreen 
-                    numEmojis={this.state.numEmojis}
-                    totalEmojis={this.state.totalEmojis}
+                    numEmojis={this.numEmojis}
+                    totalEmojis={this.totalEmojis}
                     emojis={this.state.emojis}
                     isLastLevel={this.props.lvl === MAX_LEVEL}
                />

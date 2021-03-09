@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import classes from './AnswerScreen.module.css';
 import Emoji from '../../../../utils/Emoji/Emoji';
@@ -6,59 +6,53 @@ import { passLevel, increaseScore, endGame } from '../../../../store/actions/act
 
 const POINTS_PER_CORRECT_ANSWER = 20;
 
-class AnswerScreen extends Component {
+const AnswerScreen = (props) => {
 
-    state = {
-        correctEmojis: 0,
-        disabled: []
-    }
+    const [correctEmojis, setCorrectEmojis] = useState(0);
+    const [disabledEmojis, setDisabledEmojis] = useState([]);
 
-    emojiClickHandler = (index, value) => {
+    useEffect(() => {
+        props.onScoreIncreased(POINTS_PER_CORRECT_ANSWER);
+        if(correctEmojis === props.numEmojis) {
+            props.onLevelPassed();
+            if(props.isLastLevel) {
+                props.onEndGame();
+            }
+        }
+     }, [correctEmojis]);
 
-        this.setState({
-            disabled: [...this.state.disabled, index]
-        });
+    const emojiClickHandler = (index, value) => {
 
-        if (this.props.emojis[this.state.correctEmojis] === value) {
-            this.setState((prevState => ({correctEmojis: prevState.correctEmojis + 1 }))
-            ,() => {
-                this.props.onScoreIncreased(POINTS_PER_CORRECT_ANSWER);
-                if(this.state.correctEmojis === this.props.numEmojis) {
-                    this.props.onLevelPassed();
-                    if(this.props.isLastLevel) {
-                        this.props.onEndGame();
-                    }
-                }
-            });            
+        setDisabledEmojis(prevList => [...prevList,index]);
+        if (props.emojis[correctEmojis] === value) {
+            setCorrectEmojis(prevCount => prevCount + 1 );
         } 
         else {
-            this.props.onEndGame();
+            props.onEndGame();
         }
     }
 
 
-    render() {
-        return (
-            <div className={classes.AnswerScreen}>
-                <div>
-                    <h2>Select in the right order</h2>
-                </div>
-                {this.props.totalEmojis.map((value, index) => {
-                    if(this.state.disabled.indexOf(index) === -1) {
-                        return <Emoji 
-                                className={classes.AnswerScreenEmoji} 
-                                clickHandler={() => this.emojiClickHandler(index, value)}
-                                key={index} 
-                                num = {value} />
-                    }
-                    else {
-                        return false;
-                    }
-                })}
-                <div className={classes.EmojisLeft}><strong>{this.props.numEmojis - this.state.correctEmojis}</strong> emojis left</div>
+    return (
+        <div className={classes.AnswerScreen}>
+            <div>
+                <h2>Select in the right order</h2>
             </div>
-        );
-    }
+            {props.totalEmojis.map((value, index) => {
+                if(disabledEmojis.indexOf(index) === -1) {
+                    return <Emoji 
+                            className={classes.AnswerScreenEmoji} 
+                            clickHandler={() => emojiClickHandler(index, value)}
+                            key={index} 
+                            num = {value} />
+                }
+                else {
+                    return false;
+                }
+            })}
+            <div className={classes.EmojisLeft}><strong>{props.numEmojis - correctEmojis}</strong> emojis left</div>
+        </div>
+    );
 }
 
 const mapDispatchToProps = dispatch => {

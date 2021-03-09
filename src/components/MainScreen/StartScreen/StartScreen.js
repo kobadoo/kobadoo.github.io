@@ -1,18 +1,31 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import classes from './StartScreen.module.css';
 import Footer from '../../Footer/Footer';
 import { startLevel } from '../../../store/actions/actions';
-import BrainImg from '../../../images/brain.png';
 import MonkeyImg from '../../../images/monkey.png';
 import BulbImg from '../../../images/bulb.png';
 import TrainImg from '../../../images/train.png';
 
+const StartScreen = (props) => {
 
-const startScreen = (props) => {
+    useEffect(() => {
+        window.aiptag.cmd.display.push( () => {
+            window.aipDisplayTag.display('kobadoo-com_300x50'); 
+            window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
+            window.aipDisplayTag.display('kobadoo-com_160x600_2');
+            window.aipDisplayTag.display('kobadoo-com_728x90_1');
+            window.aipDisplayTag.display('kobadoo-com_300x250');
+        });
+    }, []);
     
     return (
         <div className={classes.StartScreen}>
+
+            <div id='kobadoo-com_300x50' className={classes.Ad300x50} />
+            <div id='kobadoo-com_160x600_1' className={classes.Ad160x600L} />
+            <div id='kobadoo-com_160x600_2' className={classes.Ad160x600R} />
+            <div id='kobadoo-com_728x90_1' className={classes.Ad728x90} />
 
             <div className={classes.HeaderText}>
                 <strong>Kobadoo</strong> is a free memory game that trains your brain using funny emojis.
@@ -32,13 +45,13 @@ const startScreen = (props) => {
             </div>
 
             <div className={classes.BenefitsText}>
-                <img className={classes.StartImage} src={BrainImg} />
+                <img className={classes.StartImage} src={BulbImg} />
                 <h3>Why is Kobadoo good for your mind?</h3>
                 <p>Playing memory games help sharpen certain brain functions that tend to wane with age, such as <strong>attention</strong> to detail, <strong>concentration</strong>, <strong>reaction time</strong>, <strong>decision making</strong>, and <strong>working memory</strong>. <i>Kobadoo</i> has been created in cooperation with a specialist in <strong>clinical neuropsychology</strong>.</p>
             </div>
 
             <div className={classes.BenefitsText}>
-                <img className={classes.StartImage} src={BulbImg} />
+                <div id='kobadoo-com_300x250' className={classes.Ad300x250} />
                 <h3>What is the <i>working memory</i>?</h3>
                 <p>Working memory is a form of short-term memory, where you temporarily hold information in your mind while processing it. When you play <i>Kobadoo</i> you are actively using your working memory. There are several scientific studies that suggest training of working memory has <strong>beneficial effects</strong> and can <strong>increase your cognitive functions</strong>. So <strong>have fun</strong> while you also train your working memory and attention!</p>
             </div>
@@ -61,4 +74,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(null, mapDispatchToProps)(startScreen);
+export default connect(null, mapDispatchToProps)(StartScreen);

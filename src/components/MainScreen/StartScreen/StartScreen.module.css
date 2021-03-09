@@ -22,7 +22,7 @@
     padding: 5px 20px;
     text-align: center;
     margin-top: 30px;
-    max-width: 760px;
+    max-width: 690px;
     display: inline-block;
     line-height: 150%;
 }
@@ -54,4 +54,49 @@
     display: inline-block;
     width: 150px;
     margin-bottom: 10px;
+}
+
+.Ad300x50 {
+    display: none;
+}
+
+.Ad160x600L {
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.Ad160x600R {
+    display: block;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.Ad728x90 {
+    display: inline-block;
+}
+
+.Ad300x250 {
+    display: inline-block;
+    margin-top: -30px;
+}
+
+@media only screen and (max-width: 1023px) {
+    .Ad300x50 {
+      display: inline-block;
+    }
+
+    .Ad160x600L {
+        display: none;
+    }
+
+    .Ad160x600R {
+        display: none;
+    }
+
+    .Ad728x90 {
+        display: none;
+    }
 }
