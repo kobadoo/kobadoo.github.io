@@ -9,6 +9,10 @@
     text-align: center;
 }
 
+.EndScreen h2 {
+    margin: 15px;
+}
+
 .EndScreen h3 {
     margin: 5px 0px;
 }

@@ -50,7 +50,6 @@ const EndScreen = (props) => {
                 <p>The average user on <i>Kobadoo</i> reaches <strong>Level 9</strong>.</p>
                 <p>The all-time record on <i>Kobadoo</i> is <strong>Level 20</strong>.</p>
             </div>
-            <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} />
             {!props.iframe?
                 <React.Fragment>
                     <div className={classes.ShareText}>Share with your friends!</div>
@@ -78,6 +77,7 @@ const EndScreen = (props) => {
             :
             <div/> 
             }
+            <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} />
         </div>
     );
 }
