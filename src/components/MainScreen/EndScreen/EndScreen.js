@@ -27,15 +27,18 @@ const ICON_SIZE = 40;
 const EndScreen = (props) => {
 
     useEffect(() => {
-        window.aiptag.cmd.display.push( () => {
-            window.aipDisplayTag.display('kobadoo-com_300x250_3'); 
-            window.aipDisplayTag.display('kobadoo-com_728x90_2'); 
-        });
-    }, []);
+        if (props.showAds) {
+            window.aiptag.cmd.display.push( () => {
+                window.aipDisplayTag.display('kobadoo-com_300x250_3'); 
+                window.aipDisplayTag.display('kobadoo-com_728x90_2'); 
+            })
+        }
+    }, [props.showAds]);
+
 
     return (
         <div className={classes.EndScreen}>
-            <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
+            { props.showAds ? <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} /> : null }
             <div>
                 <h2>Game Over!</h2>
                 <h3>Level: <div className={classes.Results}>{props.lvl}</div></h3>
@@ -77,7 +80,7 @@ const EndScreen = (props) => {
             :
             <div/> 
             }
-            <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} />
+            { props.showAds ? <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} /> : null }
         </div>
     );
 }
@@ -86,7 +89,8 @@ const mapStateToProps = state => {
     return {
         lvl: state.level,
         scr: state.score,
-        iframe: state.isOnIframe
+        iframe: state.isOnIframe,
+        showAds: state.showAds
     };
 };
 

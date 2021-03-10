@@ -14,6 +14,18 @@
     cursor:pointer
  }
 
+ .EmojiFailed {
+    font-size: 3rem;
+    background-color: red;
+    pointer-events: none;
+ }
+
+ .EmojiNext {
+    font-size: 3rem;
+    background-color: lawngreen;
+    pointer-events: none;
+ }
+
  .EmojisLeft {
     color: red;
     bottom: 10px;

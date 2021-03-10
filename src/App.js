@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { PageView, initGA } from './utils/Analytics';
 import { Route, Switch } from 'react-router-dom';
 import Toolbar from './components/Toolbar/Toolbar';
@@ -8,13 +9,24 @@ import Credits from './components/Legal/Credits';
 import Privacy from './components/Legal/Privacy';
 import Terms from './components/Legal/Terms';
 import ScrollToTop from './utils/ScrollToTop';
+import { changeShowAds } from './store/actions/actions';
 
-const App = () => {
+
+const App = (props) => {
 
   useEffect(() => {
     initGA('UA-189831762-1');
     PageView();
-  });
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("aip_consentrejected", function(e) {
+      props.onChangeShowAds(false);
+    });
+    document.addEventListener("aip_consentapproved", function(e) {
+        props.onChangeShowAds(true);
+    });
+  }, []);
 
   return (
     <ScrollToTop>
@@ -30,4 +42,10 @@ const App = () => {
   );
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+  return {
+      onChangeShowAds: (newValue) => dispatch(changeShowAds(newValue))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(App);

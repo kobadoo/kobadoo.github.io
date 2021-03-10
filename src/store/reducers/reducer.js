@@ -6,7 +6,8 @@ const initialState = {
     score: 0,
     hasLevelStarted: false,
     hasGameEnded: false,
-    isOnIframe: false
+    isOnIframe: false,
+    showAds: false
 };
 
 const POINTS_PER_COMPLETED_LEVEL = 100;
@@ -18,7 +19,7 @@ const increaseScore = (state, action) => {
     return updateObject(state, updatedState);
 };
 
-const passLevel = (state, action) => {
+const passLevel = (state) => {
     const updatedState = {
         level: state.level + 1,
         score: state.score + POINTS_PER_COMPLETED_LEVEL,
@@ -27,21 +28,21 @@ const passLevel = (state, action) => {
     return updateObject(state, updatedState);
 };
 
-const startLevel = (state, action) => {
+const startLevel = (state) => {
     const updatedState = {
         hasLevelStarted: true
     };
     return updateObject(state, updatedState);
 };
 
-const endGame = (state, action) => {
+const endGame = (state) => {
     const updatedState = { 
         hasGameEnded: true 
     };
     return updateObject(state, updatedState);
 };
 
-const restartGame = (state, action) => {
+const restartGame = (state) => {
     const updatedState = { 
         level: 1,
         score: 0,
@@ -51,7 +52,7 @@ const restartGame = (state, action) => {
     return updateObject(state, updatedState);
 };
 
-const abortGame = (state, action) => {
+const abortGame = (state) => {
     const updatedState = { 
         level: 1,
         score: 0,
@@ -61,9 +62,16 @@ const abortGame = (state, action) => {
     return updateObject(state, updatedState);
 };
 
-const setIframe = (state, action) => {
+const setIframe = (state) => {
     const updatedState = {
         isOnIframe: true
+    };
+    return updateObject(state, updatedState);
+};
+
+const changeShowAds = (state, action) => {
+    const updatedState = {
+        showAds: action.value
     };
     return updateObject(state, updatedState);
 };
@@ -93,6 +101,9 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.SET_IFRAME:
             return setIframe(state, action);
+
+        case actionTypes.CHANGE_SHOW_ADS:
+            return changeShowAds(state, action);
 
         default:
             return state;

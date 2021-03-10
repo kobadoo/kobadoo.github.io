@@ -113,7 +113,8 @@ const terms = () => (
 
         <h3><strong>Disclaimer</strong></h3>
 
-        <p>The information displayed in this website must not be understood as medical advice. Always consult a medical expert.</p>
+        <p>The information displayed in this website must not be understood as medical advice. Always consult a medical expert. Kobadoo has been created for entertainment purposes only.</p>
+        <p>Working memory training has yet to be scientifically proven to be generalized and not only task-specific. The scientifical articles presented on the website are referring to research that has been done regarding working memory and not about Kobadoo specifically.</p>
         <p>To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website. Nothing in this disclaimer will:</p>
 
         <ul>

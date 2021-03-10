@@ -5,3 +5,4 @@ export const START_LEVEL = 'START_LEVEL';
 export const RESTART_GAME = 'RESTART_GAME';
 export const ABORT_GAME = 'ABORT_GAME';
 export const SET_IFRAME = 'SET_IFRAME';
+export const CHANGE_SHOW_ADS = 'CHANGE_SHOW_ADS';

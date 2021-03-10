@@ -57,3 +57,10 @@ export const setIframe = () => {
         type: actionTypes.SET_IFRAME
     };
 };
+
+export const changeShowAds = (newValue) => {
+    return {
+        type: actionTypes.CHANGE_SHOW_ADS,
+        value: newValue
+    };
+};
