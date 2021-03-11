@@ -66,8 +66,10 @@ const abortGame = (state) => {
 
 const togglePause = (state) => {
     const updatedState = {
-        isPaused: !state.isPaused
-    };
+        isPaused: !state.isPaused,
+        hasLevelStarted: state.isPaused ? true : false
+    };    
+
     return updateObject(state, updatedState);
 };
 

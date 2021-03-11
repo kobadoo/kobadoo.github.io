@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { restartGame } from '../../../store/actions/actions';
+import MonkeyImg from '../../../images/monkey.png';
 
 import classes from './EndScreen.module.css';
 import { 
@@ -41,6 +42,7 @@ const EndScreen = (props) => {
             { props.showAds ? <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} /> : null }
             <div>
                 <h2>Game Over!</h2>
+                { props.showAds ? null : <img className={classes.EndImage} src={MonkeyImg} /> }
                 <h3>Level: <div className={classes.Results}>{props.lvl}</div></h3>
                 <h3>Score: <div className={classes.Results}>{props.scr}</div></h3>
             </div>

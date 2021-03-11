@@ -60,6 +60,12 @@
     margin: 0px
 }
 
+.EndImage {
+    display: inline-block;
+    width: 100px;
+    margin-bottom: 10px;
+}
+
 .ShareButtons {
     text-align: center;
     margin: 0px;
