@@ -6,6 +6,7 @@ const initialState = {
     score: 0,
     hasLevelStarted: false,
     hasGameEnded: false,
+    isPaused: false,
     isOnIframe: false,
     showAds: false
 };
@@ -56,8 +57,16 @@ const abortGame = (state) => {
     const updatedState = { 
         level: 1,
         score: 0,
+        isPaused: false,
         hasLevelStarted: false,
         hasGameEnded: false 
+    };
+    return updateObject(state, updatedState);
+};
+
+const togglePause = (state) => {
+    const updatedState = {
+        isPaused: !state.isPaused
     };
     return updateObject(state, updatedState);
 };
@@ -85,22 +94,25 @@ const reducer = (state = initialState, action) => {
             return increaseScore(state, action);
 
         case actionTypes.PASS_LEVEL:
-            return passLevel(state, action);
+            return passLevel(state);
 
         case actionTypes.START_LEVEL:
-            return startLevel(state, action);
+            return startLevel(state);
         
         case actionTypes.END_GAME:
-            return endGame(state, action);
+            return endGame(state);
         
         case actionTypes.RESTART_GAME:
-            return restartGame(state, action);
+            return restartGame(state);
         
         case actionTypes.ABORT_GAME:
-            return abortGame(state, action);
+            return abortGame(state);
+
+        case actionTypes.TOGGLE_PAUSE:
+            return togglePause(state);
 
         case actionTypes.SET_IFRAME:
-            return setIframe(state, action);
+            return setIframe(state);
 
         case actionTypes.CHANGE_SHOW_ADS:
             return changeShowAds(state, action);

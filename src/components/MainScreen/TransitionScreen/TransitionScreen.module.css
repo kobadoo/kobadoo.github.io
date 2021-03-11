@@ -1,10 +1,74 @@
 .TransitionScreen {
-    top: 40%;
-    position: absolute;
+    top: 56px;
+    position: relative;
     display: block;
     width: 100%;
     margin: auto;
     height: 100%;
-    overflow: scroll;
+    overflow: hidden;
     text-align: center;
+}
+
+.PauseButton {
+    background-color:deepskyblue;
+    color: white;
+    font-size: 1.2rem;
+    padding: 5px;
+    width: 120px;
+    border: 1px solid deepskyblue;
+    cursor: pointer;
+    outline: none;
+    left: 50%;
+    margin-top: 10px;
+}
+
+.PauseButton:hover {
+    background-color: lightskyblue;
+    color: white;
+}
+
+.Ad160x600L {
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.Ad160x600R {
+    display: block;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.Ad728x90 {
+    display: inline-block;
+}
+
+.Ad300x250 {
+    position: relative;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.Ad300x50 {
+    display: none;
+}
+
+@media only screen and (max-width: 1023px) {
+    .Ad300x50 {
+      display: inline-block;
+    }
+
+    .Ad160x600L {
+        display: none;
+    }
+
+    .Ad160x600R {
+        display: none;
+    }
+
+    .Ad728x90 {
+        display: none;
+    }
 }

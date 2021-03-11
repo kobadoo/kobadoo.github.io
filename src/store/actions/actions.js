@@ -52,6 +52,12 @@ export const abortGame = () => {
     };
 };
 
+export const togglePause = () => {
+    return {
+        type: actionTypes.TOGGLE_PAUSE
+    };
+};
+
 export const setIframe = () => {
     return {
         type: actionTypes.SET_IFRAME

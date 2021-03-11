@@ -4,5 +4,6 @@ export const END_GAME = 'END_GAME';
 export const START_LEVEL = 'START_LEVEL';
 export const RESTART_GAME = 'RESTART_GAME';
 export const ABORT_GAME = 'ABORT_GAME';
+export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 export const SET_IFRAME = 'SET_IFRAME';
 export const CHANGE_SHOW_ADS = 'CHANGE_SHOW_ADS';

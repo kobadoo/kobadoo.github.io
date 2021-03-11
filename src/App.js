@@ -17,9 +17,6 @@ const App = (props) => {
   useEffect(() => {
     initGA('UA-189831762-1');
     PageView();
-  }, []);
-
-  useEffect(() => {
     document.addEventListener("aip_consentrejected", function(e) {
       props.onChangeShowAds(false);
     });
@@ -27,6 +24,7 @@ const App = (props) => {
         props.onChangeShowAds(true);
     });
   }, []);
+  
 
   return (
     <ScrollToTop>

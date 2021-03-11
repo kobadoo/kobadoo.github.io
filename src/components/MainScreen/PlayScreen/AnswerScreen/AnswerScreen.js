@@ -5,7 +5,7 @@ import Emoji from '../../../../utils/Emoji/Emoji';
 import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
 
 const POINTS_PER_CORRECT_ANSWER = 20;
-const INTERVAL_AFTER_GAME_OVER = 2000;
+const INTERVAL_BEFORE_GAME_OVER = 1000;
 
 const AnswerScreen = (props) => {
 
@@ -36,7 +36,7 @@ const AnswerScreen = (props) => {
             const timeout = setInterval(() => {
                 props.onEndGame();
                 clearInterval(timeout);
-            }, INTERVAL_AFTER_GAME_OVER);    
+            }, INTERVAL_BEFORE_GAME_OVER);    
         }
     }
 
