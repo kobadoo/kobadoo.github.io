@@ -53,7 +53,7 @@ const EndScreen = (props) => {
             </div>
             <div className={classes.Stats}>
                 <p>The average user on <i>Kobadoo</i> reaches <strong>Level 9</strong>.</p>
-                <p>The all-time record on <i>Kobadoo</i> is <strong>Level 23</strong>.</p>
+                <p>The all-time record on <i>Kobadoo</i> is <strong>Level 26</strong>.</p>
             </div>
             {!props.iframe?
                 <React.Fragment>
