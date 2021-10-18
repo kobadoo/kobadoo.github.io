@@ -6,6 +6,7 @@ import { startLevel } from '../../../store/actions/actions';
 import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
 import BulbImg from '../../../images/bulb.png';
+import GooglePlayImg from '../../../images/google-play-badge.png';
 
 const StartScreen = (props) => {
 
@@ -38,10 +39,11 @@ const StartScreen = (props) => {
             <div className={classes.HeaderText}>
                 <strong>Kobadoo</strong> is a free memory game that trains your brain using funny emojis.
             </div>
-            <div>
+            <div className={classes.ButtonsDiv}>
                 <button 
                     className={classes.StartButton} 
                     onClick={props.onStartLevel}>Start Game</button>
+                <a href="https://play.google.com/store/apps/details?id=com.kobadoo" target="_new"><img className={classes.GooglePlayButton} src={GooglePlayImg} /></a>
             </div>
 
             <div className={classes.BenefitsText}>
