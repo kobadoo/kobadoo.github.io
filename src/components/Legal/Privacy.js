@@ -7,7 +7,7 @@ const privacy = () => (
         <h2>Privacy Policy</h2>
         <button onClick={window.aipAPItag.showCMPScreen}>Adjust your privacy settings</button>
 
-        <p>At Kobadoo, accessible from Kobadoo.com, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Kobadoo and how we use it.</p>
+        <p>At Kobadoo, accessible from https://kobadoo.github.io, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Kobadoo and how we use it.</p>
 
         <p>If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us on kobadooapp@gmail.com.</p>
 

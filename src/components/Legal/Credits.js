@@ -10,7 +10,7 @@ const credits = () => (
             <li>Icons made by <a href="https://www.freepik.com" title="Freepik" target="_new">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_new">www.flaticon.com</a></li>
             <li>Google Play and the Google Play logo are trademarks of Google LLC</li>
         </ul>
-        <p><i>(c) Kobadoo.com, 2021. All rights reserved.</i></p>
+        <p><i>(c) Kobadoo, 2022. All rights reserved.</i></p>
     </div>
 );
 

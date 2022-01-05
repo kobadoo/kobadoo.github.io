@@ -19,7 +19,7 @@ import {
     ViberIcon
   } from 'react-share'
 
-const URL = 'https://www.kobadoo.com';
+const URL = 'https://kobadoo.github.io';
 const QUOTE = 'Kobadoo - Free memory game to train your brain using funny emojis.';
 const HASHTAG = '#kobadoo';
 const ICON_SIZE = 40;
