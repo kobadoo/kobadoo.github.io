@@ -76,6 +76,10 @@
     display: none;
 }
 
+.Ad300x50 {
+    display: none;
+}
+
 .Ad160x600L {
     display: block;
     position: absolute;
@@ -103,6 +107,10 @@
     .Ad300x100 {
       display: inline-block;
     }
+
+    .Ad300x50 {
+        display: inline-block;
+      }
 
     .Ad160x600L {
         display: none;

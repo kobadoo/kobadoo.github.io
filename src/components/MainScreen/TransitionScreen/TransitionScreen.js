@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import classes from './TransitionScreen.module.css';
 import { startLevel, togglePause } from '../../../store/actions/actions';
 
-const INTERVAL_BETWEEN_LEVELS = 2000;
+const INTERVAL_BETWEEN_LEVELS = 3000;
 
 
 const TransitionScreen = (props) => {
 
     useEffect(() => {
 
-        if (props.paused & props.showAds) {
+        if (props.showAds) {
             window.aiptag.cmd.display.push( () => {
                 window.aipDisplayTag.display('kobadoo-com_300x250_1');
                 window.aipDisplayTag.display('kobadoo-com_300x50'); 
@@ -33,7 +33,7 @@ const TransitionScreen = (props) => {
 
     return (
         <div className={classes.TransitionScreen}>
-            {(props.paused & props.showAds) ? 
+            {(props.showAds) ? 
                 <React.Fragment>
                     <div id='kobadoo-com_300x50' className={classes.Ad300x50} />
                     <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
@@ -48,7 +48,7 @@ const TransitionScreen = (props) => {
                     onClick={props.onTogglePause}>{props.paused ? 'Resume' : 'Pause'}
                 </button>
             </div>
-            {(props.paused & props.showAds) ? <div id='kobadoo-com_300x250_1' className={classes.Ad300x250} /> : null }
+            {props.showAds ? <div id='kobadoo-com_300x250_1' className={classes.Ad300x250} /> : null }
             
         </div>
     );

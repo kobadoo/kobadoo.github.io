@@ -14,6 +14,7 @@ const StartScreen = (props) => {
         if (props.showAds) {
             window.aiptag.cmd.display.push( () => {
                 window.aipDisplayTag.display('kobadoo-com_300x100'); 
+                window.aipDisplayTag.display('kobadoo-com_300x50'); 
                 window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
                 window.aipDisplayTag.display('kobadoo-com_160x600_2');
                 window.aipDisplayTag.display('kobadoo-com_728x90_1');
@@ -66,7 +67,13 @@ const StartScreen = (props) => {
                 <p>Some programs to train the working memory have shown improvements in everyday functioning, including your <strong>concentration</strong>. It can be especially beneficial to some clinical groups like people with ADHD [<a href="https://www.sciencedirect.com/science/article/abs/pii/S0890856709614271" target="_new">1</a>] [<a href="https://www.tandfonline.com/doi/abs/10.1080/15374416.2010.517162" target="_new">2</a>] [<a href="https://www.tandfonline.com/doi/abs/10.1076/jcen.24.6.781.8395" target="_new">3</a>], that suffer impaired working memory and inattentiveness. One example is the possibility to improve the <strong>school performance</strong> of children with ADHD.
                    Some adults have also improved their brain functions through this kind of exercises [<a href="https://psycnet.apa.org/record/2011-13119-001" target="_new">4</a>] [<a href="https://psycnet.apa.org/record/2017-10607-007" target="_new">5</a>]. Finally, some studies [<a href="https://www.sciencedirect.com/science/article/abs/pii/S0149763413000158" target="_new">6</a>] [<a href="https://www.mitpressjournals.org/doi/full/10.1162/jocn_a_00478" target="_new">7</a>] suggest that training your working memory can <strong>improve your mood</strong> by releasing dopamine in the brain.</p>
             </div>
-            { props.showAds ? <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} /> : null }            
+            { props.showAds ? (
+                <React.Fragment>
+                    <div id='kobadoo-com_300x50' className={classes.Ad300x50} />
+                    <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
+                </React.Fragment>
+                ) : null
+            }
             <Footer />
         </div>
     );
