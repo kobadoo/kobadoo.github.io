@@ -42,7 +42,8 @@
 }
 
 .Ad728x90 {
-    display: inline-block;
+    display: block;
+    height: 90px;
 }
 
 .Ad300x250 {
@@ -51,13 +52,15 @@
     margin-top: 40px;
 }
 
-.Ad300x50 {
+.Ad300x100 {
     display: none;
 }
 
 @media only screen and (max-width: 1023px) {
-    .Ad300x50 {
-      display: inline-block;
+    .Ad300x100 {
+      display: block;
+      height: 50px;
+      margin-bottom: 20px;
     }
 
     .Ad160x600L {

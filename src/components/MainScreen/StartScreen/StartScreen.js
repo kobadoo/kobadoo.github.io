@@ -14,7 +14,7 @@ const StartScreen = (props) => {
         if (props.showAds) {
             window.aiptag.cmd.display.push( () => {
                 window.aipDisplayTag.display('kobadoo-com_300x100'); 
-                window.aipDisplayTag.display('kobadoo-com_300x50'); 
+                window.aipDisplayTag.display('kobadoo-com_300x250_2'); 
                 window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
                 window.aipDisplayTag.display('kobadoo-com_160x600_2');
                 window.aipDisplayTag.display('kobadoo-com_728x90_1');
@@ -69,7 +69,7 @@ const StartScreen = (props) => {
             </div>
             { props.showAds ? (
                 <React.Fragment>
-                    <div id='kobadoo-com_300x50' className={classes.Ad300x50} />
+                    <div id='kobadoo-com_300x250_2' className={classes.Ad300x250_2} />
                     <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
                 </React.Fragment>
                 ) : null

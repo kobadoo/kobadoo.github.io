@@ -1,7 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { connect } from 'react-redux';
 import classes from './Legal.module.css';
 
-const credits = () => (
+const Credits = (props) => {
+
+    useEffect(() => {
+        if (props.showAds) {
+            window.aiptag.cmd.display.push( () => {
+                window.aipDisplayTag.display('kobadoo-com_300x250_2'); 
+            });
+        }
+    }, [props.showAds]);
+    
+    return (
     <div className={classes.Legal}>
         <h2>Credits</h2>
         <ul>
@@ -10,8 +21,19 @@ const credits = () => (
             <li>Icons made by <a href="https://www.freepik.com" title="Freepik" target="_new">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_new">www.flaticon.com</a></li>
             <li>Google Play and the Google Play logo are trademarks of Google LLC</li>
         </ul>
+        <center>
         <p><i>(c) Kobadoo, 2022. All rights reserved.</i></p>
-    </div>
-);
 
-export default credits;
+        { props.showAds ? (<div id='kobadoo-com_300x250_2' className={classes.Ad300x250} />) : null }
+        </center>
+    </div>
+    );
+};
+
+const mapStateToProps = state => {
+    return {
+        showAds: state.showAds
+    }
+}
+
+export default connect(mapStateToProps, )(Credits);

@@ -12,8 +12,8 @@ const TransitionScreen = (props) => {
 
         if (props.showAds) {
             window.aiptag.cmd.display.push( () => {
-                window.aipDisplayTag.display('kobadoo-com_300x250_1');
-                window.aipDisplayTag.display('kobadoo-com_300x50'); 
+                window.aipDisplayTag.display('kobadoo-com_300x250_4');
+                window.aipDisplayTag.display('kobadoo-com_300x100'); 
                 window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
                 window.aipDisplayTag.display('kobadoo-com_160x600_2');
                 window.aipDisplayTag.display('kobadoo-com_728x90_2');
@@ -35,7 +35,7 @@ const TransitionScreen = (props) => {
         <div className={classes.TransitionScreen}>
             {(props.showAds) ? 
                 <React.Fragment>
-                    <div id='kobadoo-com_300x50' className={classes.Ad300x50} />
+                    <div id='kobadoo-com_300x100' className={classes.Ad300x100} />
                     <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
                     <div id='kobadoo-com_160x600_1' className={classes.Ad160x600L} />
                     <div id='kobadoo-com_160x600_2' className={classes.Ad160x600R} />
@@ -48,7 +48,7 @@ const TransitionScreen = (props) => {
                     onClick={props.onTogglePause}>{props.paused ? 'Resume' : 'Pause'}
                 </button>
             </div>
-            {props.showAds ? <div id='kobadoo-com_300x250_1' className={classes.Ad300x250} /> : null }
+            {props.showAds ? <div id='kobadoo-com_300x250_4' className={classes.Ad300x250} /> : null }
             
         </div>
     );
