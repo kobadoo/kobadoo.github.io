@@ -82,7 +82,8 @@
 }
 
 .Ad728x90 {
-    display: inline-block;
+    display: block;
+    height: 90px;
 }
 
 @media only screen and (max-width: 727px) {

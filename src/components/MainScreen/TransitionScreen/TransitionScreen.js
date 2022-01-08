@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import classes from './TransitionScreen.module.css';
 import { startLevel, togglePause } from '../../../store/actions/actions';
-import { useFocusEffect } from '@react-navigation/native';
 
 const INTERVAL_BETWEEN_LEVELS = 3000;
 
@@ -31,7 +30,6 @@ const TransitionScreen = (props) => {
         return () => {
             clearInterval(timeout);        }
     }, [props.paused, props.showAds]);
-
 
     return (
         <div className={classes.TransitionScreen}>
