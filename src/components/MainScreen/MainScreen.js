@@ -29,7 +29,8 @@ const mapStateToProps = state => {
     return {
         lvl: state.level,
         startedLevel: state.hasLevelStarted,
-        endedGame: state.hasGameEnded
+        endedGame: state.hasGameEnded,
+        mode: state.mode
     }
 }
 

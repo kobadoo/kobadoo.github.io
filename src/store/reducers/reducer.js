@@ -1,5 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../utils/objectUpdater';
+import {EMOJIS_MODE, NUMBERS_MODE} from '../constants';
 
 const initialState = {
     level: 1,
@@ -8,7 +9,8 @@ const initialState = {
     hasGameEnded: false,
     isPaused: false,
     isOnIframe: false,
-    showAds: false
+    showAds: false,
+    mode: EMOJIS_MODE
 };
 
 const POINTS_PER_COMPLETED_LEVEL = 100;
@@ -87,6 +89,13 @@ const changeShowAds = (state, action) => {
     return updateObject(state, updatedState);
 };
 
+const changeMode = (state, action) => {
+    const updatedState = {
+        mode: action.value
+    };
+    return updateObject(state, updatedState);
+};
+
 
 const reducer = (state = initialState, action) => {
 
@@ -118,6 +127,9 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.CHANGE_SHOW_ADS:
             return changeShowAds(state, action);
+
+        case actionTypes.CHANGE_MODE:
+            return changeMode(state, action);
 
         default:
             return state;

@@ -9,24 +9,39 @@
     text-align: center;
 }
 
-.AnswerScreenEmoji {
-    font-size: 3rem;
+.Emojis {
+   font-size: 3rem;
+}
+
+.Numbers {
+   font-size: 2rem;
+    display: inline-block;
+    padding: 8px;
+}
+
+.EvenItem {
+   color: purple;
+}
+
+.OddItem {
+   color: navy;
+}
+
+.AnswerScreenItem {
     cursor:pointer
  }
 
- .EmojiFailed {
-    font-size: 3rem;
+ .ItemFailed {
     background-color: red;
     pointer-events: none;
  }
 
- .EmojiNext {
-    font-size: 3rem;
+ .ItemNext {
     background-color: lawngreen;
     pointer-events: none;
  }
 
- .EmojisLeft {
+ .ItemsLeft {
     color: red;
     bottom: 10px;
     position: fixed;

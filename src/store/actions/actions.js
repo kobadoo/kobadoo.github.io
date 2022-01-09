@@ -70,3 +70,10 @@ export const changeShowAds = (newValue) => {
         value: newValue
     };
 };
+
+export const changeMode = (newValue) => {
+    return {
+        type: actionTypes.CHANGE_MODE,
+        value: newValue
+    };
+};

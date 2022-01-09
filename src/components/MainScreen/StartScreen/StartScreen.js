@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import classes from './StartScreen.module.css';
 import Footer from '../../Footer/Footer';
-import { startLevel } from '../../../store/actions/actions';
+import { startLevel, changeMode } from '../../../store/actions/actions';
 import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
 import BulbImg from '../../../images/bulb.png';
@@ -38,8 +38,14 @@ const StartScreen = (props) => {
             }
 
             <div className={classes.HeaderText}>
-                <strong>Kobadoo</strong> is a free memory game that trains your brain using funny emojis.
+                <strong>Kobadoo</strong> is a free memory game that trains your brain by memorizing emojis or numbers.
             </div>
+
+            <div className={classes.RadioGroup}>
+                <label><input className={classes.RadioItem} type="radio" checked={props.mode === 0} onChange={() => props.onChangeMode(0) } /> Emojis</label>
+                <label><input className={classes.RadioItem} type="radio" checked={props.mode === 1} onChange={() => props.onChangeMode(1) } /> Numbers</label>
+            </div>
+
             <div className={classes.ButtonsDiv}>
                 <button 
                     className={classes.StartButton} 
@@ -50,7 +56,7 @@ const StartScreen = (props) => {
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={MonkeyImg} />
                 <h3>How does it work?</h3>
-                <p>Click on <i>Start Game</i> and <strong>memorize the emojis</strong> that are displayed.
+                <p>Click on <i>Start Game</i>, select the mode (emojis or numbers) and <strong>memorize</strong> the ones that are displayed.
                 Then <strong>select them in the right order</strong> to be able to reach the next level. It gets more challenging over time! 
                 <strong> 100% free</strong>, no download or sign up required. <strong>Play on mobile</strong> for the best experience.</p>
             </div>
@@ -81,13 +87,15 @@ const StartScreen = (props) => {
 
 const mapStateToProps = state => {
     return {
-        showAds: state.showAds
+        showAds: state.showAds,
+        mode: state.mode
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onStartLevel: () => dispatch(startLevel())
+        onStartLevel: () => dispatch(startLevel()),
+        onChangeMode: (value) => dispatch(changeMode(value))
     };
 };
 

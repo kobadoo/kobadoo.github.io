@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import classes from './AnswerScreen.module.css';
 import Emoji from '../../../../utils/Emoji/Emoji';
 import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
+import {NUMBERS_MODE} from '../../../../store/constants'
 
 const POINTS_PER_CORRECT_ANSWER = 20;
 const INTERVAL_BEFORE_GAME_OVER = 1000;
@@ -43,11 +44,11 @@ const AnswerScreen = (props) => {
     const assignStyle = (value) => {
         switch (value) {
             case failedEmoji:
-                return classes.EmojiFailed;
+                return classes.ItemFailed;
             case nextEmoji:
-                return classes.EmojiNext;
+                return classes.ItemNext;
             default:
-                return classes.AnswerScreenEmoji;
+                return classes.AnswerScreenItem;
         }
     }
 
@@ -58,18 +59,26 @@ const AnswerScreen = (props) => {
             </div>
             {props.totalEmojis.map((value, index) => {
                 if(disabledEmojis.indexOf(index) === -1) {
-                    return <Emoji 
-                            className={assignStyle(value)}
-                            clickHandler={() => emojiClickHandler(index, value)}
-                            key={index} 
-                            num={value}
-                            />
+                    switch (props.mode) {
+                        case NUMBERS_MODE:
+                            return <div 
+                                className={classes.Numbers + ' ' + ((index % 2) ? classes.EvenItem : classes.OddItem ) + ' ' + assignStyle(value) }
+                                onClick={() => emojiClickHandler(index, value)}
+                                key={index} 
+                                >{value}</div>
+                        default: // EMOJIS_MODE
+                            return <Emoji 
+                                className={classes.Emojis + ' ' + assignStyle(value)}
+                                clickHandler={() => emojiClickHandler(index, value)}
+                                key={index} 
+                                num={value} />
+                    }
                 }
                 else {
                     return false;
                 }
             })}
-            <div className={classes.EmojisLeft}><strong>{props.numEmojis - correctEmojis}</strong> emojis left</div>
+            <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> emojis left</div>
         </div>
     );
 }

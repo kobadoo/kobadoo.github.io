@@ -58,7 +58,10 @@ class PlayScreen extends Component {
     render() {
         if (!this.state.showAnswerScreen) {
             return (
-                <SlideShow emoji={this.state.emojis[this.state.item]}/>
+                <SlideShow 
+                    emoji={this.state.emojis[this.state.item]}
+                    mode={this.props.mode}
+                />
             );
         }
         else {
@@ -68,6 +71,7 @@ class PlayScreen extends Component {
                     totalEmojis={this.totalEmojis}
                     emojis={this.state.emojis}
                     isLastLevel={this.props.lvl === MAX_LEVEL}
+                    mode={this.props.mode}
                />
             );
         }
@@ -76,7 +80,8 @@ class PlayScreen extends Component {
 
 const mapStateToProps = state => {
     return {
-        lvl: state.level
+        lvl: state.level,
+        mode: state.mode
     }
 }
 

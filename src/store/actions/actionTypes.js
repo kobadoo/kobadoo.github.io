@@ -7,3 +7,4 @@ export const ABORT_GAME = 'ABORT_GAME';
 export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 export const SET_IFRAME = 'SET_IFRAME';
 export const CHANGE_SHOW_ADS = 'CHANGE_SHOW_ADS';
+export const CHANGE_MODE = 'CHANGE_MODE';
