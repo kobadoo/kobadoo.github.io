@@ -56,7 +56,7 @@ const StartScreen = (props) => {
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={MonkeyImg} />
                 <h3>How does it work?</h3>
-                <p>Click on <i>Start Game</i>, select the mode (emojis or numbers) and <strong>memorize</strong> the ones that are displayed.
+                <p>Select the mode (emojis or numbers), click on <i>Start Game</i> and <strong>memorize</strong> the items that are displayed.
                 Then <strong>select them in the right order</strong> to be able to reach the next level. It gets more challenging over time! 
                 <strong> 100% free</strong>, no download or sign up required. <strong>Play on mobile</strong> for the best experience.</p>
             </div>

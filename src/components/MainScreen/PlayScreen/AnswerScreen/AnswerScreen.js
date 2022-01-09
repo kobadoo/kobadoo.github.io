@@ -6,10 +6,11 @@ import { passLevel, increaseScore, endGame } from '../../../../store/actions/act
 import {NUMBERS_MODE} from '../../../../store/constants'
 
 const POINTS_PER_CORRECT_ANSWER = 20;
-const INTERVAL_BEFORE_GAME_OVER = 1000;
+const INTERVAL_BEFORE_GAME_OVER = 3000;
 
 const AnswerScreen = (props) => {
 
+    const [lostGame, setLostGame] = useState(false);
     const [correctEmojis, setCorrectEmojis] = useState(0);
     const [disabledEmojis, setDisabledEmojis] = useState([]);
     const [failedEmoji, setFailedEmoji] = useState(null);
@@ -22,7 +23,14 @@ const AnswerScreen = (props) => {
                 props.onEndGame();
             }
         }
-    }, [correctEmojis]);
+
+        if (lostGame && props.showAds) {
+            window.aiptag.cmd.display.push( () => {
+                window.aipDisplayTag.display('kobadoo-com_300x100'); 
+                window.aipDisplayTag.display('kobadoo-com_300x250_4'); 
+            });
+        }
+    }, [correctEmojis, lostGame, props.showAds]);
 
     const emojiClickHandler = (index, value) => {
 
@@ -32,6 +40,7 @@ const AnswerScreen = (props) => {
             setCorrectEmojis(prevCount => prevCount + 1 );
         } 
         else {
+            setLostGame(true);
             setFailedEmoji(value);
             setNextEmoji(props.emojis[correctEmojis]);
             const timeout = setInterval(() => {
@@ -78,17 +87,31 @@ const AnswerScreen = (props) => {
                     return false;
                 }
             })}
-            <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div>
+
+            {lostGame && props.showAds ? (
+                <center>
+                    <React.Fragment>
+                        <div id='kobadoo-com_300x100' className={classes.Ad300x100} />
+                        <div id='kobadoo-com_300x250_4' className={classes.Ad300x250} />
+                    </React.Fragment>
+                </center>)
+                : <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div> }
         </div>
     );
+}
+
+const mapStateToProps = state => {
+    return {
+        showAds: state.showAds
+    }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onLevelPassed: () => dispatch(passLevel()),
-        onEndGame: () => dispatch(endGame()),
+        onEndGame: () => { dispatch(endGame()) },
         onScoreIncreased: (addedScr) => dispatch(increaseScore(addedScr))
     };
 };
 
-export default connect(null, mapDispatchToProps)(AnswerScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(AnswerScreen);
