@@ -78,7 +78,7 @@ const AnswerScreen = (props) => {
                     return false;
                 }
             })}
-            <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> emojis left</div>
+            <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div>
         </div>
     );
 }
