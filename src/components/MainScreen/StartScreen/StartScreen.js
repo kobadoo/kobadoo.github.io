@@ -29,7 +29,7 @@ const StartScreen = (props) => {
 
             { props.showAds ? (
                 <React.Fragment>
-                    <div id='kobadoo-com_300x100' className={classes.Ad300x100} />
+                    <center><div id='kobadoo-com_300x100' className={classes.Ad300x100} /></center>
                     <div id='kobadoo-com_160x600_1' className={classes.Ad160x600L} />
                     <div id='kobadoo-com_160x600_2' className={classes.Ad160x600R} />
                     <div id='kobadoo-com_728x90_1' className={classes.Ad728x90} />
@@ -38,12 +38,13 @@ const StartScreen = (props) => {
             }
 
             <div className={classes.HeaderText}>
-                <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis or numbers.
+                <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, flags or numbers.
             </div>
 
             <div className={classes.RadioGroup}>
                 <label><input className={classes.RadioItem} type="radio" checked={props.mode === 0} onChange={() => props.onChangeMode(0) } /> Emojis</label>
-                <label><input className={classes.RadioItem} type="radio" checked={props.mode === 1} onChange={() => props.onChangeMode(1) } /> Numbers</label>
+                <label><input className={classes.RadioItem} type="radio" checked={props.mode === 1} onChange={() => props.onChangeMode(1) } /> Flags</label>
+                <label><input className={classes.RadioItem} type="radio" checked={props.mode === 2} onChange={() => props.onChangeMode(2) } /> Numbers</label>
             </div>
 
             <div className={classes.ButtonsDiv}>
@@ -56,7 +57,7 @@ const StartScreen = (props) => {
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={MonkeyImg} />
                 <h3>How does it work?</h3>
-                <p>Select the mode (emojis or numbers), click on <i>Start Game</i> and <strong>memorize</strong> the items that are displayed.
+                <p>Select the mode (emojis, flags or numbers), click on <i>Start Game</i> and <strong>memorize</strong> the items that are displayed.
                 Then <strong>select them in the right order</strong> to be able to reach the next level. It gets more challenging over time! 
                 <strong> 100% free</strong>, no download or sign up required. <strong>Play on mobile</strong> for the best experience.</p>
             </div>

@@ -12,3 +12,14 @@
 .SlideShowFont {
     font-size: 12rem;
 }
+
+.Flags {
+    border: 1px solid black;
+    width: 320px;
+    height: 213px;
+ }
+
+.FlagLabel {
+    display: block;
+    font-size: 3rem;
+}

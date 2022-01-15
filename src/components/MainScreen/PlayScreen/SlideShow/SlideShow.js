@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import classes from './SlideShow.module.css';
-import Emoji from '../../../../utils/Emoji/Emoji';
-import {NUMBERS_MODE} from '../../../../store/constants'
+import Emoji from '../../../../utils/Modes/Emoji';
+import {Flag, Label} from '../../../../utils/Modes/Flag';
+import {NUMBERS_MODE, FLAGS_MODE} from '../../../../store/constants'
 
 const slideShow = (props) => {
 
@@ -11,6 +12,12 @@ const slideShow = (props) => {
             return (
                 <div className={classes.SlideShowScreen}>
                     <div className={classes.SlideShowFont}>{props.emoji}</div>
+                </div>);
+        case FLAGS_MODE:
+            return (
+                <div className={classes.SlideShowScreen}>
+                    <Flag className={classes.SlideShowFont+ ' ' + classes.Flags} num={props.emoji} />
+                    <Label className={classes.FlagLabel} num={props.emoji} />
                 </div>);
         default: // EMOJIS_MODE
             return (
