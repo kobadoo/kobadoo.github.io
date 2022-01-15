@@ -37,14 +37,25 @@
     cursor:pointer
  }
 
+ .blink_me {
+   animation: blinker 1s linear infinite;
+ }
+ 
  .ItemFailed {
     background-color: red;
     pointer-events: none;
  }
 
  .ItemNext {
+    animation: blinker 1s linear infinite;
     background-color: lawngreen;
     pointer-events: none;
+ }
+
+ @keyframes blinker {
+   50% {
+     opacity: 0;
+   }
  }
 
  .ItemsLeft {
