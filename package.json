@@ -1,5 +1,5 @@
 {
-  "homepage": "https://kobadoo.github.io",
+  "homepage": "https://www.kobadoo.com",
   "name": "kobadoo",
   "version": "1.0.0",
   "private": true,
@@ -46,7 +46,8 @@
     "immer": ">=9.0.6",
     "node-forge": ">=1.0.0",
     "postcss": ">=8.2.13",
-    "lodash": ">=4.17.21"
+    "lodash": ">=4.17.21",
+    "follow-redirects": ">=1.14.7"
   },
   "scripts": {
     "predeploy": "npm run build",
