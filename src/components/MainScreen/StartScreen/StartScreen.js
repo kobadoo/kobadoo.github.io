@@ -37,9 +37,9 @@ const StartScreen = (props) => {
                 ) : null
             }
 
-            <div className={classes.HeaderText}>
+            <h3 className={classes.HeaderText}>
                 <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, flags or numbers.
-            </div>
+            </h3>
 
             <div className={classes.RadioGroup}>
                 <label><input className={classes.RadioItem} type="radio" checked={props.mode === 0} onChange={() => props.onChangeMode(0) } /> Emojis</label>
