@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import SlideShow from './SlideShow/SlideShow';
 import AnswerScreen from './AnswerScreen/AnswerScreen';
+import {FLAGS_MODE} from '../../../store/constants'
 
 const MAX_NUM_EMOJIS = 42;
 const MAX_LEVEL = (MAX_NUM_EMOJIS -1) * 3;
@@ -9,6 +10,7 @@ const EMOJIS_LEVEL_1 = 2;
 const TOTAL_NUM_EMOJIS = 100;
 const INTERVAL_BETWEEN_EMOJIS_FASTER = 1000;
 const INTERVAL_BETWEEN_EMOJIS_SLOWER = 1200;
+const EXTRA_INTERVAL_FLAGS = 300;
 const LEVEL_START_SLOWER_INTERVALS = 10;
 
 function getRandomSubarray(arr, size) {
@@ -27,6 +29,7 @@ class PlayScreen extends Component {
     numEmojis = EMOJIS_LEVEL_1 + parseInt((this.props.lvl -1) / 3);
     totalEmojis = getRandomSubarray([...Array(TOTAL_NUM_EMOJIS).keys()], MAX_NUM_EMOJIS).sort((a, b) => a - b);
     intervalBetweenEmojis = this.props.lvl < LEVEL_START_SLOWER_INTERVALS ? INTERVAL_BETWEEN_EMOJIS_FASTER : INTERVAL_BETWEEN_EMOJIS_SLOWER;
+    intervalBetweenEmojis = this.props.mode === FLAGS_MODE ? this.intervalBetweenEmojis + EXTRA_INTERVAL_FLAGS : this.intervalBetweenEmojis;
 
     state = {
         item: 0,

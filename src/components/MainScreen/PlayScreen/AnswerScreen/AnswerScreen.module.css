@@ -7,12 +7,13 @@
     height: 100%;
     overflow: scroll;
     text-align: center;
+    background-color: #F0F0F0;
 }
 
 .Flags {
    width: 46px;
    height: 30px;
-   padding: 2px 2px 2px 2px;
+   padding: 2px 2px 8px 2px;
 }
 
 .Emojis {

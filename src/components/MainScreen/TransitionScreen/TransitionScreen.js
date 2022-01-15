@@ -35,7 +35,7 @@ const TransitionScreen = (props) => {
         <div className={classes.TransitionScreen}>
             {(props.showAds) ? 
                 <React.Fragment>
-                    <div id='kobadoo-com_300x100' className={classes.Ad300x100} />
+                    <center><div id='kobadoo-com_300x100' className={classes.Ad300x100} /></center>
                     <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
                     <div id='kobadoo-com_160x600_1' className={classes.Ad160x600L} />
                     <div id='kobadoo-com_160x600_2' className={classes.Ad160x600R} />
