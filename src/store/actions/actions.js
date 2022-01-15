@@ -24,12 +24,14 @@ export const endGame = () => {
         const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
         const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         const stats = {
+            mode: state.mode,
             level: state.level,
             score: state.score,
             timestamp: date + ' ' + time
         }
         const score = String(state.score);
-        eventGA('Game Results', state.level, score);
+        const mode = String(state.mode);
+        eventGA(mode, state.level, score);
         axios.post('/stats.json', stats);
     };
 };
