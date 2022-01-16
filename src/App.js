@@ -24,8 +24,15 @@ const App = (props) => {
         props.onChangeShowAds(true);
     });
   }, []);
-  
 
+  useEffect(() => {
+    if (!props.iframe) {
+        var adinplayScript= document.createElement('script');
+        adinplayScript.src = "//api.adinplay.com/libs/aiptag/pub/KBD/kobadoo.com/tag.min.js";
+        document.head.appendChild(adinplayScript);
+    }
+  }, [props.iframe]);
+  
   return (
     <ScrollToTop>
       <Toolbar />
@@ -40,10 +47,16 @@ const App = (props) => {
   );
 }
 
+const mapStateToProps = state => {
+  return {
+      iframe: state.isOnIframe
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
       onChangeShowAds: (newValue) => dispatch(changeShowAds(newValue))
   };
 };
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

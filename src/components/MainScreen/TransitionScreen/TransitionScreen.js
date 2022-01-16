@@ -29,7 +29,7 @@ const TransitionScreen = (props) => {
         // Returned function will be called on component unmount 
         return () => {
             clearInterval(timeout);        }
-    }, [props.paused, props.showAds]);
+    }, [props.paused, props.showAds, props.iframe]);
 
     return (
         <div className={classes.TransitionScreen}>
