@@ -33,7 +33,7 @@ const App = (props) => {
         <Route path="/credits" exact component={Credits} onUpdate={() => window.scrollTo(0, 0)} />
         <Route path="/terms" exact component={Terms} onUpdate={() => window.scrollTo(0, 0)} />
         <Route path="/privacy" exact component={Privacy} onUpdate={() => window.scrollTo(0, 0)} />
-        <Route path="/iframe" exact component={IframeScreen} />
+        <Route path="/iframe/:id" component={IframeScreen} />
         <Route path="/" component={MainScreen} />
       </Switch>
     </ScrollToTop>

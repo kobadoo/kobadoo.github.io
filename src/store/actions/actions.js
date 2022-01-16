@@ -60,9 +60,10 @@ export const togglePause = () => {
     };
 };
 
-export const setIframe = () => {
+export const setIframe = (newValue) => {
     return {
-        type: actionTypes.SET_IFRAME
+        type: actionTypes.SET_IFRAME,
+        value: newValue
     };
 };
 

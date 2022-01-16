@@ -75,9 +75,10 @@ const togglePause = (state) => {
     return updateObject(state, updatedState);
 };
 
-const setIframe = (state) => {
+const setIframe = (state, action) => {
     const updatedState = {
-        isOnIframe: true
+        isOnIframe: true,
+        mode: action.value
     };
     return updateObject(state, updatedState);
 };
@@ -123,7 +124,7 @@ const reducer = (state = initialState, action) => {
             return togglePause(state);
 
         case actionTypes.SET_IFRAME:
-            return setIframe(state);
+            return setIframe(state, action);
 
         case actionTypes.CHANGE_SHOW_ADS:
             return changeShowAds(state, action);
