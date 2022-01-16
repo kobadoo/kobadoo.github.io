@@ -29,7 +29,7 @@ const EndScreen = (props) => {
     const QUOTE = 'I reached level ' + props.lvl + ' at Kobadoo! Can you beat me?\n';
 
     useEffect(() => {
-        if (props.showAds) {
+        if (props.showAds && !props.iframe) {
             window.aiptag.cmd.display.push( () => {
                 window.aipDisplayTag.display('kobadoo-com_300x250_3'); 
                 window.aipDisplayTag.display('kobadoo-com_728x90_2'); 
@@ -40,7 +40,7 @@ const EndScreen = (props) => {
 
     return (
         <div className={classes.EndScreen}>
-            { props.showAds ? <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} /> : null }
+            { (props.showAds && !props.iframe) ? <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} /> : null }
             <div>
                 <h2>Game Over!</h2>
                 { props.showAds ? null : <img className={classes.EndImage} src={MonkeyImg} /> }
@@ -83,7 +83,7 @@ const EndScreen = (props) => {
             :
             <div/> 
             }
-            { props.showAds ? <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} /> : null }
+            { (props.showAds && !props.iframe) ? <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} /> : null }
         </div>
     );
 }

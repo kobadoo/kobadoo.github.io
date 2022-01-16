@@ -10,7 +10,7 @@ const TransitionScreen = (props) => {
 
     useEffect(() => {
 
-        if (props.showAds) {
+        if (props.showAds && !props.iframe) {
             window.aiptag.cmd.display.push( () => {
                 window.aipDisplayTag.display('kobadoo-com_300x250_4');
                 window.aipDisplayTag.display('kobadoo-com_300x100'); 
@@ -33,7 +33,7 @@ const TransitionScreen = (props) => {
 
     return (
         <div className={classes.TransitionScreen}>
-            {(props.showAds) ? 
+            {(props.showAds && !props.iframe) ? 
                 <React.Fragment>
                     <center><div id='kobadoo-com_300x100' className={classes.Ad300x100} /></center>
                     <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
@@ -48,7 +48,7 @@ const TransitionScreen = (props) => {
                     onClick={props.onTogglePause}>{props.paused ? 'Resume' : 'Pause'}
                 </button>
             </div>
-            {props.showAds ? <div id='kobadoo-com_300x250_4' className={classes.Ad300x250} /> : null }
+            {(props.showAds && !props.iframe) ? <div id='kobadoo-com_300x250_4' className={classes.Ad300x250} /> : null }
             
         </div>
     );
@@ -58,7 +58,8 @@ const mapStateToProps = state => {
     return {
         lvl: state.level,
         paused: state.isPaused,
-        showAds: state.showAds
+        showAds: state.showAds,
+        iframe: state.isOnIframe
     }
 }
 

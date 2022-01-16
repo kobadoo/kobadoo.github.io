@@ -25,7 +25,7 @@ const AnswerScreen = (props) => {
             }
         }
 
-        if (lostGame && props.showAds) {
+        if (lostGame && props.showAds && !props.iframe) {
             window.aiptag.cmd.display.push( () => {
                 window.aipDisplayTag.display('kobadoo-com_300x100'); 
                 window.aipDisplayTag.display('kobadoo-com_300x250_4'); 
@@ -95,7 +95,7 @@ const AnswerScreen = (props) => {
                 }
             })}
 
-            {lostGame && props.showAds ? (
+            {(lostGame && props.showAds && !props.iframe) ? (
                 <center>
                     <React.Fragment>
                         <div id='kobadoo-com_300x100' className={classes.Ad300x100} />
@@ -109,7 +109,8 @@ const AnswerScreen = (props) => {
 
 const mapStateToProps = state => {
     return {
-        showAds: state.showAds
+        showAds: state.showAds,
+        iframe: state.isOnIframe
     }
 }
 
