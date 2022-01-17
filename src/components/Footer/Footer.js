@@ -7,7 +7,7 @@ import classes from './Footer.module.css';
 
 const footer = () => (
     <div className={classes.Footer}>
-        <div className={classes.FooterItem}><a href="mailto: kobadooapp@gmail.com"><FontAwesomeIcon icon={faEnvelope} size="2x" /></a></div>
+        <div className={classes.FooterItem}><a href="mailto: hello@kobadoo.com"><FontAwesomeIcon icon={faEnvelope} size="2x" /></a></div>
         <div className={classes.FooterItem}><a href="https://twitter.com/kobadooApp" target="_new"><FontAwesomeIcon icon={faTwitter} size="2x" /></a></div>
         <div className={classes.FooterItem}><a href="https://facebook.com/kobadooApp" target="_new"><FontAwesomeIcon icon={faFacebook} size="2x" /></a></div>
         <div className={classes.FooterItem}><Link to="/terms">Terms</Link></div>
