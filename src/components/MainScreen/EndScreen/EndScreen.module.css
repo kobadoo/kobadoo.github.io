@@ -60,6 +60,17 @@
     margin: 0px
 }
 
+.AnimalMemory {
+    margin-top: -5px;
+    font-style: italic;
+}
+
+.AnimalName {
+    color: navy;
+    font-weight: 800;
+    display: inline-block;
+}
+
 .EndImage {
     display: inline-block;
     width: 100px;
