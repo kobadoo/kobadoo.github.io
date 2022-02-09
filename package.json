@@ -43,11 +43,12 @@
     "redux-thunk": "^2.3.0",
     "save": "^2.4.0",
     "serve": "^11.3.2",
+    "ssri": ">=6.0.2",
     "tar": ">=6.1.9",
     "tmpl": ">=1.0.5",
     "url-parse": ">=1.5.2",
     "web-vitals": "^1.1.0",
-    "ws": ">=7.4.6"
+    "ws": ">=6.2.2"
   },
   "scripts": {
     "predeploy": "npm run build",
