@@ -27,6 +27,14 @@
     color: white;
 }
 
+.Stats {
+    text-align: center;
+    margin: -10px 0 15px 0;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: lighter;
+}
+
 .Ad160x600L {
     display: block;
     position: absolute;

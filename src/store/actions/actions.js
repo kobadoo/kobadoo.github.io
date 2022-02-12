@@ -42,9 +42,10 @@ export const startLevel = () => {
     };
 };
 
-export const restartGame = () => {
+export const restartGame = (newValue) => {
     return {
-        type: actionTypes.RESTART_GAME
+        type: actionTypes.RESTART_GAME,
+        value: newValue
     };
 };
 

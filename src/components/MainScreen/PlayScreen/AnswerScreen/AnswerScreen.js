@@ -18,10 +18,12 @@ const AnswerScreen = (props) => {
     const [nextEmoji, setNextEmoji] = useState(null);
 
     useEffect(() => {
-        if(correctEmojis === props.numEmojis) {
-            props.onLevelPassed();
+        if(correctEmojis === props.numEmojis) {            
             if(props.isLastLevel) {
                 props.onEndGame();
+            }
+            else {
+                props.onLevelPassed();
             }
         }
 

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { restartGame } from '../../../store/actions/actions';
 import MonkeyImg from '../../../images/monkey.png';
+import { MAX_LEVEL } from '../PlayScreen/PlayScreen';
 
 import classes from './EndScreen.module.css';
 import { 
@@ -27,6 +28,7 @@ const BEE = 0X1F41D;
 const HUMAN = 0x1F469;
 const ELEPHANT = 0x1F418;
 const DOLPHIN = 0X1F42C;
+const CUP = 0X1F3C6;
 
 
 const EndScreen = (props) => {
@@ -47,24 +49,29 @@ const EndScreen = (props) => {
         <div className={classes.EndScreen}>
             { (props.showAds && !props.iframe) ? <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} /> : null }
             <div>
-                <h2>Game Over!</h2>
-                { props.showAds ? null : <img className={classes.EndImage} src={MonkeyImg} /> }
-                <h3>Level: <div className={classes.Results}>{props.lvl}</div></h3>
+                {(props.lvl === MAX_LEVEL) ? <h2>Game Completed!</h2>: <h2>Game Over!</h2>}
+                {(props.lvl === MAX_LEVEL) ? <span className={classes.Cup}>{String.fromCodePoint(CUP)}</span> :
+                    props.showAds ? null : <img className={classes.EndImage} src={MonkeyImg} /> }
+                <h3>Level: <div className={classes.Results}>{props.lvl} / {MAX_LEVEL}</div></h3>
                 <h3>Score: <div className={classes.Results}>{props.scr}</div></h3>
                 { props.lvl < 4 ? <div className={classes.AnimalMemory}>You have a <div className={classes.AnimalName}>very poor memory</div>, like a <div className={classes.AnimalName}>goldfish</div> <span>{String.fromCodePoint(GOLDFISH)}</span></div> :
                     props.lvl >=4 && props.lvl < 8 ?<div className={classes.AnimalMemory}>You are <div className={classes.AnimalName}>rather forgetful</div>, just like a <div className={classes.AnimalName}>bee</div> <span>{String.fromCodePoint(BEE)}</span></div> :
                     props.lvl >=8 && props.lvl < 13 ?<div className={classes.AnimalMemory}>You have an <div className={classes.AnimalName}>average human memory</div> <span>{String.fromCodePoint(HUMAN)}</span></div> :
                     props.lvl >=13 && props.lvl < 18 ?<div className={classes.AnimalMemory}>You have a <div className={classes.AnimalName}>great memory</div>, just like an <div className={classes.AnimalName}>elephant</div> <span>{String.fromCodePoint(ELEPHANT)}</span></div> :
                     props.lvl >=18 ? <div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>extraordinary memory</div>, like a <div className={classes.AnimalName}>dolphin</div> <span>{String.fromCodePoint(DOLPHIN)}</span></div> : null }
+                <div className={classes.Stats}>
+                    All-time record on <i>Kobadoo</i> is <div className={classes.AnimalName}>level 26</div>
+                </div>
             </div>
             <div>
                 <button 
                     className={classes.RestartButton} 
-                    onClick={props.onRestartGame}>Restart Game</button>
-            </div>
-            <div className={classes.Stats}>
-                <p>The average user on <i>Kobadoo</i> reaches <strong>Level 9</strong>.</p>
-                <p>The all-time record on <i>Kobadoo</i> is <strong>Level 26</strong>.</p>
+                    onClick={() => props.onRestartGame(1) }>Restart Game</button>
+                {(props.lvl > 2 && props.lvl < MAX_LEVEL) ? 
+                    <button 
+                        className={classes.ContinueButton} 
+                        onClick={() => props.onRestartGame(props.lvl - 1) }>Continue level {props.lvl -1}</button>
+                : null}
             </div>
             {!props.iframe?
                 <React.Fragment>
@@ -93,7 +100,7 @@ const EndScreen = (props) => {
             :
             <div/> 
             }
-            { (props.showAds && !props.iframe) ? <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} /> : null }
+            { (props.showAds && !props.iframe && props.lvl < MAX_LEVEL) ? <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} /> : null }
         </div>
     );
 }
@@ -109,7 +116,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onRestartGame: () => dispatch(restartGame())
+        onRestartGame: (level) => dispatch(restartGame(level))
     };
 };
 

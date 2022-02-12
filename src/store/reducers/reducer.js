@@ -45,10 +45,23 @@ const endGame = (state) => {
     return updateObject(state, updatedState);
 };
 
-const restartGame = (state) => {
+const restartGame = (state, action) => {
+
+    const getScoreFromLevel = level => {
+        let score = 0;
+        if (level > 1) {
+            score = score + (level-1) * 100;
+            for (var i = 1; i < level; i++) {
+                score = score + ((2 + parseInt((i-1) / 3)) * 20);
+            }
+        }
+
+        return score;
+    };
+
     const updatedState = { 
-        level: 1,
-        score: 0,
+        level: action.value,
+        score: getScoreFromLevel(action.value),
         hasLevelStarted: true,
         hasGameEnded: false
     };
@@ -115,7 +128,7 @@ const reducer = (state = initialState, action) => {
             return endGame(state);
         
         case actionTypes.RESTART_GAME:
-            return restartGame(state);
+            return restartGame(state, action);
         
         case actionTypes.ABORT_GAME:
             return abortGame(state);
