@@ -33,7 +33,7 @@ const CUP = 0X1F3C6;
 
 const EndScreen = (props) => {
 
-    const QUOTE = 'I reached level ' + props.lvl + ' at Kobadoo! Can you beat me?\n';
+    const QUOTE = 'I reached level ' + props.lvl + ' at Kobadoo memory game! Can you beat me?\n';
 
     useEffect(() => {
         if (props.showAds && !props.iframe) {
