@@ -54,10 +54,10 @@ const EndScreen = (props) => {
                     props.showAds ? null : <img className={classes.EndImage} src={MonkeyImg} /> }
                 <h3>Level: <div className={classes.Results}>{props.lvl} / {MAX_LEVEL}</div></h3>
                 <h3>Score: <div className={classes.Results}>{props.scr}</div></h3>
-                { props.lvl < 4 ? <div className={classes.AnimalMemory}>You have a <div className={classes.AnimalName}>very poor memory</div>, like a <div className={classes.AnimalName}>goldfish</div> <span>{String.fromCodePoint(GOLDFISH)}</span></div> :
+                { props.lvl < 4 ? <div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>very bad memory</div>, like a <div className={classes.AnimalName}>goldfish</div> <span>{String.fromCodePoint(GOLDFISH)}</span></div> :
                     props.lvl >=4 && props.lvl < 8 ?<div className={classes.AnimalMemory}>You are <div className={classes.AnimalName}>rather forgetful</div>, just like a <div className={classes.AnimalName}>bee</div> <span>{String.fromCodePoint(BEE)}</span></div> :
-                    props.lvl >=8 && props.lvl < 13 ?<div className={classes.AnimalMemory}>You have an <div className={classes.AnimalName}>average human memory</div> <span>{String.fromCodePoint(HUMAN)}</span></div> :
-                    props.lvl >=13 && props.lvl < 18 ?<div className={classes.AnimalMemory}>You have a <div className={classes.AnimalName}>great memory</div>, just like an <div className={classes.AnimalName}>elephant</div> <span>{String.fromCodePoint(ELEPHANT)}</span></div> :
+                    props.lvl >=8 && props.lvl < 13 ?<div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>average human memory</div> <span>{String.fromCodePoint(HUMAN)}</span></div> :
+                    props.lvl >=13 && props.lvl < 18 ?<div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>great memory</div>, just like an <div className={classes.AnimalName}>elephant</div> <span>{String.fromCodePoint(ELEPHANT)}</span></div> :
                     props.lvl >=18 ? <div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>extraordinary memory</div>, like a <div className={classes.AnimalName}>dolphin</div> <span>{String.fromCodePoint(DOLPHIN)}</span></div> : null }
                 <div className={classes.Stats}>
                     All-time record on <i>Kobadoo</i> is <div className={classes.AnimalName}>level 26</div>

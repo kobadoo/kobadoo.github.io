@@ -2,29 +2,41 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import classes from './TransitionScreen.module.css';
 import { startLevel, togglePause } from '../../../store/actions/actions';
+import { MAX_LEVEL } from '../PlayScreen/PlayScreen';
 
 const INTERVAL_BETWEEN_LEVELS = 4000;
+const CUP = 0X1F3C6;
+const APPLAUSE = 0X1F44F;
+const CHAMPAGNE = 0X1F37E;
+const CONFETTI = 0X1F389;
+const CELEBRATION = 0X1F38A;
+const BALLOON = 0X1F388;
+const MEDAL = 0X1F3C5;
+const MUSCLE = 0X1F4AA;
+const NICE = 0X1F44C;
+const OK = 0X1F44D;
+
 const STATS_MAP = [
-    99.98, // level 2
-    97.11, // level 3
-    91.84, // level 4
-    88.16, // level 5
-    84.40, // level 6
-    76.79, // level 7
-    70.42, // level 8
-    64.12, // level 9
-    54.16, // level 10
-    48.91, // level 11
-    42.34, // level 12
-    30.23, // level 13
-    25.91, // level 14
-    17.50, // level 15
-    9.81, // level 16
-    5.44, // level 17
-    3.09, // level 18
-    1.15, // level 19
-    0.76, // level 20
-    0.14, // level 21
+    99, // level 2
+    97, // level 3
+    91, // level 4
+    88, // level 5
+    84, // level 6
+    76, // level 7
+    70, // level 8
+    64, // level 9
+    54, // level 10
+    48, // level 11
+    42, // level 12
+    30, // level 13
+    25, // level 14
+    17, // level 15
+    9, // level 16
+    5, // level 17
+    3, // level 18
+    1, // level 19
+    0.7, // level 20
+    0.1, // level 21
     0.02, // level 22
     0.009, // level 23
     0.003, // level 24
@@ -74,17 +86,17 @@ const TransitionScreen = (props) => {
                     <div id='kobadoo-com_160x600_2' className={classes.Ad160x600R} />
                 </React.Fragment>
                 : null}
-            <div><h2>Level {props.lvl - 1} completed!</h2></div>
-            { props.lvl < 4 ? <div className={classes.Stats}><strong>{STATS_MAP[props.lvl - 2]}%</strong> of the players reach this level</div> :
-                    props.lvl >=4 && props.lvl < 7 ?<div className={classes.Stats}>Good job! <strong>{STATS_MAP[props.lvl - 2]}%</strong> of the players reach this level</div> :
-                    props.lvl >=7 && props.lvl < 10 ?<div className={classes.Stats}>Well done! <strong>{STATS_MAP[props.lvl - 2]}%</strong> of the players reach this level</div> :
-                    props.lvl >=10 && props.lvl < 13 ?<div className={classes.Stats}>Amazing! Only <strong>{STATS_MAP[props.lvl - 2]}%</strong> of the players reach this level</div> :
-                    props.lvl >=13 && props.lvl < 16 ?<div className={classes.Stats}>You are doing great! Just <strong>{STATS_MAP[props.lvl - 2]}%</strong> of the players reach this level</div> :
-                    props.lvl >=16 && props.lvl < 19 ?<div className={classes.Stats}>Excellent! Only <strong>{STATS_MAP[props.lvl - 2]}%</strong> of the players reach this level</div> :
-                    props.lvl >=19 && props.lvl < 22 ?<div className={classes.Stats}>You have extraordinary memory! Just <strong>{STATS_MAP[props.lvl - 2]}%</strong> of the players reach this level</div> :
-                    props.lvl >=22 && props.lvl < 25 ?<div className={classes.Stats}>You are a genious! Only <strong>{STATS_MAP[props.lvl - 2]}%</strong> of the players reach this level</div> :
-                    props.lvl >=25 && props.lvl < 27 ?<div className={classes.Stats}>Only <strong>another</strong> player has reached this level!</div> :    
-                    props.lvl >=27 && props.lvl < 32 ?<div className={classes.Stats}>You have set a <strong>new all-time record</strong> in Kobadoo. Keep it up!</div> :                
+            <div><h2>Level {props.lvl - 1} of {MAX_LEVEL} completed!</h2></div>
+            { props.lvl < 4 ? <div className={classes.Stats}><strong>{STATS_MAP[props.lvl - 2]}%</strong> players reach this level <span>{String.fromCodePoint(OK)}</span></div> :
+                    props.lvl >=4 && props.lvl < 7 ?<div className={classes.Stats}>Good job! <strong>{STATS_MAP[props.lvl - 2]}%</strong> players get here <span>{String.fromCodePoint(MUSCLE)}</span></div> :
+                    props.lvl >=7 && props.lvl < 10 ?<div className={classes.Stats}>Well done! <strong>{STATS_MAP[props.lvl - 2]}%</strong> players reach this level <span>{String.fromCodePoint(NICE)}</span></div> :
+                    props.lvl >=10 && props.lvl < 13 ?<div className={classes.Stats}>Amazing! Only <strong>{STATS_MAP[props.lvl - 2]}%</strong> players get here <span>{String.fromCodePoint(BALLOON)}</span></div> :
+                    props.lvl >=13 && props.lvl < 16 ?<div className={classes.Stats}>Bravo! Just <strong>{STATS_MAP[props.lvl - 2]}%</strong> players reach this level <span>{String.fromCodePoint(APPLAUSE)}</span></div> :
+                    props.lvl >=16 && props.lvl < 19 ?<div className={classes.Stats}>Excellent! Only <strong>{STATS_MAP[props.lvl - 2]}%</strong> players get here <span>{String.fromCodePoint(CONFETTI)}</span></div> :
+                    props.lvl >=19 && props.lvl < 22 ?<div className={classes.Stats}>Incredible! Just <strong>{STATS_MAP[props.lvl - 2]}%</strong> players get here <span>{String.fromCodePoint(CELEBRATION)}</span></div> :
+                    props.lvl >=22 && props.lvl < 25 ?<div className={classes.Stats}>Genious! Only <strong>{STATS_MAP[props.lvl - 2]}%</strong> players managed this! <span>{String.fromCodePoint(CHAMPAGNE)}</span></div> :
+                    props.lvl >=25 && props.lvl < 27 ?<div className={classes.Stats}>Wow! Only <strong>one</strong> player got here before! <span>{String.fromCodePoint(MEDAL)}</span></div> :    
+                    props.lvl >=27 && props.lvl < 32 ?<div className={classes.Stats}>You have set an <strong>all-time record</strong> in Kobadoo! <span>{String.fromCodePoint(CUP)}</span></div> :                
                     null }
             <div>
                 <button 
