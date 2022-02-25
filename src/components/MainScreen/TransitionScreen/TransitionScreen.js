@@ -35,14 +35,14 @@ const STATS_MAP = [
     5, // level 17
     3, // level 18
     1, // level 19
-    0.7, // level 20
+    0.6, // level 20
     0.1, // level 21
-    0.02, // level 22
-    0.009, // level 23
-    0.003, // level 24
-    0.0006, // level 25
-    0.0001, // level 26
-    0, // level 27
+    0.04, // level 22
+    0.01, // level 23
+    0.006, // level 24
+    0.002, // level 25
+    0.0005, // level 26
+    0.0001, // level 27
     0, // level 28
     0, // level 29
     0, // level 30
@@ -95,8 +95,8 @@ const TransitionScreen = (props) => {
                     props.lvl >=16 && props.lvl < 19 ?<div className={classes.Stats}>Excellent! Only <strong>{STATS_MAP[props.lvl - 2]}%</strong> players get here <span>{String.fromCodePoint(CONFETTI)}</span></div> :
                     props.lvl >=19 && props.lvl < 22 ?<div className={classes.Stats}>Incredible! Just <strong>{STATS_MAP[props.lvl - 2]}%</strong> players get here <span>{String.fromCodePoint(CELEBRATION)}</span></div> :
                     props.lvl >=22 && props.lvl < 25 ?<div className={classes.Stats}>Genious! Only <strong>{STATS_MAP[props.lvl - 2]}%</strong> players managed this! <span>{String.fromCodePoint(CHAMPAGNE)}</span></div> :
-                    props.lvl >=25 && props.lvl < 27 ?<div className={classes.Stats}>Wow! Only <strong>one</strong> player got here before! <span>{String.fromCodePoint(MEDAL)}</span></div> :    
-                    props.lvl >=27 && props.lvl < 32 ?<div className={classes.Stats}>You have set an <strong>all-time record</strong> in Kobadoo! <span>{String.fromCodePoint(CUP)}</span></div> :                
+                    props.lvl >=25 && props.lvl < 28 ?<div className={classes.Stats}>OMG! Just <strong>{STATS_MAP[props.lvl - 2]}%</strong> players get here <span>{String.fromCodePoint(MEDAL)}</span></div> :  
+                    props.lvl >=28 && props.lvl < 32 ?<div className={classes.Stats}>You have set an <strong>all-time record</strong> in Kobadoo! <span>{String.fromCodePoint(CUP)}</span></div> :                
                     null }
             <div>
                 <button 

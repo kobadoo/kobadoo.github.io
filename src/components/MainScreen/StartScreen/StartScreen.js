@@ -65,7 +65,7 @@ const StartScreen = (props) => {
             <div className={classes.BenefitsText}>
                 { props.showAds ? <div id='kobadoo-com_300x250' className={classes.Ad300x250} /> : <img className={classes.StartImage} src={BulbImg} /> }
                 <h3>What is <i>working memory</i>?</h3>
-                <p>Working memory is a form of short-term memory, where you temporarily hold information in your mind while processing it. When you play <i>Kobadoo</i> you are actively using your working memory. There are several scientific studies that suggest training of working memory has <strong>beneficial effects</strong> and can <strong>increase your cognitive functions</strong>.</p>
+                <p>Working memory is a form of short-term memory, where you temporarily hold information in your mind while processing it. When you play <i>Kobadoo</i> you are actively using your working memory. There are several scientific studies that suggest training of working memory has <strong>beneficial effects</strong> and can <strong>increase your cognitive functions</strong>. You can learn more about working memory on <a href="https://blog.kobadoo.com/2022/02/what-is-working-memory-how-to-train-it.html" target="_new">this blog post</a></p>
             </div>
 
             <div className={classes.BenefitsText}>

@@ -60,7 +60,7 @@ const EndScreen = (props) => {
                     props.lvl >=13 && props.lvl < 18 ?<div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>great memory</div>, just like an <div className={classes.AnimalName}>elephant</div> <span>{String.fromCodePoint(ELEPHANT)}</span></div> :
                     props.lvl >=18 ? <div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>extraordinary memory</div>, like a <div className={classes.AnimalName}>dolphin</div> <span>{String.fromCodePoint(DOLPHIN)}</span></div> : null }
                 <div className={classes.Stats}>
-                    All-time record on <i>Kobadoo</i> is <div className={classes.AnimalName}>level 26</div>
+                    All-time record on <i>Kobadoo</i> is <div className={classes.AnimalName}>level 27</div>
                 </div>
             </div>
             <div>
