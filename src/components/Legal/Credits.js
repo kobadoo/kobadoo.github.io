@@ -1,16 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
+import {Adsense} from '@ctrl/react-adsense';
+
 import { connect } from 'react-redux';
 import classes from './Legal.module.css';
 
-const Credits = (props) => {
-
-    useEffect(() => {
-        if (props.showAds) {
-            window.aiptag.cmd.display.push( () => {
-                window.aipDisplayTag.display('kobadoo-com_300x250_2'); 
-            });
-        }
-    }, [props.showAds]);
+const Credits = () => {
     
     return (
     <div className={classes.Legal}>
@@ -21,19 +15,14 @@ const Credits = (props) => {
             <li>Icons made by <a href="https://www.freepik.com" title="Freepik" target="_new">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_new">www.flaticon.com</a></li>
             <li>Google Play and the Google Play logo are trademarks of Google LLC</li>
         </ul>
+
+        <Adsense client="ca-pub-2852428416753185" slot="8924213887"/>
+
         <center>
         <p><i>(c) Kobadoo, 2022. All rights reserved.</i></p>
-
-        { props.showAds ? (<div id='kobadoo-com_300x250_2' className={classes.Ad300x250} />) : null }
         </center>
     </div>
     );
 };
 
-const mapStateToProps = state => {
-    return {
-        showAds: state.showAds
-    }
-}
-
-export default connect(mapStateToProps, )(Credits);
+export default connect(null,null)(Credits);

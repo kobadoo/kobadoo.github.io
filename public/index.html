@@ -11,8 +11,24 @@
       content="Free game to train your brain by memorizing emojis, flags or numbers. Developed in cooperation with neuropsychologists. Play in browser: no download or sign up required!"
     />
 
+    <!-- Adsense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185"
     crossorigin="anonymous"></script>
+
+    <!-- Cookie consent banner -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.css"/>
+    <script src="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function(){
+            window.wpcc.init({
+                "border":"thin",
+                "corners":"small",
+                "colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},
+                "position":"top"
+            })
+        });
+    </script>
+
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -30,23 +46,7 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Kobadoo - Memory game</title>
-    
-    <!-- AdinPlay Ads -->
-    <script>
-      var aiptag = aiptag || {};
-      aiptag.cmd = aiptag.cmd || [];
-      aiptag.cmd.display = aiptag.cmd.display || [];
-      aiptag.cmd.player = aiptag.cmd.player || [];
-      
-      //CMP tool settings
-      aiptag.cmp = {
-        show: true,
-        position: "bottom",  //centered or bottom
-        button: false,
-        buttonText: "Privacy settings",
-        buttonPosition: "bottom-left" //bottom-left, bottom-right, top-left, top-right
-      }
-    </script>
+
   </head>
   
   <body>

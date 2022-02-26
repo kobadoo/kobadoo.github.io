@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
+import {Adsense} from '@ctrl/react-adsense';
 import { restartGame } from '../../../store/actions/actions';
 import MonkeyImg from '../../../images/monkey.png';
 import { MAX_LEVEL } from '../PlayScreen/PlayScreen';
@@ -35,23 +36,11 @@ const EndScreen = (props) => {
 
     const QUOTE = 'I reached level ' + props.lvl + ' at Kobadoo memory game! Can you beat me?\n';
 
-    useEffect(() => {
-        if (props.showAds && !props.iframe) {
-            window.aiptag.cmd.display.push( () => {
-                window.aipDisplayTag.display('kobadoo-com_300x250_3'); 
-                window.aipDisplayTag.display('kobadoo-com_728x90_2'); 
-            })
-        }
-    }, [props.showAds]);
-
-
     return (
         <div className={classes.EndScreen}>
-            { (props.showAds && !props.iframe) ? <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} /> : null }
             <div>
                 {(props.lvl === MAX_LEVEL) ? <h2>Game Completed!</h2>: <h2>Game Over!</h2>}
-                {(props.lvl === MAX_LEVEL) ? <span className={classes.Cup}>{String.fromCodePoint(CUP)}</span> :
-                    props.showAds ? null : <img className={classes.EndImage} src={MonkeyImg} /> }
+                {(props.lvl === MAX_LEVEL) ? <span className={classes.Cup}>{String.fromCodePoint(CUP)}</span> : <img className={classes.EndImage} src={MonkeyImg} /> }
                 <h3>Level: <div className={classes.Results}>{props.lvl} / {MAX_LEVEL}</div></h3>
                 <h3>Score: <div className={classes.Results}>{props.scr}</div></h3>
                 { props.lvl < 4 ? <div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>very bad memory</div>, like a <div className={classes.AnimalName}>goldfish</div> <span>{String.fromCodePoint(GOLDFISH)}</span></div> :
@@ -73,34 +62,30 @@ const EndScreen = (props) => {
                         onClick={() => props.onRestartGame(props.lvl - 1) }>Continue level {props.lvl -1}</button>
                 : null}
             </div>
-            {!props.iframe?
-                <React.Fragment>
-                    <div className={classes.ShareText}>Share with your friends!</div>
-                    <div className={classes.ShareButtons}>
-                        <WhatsappShareButton url={URL} title={QUOTE}>
-                            <WhatsappIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
-                        </WhatsappShareButton>
-                        <FacebookShareButton url={URL} quote={QUOTE} hashtag={HASHTAG}>
-                            <FacebookIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
-                        </FacebookShareButton>
-                        <TwitterShareButton url={URL} title={QUOTE + ' ' + HASHTAG + ' '}>
-                            <TwitterIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
-                        </TwitterShareButton>
-                        <LinkedinShareButton url={URL} title={QUOTE}>
-                            <LinkedinIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
-                        </LinkedinShareButton>
-                        <ViberShareButton url={URL} title={QUOTE}>
-                            <ViberIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
-                        </ViberShareButton>
-                        <EmailShareButton url={URL} subject={QUOTE}>
-                            <EmailIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
-                        </EmailShareButton>
-                    </div>
-                </React.Fragment>
-            :
-            <div/> 
-            }
-            { (props.showAds && !props.iframe && props.lvl < MAX_LEVEL) ? <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} /> : null }
+            <React.Fragment>
+                <div className={classes.ShareText}>Share with your friends!</div>
+                <div className={classes.ShareButtons}>
+                    <WhatsappShareButton url={URL} title={QUOTE}>
+                        <WhatsappIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
+                    </WhatsappShareButton>
+                    <FacebookShareButton url={URL} quote={QUOTE} hashtag={HASHTAG}>
+                        <FacebookIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
+                    </FacebookShareButton>
+                    <TwitterShareButton url={URL} title={QUOTE + ' ' + HASHTAG + ' '}>
+                        <TwitterIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
+                    </TwitterShareButton>
+                    <LinkedinShareButton url={URL} title={QUOTE}>
+                        <LinkedinIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
+                    </LinkedinShareButton>
+                    <ViberShareButton url={URL} title={QUOTE}>
+                        <ViberIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
+                    </ViberShareButton>
+                    <EmailShareButton url={URL} subject={QUOTE}>
+                        <EmailIcon className={classes.ShareButton} round={true} size={ICON_SIZE} />
+                    </EmailShareButton>
+                </div>
+            </React.Fragment>
+            { (props.lvl < MAX_LEVEL) ? <Adsense client="ca-pub-2852428416753185" slot="5007830234"/> : null }
         </div>
     );
 }
@@ -108,9 +93,7 @@ const EndScreen = (props) => {
 const mapStateToProps = state => {
     return {
         lvl: state.level,
-        scr: state.score,
-        iframe: state.isOnIframe,
-        showAds: state.showAds
+        scr: state.score
     };
 };
 

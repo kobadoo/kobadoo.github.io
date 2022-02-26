@@ -61,20 +61,6 @@ export const togglePause = () => {
     };
 };
 
-export const setIframe = (newValue) => {
-    return {
-        type: actionTypes.SET_IFRAME,
-        value: newValue
-    };
-};
-
-export const changeShowAds = (newValue) => {
-    return {
-        type: actionTypes.CHANGE_SHOW_ADS,
-        value: newValue
-    };
-};
-
 export const changeMode = (newValue) => {
     return {
         type: actionTypes.CHANGE_MODE,

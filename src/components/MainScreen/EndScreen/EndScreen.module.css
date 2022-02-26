@@ -18,7 +18,7 @@
 }
 
 .ContinueButton {
-    background-color: darkseagreen;
+    background-color: navy;
     color: white;
     font-size: 1.1rem;
     padding: 5px;
@@ -33,7 +33,7 @@
 }
 
 .ContinueButton:hover {
-    background-color: aquamarine;
+    background-color: steelblue;
     color: white;
 }
 
@@ -106,22 +106,4 @@
 
 .ShareButton {
     padding: 5px;
-}
-
-.Ad300x250 {
-    position: relative;
-    display: inline-block;
-    margin-top: 5px;
-}
-
-.Ad728x90 {
-    display: block;
-    height: 90px;
-}
-
-@media only screen and (max-width: 727px) {
-    
-    .Ad728x90 {
-        display: none;
-    }
 }

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import {Adsense} from '@ctrl/react-adsense';
 import classes from './TransitionScreen.module.css';
 import { startLevel, togglePause } from '../../../store/actions/actions';
 import { MAX_LEVEL } from '../PlayScreen/PlayScreen';
@@ -55,16 +56,6 @@ const TransitionScreen = (props) => {
 
     useEffect(() => {
 
-        if (props.showAds && !props.iframe) {
-            window.aiptag.cmd.display.push( () => {
-                window.aipDisplayTag.display('kobadoo-com_300x250_4');
-                window.aipDisplayTag.display('kobadoo-com_300x100'); 
-                window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
-                window.aipDisplayTag.display('kobadoo-com_160x600_2');
-                window.aipDisplayTag.display('kobadoo-com_728x90_2');
-            })
-        }
-
         const timeout = setInterval(() => {
             if(!props.paused) {
                 props.onStartLevel();
@@ -74,18 +65,11 @@ const TransitionScreen = (props) => {
         // Returned function will be called on component unmount 
         return () => {
             clearInterval(timeout);        }
-    }, [props.paused, props.showAds, props.iframe]);
+    }, [props.paused]);
 
     return (
         <div className={classes.TransitionScreen}>
-            {(props.showAds && !props.iframe) ? 
-                <React.Fragment>
-                    <center><div id='kobadoo-com_300x100' className={classes.Ad300x100} /></center>
-                    <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
-                    <div id='kobadoo-com_160x600_1' className={classes.Ad160x600L} />
-                    <div id='kobadoo-com_160x600_2' className={classes.Ad160x600R} />
-                </React.Fragment>
-                : null}
+
             <div><h2>Level {props.lvl - 1} of {MAX_LEVEL} completed!</h2></div>
             { props.lvl < 4 ? <div className={classes.Stats}><strong>{STATS_MAP[props.lvl - 2]}%</strong> players reach this level <span>{String.fromCodePoint(OK)}</span></div> :
                     props.lvl >=4 && props.lvl < 7 ?<div className={classes.Stats}>Good job! <strong>{STATS_MAP[props.lvl - 2]}%</strong> players get here <span>{String.fromCodePoint(MUSCLE)}</span></div> :
@@ -98,13 +82,14 @@ const TransitionScreen = (props) => {
                     props.lvl >=25 && props.lvl < 28 ?<div className={classes.Stats}>OMG! Just <strong>{STATS_MAP[props.lvl - 2]}%</strong> players get here <span>{String.fromCodePoint(MEDAL)}</span></div> :  
                     props.lvl >=28 && props.lvl < 32 ?<div className={classes.Stats}>You have set an <strong>all-time record</strong> in Kobadoo! <span>{String.fromCodePoint(CUP)}</span></div> :                
                     null }
+
             <div>
                 <button 
                     className={classes.PauseButton} 
                     onClick={props.onTogglePause}>{props.paused ? 'Resume' : 'Pause'}
                 </button>
             </div>
-            {(props.showAds && !props.iframe) ? <div id='kobadoo-com_300x250_4' className={classes.Ad300x250} /> : null }
+            <Adsense client="ca-pub-2852428416753185" slot="3507918443"/>
             
         </div>
     );
@@ -113,9 +98,7 @@ const TransitionScreen = (props) => {
 const mapStateToProps = state => {
     return {
         lvl: state.level,
-        paused: state.isPaused,
-        showAds: state.showAds,
-        iframe: state.isOnIframe
+        paused: state.isPaused
     }
 }
 

@@ -4,12 +4,10 @@ import { PageView, initGA } from './utils/Analytics';
 import { Route, Switch } from 'react-router-dom';
 import Toolbar from './components/Toolbar/Toolbar';
 import MainScreen from './components/MainScreen/MainScreen';
-import IframeScreen from './components/IframeScreen/IframeScreen';
 import Credits from './components/Legal/Credits';
 import Privacy from './components/Legal/Privacy';
 import Terms from './components/Legal/Terms';
 import ScrollToTop from './utils/ScrollToTop';
-import { changeShowAds } from './store/actions/actions';
 
 
 const App = (props) => {
@@ -17,21 +15,7 @@ const App = (props) => {
   useEffect(() => {
     initGA('UA-189831762-1');
     PageView();
-    document.addEventListener("aip_consentrejected", function(e) {
-      props.onChangeShowAds(false);
-    });
-    document.addEventListener("aip_consentapproved", function(e) {
-        props.onChangeShowAds(true);
-    });
   }, []);
-
-  useEffect(() => {
-    if (!props.iframe) {
-        var adinplayScript= document.createElement('script');
-        adinplayScript.src = "//api.adinplay.com/libs/aiptag/pub/KBD/kobadoo.com/tag.min.js";
-        document.head.appendChild(adinplayScript);
-    }
-  }, [props.iframe]);
   
   return (
     <ScrollToTop>
@@ -40,23 +24,10 @@ const App = (props) => {
         <Route path="/credits" exact component={Credits} onUpdate={() => window.scrollTo(0, 0)} />
         <Route path="/terms" exact component={Terms} onUpdate={() => window.scrollTo(0, 0)} />
         <Route path="/privacy" exact component={Privacy} onUpdate={() => window.scrollTo(0, 0)} />
-        <Route path="/iframe/:id" component={IframeScreen} />
         <Route path="/" component={MainScreen} />
       </Switch>
     </ScrollToTop>
   );
 }
 
-const mapStateToProps = state => {
-  return {
-      iframe: state.isOnIframe
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-      onChangeShowAds: (newValue) => dispatch(changeShowAds(newValue))
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, null)(App);

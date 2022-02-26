@@ -19,7 +19,7 @@
     cursor: pointer;
     outline: none;
     left: 50%;
-    margin-top: 10px;
+    margin: 10px 0 30px 0;
 }
 
 .PauseButton:hover {
@@ -33,53 +33,4 @@
     font-family: 'Open Sans', sans-serif;
     font-size: 1rem;
     font-weight: lighter;
-}
-
-.Ad160x600L {
-    display: block;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-}
-
-.Ad160x600R {
-    display: block;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-}
-
-.Ad728x90 {
-    display: block;
-    height: 90px;
-}
-
-.Ad300x250 {
-    position: relative;
-    display: inline-block;
-    margin-top: 40px;
-}
-
-.Ad300x100 {
-    display: none;
-}
-
-@media only screen and (max-width: 1023px) {
-    .Ad300x100 {
-      display: block;
-      height: 130px;
-      margin-bottom: 20px;
-    }
-
-    .Ad160x600L {
-        display: none;
-    }
-
-    .Ad160x600R {
-        display: none;
-    }
-
-    .Ad728x90 {
-        display: none;
-    }
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import {Adsense} from '@ctrl/react-adsense';
 import classes from './AnswerScreen.module.css';
 import Emoji from '../../../../utils/Modes/Emoji';
 import {Flag} from '../../../../utils/Modes/Flag';
@@ -26,14 +27,7 @@ const AnswerScreen = (props) => {
                 props.onLevelPassed();
             }
         }
-
-        if (lostGame && props.showAds && !props.iframe) {
-            window.aiptag.cmd.display.push( () => {
-                window.aipDisplayTag.display('kobadoo-com_300x100'); 
-                window.aipDisplayTag.display('kobadoo-com_300x250_4'); 
-            });
-        }
-    }, [correctEmojis, lostGame, props.showAds]);
+    }, [correctEmojis]);
 
     const emojiClickHandler = (index, value) => {
 
@@ -97,23 +91,10 @@ const AnswerScreen = (props) => {
                 }
             })}
 
-            {(lostGame && props.showAds && !props.iframe) ? (
-                <center>
-                    <React.Fragment>
-                        <div id='kobadoo-com_300x100' className={classes.Ad300x100} />
-                        <div id='kobadoo-com_300x250_4' className={classes.Ad300x250} />
-                    </React.Fragment>
-                </center>)
+            {(lostGame) ? (<Adsense className={classes.BlankSpace} client="ca-pub-2852428416753185" slot="3941681642" />)
                 : <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div> }
         </div>
     );
-}
-
-const mapStateToProps = state => {
-    return {
-        showAds: state.showAds,
-        iframe: state.isOnIframe
-    }
 }
 
 const mapDispatchToProps = dispatch => {
@@ -124,4 +105,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AnswerScreen);
+export default connect(null, mapDispatchToProps)(AnswerScreen);

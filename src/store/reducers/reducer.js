@@ -8,8 +8,6 @@ const initialState = {
     hasLevelStarted: false,
     hasGameEnded: false,
     isPaused: false,
-    isOnIframe: false,
-    showAds: false,
     mode: EMOJIS_MODE
 };
 
@@ -88,21 +86,6 @@ const togglePause = (state) => {
     return updateObject(state, updatedState);
 };
 
-const setIframe = (state, action) => {
-    const updatedState = {
-        isOnIframe: true,
-        mode: action.value
-    };
-    return updateObject(state, updatedState);
-};
-
-const changeShowAds = (state, action) => {
-    const updatedState = {
-        showAds: action.value
-    };
-    return updateObject(state, updatedState);
-};
-
 const changeMode = (state, action) => {
     const updatedState = {
         mode: action.value
@@ -135,12 +118,6 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.TOGGLE_PAUSE:
             return togglePause(state);
-
-        case actionTypes.SET_IFRAME:
-            return setIframe(state, action);
-
-        case actionTypes.CHANGE_SHOW_ADS:
-            return changeShowAds(state, action);
 
         case actionTypes.CHANGE_MODE:
             return changeMode(state, action);
