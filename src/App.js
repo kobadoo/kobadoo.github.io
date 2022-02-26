@@ -10,7 +10,7 @@ import Terms from './components/Legal/Terms';
 import ScrollToTop from './utils/ScrollToTop';
 
 
-const App = (props) => {
+const App = () => {
 
   useEffect(() => {
     initGA('UA-189831762-1');

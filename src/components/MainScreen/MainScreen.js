@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import StartScreen from './StartScreen/StartScreen';
 import PlayScreen from './PlayScreen/PlayScreen';

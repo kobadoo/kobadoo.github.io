@@ -89,7 +89,8 @@ const TransitionScreen = (props) => {
                     onClick={props.onTogglePause}>{props.paused ? 'Resume' : 'Pause'}
                 </button>
             </div>
-            <Adsense client="ca-pub-2852428416753185" slot="3507918443"/>
+
+            {props.paused ? <Adsense client="ca-pub-2852428416753185" slot="3507918443"/> : null }
             
         </div>
     );
