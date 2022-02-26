@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.8116a68c.chunk.css",
-    "main.js": "/static/js/main.35b257cb.chunk.js",
-    "main.js.map": "/static/js/main.35b257cb.chunk.js.map",
+    "main.css": "/static/css/main.2b6a85d1.chunk.css",
+    "main.js": "/static/js/main.16d05e90.chunk.js",
+    "main.js.map": "/static/js/main.16d05e90.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.1ad51044.js",
     "runtime-main.js.map": "/static/js/runtime-main.1ad51044.js.map",
     "static/js/2.471699d5.chunk.js": "/static/js/2.471699d5.chunk.js",
@@ -10,7 +10,7 @@
     "static/js/3.e61334ef.chunk.js": "/static/js/3.e61334ef.chunk.js",
     "static/js/3.e61334ef.chunk.js.map": "/static/js/3.e61334ef.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/main.8116a68c.chunk.css.map": "/static/css/main.8116a68c.chunk.css.map",
+    "static/css/main.2b6a85d1.chunk.css.map": "/static/css/main.2b6a85d1.chunk.css.map",
     "static/js/2.471699d5.chunk.js.LICENSE.txt": "/static/js/2.471699d5.chunk.js.LICENSE.txt",
     "static/media/bulb.cade1cbf.png": "/static/media/bulb.cade1cbf.png",
     "static/media/google-play-badge.f902960a.png": "/static/media/google-play-badge.f902960a.png",
@@ -20,7 +20,7 @@
   "entrypoints": [
     "static/js/runtime-main.1ad51044.js",
     "static/js/2.471699d5.chunk.js",
-    "static/css/main.8116a68c.chunk.css",
-    "static/js/main.35b257cb.chunk.js"
+    "static/css/main.2b6a85d1.chunk.css",
+    "static/js/main.16d05e90.chunk.js"
   ]
 }
