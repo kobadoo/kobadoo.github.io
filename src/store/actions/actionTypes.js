@@ -6,3 +6,4 @@ export const RESTART_GAME = 'RESTART_GAME';
 export const ABORT_GAME = 'ABORT_GAME';
 export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 export const CHANGE_MODE = 'CHANGE_MODE';
+export const SHOW_INTRO = 'SHOW_INTRO';

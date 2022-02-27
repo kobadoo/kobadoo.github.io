@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import {Adsense} from '@ctrl/react-adsense';
 import classes from './AnswerScreen.module.css';
 import Emoji from '../../../../utils/Modes/Emoji';
 import {Flag} from '../../../../utils/Modes/Flag';
@@ -12,7 +11,6 @@ const INTERVAL_BEFORE_GAME_OVER = 3000;
 
 const AnswerScreen = (props) => {
 
-    const [lostGame, setLostGame] = useState(false);
     const [correctEmojis, setCorrectEmojis] = useState(0);
     const [disabledEmojis, setDisabledEmojis] = useState([]);
     const [failedEmoji, setFailedEmoji] = useState(null);
@@ -37,7 +35,6 @@ const AnswerScreen = (props) => {
             setCorrectEmojis(prevCount => prevCount + 1 );
         } 
         else {
-            setLostGame(true);
             setFailedEmoji(value);
             setNextEmoji(props.emojis[correctEmojis]);
             const timeout = setInterval(() => {
@@ -91,8 +88,7 @@ const AnswerScreen = (props) => {
                 }
             })}
 
-            {(lostGame) ? (<Adsense className={classes.BlankSpace} client="ca-pub-2852428416753185" slot="3941681642" />)
-                : <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div> }
+            <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div>
         </div>
     );
 }

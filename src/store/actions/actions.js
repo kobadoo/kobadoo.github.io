@@ -67,3 +67,9 @@ export const changeMode = (newValue) => {
         value: newValue
     };
 };
+
+export const showIntro = () => {
+    return {
+        type: actionTypes.SHOW_INTRO
+    };
+};

@@ -8,6 +8,7 @@ const initialState = {
     hasLevelStarted: false,
     hasGameEnded: false,
     isPaused: false,
+    showIntro: false,
     mode: EMOJIS_MODE
 };
 
@@ -31,7 +32,8 @@ const passLevel = (state) => {
 
 const startLevel = (state) => {
     const updatedState = {
-        hasLevelStarted: true
+        hasLevelStarted: true,
+        showIntro: false
     };
     return updateObject(state, updatedState);
 };
@@ -93,6 +95,13 @@ const changeMode = (state, action) => {
     return updateObject(state, updatedState);
 };
 
+const showIntro = (state) => {
+    const updatedState = {
+        showIntro: true
+    };
+    return updateObject(state, updatedState);
+};
+
 
 const reducer = (state = initialState, action) => {
 
@@ -121,6 +130,9 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.CHANGE_MODE:
             return changeMode(state, action);
+
+        case actionTypes.SHOW_INTRO:
+            return showIntro(state, action);
 
         default:
             return state;

@@ -3,7 +3,7 @@ import {Adsense} from '@ctrl/react-adsense';
 import { connect } from 'react-redux';
 import classes from './StartScreen.module.css';
 import Footer from '../../Footer/Footer';
-import { startLevel, changeMode } from '../../../store/actions/actions';
+import { changeMode, showIntro } from '../../../store/actions/actions';
 import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
 import BulbImg from '../../../images/bulb.png';
@@ -27,7 +27,7 @@ const StartScreen = (props) => {
             <div className={classes.ButtonsDiv}>
                 <button 
                     className={classes.StartButton} 
-                    onClick={props.onStartLevel}>Start Game</button>
+                    onClick={props.onStartGame}>Start Game</button>
                 <a href="https://play.google.com/store/apps/details?id=com.kobadoo" target="_new"><img className={classes.GooglePlayButton} src={GooglePlayImg} /></a>
             </div>
 
@@ -67,7 +67,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onStartLevel: () => dispatch(startLevel()),
+        onStartGame: () => dispatch(showIntro()),
         onChangeMode: (value) => dispatch(changeMode(value))
     };
 };
