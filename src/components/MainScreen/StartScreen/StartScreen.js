@@ -32,7 +32,7 @@ const StartScreen = (props) => {
             </div>
 
             <Adsense client="ca-pub-2852428416753185" slot="6414612377"/>
-
+            
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={MonkeyImg} />
                 <h3>How does it work?</h3>

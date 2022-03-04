@@ -16,6 +16,10 @@ const App = () => {
     initGA('UA-189831762-1');
     PageView();
   }, []);
+
+  useEffect(() => {
+    console.log(window.showAds);
+  }, [window.showAds]);
   
   return (
     <ScrollToTop>
@@ -24,9 +28,7 @@ const App = () => {
         <Route path="/credits" exact component={Credits} onUpdate={() => window.scrollTo(0, 0)} />
         <Route path="/terms" exact component={Terms} onUpdate={() => window.scrollTo(0, 0)} />
         <Route path="/privacy" exact component={Privacy} onUpdate={() => window.scrollTo(0, 0)} />
-        <Route path="/index.html" exact component={MainScreen} />
-        <Route path="/"><Redirect to="/index.html" />
-</Route>
+        <Route path="/" exact component={MainScreen} />
       </Switch>
     </ScrollToTop>
   );
