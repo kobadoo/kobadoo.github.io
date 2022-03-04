@@ -43,12 +43,11 @@ const STATS_MAP = [
     0.006, // level 24
     0.002, // level 25
     0.0005, // level 26
-    0.0001, // level 27
-    0, // level 28
-    0, // level 29
-    0, // level 30
-    0, // level 31
-    0, // level 32
+    0.0002, // level 27
+    0.00014, // level 28
+    0.00008, // level 29
+    0.00003, // level 30
+    0.00001 // level 31
 ]
 
 
@@ -80,7 +79,7 @@ const TransitionScreen = (props) => {
                     props.lvl >=19 && props.lvl < 22 ?<div className={classes.Stats}>Incredible! Just <strong>{STATS_MAP[props.lvl - 2]}%</strong> players get here <span>{String.fromCodePoint(CELEBRATION)}</span></div> :
                     props.lvl >=22 && props.lvl < 25 ?<div className={classes.Stats}>Genious! Only <strong>{STATS_MAP[props.lvl - 2]}%</strong> players managed this! <span>{String.fromCodePoint(CHAMPAGNE)}</span></div> :
                     props.lvl >=25 && props.lvl < 28 ?<div className={classes.Stats}>OMG! Just <strong>{STATS_MAP[props.lvl - 2]}%</strong> players get here <span>{String.fromCodePoint(MEDAL)}</span></div> :  
-                    props.lvl >=28 && props.lvl < 32 ?<div className={classes.Stats}>You have set an <strong>all-time record</strong> in Kobadoo! <span>{String.fromCodePoint(CUP)}</span></div> :                
+                    props.lvl >=28 && props.lvl < 32 ?<div className={classes.Stats}>Boom! Only <strong>{STATS_MAP[props.lvl - 2]}%</strong> players reach this level<span>{String.fromCodePoint(CUP)}</span></div> :                
                     null }
 
             <div>
