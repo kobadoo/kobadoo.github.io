@@ -1,7 +1,12 @@
 import ReactGA from 'react-ga'
 
 export const initGA = (trackingID) => {           
-    ReactGA.initialize(trackingID); 
+    ReactGA.initialize(trackingID, {
+        gaOptions: {
+            storage: 'none',
+            storeGac: false
+        }
+    });
 }
 
 export const PageView = () => {  

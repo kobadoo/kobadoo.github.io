@@ -47,7 +47,7 @@
           switch (googlefc.getAllowAdsStatus()) {
             case googlefc.AllowAdsStatusEnum.UNKNOWN:
               googlefc.callbackQueue.push({'CONSENT_DATA_READY': () => googlefc.showRevocationMessage()});
-              break
+              break;
           }
         }
       });
