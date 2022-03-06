@@ -16,10 +16,6 @@ const App = () => {
     initGA('UA-189831762-1');
     PageView();
   }, []);
-
-  useEffect(() => {
-    console.log(window.showAds);
-  }, [window.showAds]);
   
   return (
     <ScrollToTop>
