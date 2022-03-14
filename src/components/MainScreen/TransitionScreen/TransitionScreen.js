@@ -5,7 +5,7 @@ import classes from './TransitionScreen.module.css';
 import { startLevel, togglePause } from '../../../store/actions/actions';
 import { MAX_LEVEL } from '../PlayScreen/PlayScreen';
 
-const INTERVAL_BETWEEN_LEVELS = 3500;
+const INTERVAL_BETWEEN_LEVELS = 2500;
 const CUP = 0X1F3C6;
 const APPLAUSE = 0X1F44F;
 const CHAMPAGNE = 0X1F37E;
@@ -89,7 +89,7 @@ const TransitionScreen = (props) => {
                 </button>
             </div>
 
-            <Adsense client="ca-pub-2852428416753185" slot="3507918443"/>
+            {props.paused ? <Adsense client="ca-pub-2852428416753185" slot="3507918443"/> : null }
             
         </div>
     );
