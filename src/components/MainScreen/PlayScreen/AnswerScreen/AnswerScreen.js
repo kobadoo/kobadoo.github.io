@@ -89,7 +89,7 @@ const AnswerScreen = (props) => {
                 }
             })}
 
-            <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div> }    
+            <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div>
         </div>
     );
 }
