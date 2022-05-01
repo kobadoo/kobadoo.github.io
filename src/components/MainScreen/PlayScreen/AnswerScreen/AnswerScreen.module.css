@@ -16,6 +16,11 @@
    padding: 2px 2px 8px 2px;
 }
 
+.Shapes {
+   width: 46px;
+   padding: 2px 2px 4px 2px;
+}
+
 .Emojis {
    font-size: 3rem;
 }
@@ -64,6 +69,7 @@
     bottom: 10px;
     position: fixed;
     width: inherit;
+    font-size: 1.2rem;
  }
 
 .BlankSpace {

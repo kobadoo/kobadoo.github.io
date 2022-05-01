@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import {Adsense} from '@ctrl/react-adsense';
 import classes from './AnswerScreen.module.css';
 import Emoji from '../../../../utils/Modes/Emoji';
 import {Flag} from '../../../../utils/Modes/Flag';
 import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
-import {NUMBERS_MODE, FLAGS_MODE} from '../../../../store/constants'
+import {NUMBERS_MODE, FLAGS_MODE, SHAPES_MODE} from '../../../../store/constants'
+import { Shape } from '../../../../utils/Modes/Shapes';
 
 const POINTS_PER_CORRECT_ANSWER = 20;
 const INTERVAL_BEFORE_GAME_OVER = 3000;
@@ -73,6 +73,12 @@ const AnswerScreen = (props) => {
                         case FLAGS_MODE:
                             return <Flag 
                                 className={classes.Flags + ' ' + assignStyle(value)}
+                                clickHandler={() => emojiClickHandler(index, value)}
+                                key={index} 
+                                num={value} />
+                        case SHAPES_MODE:
+                            return <Shape 
+                                className={classes.Shapes + ' ' + assignStyle(value)}
                                 clickHandler={() => emojiClickHandler(index, value)}
                                 key={index} 
                                 num={value} />

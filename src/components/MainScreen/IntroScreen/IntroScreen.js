@@ -16,6 +16,9 @@ const IntroScreen = (props) => {
       case 2:
         textMode = <h1>Memorize these numbers in order</h1>;
         break;
+      case 3:
+        textMode = <h1>Memorize these geometric shapes in order</h1>;
+        break;
       default:
         textMode = <h1>Memorize these emojis in order</h1>
     }

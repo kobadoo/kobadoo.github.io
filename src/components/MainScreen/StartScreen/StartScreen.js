@@ -1,4 +1,5 @@
 import React from 'react';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import {Adsense} from '@ctrl/react-adsense';
 import { connect } from 'react-redux';
 import classes from './StartScreen.module.css';
@@ -9,20 +10,29 @@ import TrainImg from '../../../images/train.png';
 import BulbImg from '../../../images/bulb.png';
 import GooglePlayImg from '../../../images/google-play-badge.png';
 
+
+
 const StartScreen = (props) => {
+
+    const handleMode = (_, newMode,
+    ) => {
+        props.onChangeMode(newMode);
+    };
 
     return (
         <div className={classes.StartScreen}>
 
             <h3 className={classes.HeaderText}>
-                <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, flags or numbers.
+                <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, flags, numbers or geometric shapes.
             </h3>
 
-            <div className={classes.RadioGroup}>
-                <label><input className={classes.RadioItem} type="radio" checked={props.mode === 0} onChange={() => props.onChangeMode(0) } /> Emojis</label>
-                <label><input className={classes.RadioItem} type="radio" checked={props.mode === 1} onChange={() => props.onChangeMode(1) } /> Flags</label>
-                <label><input className={classes.RadioItem} type="radio" checked={props.mode === 2} onChange={() => props.onChangeMode(2) } /> Numbers</label>
-            </div>
+            <p className={classes.SelectModeText}>Select a mode</p>
+            <ToggleButtonGroup color='primary' onChange={handleMode} exclusive>
+                <ToggleButton selected={props.mode === 0} value={0}>Emojis</ToggleButton>
+                <ToggleButton selected={props.mode === 1} value={1}>Flags</ToggleButton>
+                <ToggleButton selected={props.mode === 2} value={2}>Numbers</ToggleButton>
+                <ToggleButton selected={props.mode === 3} value={3}>Shapes</ToggleButton>
+            </ToggleButtonGroup>
 
             <div className={classes.ButtonsDiv}>
                 <button 
@@ -36,7 +46,7 @@ const StartScreen = (props) => {
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={MonkeyImg} />
                 <h3>How does it work?</h3>
-                <p>Select the mode (emojis, flags or numbers), click on <i>Start Game</i> and <strong>memorize</strong> the items that are displayed.
+                <p>Select a mode (emojis, flags, numbers or geometric shapes), click on <i>Start Game</i> and <strong>memorize</strong> the items that are displayed.
                 Then <strong>select them in the right order</strong> to be able to reach the next level. It gets more challenging over time! 
                 <strong> 100% free</strong>, no download or sign up required. <strong>Play on mobile</strong> for the best experience.</p>
             </div>
