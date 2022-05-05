@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
-import {Adsense} from '@ctrl/react-adsense';
 import { connect } from 'react-redux';
 import classes from './StartScreen.module.css';
 import Footer from '../../Footer/Footer';
@@ -14,25 +13,50 @@ import GooglePlayImg from '../../../images/google-play-badge.png';
 
 const StartScreen = (props) => {
 
-    const handleMode = (_, newMode,
-    ) => {
+    useEffect(() => {
+        if (props.showAds) {
+            window.aiptag.cmd.display.push( () => {
+                window.aipDisplayTag.display('kobadoo-com_300x100'); 
+                window.aipDisplayTag.display('kobadoo-com_300x250_2'); 
+                window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
+                window.aipDisplayTag.display('kobadoo-com_160x600_2');
+                window.aipDisplayTag.display('kobadoo-com_728x90_1');
+                window.aipDisplayTag.display('kobadoo-com_728x90_2');
+                window.aipDisplayTag.display('kobadoo-com_300x250');
+            });
+        }
+    }, [props.showAds]);
+
+    const handleMode = (_, newMode) => {
         props.onChangeMode(newMode);
     };
 
     return (
         <div className={classes.StartScreen}>
 
+            { props.showAds ? (
+                <React.Fragment>
+                    <center><div id='kobadoo-com_300x100' className={classes.Ad300x100} /></center>
+                    <div id='kobadoo-com_160x600_1' className={classes.Ad160x600L} />
+                    <div id='kobadoo-com_160x600_2' className={classes.Ad160x600R} />
+                    <div id='kobadoo-com_728x90_1' className={classes.Ad728x90} />
+                </React.Fragment>
+                ) : null
+            }
+
             <h3 className={classes.HeaderText}>
                 <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, flags, numbers or geometric shapes.
             </h3>
 
-            <p className={classes.SelectModeText}>Select a mode</p>
-            <ToggleButtonGroup color='primary' onChange={handleMode} exclusive>
-                <ToggleButton selected={props.mode === 0} value={0}>Emojis</ToggleButton>
-                <ToggleButton selected={props.mode === 1} value={1}>Flags</ToggleButton>
-                <ToggleButton selected={props.mode === 2} value={2}>Numbers</ToggleButton>
-                <ToggleButton selected={props.mode === 3} value={3}>Shapes</ToggleButton>
-            </ToggleButtonGroup>
+            <div>
+                <p className={classes.SelectModeText}>Select a mode</p>
+                <ToggleButtonGroup color='primary' onChange={handleMode} exclusive>
+                    <ToggleButton selected={props.mode === 0} value={0}>Emojis</ToggleButton>
+                    <ToggleButton selected={props.mode === 1} value={1}>Flags</ToggleButton>
+                    <ToggleButton selected={props.mode === 2} value={2}>Numbers</ToggleButton>
+                    <ToggleButton selected={props.mode === 3} value={3}>Shapes</ToggleButton>
+                </ToggleButtonGroup>
+            </div>
 
             <div className={classes.ButtonsDiv}>
                 <button 
@@ -40,8 +64,6 @@ const StartScreen = (props) => {
                     onClick={props.onStartGame}>Start Game</button>
                 <a href="https://play.google.com/store/apps/details?id=com.kobadoo" target="_new"><img className={classes.GooglePlayButton} src={GooglePlayImg} /></a>
             </div>
-
-            <Adsense client="ca-pub-2852428416753185" slot="6414612377"/>
             
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={MonkeyImg} />
@@ -50,6 +72,8 @@ const StartScreen = (props) => {
                 Then <strong>select them in the right order</strong> to be able to reach the next level. It gets more challenging over time! 
                 <strong> 100% free</strong>, no download or sign up required. <strong>Play on mobile</strong> for the best experience.</p>
             </div>
+
+            { props.showAds ? <div id='kobadoo-com_300x250' className={classes.Ad300x250} /> : null }
 
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={BulbImg} />
@@ -63,7 +87,13 @@ const StartScreen = (props) => {
                 <p>Some programs to train the working memory have shown improvements in everyday functioning, including your <strong>concentration</strong>. It can be especially beneficial to some clinical groups like people with ADHD [<a href="https://www.sciencedirect.com/science/article/abs/pii/S0890856709614271" target="_new">1</a>] [<a href="https://www.tandfonline.com/doi/abs/10.1080/15374416.2010.517162" target="_new">2</a>] [<a href="https://www.tandfonline.com/doi/abs/10.1076/jcen.24.6.781.8395" target="_new">3</a>], that suffer impaired working memory and inattentiveness. One example is the possibility to improve the <strong>school performance</strong> of children with ADHD.
                    Some adults have also improved their brain functions through this kind of exercises [<a href="https://psycnet.apa.org/record/2011-13119-001" target="_new">4</a>] [<a href="https://psycnet.apa.org/record/2017-10607-007" target="_new">5</a>]. Finally, some studies [<a href="https://www.sciencedirect.com/science/article/abs/pii/S0149763413000158" target="_new">6</a>] [<a href="https://www.mitpressjournals.org/doi/full/10.1162/jocn_a_00478" target="_new">7</a>] suggest that training your working memory can <strong>improve your mood</strong> by releasing dopamine in the brain.</p>
             </div>
-            <Adsense client="ca-pub-2852428416753185" slot="5099329576"/>
+            { props.showAds ? (
+                <React.Fragment>
+                    <div id='kobadoo-com_300x250_2' className={classes.Ad300x250_2} />
+                    <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
+                </React.Fragment>
+                ) : null
+            }
             <Footer />
         </div>
     );
@@ -71,6 +101,7 @@ const StartScreen = (props) => {
 
 const mapStateToProps = state => {
     return {
+        showAds: state.showAds,
         mode: state.mode
     }
 }

@@ -12,6 +12,7 @@ const INTERVAL_BEFORE_GAME_OVER = 3000;
 
 const AnswerScreen = (props) => {
 
+    const [lostGame, setLostGame] = useState(false);
     const [correctEmojis, setCorrectEmojis] = useState(0);
     const [disabledEmojis, setDisabledEmojis] = useState([]);
     const [failedEmoji, setFailedEmoji] = useState(null);
@@ -36,6 +37,7 @@ const AnswerScreen = (props) => {
             setCorrectEmojis(prevCount => prevCount + 1 );
         } 
         else {
+            setLostGame(true);
             setFailedEmoji(value);
             setNextEmoji(props.emojis[correctEmojis]);
             const timeout = setInterval(() => {
@@ -95,7 +97,8 @@ const AnswerScreen = (props) => {
                 }
             })}
 
-            <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div>
+            {!lostGame ? <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div> : null}
+
         </div>
     );
 }

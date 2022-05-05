@@ -19,11 +19,29 @@
     cursor: pointer;
     outline: none;
     left: 50%;
-    margin: 10px 0 30px 0;
+    margin-top: 10px;
 }
 
 .PauseButton:hover {
     background-color: lightskyblue;
+    color: white;
+}
+
+.ResumeButton {
+    background-color:darksalmon;
+    color: white;
+    font-size: 1.2rem;
+    padding: 5px;
+    width: 120px;
+    border: 1px solid darksalmon;
+    cursor: pointer;
+    outline: none;
+    left: 50%;
+    margin-top: 10px;
+}
+
+.ResumeButton:hover {
+    background-color: lightsalmon;
     color: white;
 }
 
@@ -37,4 +55,44 @@
 
 .LevelText {
     margin-top: 100px;
+}
+
+.Ad160x600L {
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.Ad160x600R {
+    display: block;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.Ad728x90 {
+    display: block;
+    height: 90px;
+}
+
+.Ad300x250 {
+    position: relative;
+    display: inline-block;
+    margin-top: 40px;
+}
+
+@media only screen and (max-width: 1023px) {
+
+    .Ad160x600L {
+        display: none;
+    }
+
+    .Ad160x600R {
+        display: none;
+    }
+
+    .Ad728x90 {
+        display: none;
+    }
 }

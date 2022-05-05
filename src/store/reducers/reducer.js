@@ -9,6 +9,8 @@ const initialState = {
     hasGameEnded: false,
     isPaused: false,
     showIntro: false,
+    showAds: false,
+    watchedVideo: false,
     mode: EMOJIS_MODE
 };
 
@@ -62,8 +64,10 @@ const restartGame = (state, action) => {
     const updatedState = { 
         level: action.value,
         score: getScoreFromLevel(action.value),
-        hasLevelStarted: true,
-        hasGameEnded: false
+        hasLevelStarted: false,
+        hasGameEnded: false,
+        showIntro: true,
+        watchedVideo: false
     };
     return updateObject(state, updatedState);
 };
@@ -74,7 +78,8 @@ const abortGame = (state) => {
         score: 0,
         isPaused: false,
         hasLevelStarted: false,
-        hasGameEnded: false 
+        hasGameEnded: false,
+        watchedVideo: false
     };
     return updateObject(state, updatedState);
 };
@@ -98,6 +103,20 @@ const changeMode = (state, action) => {
 const showIntro = (state) => {
     const updatedState = {
         showIntro: true
+    };
+    return updateObject(state, updatedState);
+};
+
+const changeShowAds = (state, action) => {
+    const updatedState = {
+        showAds: action.value
+    };
+    return updateObject(state, updatedState);
+};
+
+const changeWatchedVideo = (state, action) => {
+    const updatedState = {
+        watchedVideo: action.value
     };
     return updateObject(state, updatedState);
 };
@@ -133,6 +152,12 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.SHOW_INTRO:
             return showIntro(state, action);
+
+        case actionTypes.CHANGE_SHOW_ADS:
+            return changeShowAds(state, action);
+
+        case actionTypes.CHANGE_WATCHED_VIDEO:
+            return changeWatchedVideo(state, action);
 
         default:
             return state;

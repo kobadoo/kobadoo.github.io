@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import {Adsense} from '@ctrl/react-adsense';
 import { restartGame } from '../../../store/actions/actions';
 import MonkeyImg from '../../../images/monkey.png';
 import { MAX_LEVEL } from '../PlayScreen/PlayScreen';
@@ -36,8 +35,18 @@ const EndScreen = (props) => {
 
     const QUOTE = 'I reached level ' + props.lvl + ' at Kobadoo memory game! Can you beat me?\n';
 
+    useEffect(() => {
+        if (props.showAds) {
+            window.aiptag.cmd.display.push( () => {
+                window.aipDisplayTag.display('kobadoo-com_300x250_3'); 
+                window.aipDisplayTag.display('kobadoo-com_728x90_2'); 
+            })
+        }
+    }, [props.showAds]);
+
     return (
         <div className={classes.EndScreen}>
+            { (props.showAds) ? <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} /> : null }
             <div>
                 {(props.lvl === MAX_LEVEL) ? <h2>Game Completed!</h2>: <h2>Game Over!</h2>}
                 {(props.lvl === MAX_LEVEL) ? <span className={classes.Cup}>{String.fromCodePoint(CUP)}</span> : <img className={classes.EndImage} src={MonkeyImg} /> }
@@ -82,7 +91,7 @@ const EndScreen = (props) => {
                     </EmailShareButton>
                 </div>
             </React.Fragment>
-            { (props.lvl < MAX_LEVEL) ? <Adsense client="ca-pub-2852428416753185" slot="5007830234"/> : null }
+            { (props.showAds && props.lvl < MAX_LEVEL) ? <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} /> : null }
         </div>
     );
 }
@@ -90,7 +99,8 @@ const EndScreen = (props) => {
 const mapStateToProps = state => {
     return {
         lvl: state.level,
-        scr: state.score
+        scr: state.score,
+        showAds: state.showAds
     };
 };
 

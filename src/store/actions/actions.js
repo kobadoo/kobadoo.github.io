@@ -73,3 +73,17 @@ export const showIntro = () => {
         type: actionTypes.SHOW_INTRO
     };
 };
+
+export const changeShowAds = (newValue) => {
+    return {
+        type: actionTypes.CHANGE_SHOW_ADS,
+        value: newValue
+    };
+};
+
+export const changeWatchedVideo = (newValue) => {
+    return {
+        type: actionTypes.CHANGE_WATCHED_VIDEO,
+        value: newValue
+    };
+};

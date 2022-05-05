@@ -31,34 +31,28 @@
     -->
     <title>Kobadoo - Memory game</title>
 
-    <!-- Adsense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185"
-    crossorigin="anonymous"></script>
-
+    <!-- AdinPlay Ads -->
     <script>
-      // Make sure that the properties exist on the window.
-      window.googlefc = window.googlefc || {};
-      window.googlefc.ccpa = window.googlefc.ccpa || {}
-      window.googlefc.callbackQueue = window.googlefc.callbackQueue || [];
-    
-      // Queue the callback on the callbackQueue.
-      googlefc.callbackQueue.push({
-        'AD_BLOCK_DATA_READY':
-        () => {
-          switch (googlefc.getAllowAdsStatus()) {
-            case googlefc.AllowAdsStatusEnum.UNKNOWN:
-              googlefc.callbackQueue.push({'CONSENT_DATA_READY': () => googlefc.showRevocationMessage()});
-              break;
-          }
-        }
-      });
+      var aiptag = aiptag || {};
+      aiptag.cmd = aiptag.cmd || [];
+      aiptag.cmd.display = aiptag.cmd.display || [];
+      aiptag.cmd.player = aiptag.cmd.player || [];
+
+      //CMP tool settings
+      aiptag.cmp = {
+        show: true,
+        position: "bottom",  //centered or bottom
+        button: false,
+        buttonText: "Privacy settings",
+        buttonPosition: "bottom-left" //bottom-left, bottom-right, top-left, top-right
+      }
     </script>
+    <script async src="//api.adinplay.com/libs/aiptag/pub/KBD/kobadoo.com/tag.min.js"></script>
 
   </head>
   
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    
     <div id="root"></div>
     <!--
       This HTML file is a template.
