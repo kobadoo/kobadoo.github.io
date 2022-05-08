@@ -108,34 +108,20 @@
     padding: 5px;
 }
 
-.Ad300x250 {
-    position: relative;
-    display: inline-block;
-    margin-top: 5px;
-}
-
 .Ad728x90 {
     display: block;
     height: 90px;
 }
 
 .Ad300x100 {
-    display: none;
+    position: relative;
+    display: inline-block;
+    margin-top: 5px;
 }
 
 @media only screen and (max-width: 1023px) {
 
     .Ad728x90 {
         display: none;
-    }
-
-    .Ad300x250 {
-        display: none;
-    }
-
-    .Ad300x100 {
-        position: relative;
-        display: inline-block;
-        margin-top: 5px;
     }
 }
