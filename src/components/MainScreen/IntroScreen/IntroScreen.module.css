@@ -13,3 +13,9 @@
     margin: 50px 20px 0px 20px;
     color:teal
 }
+
+.Ad300x250 {
+    position: relative;
+    display: inline-block;
+    margin-top: 15px;
+}

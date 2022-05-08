@@ -119,9 +119,23 @@
     height: 90px;
 }
 
-@media only screen and (max-width: 727px) {
+.Ad300x100 {
+    display: none;
+}
+
+@media only screen and (max-width: 1023px) {
 
     .Ad728x90 {
         display: none;
+    }
+
+    .Ad300x250 {
+        display: none;
+    }
+
+    .Ad300x100 {
+        position: relative;
+        display: inline-block;
+        margin-top: 5px;
     }
 }

@@ -38,7 +38,8 @@ const EndScreen = (props) => {
     useEffect(() => {
         if (props.showAds) {
             window.aiptag.cmd.display.push( () => {
-                window.aipDisplayTag.display('kobadoo-com_300x250_3'); 
+                window.aipDisplayTag.display('kobadoo-com_300x100');
+                window.aipDisplayTag.display('kobadoo-com_300x250_1'); 
                 window.aipDisplayTag.display('kobadoo-com_728x90_2'); 
             })
         }
@@ -91,7 +92,11 @@ const EndScreen = (props) => {
                     </EmailShareButton>
                 </div>
             </React.Fragment>
-            { (props.showAds && props.lvl < MAX_LEVEL) ? <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} /> : null }
+            { (props.showAds && props.lvl < MAX_LEVEL) ? 
+                <React.Fragment>
+                    <div id='kobadoo-com_300x100' className={classes.Ad300x100} />
+                    <div id='kobadoo-com_300x250_1' className={classes.Ad300x250} />
+                </React.Fragment> : null }
         </div>
     );
 }
