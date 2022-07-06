@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import {Adsense} from '@ctrl/react-adsense';
 import { connect } from 'react-redux';
 import classes from './TransitionScreen.module.css';
 import { startLevel, togglePause } from '../../../store/actions/actions';
@@ -54,15 +55,6 @@ const TransitionScreen = (props) => {
 
     useEffect(() => {
 
-        if (props.showAds) {
-            window.aiptag.cmd.display.push( () => {
-                window.aipDisplayTag.display('kobadoo-com_300x250_4');
-                window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
-                window.aipDisplayTag.display('kobadoo-com_160x600_2');
-                window.aipDisplayTag.display('kobadoo-com_728x90_2');
-            })
-        }
-
         const timeout = setInterval(() => {
             if(!props.paused) {
                 props.onStartLevel();
@@ -72,19 +64,10 @@ const TransitionScreen = (props) => {
         // Returned function will be called on component unmount 
         return () => {
             clearInterval(timeout);        }
-    }, [props.paused, props.showAds]);
+    }, [props.paused]);
 
     return (
         <div className={classes.TransitionScreen}>
-
-            {(props.showAds) ? 
-                <React.Fragment>
-                    <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
-                    <div id='kobadoo-com_160x600_1' className={classes.Ad160x600L} />
-                    <div id='kobadoo-com_160x600_2' className={classes.Ad160x600R} />
-                </React.Fragment>
-                : null
-            }
 
             <div className={classes.LevelText}><h2>Level {props.lvl - 1} of {MAX_LEVEL} completed!</h2></div>
             { props.lvl < 4 ? <div className={classes.Stats}><strong>{STATS_MAP[props.lvl - 2]}%</strong> players reach this level <span>{String.fromCodePoint(OK)}</span></div> :
@@ -106,7 +89,7 @@ const TransitionScreen = (props) => {
                 </button>
             </div>
 
-            {props.showAds ? <div id='kobadoo-com_300x250_4' className={classes.Ad300x250} /> : null }
+            {props.paused ? <Adsense client="ca-pub-2852428416753185" slot="3507918443"/> : null }
             
         </div>
     );
@@ -115,8 +98,7 @@ const TransitionScreen = (props) => {
 const mapStateToProps = state => {
     return {
         lvl: state.level,
-        paused: state.isPaused,
-        showAds: state.showAds
+        paused: state.isPaused
     }
 }
 

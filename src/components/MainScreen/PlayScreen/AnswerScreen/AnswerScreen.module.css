@@ -71,23 +71,3 @@
     width: inherit;
     font-size: 1.2rem;
  }
-
- .Ad300x50 {
-   display: none;
-}
-
-.Ad300x250 {
-   display: block;
-   margin-top: 40px;
-}
-
-@media only screen and (max-width: 1023px) {
-   .Ad300x50 {
-     display: block;
-     margin-top: 20px;
-   }
-
-   .Ad300x250 {
-       display: none;
-   }
-}

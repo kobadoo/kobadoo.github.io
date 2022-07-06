@@ -12,7 +12,6 @@ const INTERVAL_BEFORE_GAME_OVER = 3000;
 
 const AnswerScreen = (props) => {
 
-    const [lostGame, setLostGame] = useState(false);
     const [correctEmojis, setCorrectEmojis] = useState(0);
     const [disabledEmojis, setDisabledEmojis] = useState([]);
     const [failedEmoji, setFailedEmoji] = useState(null);
@@ -27,14 +26,7 @@ const AnswerScreen = (props) => {
                 props.onLevelPassed();
             }
         }
-
-        if (lostGame && props.showAds) {
-            window.aiptag.cmd.display.push( () => {
-                window.aipDisplayTag.display('kobadoo-com_300x50'); 
-                window.aipDisplayTag.display('kobadoo-com_300x250_1'); 
-            });
-        }
-    }, [correctEmojis, lostGame, props.showAds]);
+    }, [correctEmojis]);
 
     const emojiClickHandler = (index, value) => {
 
@@ -44,7 +36,6 @@ const AnswerScreen = (props) => {
             setCorrectEmojis(prevCount => prevCount + 1 );
         } 
         else {
-            setLostGame(true);
             setFailedEmoji(value);
             setNextEmoji(props.emojis[correctEmojis]);
             const timeout = setInterval(() => {
@@ -104,13 +95,7 @@ const AnswerScreen = (props) => {
                 }
             })}
 
-            {(lostGame && props.showAds) ? (
-                <center>
-                    <React.Fragment>
-                        <div id='kobadoo-com_300x50' className={classes.Ad300x50} />
-                        <div id='kobadoo-com_300x250_1' className={classes.Ad300x250} />
-                    </React.Fragment>
-                </center>) : <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div>}
+            <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div>
 
         </div>
     );

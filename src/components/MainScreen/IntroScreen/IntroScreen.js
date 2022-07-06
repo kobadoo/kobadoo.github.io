@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import classes from './IntroScreen.module.css';
-import { startLevel, changeWatchedVideo } from '../../../store/actions/actions';
+import { startLevel } from '../../../store/actions/actions';
 
 const INTERVAL_BEFORE_LEVEL_1 = 3000;
 
@@ -24,48 +24,13 @@ const IntroScreen = (props) => {
     }
 
     useEffect(() => {
-        if (props.watchedVideo) {
-            const timeout = setInterval(() => {
-                props.onStartLevel();
-            }, INTERVAL_BEFORE_LEVEL_1);
-        
-            // Returned function will be called on component unmount 
-            return () => {
-                clearInterval(timeout);        }
-        }
-    }, [props.watchedVideo]);
+        const timeout = setInterval(() => {
+            props.onStartLevel();
+        }, INTERVAL_BEFORE_LEVEL_1);
 
-    useEffect(() => {
-        if(props.showAds) {
-            window.aiptag.cmd.player.push(function() {
-                window.aiptag.adplayer = new window.aipPlayer({
-                    AD_WIDTH: 960,
-                    AD_HEIGHT: 540,
-                    AD_DISPLAY: 'fullscreen', //default, fullscreen, center, fill
-                    TRUSTED: true,
-                    LOADING_TEXT: 'loading advertisement',
-                    PREROLL_ELEM: function() {return document.getElementById('preroll')},
-                    AIP_COMPLETE: function () {props.onChangeWatchedVideo(true)}
-                });
-            });
-            window.aiptag.cmd.display.push( () => {
-                window.aipDisplayTag.display('kobadoo-com_300x250_3'); 
-            })
-        }
-        else {
-            props.onChangeWatchedVideo(true);
-        }
-    }, [props.showAds]);
-
-    useEffect(() => {
-        if (props.showAds && !props.watchedVideo) {
-            if (typeof window.aiptag.adplayer !== 'undefined') {
-                window.aiptag.cmd.player.push(function() { window.aiptag.adplayer.startPreRoll(); });
-            } else {
-                props.onChangeWatchedVideo(true);
-            }
-        }
-    }, [props.showAds, props.watchedVideo]);
+        // Returned function will be called on component unmount 
+        return () => { clearInterval(timeout); }
+    }, []);
 
     return (
         <div className={classes.IntroScreen}>
@@ -78,16 +43,13 @@ const IntroScreen = (props) => {
 
 const mapStateToProps = state => {
     return {
-        mode: state.mode,
-        showAds: state.showAds,
-        watchedVideo: state.watchedVideo
+        mode: state.mode
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onStartLevel: () => dispatch(startLevel()),
-        onChangeWatchedVideo: (watchedVideo) => dispatch(changeWatchedVideo(watchedVideo))
+        onStartLevel: () => dispatch(startLevel())
     };
 };
 

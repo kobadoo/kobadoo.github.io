@@ -5,9 +5,3 @@
     display: block;
     overflow: auto;
 }
-
-.Ad300x250 {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 15px;
-}

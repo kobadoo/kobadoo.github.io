@@ -7,5 +7,3 @@ export const ABORT_GAME = 'ABORT_GAME';
 export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 export const CHANGE_MODE = 'CHANGE_MODE';
 export const SHOW_INTRO = 'SHOW_INTRO';
-export const CHANGE_SHOW_ADS = 'CHANGE_SHOW_ADS';
-export const CHANGE_WATCHED_VIDEO = 'CHANGE_WATCHED_VIDEO';
