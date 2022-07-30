@@ -27,13 +27,6 @@ const AnswerScreen = (props) => {
                 props.onLevelPassed();
             }
         }
-
-        if (lostGame && props.showAds) {
-            window.aiptag.cmd.display.push( () => {
-                window.aipDisplayTag.display('kobadoo-com_300x50'); 
-                window.aipDisplayTag.display('kobadoo-com_300x250_1'); 
-            });
-        }
     }, [correctEmojis, lostGame, props.showAds]);
 
     const emojiClickHandler = (index, value) => {
@@ -104,13 +97,7 @@ const AnswerScreen = (props) => {
                 }
             })}
 
-            {(lostGame && props.showAds) ? (
-                <center>
-                    <React.Fragment>
-                        <div id='kobadoo-com_300x50' className={classes.Ad300x50} />
-                        <div id='kobadoo-com_300x250_1' className={classes.Ad300x250} />
-                    </React.Fragment>
-                </center>) : <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div>}
+            {!lostGame ? <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div> : null}
 
         </div>
     );

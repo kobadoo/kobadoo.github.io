@@ -1,16 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import classes from './Legal.module.css';
 
-const Credits = (props) => {
-
-    useEffect(() => {
-        if (props.showAds) {
-            window.aiptag.cmd.display.push( () => {
-                window.aipDisplayTag.display('kobadoo-com_300x250_2'); 
-            });
-        }
-    }, [props.showAds]);
+const Credits = () => {
     
     return (
     <div className={classes.Legal}>
@@ -23,8 +15,7 @@ const Credits = (props) => {
         </ul>
 
         <center>
-            { props.showAds ? (<div id='kobadoo-com_300x250_2' className={classes.Ad300x250} />) : null }
-            <p><i>(c) Kobadoo, 2022. All rights reserved.</i></p>
+             <p><i>(c) Kobadoo, 2022. All rights reserved.</i></p>
         </center>
     </div>
     );

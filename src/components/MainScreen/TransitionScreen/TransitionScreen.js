@@ -4,7 +4,7 @@ import classes from './TransitionScreen.module.css';
 import { startLevel, togglePause } from '../../../store/actions/actions';
 import { MAX_LEVEL } from '../PlayScreen/PlayScreen';
 
-const INTERVAL_BETWEEN_LEVELS = 3000;
+const INTERVAL_BETWEEN_LEVELS = 2000;
 const CUP = 0X1F3C6;
 const APPLAUSE = 0X1F44F;
 const CHAMPAGNE = 0X1F37E;
@@ -54,7 +54,7 @@ const TransitionScreen = (props) => {
 
     useEffect(() => {
 
-        if (props.showAds) {
+        if (props.showAds && props.paused) {
             window.aiptag.cmd.display.push( () => {
                 window.aipDisplayTag.display('kobadoo-com_300x250_4');
                 window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
@@ -77,7 +77,7 @@ const TransitionScreen = (props) => {
     return (
         <div className={classes.TransitionScreen}>
 
-            {(props.showAds) ? 
+            {(props.showAds && props.paused) ? 
                 <React.Fragment>
                     <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
                     <div id='kobadoo-com_160x600_1' className={classes.Ad160x600L} />
@@ -106,7 +106,7 @@ const TransitionScreen = (props) => {
                 </button>
             </div>
 
-            {props.showAds ? <div id='kobadoo-com_300x250_4' className={classes.Ad300x250} /> : null }
+            {props.showAds && props.paused ? <div id='kobadoo-com_300x250_4' className={classes.Ad300x250} /> : null }
             
         </div>
     );

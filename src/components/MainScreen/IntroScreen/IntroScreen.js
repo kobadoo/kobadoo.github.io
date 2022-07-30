@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import classes from './IntroScreen.module.css';
 import { startLevel, changeWatchedVideo } from '../../../store/actions/actions';
 
-const INTERVAL_BEFORE_LEVEL_1 = 3000;
+const INTERVAL_BEFORE_LEVEL_1 = 2000;
 
 const IntroScreen = (props) => {
 
@@ -48,9 +48,6 @@ const IntroScreen = (props) => {
                     AIP_COMPLETE: function () {props.onChangeWatchedVideo(true)}
                 });
             });
-            window.aiptag.cmd.display.push( () => {
-                window.aipDisplayTag.display('kobadoo-com_300x250_3'); 
-            })
         }
         else {
             props.onChangeWatchedVideo(true);
@@ -71,7 +68,6 @@ const IntroScreen = (props) => {
         <div className={classes.IntroScreen}>
             {textMode}
             <h2>Get ready!</h2>
-            { props.showAds ? <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} /> : null }
         </div>
     );
 }

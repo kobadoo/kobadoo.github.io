@@ -1,9 +1,6 @@
 # AdinPlay.com ads.txt - 06-08-21  
 ##################################
 
-#Adsense
-google.com, pub-2852428416753185, DIRECT, f08c47fec0942fa0
-
 #Google
 google.com, pub-3282547114800347, RESELLER, f08c47fec0942fa0
 
