@@ -61,13 +61,20 @@ const restartGame = (state, action) => {
         return score;
     };
 
+    const hasWatchedVideo = level => {
+        if (level > 1)
+            return false;
+        else
+            return true;
+    };
+
     const updatedState = { 
         level: action.value,
         score: getScoreFromLevel(action.value),
         hasLevelStarted: false,
         hasGameEnded: false,
         showIntro: true,
-        watchedVideo: false
+        watchedVideo: hasWatchedVideo(action.value)
     };
     return updateObject(state, updatedState);
 };

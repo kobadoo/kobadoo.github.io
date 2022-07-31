@@ -8,7 +8,7 @@ import {NUMBERS_MODE, FLAGS_MODE, SHAPES_MODE} from '../../../../store/constants
 import { Shape } from '../../../../utils/Modes/Shapes';
 
 const POINTS_PER_CORRECT_ANSWER = 20;
-const INTERVAL_BEFORE_GAME_OVER = 3000;
+const INTERVAL_BEFORE_GAME_OVER = 4000;
 
 const AnswerScreen = (props) => {
 
@@ -97,7 +97,8 @@ const AnswerScreen = (props) => {
                 }
             })}
 
-            {!lostGame ? <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div> : null}
+            {lostGame ? <div className={classes.ItemsLeft}><strong>Ooops!</strong> Wrong one</div> 
+                : <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div>}
 
         </div>
     );

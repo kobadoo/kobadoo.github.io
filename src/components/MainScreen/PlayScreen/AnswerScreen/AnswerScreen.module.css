@@ -44,7 +44,7 @@
  }
 
  .blink_me {
-   animation: blinker 1s linear infinite;
+   animation: blinker 0.3s linear infinite;
  }
  
  .ItemFailed {
