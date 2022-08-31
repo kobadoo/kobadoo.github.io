@@ -2,19 +2,25 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import SlideShow from './SlideShow/SlideShow';
 import AnswerScreen from './AnswerScreen/AnswerScreen';
-import {SHAPES_MODE} from '../../../store/constants';
+import AnswerScreenArithmetic from './AnswerScreen/AnswerScreenArithmetic';
+import {ARITHMETIC_MODE, SHAPES_MODE} from '../../../store/constants';
 
 
 export const MAX_LEVEL = 31;
-const MAX_NUM_EMOJIS = 42;
-const EMOJIS_LEVEL_1 = 2;
-const TOTAL_NUM_EMOJIS = 100;
-const INTERVAL_BETWEEN_EMOJIS_FASTER = 1300;
-const INTERVAL_BETWEEN_EMOJIS_SLOWER = 1600;
+const MAX_NUM_ITEMS = 42;
+const ITEMS_LEVEL_1 = 2;
+const TOTAL_NUM_ITEMS = 100;
+const MIN_NUMBER_ARITHMETIC = -99;
+const RANGE_ITEMS_ARITHMETIC = 199;
+const INTERVAL_BETWEEN_ITEMS_FASTER = 1300;
+const INTERVAL_BETWEEN_ITEMS_SLOWER = 1600;
 const EXTRA_TIME_SHAPES = 700;
+const EXTRA_TIME_ARITHMETIC = 1000;
 const LEVEL_START_SLOWER_INTERVALS = 10;
+const ARITHMETIC_RANGE_SIZE = 50;
+const ARITHMETIC_ITEMS_DISPLAYED = 30;
 
-function getRandomSubarray(arr, size) {
+export function getRandomSubarray(arr, size) {
     var shuffled = arr.slice(0), i = arr.length, min = i - size, temp, index;
     while (i-- > min) {
         index = Math.floor((i + 1) * Math.random());
@@ -27,23 +33,27 @@ function getRandomSubarray(arr, size) {
 
 class PlayScreen extends Component {
 
-    numEmojis = EMOJIS_LEVEL_1 + parseInt((this.props.lvl -1) / 3);
-    totalEmojis = getRandomSubarray([...Array(TOTAL_NUM_EMOJIS).keys()], MAX_NUM_EMOJIS-this.props.lvl+1).sort((a, b) => a - b);
-    intervalBetweenEmojis = (this.props.lvl < LEVEL_START_SLOWER_INTERVALS ? INTERVAL_BETWEEN_EMOJIS_FASTER : INTERVAL_BETWEEN_EMOJIS_SLOWER)
-    + (this.props.mode === SHAPES_MODE ? EXTRA_TIME_SHAPES : 0);
+    numItems = ITEMS_LEVEL_1 + parseInt((this.props.lvl -1) / 3);
+    totalItems = 
+        this.props.mode === ARITHMETIC_MODE ? null
+        : getRandomSubarray([...Array(TOTAL_NUM_ITEMS).keys()], MAX_NUM_ITEMS-this.props.lvl+1).sort((a, b) => a - b);
+    intervalBetweenItems = (this.props.lvl < LEVEL_START_SLOWER_INTERVALS ? INTERVAL_BETWEEN_ITEMS_FASTER : INTERVAL_BETWEEN_ITEMS_SLOWER)
+    + (this.props.mode === SHAPES_MODE ? EXTRA_TIME_SHAPES : (this.props.mode === ARITHMETIC_MODE ? EXTRA_TIME_ARITHMETIC : 0));
     
     state = {
         item: 0,
         showAnswerScreen: false,
-        emojis: [0]
+        itemList: [0]
     }
 
     componentDidMount() {
         this.setState({
-            emojis: getRandomSubarray(this.totalEmojis, this.numEmojis)
+            itemList: 
+                this.props.mode === ARITHMETIC_MODE ? getRandomSubarray([...Array(RANGE_ITEMS_ARITHMETIC).keys()].map(i => i + MIN_NUMBER_ARITHMETIC), this.numItems)
+                : getRandomSubarray(this.totalItems, this.numItems)
         });
         this.timeout = setInterval(() => {
-            if (this.state.item < this.numEmojis - 1) {
+            if (this.state.item < this.numItems - 1) {
                 this.setState(prevState => ({
                     item: prevState.item + 1
                 }));
@@ -52,7 +62,7 @@ class PlayScreen extends Component {
                 this.setState({showAnswerScreen: true})
                 clearInterval(this.timeout);
             }
-        }, this.intervalBetweenEmojis);
+        }, this.intervalBetweenItems);
     }
 
     componentWillUnmount() {
@@ -63,23 +73,49 @@ class PlayScreen extends Component {
         if (!this.state.showAnswerScreen) {
             return (
                 <SlideShow 
-                    emoji={this.state.emojis[this.state.item]}
+                    item={this.state.itemList[this.state.item]}
                     mode={this.props.mode}
                 />
             );
         }
         else {
-            return (
-                <AnswerScreen 
-                    numEmojis={this.numEmojis}
-                    totalEmojis={this.totalEmojis}
-                    emojis={this.state.emojis}
-                    isLastLevel={this.props.lvl === MAX_LEVEL}
-                    mode={this.props.mode}
-               />
-            );
+            if(this.props.mode == ARITHMETIC_MODE) {
+                const correctAnswer = this.state.itemList.reduce((a,b) => a + b, 0);
+                const rangeSeed = getRandomInt(0, ARITHMETIC_RANGE_SIZE);
+                const possibleAnswers = getRandomSubarray([...Array(ARITHMETIC_RANGE_SIZE).keys()].map(i => i + correctAnswer - rangeSeed), ARITHMETIC_ITEMS_DISPLAYED);
+                if (!possibleAnswers.includes(correctAnswer)) {
+                    possibleAnswers.pop();
+                    possibleAnswers.push(correctAnswer);
+                }
+                possibleAnswers.sort(function(a,b) { return a - b; });
+
+                return (
+                    <AnswerScreenArithmetic 
+                        correctAnswer={correctAnswer}
+                        possibleAnswers={possibleAnswers}
+                        isLastLevel={this.props.lvl === MAX_LEVEL}
+                />
+                );
+            }
+            else {
+                return (
+                    <AnswerScreen 
+                        numItems={this.numItems}
+                        totalItems={this.totalItems}
+                        itemList={this.state.itemList}
+                        isLastLevel={this.props.lvl === MAX_LEVEL}
+                        mode={this.props.mode}
+                />
+                );
+            }
         }
     } 
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 const mapStateToProps = state => {

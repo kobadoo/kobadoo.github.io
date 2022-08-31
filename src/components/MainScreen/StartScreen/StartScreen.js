@@ -10,8 +10,10 @@ import BulbImg from '../../../images/bulb.png';
 import GooglePlayImg from '../../../images/google-play-badge.png';
 
 
-
 const StartScreen = (props) => {
+
+    const toggleButtonStyle = {borderLeft: '1px solid rgba(0, 0, 0, 0.12)'};
+    const toggleGroupStyle = {display: 'inline-block'};
 
     useEffect(() => {
         if (props.showAds) {
@@ -46,16 +48,17 @@ const StartScreen = (props) => {
             }
 
             <h3 className={classes.HeaderText}>
-                <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, flags, numbers or geometric shapes.
+                <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, flags, numbers, arithmetic or geometric shapes.
             </h3>
 
             <div>
                 <p className={classes.SelectModeText}>Select a mode</p>
-                <ToggleButtonGroup color='primary' onChange={handleMode} exclusive>
-                    <ToggleButton selected={props.mode === 0} value={0}>Emojis</ToggleButton>
-                    <ToggleButton selected={props.mode === 1} value={1}>Flags</ToggleButton>
-                    <ToggleButton selected={props.mode === 2} value={2}>Numbers</ToggleButton>
-                    <ToggleButton selected={props.mode === 3} value={3}>Shapes</ToggleButton>
+                <ToggleButtonGroup color='primary' onChange={handleMode} exclusive style={toggleGroupStyle}>
+                    <ToggleButton selected={props.mode === 0} value={0} style={toggleButtonStyle}>Emojis</ToggleButton>
+                    <ToggleButton selected={props.mode === 1} value={1} style={toggleButtonStyle}>Flags</ToggleButton>
+                    <ToggleButton selected={props.mode === 2} value={2} style={toggleButtonStyle}>Numbers</ToggleButton>
+                    <ToggleButton selected={props.mode === 3} value={3} style={toggleButtonStyle}>Arithmetic</ToggleButton>
+                    <ToggleButton selected={props.mode === 4} value={4} style={toggleButtonStyle}>Geometric Shapes</ToggleButton>
                 </ToggleButtonGroup>
             </div>
 
@@ -69,8 +72,8 @@ const StartScreen = (props) => {
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={MonkeyImg} />
                 <h3>How does it work?</h3>
-                <p>Select a mode (emojis, flags, numbers or geometric shapes), click on <i>Start Game</i> and <strong>memorize</strong> the items that are displayed.
-                Then <strong>select them in the right order</strong> to be able to reach the next level. It gets more challenging over time! 
+                <p>Select a mode (emojis, flags, numbers, arithmetic or geometric shapes), click on <i>Start Game</i> and <strong>memorize</strong> the items that are displayed.
+                Then <strong>select them in the right order</strong> to be able to reach the next level. In the <strong>arithmetic</strong> mode, sum up all the numbers and select the result. It gets more challenging over time! 
                 <strong> 100% free</strong>, no download or sign up required. <strong>Play on mobile</strong> for the best experience.</p>
             </div>
 

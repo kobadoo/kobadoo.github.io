@@ -11,24 +11,24 @@
 }
 
 .Flags {
-   width: 46px;
-   height: 30px;
-   padding: 2px 2px 8px 2px;
+   width: 138px;
+   height: 90px;
+   padding: 4px 2px 2px 2px;
 }
 
 .Shapes {
-   width: 46px;
-   padding: 2px 2px 4px 2px;
+   width: 110px;
+   padding: 4px 2px 2px 2px;
 }
 
 .Emojis {
-   font-size: 3rem;
+   font-size: 5rem;
 }
 
 .Numbers {
-   font-size: 2rem;
+   font-size: 5rem;
     display: inline-block;
-    padding: 8px;
+    padding: 10px;
 }
 
 .EvenItem {
@@ -71,3 +71,39 @@
     width: inherit;
     font-size: 1.2rem;
  }
+
+ .ItemsList {
+   width: 80%;
+   margin: auto;
+ }
+
+
+ @media only screen and (max-width: 1023px) {
+
+   .ItemsList {
+      width: 100%;
+      margin: auto;
+    }
+   
+
+   .Flags {
+      width: 46px;
+      height: 30px;
+      padding: 2px 2px 8px 2px;
+   }
+
+   .Shapes {
+      width: 46px;
+      padding: 2px 2px 4px 2px;
+   }
+
+   .Emojis {
+      font-size: 3rem;
+   }
+
+   .Numbers {
+      font-size: 2rem;
+      display: inline-block;
+      padding: 8px;
+   }
+}

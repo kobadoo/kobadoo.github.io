@@ -13,13 +13,13 @@ const INTERVAL_BEFORE_GAME_OVER = 4000;
 const AnswerScreen = (props) => {
 
     const [lostGame, setLostGame] = useState(false);
-    const [correctEmojis, setCorrectEmojis] = useState(0);
-    const [disabledEmojis, setDisabledEmojis] = useState([]);
-    const [failedEmoji, setFailedEmoji] = useState(null);
-    const [nextEmoji, setNextEmoji] = useState(null);
+    const [correctItems, setCorrectItems] = useState(0);
+    const [disabledItems, setDisabledItems] = useState([]);
+    const [failedItem, setFailedItem] = useState(null);
+    const [expectedItem, setExpectedItem] = useState(null);
 
     useEffect(() => {
-        if(correctEmojis === props.numEmojis) {            
+        if(correctItems === props.numItems) {            
             if(props.isLastLevel) {
                 props.onEndGame();
             }
@@ -27,19 +27,19 @@ const AnswerScreen = (props) => {
                 props.onLevelPassed();
             }
         }
-    }, [correctEmojis, lostGame, props.showAds]);
+    }, [correctItems]);
 
-    const emojiClickHandler = (index, value) => {
+    const itemClickHandler = (index, value) => {
 
-        if (props.emojis[correctEmojis] === value) {
+        if (props.itemList[correctItems] === value) {
             props.onScoreIncreased(POINTS_PER_CORRECT_ANSWER);
-            setDisabledEmojis(prevList => [...prevList,index]);
-            setCorrectEmojis(prevCount => prevCount + 1 );
+            setDisabledItems(prevList => [...prevList,index]);
+            setCorrectItems(prevCount => prevCount + 1 );
         } 
         else {
             setLostGame(true);
-            setFailedEmoji(value);
-            setNextEmoji(props.emojis[correctEmojis]);
+            setFailedItem(value);
+            setExpectedItem(props.itemList[correctItems]);
             const timeout = setInterval(() => {
                 props.onEndGame();
                 clearInterval(timeout);
@@ -49,9 +49,9 @@ const AnswerScreen = (props) => {
 
     const assignStyle = (value) => {
         switch (value) {
-            case failedEmoji:
+            case failedItem:
                 return classes.ItemFailed;
-            case nextEmoji:
+            case expectedItem:
                 return classes.ItemNext;
             default:
                 return classes.AnswerScreenItem;
@@ -63,31 +63,32 @@ const AnswerScreen = (props) => {
             <div>
                 <h2>Select in the right order</h2>
             </div>
-            {props.totalEmojis.map((value, index) => {
-                if(disabledEmojis.indexOf(index) === -1) {
+            <div className={classes.ItemsList}>
+            {props.totalItems.map((value, index) => {
+                if(disabledItems.indexOf(index) === -1) {
                     switch (props.mode) {
                         case NUMBERS_MODE:
                             return <div 
                                 className={classes.Numbers + ' ' + ((index % 2) ? classes.EvenItem : classes.OddItem ) + ' ' + assignStyle(value) }
-                                onClick={() => emojiClickHandler(index, value)}
+                                onClick={() => itemClickHandler(index, value)}
                                 key={index} 
                                 >{value}</div>
                         case FLAGS_MODE:
                             return <Flag 
                                 className={classes.Flags + ' ' + assignStyle(value)}
-                                clickHandler={() => emojiClickHandler(index, value)}
+                                clickHandler={() => itemClickHandler(index, value)}
                                 key={index} 
                                 num={value} />
                         case SHAPES_MODE:
                             return <Shape 
                                 className={classes.Shapes + ' ' + assignStyle(value)}
-                                clickHandler={() => emojiClickHandler(index, value)}
+                                clickHandler={() => itemClickHandler(index, value)}
                                 key={index} 
                                 num={value} />
                         default: // EMOJIS_MODE
                             return <Emoji 
                                 className={classes.Emojis + ' ' + assignStyle(value)}
-                                clickHandler={() => emojiClickHandler(index, value)}
+                                clickHandler={() => itemClickHandler(index, value)}
                                 key={index} 
                                 num={value} />
                     }
@@ -96,9 +97,10 @@ const AnswerScreen = (props) => {
                     return false;
                 }
             })}
+            </div>
 
             {lostGame ? <div className={classes.ItemsLeft}><strong>Ooops!</strong> Wrong one</div> 
-                : <div className={classes.ItemsLeft}><strong>{props.numEmojis - correctEmojis}</strong> left</div>}
+                : <div className={classes.ItemsLeft}><strong>{props.numItems - correctItems}</strong> left</div>}
 
         </div>
     );

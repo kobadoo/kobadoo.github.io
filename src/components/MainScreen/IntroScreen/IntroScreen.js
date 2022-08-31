@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import classes from './IntroScreen.module.css';
+import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODES, ARITHMETIC_MODE, SHAPES_MODE, NUMBERS_MODE} from '../../../store/constants';
 import { startLevel, changeWatchedVideo } from '../../../store/actions/actions';
 
 const INTERVAL_BEFORE_LEVEL_1 = 2000;
@@ -10,16 +11,19 @@ const IntroScreen = (props) => {
     let textMode = null;
 
     switch(props.mode) {
-      case 1:
+      case FLAGS_MODE:
         textMode = <h1>Memorize these flags in order</h1>;
         break;
-      case 2:
+      case NUMBERS_MODE:
         textMode = <h1>Memorize these numbers in order</h1>;
         break;
-      case 3:
+      case SHAPES_MODE:
         textMode = <h1>Memorize these geometric shapes in order</h1>;
         break;
-      default:
+      case ARITHMETIC_MODE:
+        textMode = <h1>Sum up all these numbers</h1>;
+        break;
+      default: // EMOJIS_MODE
         textMode = <h1>Memorize these emojis in order</h1>
     }
 

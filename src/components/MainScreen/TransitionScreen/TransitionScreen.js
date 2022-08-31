@@ -18,34 +18,34 @@ const OK = 0X1F44D;
 
 const STATS_MAP = [
     99, // level 2
-    97, // level 3
+    94, // level 3
     91, // level 4
-    88, // level 5
-    84, // level 6
-    76, // level 7
-    70, // level 8
-    64, // level 9
-    54, // level 10
-    48, // level 11
-    42, // level 12
-    30, // level 13
-    25, // level 14
-    17, // level 15
-    9, // level 16
-    5, // level 17
-    3, // level 18
-    1, // level 19
-    0.6, // level 20
-    0.1, // level 21
-    0.04, // level 22
-    0.01, // level 23
-    0.006, // level 24
-    0.002, // level 25
-    0.0005, // level 26
-    0.0002, // level 27
-    0.00014, // level 28
-    0.00008, // level 29
-    0.00003, // level 30
+    84, // level 5
+    79, // level 6
+    73, // level 7
+    65, // level 8
+    59, // level 9
+    52, // level 10
+    42, // level 11
+    35, // level 12
+    28, // level 13
+    17, // level 14
+    11, // level 15
+    7, // level 16
+    2, // level 17
+    0.9, // level 18
+    0.4, // level 19
+    0.04, // level 20
+    0.01, // level 21
+    0.006, // level 22
+    0.002, // level 23
+    0.0005, // level 24
+    0.0002, // level 25
+    0.00014, // level 26
+    0.00008, // level 27
+    0.00004, // level 28
+    0.00003, // level 29
+    0.00002, // level 30
     0.00001 // level 31
 ]
 
