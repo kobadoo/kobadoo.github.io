@@ -21,7 +21,7 @@ const IntroScreen = (props) => {
         textMode = <h1>Memorize these geometric shapes in order</h1>;
         break;
       case ARITHMETIC_MODE:
-        textMode = <h1>Sum up all these numbers</h1>;
+        textMode = <h1>Add up all these numbers</h1>;
         break;
       default: // EMOJIS_MODE
         textMode = <h1>Memorize these emojis in order</h1>
