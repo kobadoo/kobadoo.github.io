@@ -20,7 +20,7 @@ const LEVEL_START_SLOWER_INTERVALS = 10;
 const ARITHMETIC_RANGE_SIZE = 50;
 const ARITHMETIC_ITEMS_DISPLAYED = 30;
 
-export function getRandomSubarray(arr, size) {
+function getRandomSubarray(arr, size) {
     var shuffled = arr.slice(0), i = arr.length, min = i - size, temp, index;
     while (i-- > min) {
         index = Math.floor((i + 1) * Math.random());

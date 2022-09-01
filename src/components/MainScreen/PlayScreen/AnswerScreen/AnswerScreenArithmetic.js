@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import classes from './AnswerScreen.module.css';
-import { getRandomSubarray } from '../PlayScreen';
 import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
 
 const POINTS_PER_CORRECT_ANSWER = 20;

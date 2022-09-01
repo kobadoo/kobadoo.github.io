@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { restartGame } from '../../../store/actions/actions';
 import MonkeyImg from '../../../images/monkey.png';
 import { MAX_LEVEL } from '../PlayScreen/PlayScreen';
+import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, SHAPES_MODE} from '../../../store/constants';
+
 
 import classes from './EndScreen.module.css';
 import { 
@@ -33,7 +35,7 @@ const CUP = 0X1F3C6;
 
 const EndScreen = (props) => {
 
-    const QUOTE = 'I reached level ' + props.lvl + ' at Kobadoo memory game! Can you beat me?\n';
+    const QUOTE = 'I reached level ' + props.lvl + ' at Kobadoo ' + getModeName(props.mode) + ' memory game! Can you beat me?\n';
 
     useEffect(() => {
         if (props.showAds) {
@@ -96,10 +98,28 @@ const EndScreen = (props) => {
     );
 }
 
+function getModeName(mode) {
+    switch(mode) {
+        case EMOJIS_MODE:
+            return 'Emojis';
+        case FLAGS_MODE:
+            return 'Flags';
+        case NUMBERS_MODE:
+            return 'Numbers';
+        case ARITHMETIC_MODE:
+            return 'Arithmetic';
+        case SHAPES_MODE:
+            return 'Shapes';  
+        default:
+            return '';
+    }
+  }
+
 const mapStateToProps = state => {
     return {
         lvl: state.level,
         scr: state.score,
+        mode: state.mode,
         showAds: state.showAds
     };
 };
