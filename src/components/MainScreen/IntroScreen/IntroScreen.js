@@ -67,12 +67,17 @@ const IntroScreen = (props) => {
         }
     }
     
-    return (
-        <div className={classes.IntroScreen}>
-            {textMode}
-            <h2>Get ready!</h2>
-        </div>
-    );
+    if (props.watchedVideo) {
+        return (
+            <div className={classes.IntroScreen}>
+                {textMode}
+                <h2>Get ready!</h2>
+            </div>
+        );
+    }
+    else {
+        return null;
+    }
 }
 
 const mapStateToProps = state => {

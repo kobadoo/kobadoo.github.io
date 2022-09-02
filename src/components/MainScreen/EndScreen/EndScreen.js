@@ -41,6 +41,8 @@ const EndScreen = (props) => {
         if (props.showAds) {
             window.aiptag.cmd.display.push( () => {
                 window.aipDisplayTag.display('kobadoo-com_300x100');
+                window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
+                window.aipDisplayTag.display('kobadoo-com_160x600_2');
                 window.aipDisplayTag.display('kobadoo-com_728x90_2'); 
             })
         }
@@ -48,7 +50,14 @@ const EndScreen = (props) => {
 
     return (
         <div className={classes.EndScreen}>
-            { (props.showAds) ? <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} /> : null }
+            { props.showAds ? (
+                <React.Fragment>
+                    <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
+                    <div id='kobadoo-com_160x600_1' className={classes.Ad160x600L} />
+                    <div id='kobadoo-com_160x600_2' className={classes.Ad160x600R} />
+                </React.Fragment>
+                ) : null
+            }
             <div>
                 {(props.lvl === MAX_LEVEL) ? <h2>Game Completed!</h2>: <h2>Game Over!</h2>}
                 {(props.lvl === MAX_LEVEL) ? <span className={classes.Cup}>{String.fromCodePoint(CUP)}</span> : <img className={classes.EndImage} src={MonkeyImg} /> }
