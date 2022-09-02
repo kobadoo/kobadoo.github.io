@@ -53,7 +53,7 @@
  }
 
  .ItemNext {
-    animation: blinker 1s linear infinite;
+    animation: blinker 0.5s linear infinite;
     background-color: lawngreen;
     pointer-events: none;
  }

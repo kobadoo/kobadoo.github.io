@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import classes from './IntroScreen.module.css';
-import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODES, ARITHMETIC_MODE, SHAPES_MODE, NUMBERS_MODE} from '../../../store/constants';
+import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, SHAPES_MODE} from '../../../store/constants';
 import { startLevel, changeWatchedVideo } from '../../../store/actions/actions';
 
 const INTERVAL_BEFORE_LEVEL_1 = 2000;
@@ -40,34 +40,33 @@ const IntroScreen = (props) => {
     }, [props.watchedVideo]);
 
     useEffect(() => {
-        if(props.showAds) {
-            window.aiptag.cmd.player.push(function() {
-                window.aiptag.adplayer = new window.aipPlayer({
-                    AD_WIDTH: 960,
-                    AD_HEIGHT: 540,
-                    AD_DISPLAY: 'fullscreen', //default, fullscreen, center, fill
-                    TRUSTED: true,
-                    LOADING_TEXT: 'loading advertisement',
-                    PREROLL_ELEM: function() {return document.getElementById('preroll')},
-                    AIP_COMPLETE: function () {props.onChangeWatchedVideo(true)}
-                });
-            });
-        }
-        else {
+        if(!props.showAds) {
             props.onChangeWatchedVideo(true);
         }
     }, [props.showAds]);
 
-    useEffect(() => {
-        if (props.showAds && !props.watchedVideo) {
-            if (typeof window.aiptag.adplayer !== 'undefined') {
-                window.aiptag.cmd.player.push(function() { window.aiptag.adplayer.startPreRoll(); });
-            } else {
-                props.onChangeWatchedVideo(true);
-            }
-        }
-    }, [props.showAds, props.watchedVideo]);
+    if(props.showAds) {
+        window.aiptag.cmd.player.push(function() {
+            window.aiptag.adplayer = new window.aipPlayer({
+                AD_WIDTH: 960,
+                AD_HEIGHT: 540,
+                AD_DISPLAY: 'fullscreen', //default, fullscreen, center, fill
+                TRUSTED: true,
+                LOADING_TEXT: 'loading advertisement',
+                PREROLL_ELEM: function() {return document.getElementById('preroll')},
+                AIP_COMPLETE: function () {props.onChangeWatchedVideo(true)}
+            });
+        });
+    }
 
+    if (props.showAds && !props.watchedVideo) {
+        if (typeof window.aiptag.adplayer !== 'undefined') {
+            window.aiptag.cmd.player.push(function() { window.aiptag.adplayer.startPreRoll(); });
+        } else {
+            props.onChangeWatchedVideo(true);
+        }
+    }
+    
     return (
         <div className={classes.IntroScreen}>
             {textMode}
