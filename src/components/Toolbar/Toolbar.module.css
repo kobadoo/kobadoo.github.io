@@ -3,13 +3,19 @@
     width: 100%;
     position: fixed;
     top: 0;
-    left: 0;
     background-color: aquamarine;
     display: flex;
-    justify-content:space-evenly;
     align-items: center;
     box-sizing: border-box;
     z-index: 100;
+}
+
+.GameStats {
+    justify-content: space-evenly;
+    position: fixed;
+    right: 10px;
+    display: flex;
+    width: 220px;
 }
 
 .ToolbarItem {
@@ -21,6 +27,8 @@
     font-weight: 800;
     font-size: 1.3rem;
     color:teal;
+    position: fixed;
+    left: 20px;
 }
 
 .Logo a {

@@ -10,8 +10,12 @@ const APP_NAME = 'KOBADOO';
 const toolbar = (props) => (
     <div className={classes.Toolbar}>
         <div className={classes.Logo} onClick={props.onAbortGame}><Link to="/">{APP_NAME}</Link></div>
-        <div className={classes.ToolbarItem}>Level: <strong>{props.lvl} / {MAX_LEVEL}</strong></div>
-        <div className={classes.ToolbarItem}>Score: <strong>{props.scr}</strong></div>
+        { (props.hasStarted || props.lvl > 1) ? 
+            <div className={classes.GameStats}>
+                <div className={classes.ToolbarItem}>Level: <strong>{props.lvl} / {MAX_LEVEL}</strong></div>
+                <div className={classes.ToolbarItem}>Score: <strong>{props.scr}</strong></div>
+            </div>
+        : null }
     </div>
 );
 
@@ -19,7 +23,8 @@ const mapStateToProps = state => {
     return {
         lvl: state.level,
         scr: state.score,
-        mode: state.mode
+        mode: state.mode,
+        hasStarted: state.hasLevelStarted
     };
 };
 
