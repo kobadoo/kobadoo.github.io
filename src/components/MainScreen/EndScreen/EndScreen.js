@@ -107,7 +107,7 @@ const EndScreen = (props) => {
     );
 }
 
-function getModeName(mode) {
+export function getModeName(mode) {
     switch(mode) {
         case EMOJIS_MODE:
             return 'Emojis';

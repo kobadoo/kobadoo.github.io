@@ -31,6 +31,11 @@
     left: 20px;
 }
 
+.Logo a {
+    color:teal;
+    text-decoration: none;
+}
+
 .SubLogo {
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
@@ -40,7 +45,17 @@
     left: 140px;
 }
 
-.Logo a {
-    color:teal;
-    text-decoration: none;
+.Mode {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: teal;
+    position: fixed;
+    left: 140px;
+}
+
+@media only screen and (max-width: 1023px) {
+    .Mode {
+        display: none;
+    }
 }
