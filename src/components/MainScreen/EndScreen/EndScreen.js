@@ -122,7 +122,7 @@ export function getModeName(mode) {
         default:
             return '';
     }
-  }
+}
 
 const mapStateToProps = state => {
     return {
