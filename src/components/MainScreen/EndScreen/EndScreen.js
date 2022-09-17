@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { restartGame } from '../../../store/actions/actions';
 import MonkeyImg from '../../../images/monkey.png';
 import { MAX_LEVEL } from '../PlayScreen/PlayScreen';
-import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, SHAPES_MODE} from '../../../store/constants';
+import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, SHAPES_MODE, POKER_MODE} from '../../../store/constants';
 
 
 import classes from './EndScreen.module.css';
@@ -119,6 +119,8 @@ export function getModeName(mode) {
             return 'Arithmetic';
         case SHAPES_MODE:
             return 'Shapes';  
+        case POKER_MODE:
+            return 'Poker Cards';  
         default:
             return '';
     }

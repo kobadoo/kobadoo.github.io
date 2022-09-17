@@ -48,13 +48,14 @@ const StartScreen = (props) => {
             }
 
             <h3 className={classes.HeaderText}>
-                <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, flags, numbers, arithmetic or geometric shapes.
+                <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, poker cards, flags, numbers, arithmetic or geometric shapes.
             </h3>
 
             <div>
                 <p className={classes.SelectModeText}>Select a mode</p>
                 <ToggleButtonGroup color='primary' onChange={handleMode} exclusive style={toggleGroupStyle}>
                     <ToggleButton selected={props.mode === 0} value={0} style={toggleButtonStyle}>Emojis</ToggleButton>
+                    <ToggleButton selected={props.mode === 5} value={5} style={toggleButtonStyle}>Poker Cards</ToggleButton>
                     <ToggleButton selected={props.mode === 1} value={1} style={toggleButtonStyle}>Flags</ToggleButton>
                     <ToggleButton selected={props.mode === 2} value={2} style={toggleButtonStyle}>Numbers</ToggleButton>
                     <ToggleButton selected={props.mode === 3} value={3} style={toggleButtonStyle}>Arithmetic</ToggleButton>
@@ -72,7 +73,7 @@ const StartScreen = (props) => {
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={MonkeyImg} />
                 <h3>How does it work?</h3>
-                <p>Select a mode (emojis, flags, numbers, arithmetic or geometric shapes), click on <i>Start Game</i> and <strong>memorize</strong> the items that are displayed.
+                <p>Select a mode (emojis, poker cards, flags, numbers, arithmetic or geometric shapes), click on <i>Start Game</i> and <strong>memorize</strong> the items that are displayed.
                 Then <strong>select them in the right order</strong> to be able to reach the next level. In the <strong>arithmetic</strong> mode, sum up all the numbers and select the result. It gets more challenging over time! 
                 <strong> 100% free</strong>, no download or sign up required. <strong>Play on mobile</strong> for the best experience.</p>
             </div>

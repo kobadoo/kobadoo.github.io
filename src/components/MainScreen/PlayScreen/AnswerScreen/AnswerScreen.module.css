@@ -16,6 +16,11 @@
    padding: 4px 2px 2px 2px;
 }
 
+.PokerCard {
+   width: 103px;
+   padding: 4px 2px 2px 2px;
+}
+
 .Shapes {
    width: 110px;
    padding: 4px 2px 2px 2px;
@@ -90,6 +95,11 @@
       width: 46px;
       height: 30px;
       padding: 2px 2px 8px 2px;
+   }
+
+   .PokerCard {
+      width: 43px;
+      padding: 1px 2px 1px 2px;
    }
 
    .Shapes {

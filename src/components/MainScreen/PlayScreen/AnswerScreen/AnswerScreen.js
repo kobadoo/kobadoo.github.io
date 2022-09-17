@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import classes from './AnswerScreen.module.css';
 import Emoji from '../../../../utils/Modes/Emoji';
 import {Flag} from '../../../../utils/Modes/Flag';
-import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
-import {NUMBERS_MODE, FLAGS_MODE, SHAPES_MODE} from '../../../../store/constants'
 import { Shape } from '../../../../utils/Modes/Shapes';
+import { PokerCard } from '../../../../utils/Modes/PokerCard';
+import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
+import {NUMBERS_MODE, FLAGS_MODE, SHAPES_MODE, POKER_MODE} from '../../../../store/constants'
 
 const POINTS_PER_CORRECT_ANSWER = 20;
 const INTERVAL_BEFORE_GAME_OVER = 4000;
@@ -82,6 +83,12 @@ const AnswerScreen = (props) => {
                         case SHAPES_MODE:
                             return <Shape 
                                 className={classes.Shapes + ' ' + assignStyle(value)}
+                                clickHandler={() => itemClickHandler(index, value)}
+                                key={index} 
+                                num={value} />
+                        case POKER_MODE:
+                            return <PokerCard 
+                                className={classes.PokerCard + ' ' + assignStyle(value)}
                                 clickHandler={() => itemClickHandler(index, value)}
                                 key={index} 
                                 num={value} />

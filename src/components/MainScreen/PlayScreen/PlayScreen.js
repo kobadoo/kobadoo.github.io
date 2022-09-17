@@ -3,18 +3,20 @@ import { connect } from 'react-redux';
 import SlideShow from './SlideShow/SlideShow';
 import AnswerScreen from './AnswerScreen/AnswerScreen';
 import AnswerScreenArithmetic from './AnswerScreen/AnswerScreenArithmetic';
-import {ARITHMETIC_MODE, SHAPES_MODE} from '../../../store/constants';
+import {ARITHMETIC_MODE, POKER_MODE, SHAPES_MODE} from '../../../store/constants';
 
 
 export const MAX_LEVEL = 31;
 const MAX_NUM_ITEMS = 42;
 const ITEMS_LEVEL_1 = 2;
 const TOTAL_NUM_ITEMS = 100;
+const TOTAL_NUM_ITEMS_POKER = 52;
 const MIN_NUMBER_ARITHMETIC = -99;
 const RANGE_ITEMS_ARITHMETIC = 199;
 const INTERVAL_BETWEEN_ITEMS_FASTER = 1300;
 const INTERVAL_BETWEEN_ITEMS_SLOWER = 1600;
 const EXTRA_TIME_SHAPES = 700;
+const EXTRA_TIME_POKER = 700;
 const EXTRA_TIME_ARITHMETIC = 1000;
 const LEVEL_START_SLOWER_INTERVALS = 10;
 const ARITHMETIC_RANGE_SIZE = 50;
@@ -34,11 +36,12 @@ function getRandomSubarray(arr, size) {
 class PlayScreen extends Component {
 
     numItems = ITEMS_LEVEL_1 + parseInt((this.props.lvl -1) / 3);
+    totalNumItems = this.props.mode === POKER_MODE ? TOTAL_NUM_ITEMS_POKER : TOTAL_NUM_ITEMS;
     totalItems = 
         this.props.mode === ARITHMETIC_MODE ? null
-        : getRandomSubarray([...Array(TOTAL_NUM_ITEMS).keys()], MAX_NUM_ITEMS-this.props.lvl+1).sort((a, b) => a - b);
+        : getRandomSubarray([...Array(this.totalNumItems).keys()], MAX_NUM_ITEMS-this.props.lvl+1).sort((a, b) => a - b);
     intervalBetweenItems = (this.props.lvl < LEVEL_START_SLOWER_INTERVALS ? INTERVAL_BETWEEN_ITEMS_FASTER : INTERVAL_BETWEEN_ITEMS_SLOWER)
-    + (this.props.mode === SHAPES_MODE ? EXTRA_TIME_SHAPES : (this.props.mode === ARITHMETIC_MODE ? EXTRA_TIME_ARITHMETIC : 0));
+    + (this.props.mode === SHAPES_MODE ? EXTRA_TIME_SHAPES : (this.props.mode === POKER_MODE ? EXTRA_TIME_POKER : (this.props.mode === ARITHMETIC_MODE ? EXTRA_TIME_ARITHMETIC : 0)));
     
     state = {
         item: 0,
