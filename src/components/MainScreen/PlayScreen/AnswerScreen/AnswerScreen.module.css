@@ -47,10 +47,6 @@
 .AnswerScreenItem {
     cursor:pointer
  }
-
- .blink_me {
-   animation: blinker 0.3s linear infinite;
- }
  
  .ItemFailed {
     background-color: red;
@@ -113,7 +109,6 @@
 
    .Numbers {
       font-size: 2rem;
-      display: inline-block;
       padding: 8px;
    }
 }
