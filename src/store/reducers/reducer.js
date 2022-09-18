@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../utils/objectUpdater';
-import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODES, ARITHMETIC_MODE, SHAPES_MODE, POKER_MODE} from '../constants';
+import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODES, ARITHMETIC_MODE, SHAPES_MODE, CARDS_MODE} from '../constants';
 
 const initialState = {
     level: 1,

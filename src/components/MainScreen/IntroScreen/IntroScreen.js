@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import classes from './IntroScreen.module.css';
-import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, SHAPES_MODE, POKER_MODE} from '../../../store/constants';
+import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, SHAPES_MODE, CARDS_MODE} from '../../../store/constants';
 import { startLevel, changeWatchedVideo } from '../../../store/actions/actions';
 
 const INTERVAL_BEFORE_LEVEL_1 = 2000;
@@ -23,8 +23,8 @@ const IntroScreen = (props) => {
       case ARITHMETIC_MODE:
         textMode = <h1>Add up all these numbers</h1>;
         break;
-      case POKER_MODE:
-        textMode = <h1>Memorize these poker cards in order</h1>;
+      case CARDS_MODE:
+        textMode = <h1>Memorize these playing cards in order</h1>;
         break;
       default: // EMOJIS_MODE
         textMode = <h1>Memorize these emojis in order</h1>

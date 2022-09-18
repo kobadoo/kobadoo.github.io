@@ -4,8 +4,8 @@ import classes from './SlideShow.module.css';
 import Emoji from '../../../../utils/Modes/Emoji';
 import {Flag, Label} from '../../../../utils/Modes/Flag';
 import {Shape, ShapeName} from '../../../../utils/Modes/Shapes';
-import {PokerCard, PokerCardLabel} from '../../../../utils/Modes/PokerCard';
-import {NUMBERS_MODE, FLAGS_MODE, ARITHMETIC_MODE, SHAPES_MODE, POKER_MODE} from '../../../../store/constants'
+import {PlayingCard, PlayingCardLabel} from '../../../../utils/Modes/Card';
+import {NUMBERS_MODE, FLAGS_MODE, ARITHMETIC_MODE, SHAPES_MODE, CARDS_MODE} from '../../../../store/constants'
 
 const slideShow = (props) => {
 
@@ -28,11 +28,11 @@ const slideShow = (props) => {
                     <Shape className={classes.SlideShowFont+ ' ' + classes.Shapes} num={props.item} />
                     <ShapeName className={classes.ShapeLabel} num={props.item} />
                 </div>);
-        case POKER_MODE:
+        case CARDS_MODE:
             return (
                 <div className={classes.SlideShowScreen}>
-                    <PokerCard className={classes.SlideShowFont+ ' ' + classes.PokerCard} num={props.item} />
-                    <PokerCardLabel className={classes.PokerCardLabel} num={props.item} />
+                    <PlayingCard className={classes.SlideShowFont+ ' ' + classes.PlayingCard} num={props.item} />
+                    <PlayingCardLabel className={classes.PlayingCardLabel} num={props.item} />
                 </div>);
         default: // EMOJIS_MODE
             return (

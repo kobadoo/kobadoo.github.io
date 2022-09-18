@@ -4,9 +4,9 @@ import classes from './AnswerScreen.module.css';
 import Emoji from '../../../../utils/Modes/Emoji';
 import {Flag} from '../../../../utils/Modes/Flag';
 import { Shape } from '../../../../utils/Modes/Shapes';
-import { PokerCard } from '../../../../utils/Modes/PokerCard';
+import { PlayingCard } from '../../../../utils/Modes/Card';
 import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
-import {NUMBERS_MODE, FLAGS_MODE, SHAPES_MODE, POKER_MODE} from '../../../../store/constants'
+import {NUMBERS_MODE, FLAGS_MODE, SHAPES_MODE, CARDS_MODE} from '../../../../store/constants'
 
 const POINTS_PER_CORRECT_ANSWER = 20;
 const INTERVAL_BEFORE_GAME_OVER = 4000;
@@ -86,9 +86,9 @@ const AnswerScreen = (props) => {
                                 clickHandler={() => itemClickHandler(index, value)}
                                 key={index} 
                                 num={value} />
-                        case POKER_MODE:
-                            return <PokerCard 
-                                className={classes.PokerCard + ' ' + assignStyle(value)}
+                        case CARDS_MODE:
+                            return <PlayingCard 
+                                className={classes.PlayingCard + ' ' + assignStyle(value)}
                                 clickHandler={() => itemClickHandler(index, value)}
                                 key={index} 
                                 num={value} />

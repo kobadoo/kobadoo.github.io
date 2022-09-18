@@ -4,4 +4,4 @@ export const FLAGS_MODE = 1;
 export const NUMBERS_MODE = 2;
 export const ARITHMETIC_MODE = 3;
 export const SHAPES_MODE = 4;
-export const POKER_MODE = 5;
+export const CARDS_MODE = 5;

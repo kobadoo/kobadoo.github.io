@@ -24,14 +24,14 @@
     font-size: 3rem;
 }
 
-.PokerCard {
+.PlayingCard {
     border: 1px solid black;
     width: 275px;
  }
 
-.PokerCardLabel {
+.PlayingCardLabel {
     display: block;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
 }
 
 .Shapes {
