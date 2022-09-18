@@ -7,6 +7,7 @@ import { changeMode, showIntro } from '../../../store/actions/actions';
 import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
 import BulbImg from '../../../images/bulb.png';
+import ModesImg from '../../../images/modes.png';
 import GooglePlayImg from '../../../images/google-play-badge.png';
 
 
@@ -19,6 +20,7 @@ const StartScreen = (props) => {
         if (props.showAds) {
             window.aiptag.cmd.display.push( () => {
                 window.aipDisplayTag.display('kobadoo-com_300x100'); 
+                window.aipDisplayTag.display('kobadoo-com_300x250_1');
                 window.aipDisplayTag.display('kobadoo-com_300x250_2');
                 window.aipDisplayTag.display('kobadoo-com_300x250_3');
                 window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
@@ -69,11 +71,19 @@ const StartScreen = (props) => {
                     onClick={props.onStartGame}>Start Game</button>
                 <a href="https://play.google.com/store/apps/details?id=com.kobadoo" target="_new"><img className={classes.GooglePlayButton} src={GooglePlayImg} /></a>
             </div>
+
+            <div className={classes.BenefitsText}>
+                <img className={classes.ModesImage} src={ModesImg} />
+                <h3>Six game modes</h3>
+                <p>You can practice your working memory with six different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>flags</strong> of the world, <strong>numbers</strong>, <strong>arithmetic</strong> calculations or coloured geometric <strong>shapes</strong>.</p>
+            </div>
+
+            { props.showAds ? <div id='kobadoo-com_300x250_1' className={classes.Ad300x250} /> : null }
             
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={MonkeyImg} />
                 <h3>How does it work?</h3>
-                <p>Select a mode (emojis, playing cards, flags, numbers, arithmetic or geometric shapes), click on <i>Start Game</i> and <strong>memorize</strong> the items that are displayed.
+                <p>Select a mode, click on <i>Start Game</i> and <strong>memorize</strong> the items that are displayed.
                 Then <strong>select them in the right order</strong> to be able to reach the next level. In the <strong>arithmetic</strong> mode, sum up all the numbers and select the result. It gets more challenging over time! 
                 <strong> 100% free</strong>, no download or sign up required. <strong>Play on mobile</strong> for the best experience.</p>
             </div>

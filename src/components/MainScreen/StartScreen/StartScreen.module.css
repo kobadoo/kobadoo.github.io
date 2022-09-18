@@ -90,6 +90,12 @@
     margin-bottom: 10px;
 }
 
+.ModesImage {
+    display: inline-block;
+    width: 600px;
+    margin-bottom: 10px;
+}
+
 .Ad300x100 {
     display: none;
 }
@@ -124,6 +130,14 @@
 }
 
 @media only screen and (max-width: 1023px) {
+
+    .ModesImage {
+        display: inline-block;
+        width: 350px;
+        margin-bottom: 10px;
+        margin-left: -5px;
+    }
+
     .Ad300x100 {
       display: block;
       height: 100px;
