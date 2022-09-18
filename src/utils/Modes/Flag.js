@@ -106,8 +106,8 @@ const FLAG_MAP = [
 
 export const Flag = (props) => (
     <span role="img" onClick={props.clickHandler}>
-        <img className={props.className}
-            src={images('./' + FLAG_MAP[props.num].code + '.png').default} />
+        <img className={props.className} alt={FLAG_MAP[props.num].name}
+            src={images('./' + FLAG_MAP[props.num].code + '.png')} />
     </span>
 );
 

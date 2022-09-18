@@ -60,7 +60,7 @@ const EndScreen = (props) => {
             }
             <div>
                 {(props.lvl === MAX_LEVEL) ? <h2>Game Completed!</h2>: <h2>Game Over!</h2>}
-                {(props.lvl === MAX_LEVEL) ? <span className={classes.Cup}>{String.fromCodePoint(CUP)}</span> : <img className={classes.EndImage} src={MonkeyImg} /> }
+                {(props.lvl === MAX_LEVEL) ? <span className={classes.Cup}>{String.fromCodePoint(CUP)}</span> : <img className={classes.EndImage} src={MonkeyImg} alt="" /> }
                 <h3>Level: <div className={classes.Results}>{props.lvl} / {MAX_LEVEL}</div></h3>
                 <h3>Score: <div className={classes.Results}>{props.scr}</div></h3>
                 { props.lvl < 4 ? <div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>bad memory</div>, like a <div className={classes.AnimalName}>goldfish</div> <span>{String.fromCodePoint(GOLDFISH)}</span></div> :
@@ -120,7 +120,7 @@ export function getModeName(mode) {
         case SHAPES_MODE:
             return 'Shapes';  
         case CARDS_MODE:
-            return 'Playing Cards';  
+            return 'Cards';  
         default:
             return '';
     }

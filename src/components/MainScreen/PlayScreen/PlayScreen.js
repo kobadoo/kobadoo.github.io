@@ -82,7 +82,7 @@ class PlayScreen extends Component {
             );
         }
         else {
-            if(this.props.mode == ARITHMETIC_MODE) {
+            if(this.props.mode === ARITHMETIC_MODE) {
                 const correctAnswer = this.state.itemList.reduce((a,b) => a + b, 0);
                 const rangeSeed = getRandomInt(0, ARITHMETIC_RANGE_SIZE);
                 const possibleAnswers = getRandomSubarray([...Array(ARITHMETIC_RANGE_SIZE).keys()].map(i => i + correctAnswer - rangeSeed), ARITHMETIC_ITEMS_DISPLAYED);

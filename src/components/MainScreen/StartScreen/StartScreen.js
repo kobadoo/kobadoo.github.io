@@ -69,11 +69,11 @@ const StartScreen = (props) => {
                 <button 
                     className={classes.StartButton} 
                     onClick={props.onStartGame}>Start Game</button>
-                <a href="https://play.google.com/store/apps/details?id=com.kobadoo" target="_new"><img className={classes.GooglePlayButton} src={GooglePlayImg} /></a>
+                <a href="https://play.google.com/store/apps/details?id=com.kobadoo" target="_new"><img className={classes.GooglePlayButton} src={GooglePlayImg} alt="Google Play"/></a>
             </div>
 
             <div className={classes.BenefitsText}>
-                <img className={classes.ModesImage} src={ModesImg} />
+                <img className={classes.ModesImage} src={ModesImg} alt="" />
                 <h3>Six game modes</h3>
                 <p>You can practice your working memory with six different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>two-digit numbers</strong>, <strong>arithmetic</strong> calculations, <strong>flags</strong> of the world or coloured geometric <strong>shapes</strong>.</p>
             </div>
@@ -81,7 +81,7 @@ const StartScreen = (props) => {
             { props.showAds ? <div id='kobadoo-com_300x250_1' className={classes.Ad300x250} /> : null }
             
             <div className={classes.BenefitsText}>
-                <img className={classes.StartImage} src={MonkeyImg} />
+                <img className={classes.StartImage} src={MonkeyImg} alt="" />
                 <h3>How does it work?</h3>
                 <p>Select a mode, click on <i>Start Game</i> and <strong>memorize</strong> the items that are displayed.
                 Then <strong>select them in the right order</strong> to be able to reach the next level. In the <strong>arithmetic</strong> mode, sum up all the numbers and select the result. It gets more challenging over time! 
@@ -91,7 +91,7 @@ const StartScreen = (props) => {
             { props.showAds ? <div id='kobadoo-com_300x250' className={classes.Ad300x250} /> : null }
 
             <div className={classes.BenefitsText}>
-                <img className={classes.StartImage} src={BulbImg} />
+                <img className={classes.StartImage} src={BulbImg} alt="" />
                 <h3>What is <i>working memory</i>?</h3>
                 <p>Working memory is a form of short-term memory, where you temporarily hold information in your mind while processing it. When you play <i>Kobadoo</i> you are actively using your working memory. There are several scientific studies that suggest training of working memory has <strong>beneficial effects</strong> and can <strong>increase your cognitive functions</strong>. You can learn more about working memory on <a href="https://blog.kobadoo.com/2022/02/what-is-working-memory-how-to-train-it.html" target="_new">this blog post</a></p>
             </div>
@@ -99,7 +99,7 @@ const StartScreen = (props) => {
             { props.showAds ? <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} /> : null }
 
             <div className={classes.BenefitsText}>
-                <img className={classes.StartImage} src={TrainImg} />
+                <img className={classes.StartImage} src={TrainImg} alt="" />
                 <h3>Why should you train your <i>working memory</i>?</h3>
                 <p>Some programs to train the working memory have shown improvements in everyday functioning, including your <strong>concentration</strong>. It can be especially beneficial to some clinical groups like people with ADHD [<a href="https://www.sciencedirect.com/science/article/abs/pii/S0890856709614271" target="_new">1</a>] [<a href="https://www.tandfonline.com/doi/abs/10.1080/15374416.2010.517162" target="_new">2</a>] [<a href="https://www.tandfonline.com/doi/abs/10.1076/jcen.24.6.781.8395" target="_new">3</a>], that suffer impaired working memory and inattentiveness. One example is the possibility to improve the <strong>school performance</strong> of children with ADHD.
                    Some adults have also improved their brain functions through this kind of exercises [<a href="https://psycnet.apa.org/record/2011-13119-001" target="_new">4</a>] [<a href="https://psycnet.apa.org/record/2017-10607-007" target="_new">5</a>]. Finally, some studies [<a href="https://www.sciencedirect.com/science/article/abs/pii/S0149763413000158" target="_new">6</a>] [<a href="https://www.mitpressjournals.org/doi/full/10.1162/jocn_a_00478" target="_new">7</a>] suggest that training your working memory can <strong>improve your mood</strong> by releasing dopamine in the brain.</p>

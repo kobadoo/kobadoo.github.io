@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import classes from './IntroScreen.module.css';
-import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, SHAPES_MODE, CARDS_MODE} from '../../../store/constants';
+import {FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, SHAPES_MODE, CARDS_MODE} from '../../../store/constants';
 import { startLevel, changeWatchedVideo } from '../../../store/actions/actions';
 
 const INTERVAL_BEFORE_LEVEL_1 = 2000;

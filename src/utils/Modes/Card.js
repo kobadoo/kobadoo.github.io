@@ -58,8 +58,8 @@ const PLAYING_CARD_MAP = [
 
 export const PlayingCard = (props) => (
     <span role="img" onClick={props.clickHandler}>
-        <img className={props.className}
-            src={images('./' + PLAYING_CARD_MAP[props.num].file_name + '.png').default} />
+        <img className={props.className} alt={PLAYING_CARD_MAP[props.num].name}
+            src={images('./' + PLAYING_CARD_MAP[props.num].file_name + '.png')} />
     </span>
 );
 

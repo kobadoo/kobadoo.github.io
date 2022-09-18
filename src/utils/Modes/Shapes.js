@@ -106,8 +106,8 @@ const SHAPE_MAP = [
 
 export const Shape = (props) => (
     <span role="img" onClick={props.clickHandler}>
-        <img className={props.className}
-            src={images('./' + (SHAPE_MAP[props.num].shape + '-' + SHAPE_MAP[props.num].colour).toLowerCase() + '.png').default} />
+        <img className={props.className} alt={SHAPE_MAP[props.num].colour + ' ' + SHAPE_MAP[props.num].shape}
+            src={images('./' + (SHAPE_MAP[props.num].shape + '-' + SHAPE_MAP[props.num].colour).toLowerCase() + '.png')} />
     </span>
 );
 
