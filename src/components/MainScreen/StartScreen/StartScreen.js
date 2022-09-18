@@ -50,18 +50,18 @@ const StartScreen = (props) => {
             }
 
             <h3 className={classes.HeaderText}>
-                <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, playing cards, flags, numbers, arithmetic or geometric shapes.
+                <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, playing cards, numbers, arithmetic calculations, flags or geometric shapes.
             </h3>
 
             <div>
                 <p className={classes.SelectModeText}>Select a mode</p>
                 <ToggleButtonGroup color='primary' onChange={handleMode} exclusive style={toggleGroupStyle}>
                     <ToggleButton selected={props.mode === 0} value={0} style={toggleButtonStyle}>Emojis</ToggleButton>
-                    <ToggleButton selected={props.mode === 5} value={5} style={toggleButtonStyle}>Playing Cards</ToggleButton>
-                    <ToggleButton selected={props.mode === 1} value={1} style={toggleButtonStyle}>Flags</ToggleButton>
+                    <ToggleButton selected={props.mode === 5} value={5} style={toggleButtonStyle}>Cards</ToggleButton>
                     <ToggleButton selected={props.mode === 2} value={2} style={toggleButtonStyle}>Numbers</ToggleButton>
                     <ToggleButton selected={props.mode === 3} value={3} style={toggleButtonStyle}>Arithmetic</ToggleButton>
-                    <ToggleButton selected={props.mode === 4} value={4} style={toggleButtonStyle}>Geometric Shapes</ToggleButton>
+                    <ToggleButton selected={props.mode === 1} value={1} style={toggleButtonStyle}>Flags</ToggleButton>
+                    <ToggleButton selected={props.mode === 4} value={4} style={toggleButtonStyle}>Shapes</ToggleButton>
                 </ToggleButtonGroup>
             </div>
 
@@ -75,7 +75,7 @@ const StartScreen = (props) => {
             <div className={classes.BenefitsText}>
                 <img className={classes.ModesImage} src={ModesImg} />
                 <h3>Six game modes</h3>
-                <p>You can practice your working memory with six different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>flags</strong> of the world, <strong>numbers</strong>, <strong>arithmetic</strong> calculations or coloured geometric <strong>shapes</strong>.</p>
+                <p>You can practice your working memory with six different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>two-digit numbers</strong>, <strong>arithmetic</strong> calculations, <strong>flags</strong> of the world or coloured geometric <strong>shapes</strong>.</p>
             </div>
 
             { props.showAds ? <div id='kobadoo-com_300x250_1' className={classes.Ad300x250} /> : null }
