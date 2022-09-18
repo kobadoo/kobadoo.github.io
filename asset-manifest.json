@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.40f9d556.chunk.css",
-    "main.js": "/static/js/main.a3cab7ba.chunk.js",
-    "main.js.map": "/static/js/main.a3cab7ba.chunk.js.map",
+    "main.css": "/static/css/main.7ab0a469.chunk.css",
+    "main.js": "/static/js/main.bb7e25c9.chunk.js",
+    "main.js.map": "/static/js/main.bb7e25c9.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.4e3e448d.js",
     "runtime-main.js.map": "/static/js/runtime-main.4e3e448d.js.map",
-    "static/js/2.d072fe6e.chunk.js": "/static/js/2.d072fe6e.chunk.js",
-    "static/js/2.d072fe6e.chunk.js.map": "/static/js/2.d072fe6e.chunk.js.map",
+    "static/js/2.4b3d4017.chunk.js": "/static/js/2.4b3d4017.chunk.js",
+    "static/js/2.4b3d4017.chunk.js.map": "/static/js/2.4b3d4017.chunk.js.map",
     "static/js/3.37fcb807.chunk.js": "/static/js/3.37fcb807.chunk.js",
     "static/js/3.37fcb807.chunk.js.map": "/static/js/3.37fcb807.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/main.40f9d556.chunk.css.map": "/static/css/main.40f9d556.chunk.css.map",
-    "static/js/2.d072fe6e.chunk.js.LICENSE.txt": "/static/js/2.d072fe6e.chunk.js.LICENSE.txt",
+    "static/css/main.7ab0a469.chunk.css.map": "/static/css/main.7ab0a469.chunk.css.map",
+    "static/js/2.4b3d4017.chunk.js.LICENSE.txt": "/static/js/2.4b3d4017.chunk.js.LICENSE.txt",
     "static/media/ace_of_spades.png": "/static/media/ace_of_spades.54944162.png",
     "static/media/bulb.cade1cbf.png": "/static/media/bulb.cade1cbf.png",
     "static/media/google-play-badge.f902960a.png": "/static/media/google-play-badge.f902960a.png",
@@ -23,6 +23,7 @@
     "static/media/king_of_diamonds.png": "/static/media/king_of_diamonds.d4084602.png",
     "static/media/king_of_hearts.png": "/static/media/king_of_hearts.8eb74959.png",
     "static/media/king_of_spades.png": "/static/media/king_of_spades.5b4c79a7.png",
+    "static/media/modes.81869fd6.png": "/static/media/modes.81869fd6.png",
     "static/media/monkey.6c594cbd.png": "/static/media/monkey.6c594cbd.png",
     "static/media/queen_of_clubs.png": "/static/media/queen_of_clubs.f07f8b7b.png",
     "static/media/queen_of_diamonds.png": "/static/media/queen_of_diamonds.0899aab5.png",
@@ -33,8 +34,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.4e3e448d.js",
-    "static/js/2.d072fe6e.chunk.js",
-    "static/css/main.40f9d556.chunk.css",
-    "static/js/main.a3cab7ba.chunk.js"
+    "static/js/2.4b3d4017.chunk.js",
+    "static/css/main.7ab0a469.chunk.css",
+    "static/js/main.bb7e25c9.chunk.js"
   ]
 }
