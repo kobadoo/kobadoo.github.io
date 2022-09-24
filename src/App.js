@@ -14,7 +14,7 @@ import { changeShowAds } from './store/actions/actions';
 const App = (props) => {
 
   useEffect(() => {
-    initGA('UA-189831762-1');
+    initGA('G-5103PX7L4F');
     PageView();
     document.addEventListener("aip_consentrejected", function(e) {
       props.onChangeShowAds(false);
