@@ -10,7 +10,7 @@ export const initGA = (trackingID) => {
 }
 
 export const PageView = () => {  
-    ReactGA.send(window.location.pathname +  window.location.search); 
+    ReactGA.send("pageview");
 }
 
 export const eventGA = (category, action, label) => {
