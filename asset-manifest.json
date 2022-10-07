@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.bb84da3f.css",
-    "main.js": "/static/js/main.8f6cb7a6.js",
+    "main.js": "/static/js/main.d71030f0.js",
     "static/js/787.17bfbb77.chunk.js": "/static/js/787.17bfbb77.chunk.js",
     "static/media/applause.mp3": "/static/media/applause.aecca5541265fbdb8305.mp3",
     "static/media/modes.png": "/static/media/modes.ed995d88a41006ef3196.png",
@@ -24,6 +24,7 @@
     "static/media/google-play-badge.png": "/static/media/google-play-badge.f902960a94878ee0da67.png",
     "static/media/va.png": "/static/media/va.9c9a3974c92c08ffcb09.png",
     "static/media/ace_of_spades.png": "/static/media/ace_of_spades.549441620dc25636f212.png",
+    "static/media/panda_q.mp3": "/static/media/panda_q.dede7da794a457c3dbf6.mp3",
     "static/media/dinosaur_q.mp3": "/static/media/dinosaur_q.ee02f702388303c69d9c.mp3",
     "static/media/bat_q.mp3": "/static/media/bat_q.164709df076692369673.mp3",
     "static/media/cherries_q.mp3": "/static/media/cherries_q.746fd43d11324c481852.mp3",
@@ -39,6 +40,7 @@
     "static/media/butterfly_q.mp3": "/static/media/butterfly_q.fee383e2217189299c19.mp3",
     "static/media/crab_q.mp3": "/static/media/crab_q.31ac34f2e2ddc12e4f24.mp3",
     "static/media/glasses_q.mp3": "/static/media/glasses_q.a007dca0c6e9a2d07200.mp3",
+    "static/media/phone_q.mp3": "/static/media/phone_q.d0f9074cefc26fbd309f.mp3",
     "static/media/knive_q.mp3": "/static/media/knive_q.bdd1dade4408818000ef.mp3",
     "static/media/grapes_q.mp3": "/static/media/grapes_q.edf05313a2004dd9ee3d.mp3",
     "static/media/heart_q.mp3": "/static/media/heart_q.b65e400ee1eef345ffe4.mp3",
@@ -93,14 +95,17 @@
     "static/media/monkey_q.mp3": "/static/media/monkey_q.a52b923c631c5e266e49.mp3",
     "static/media/motorbike_q.mp3": "/static/media/motorbike_q.d7c323e1cc145f62599e.mp3",
     "static/media/mouth_q.mp3": "/static/media/mouth_q.b260be7690d289ee5421.mp3",
+    "static/media/owl_q.mp3": "/static/media/owl_q.b0c492661df888b3d8d0.mp3",
     "static/media/flower_q.mp3": "/static/media/flower_q.82b738fb0058dadd4a51.mp3",
     "static/media/frog_q.mp3": "/static/media/frog_q.ef23eb1f13cf423ed730.mp3",
     "static/media/hand_q.mp3": "/static/media/hand_q.b5b3888dfaa6daca6e46.mp3",
     "static/media/moon_q.mp3": "/static/media/moon_q.ea6f4819ff79939c3f6f.mp3",
+    "static/media/pear_q.mp3": "/static/media/pear_q.ae43639a059af264e83f.mp3",
     "static/media/ambulance.mp3": "/static/media/ambulance.a87884848bb3d8cbda04.mp3",
     "static/media/cherries.mp3": "/static/media/cherries.3194cbaace33ee3a94fa.mp3",
     "static/media/dinosaur.mp3": "/static/media/dinosaur.593d1f692eec266bb516.mp3",
     "static/media/carrot.mp3": "/static/media/carrot.ca0c030b73551c486fdc.mp3",
+    "static/media/panda.mp3": "/static/media/panda.1b9153a84cc57b63c67c.mp3",
     "static/media/aubergine.mp3": "/static/media/aubergine.dcd153e7b1252d5dfa23.mp3",
     "static/media/bat.mp3": "/static/media/bat.0a0b7065bd5c72bb17a1.mp3",
     "static/media/bike.mp3": "/static/media/bike.22010aecfb83e3a0ce22.mp3",
@@ -113,6 +118,7 @@
     "static/media/avocado.mp3": "/static/media/avocado.5d7559cb8c3d9c6460c0.mp3",
     "static/media/bus.mp3": "/static/media/bus.d0bdbadf2f1276982e89.mp3",
     "static/media/crab.mp3": "/static/media/crab.65cbda852650973b79a9.mp3",
+    "static/media/phone.mp3": "/static/media/phone.a8d98f757aa50572c4be.mp3",
     "static/media/ant.mp3": "/static/media/ant.c01d133a258c6094c687.mp3",
     "static/media/apple.mp3": "/static/media/apple.c313274b752791677dbb.mp3",
     "static/media/giraffe.mp3": "/static/media/giraffe.e25588bc414433680757.mp3",
@@ -151,6 +157,7 @@
     "static/media/frog.mp3": "/static/media/frog.adc8f1cf8044eedbae5e.mp3",
     "static/media/mouse.mp3": "/static/media/mouse.443bd98a985ae56d2ef2.mp3",
     "static/media/mouth.mp3": "/static/media/mouth.05f06bc6a91edfc43088.mp3",
+    "static/media/pear.mp3": "/static/media/pear.08190576f0289fa29934.mp3",
     "static/media/boy.mp3": "/static/media/boy.d9f6acd5f92544fedd13.mp3",
     "static/media/fire.mp3": "/static/media/fire.8ae47b5ebba63f81551d.mp3",
     "static/media/hand.mp3": "/static/media/hand.d1719e1f011324c7995a.mp3",
@@ -169,14 +176,15 @@
     "static/media/lemon.mp3": "/static/media/lemon.41f47daee2738eb45552.mp3",
     "static/media/eye.mp3": "/static/media/eye.38817653895e13db5807.mp3",
     "static/media/moon.mp3": "/static/media/moon.6fda88d7081b412a010a.mp3",
+    "static/media/owl.mp3": "/static/media/owl.34de821f694cbdc21833.mp3",
     "static/media/fish.mp3": "/static/media/fish.d23a9daebf80e48d60af.mp3",
     "index.html": "/index.html",
     "main.bb84da3f.css.map": "/static/css/main.bb84da3f.css.map",
-    "main.8f6cb7a6.js.map": "/static/js/main.8f6cb7a6.js.map",
+    "main.d71030f0.js.map": "/static/js/main.d71030f0.js.map",
     "787.17bfbb77.chunk.js.map": "/static/js/787.17bfbb77.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.bb84da3f.css",
-    "static/js/main.8f6cb7a6.js"
+    "static/js/main.d71030f0.js"
   ]
 }
