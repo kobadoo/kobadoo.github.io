@@ -42,7 +42,7 @@ const slideShow = (props) => {
                     <KidsEmoji className={classes.SlideShowFont} num={props.item} />
                     <KidsAudio className={classes.SlideShowFont} num={props.item} />
                     <KidsLabel className={classes.KidsLabel} num={props.item} />
-                    <img src={Audio} onClick={() => playAudioByItemNumber(props.item)} width="50px" alt="Play audio" />
+                    <img src={Audio} className={classes.AudioIcon} onClick={() => playAudioByItemNumber(props.item)} alt="Play audio" />
                 </div>);
         default: // EMOJIS_MODE
             return (

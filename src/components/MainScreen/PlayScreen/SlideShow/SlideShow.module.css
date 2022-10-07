@@ -46,3 +46,8 @@
     display: block;
     font-size: 2rem;
 }
+
+.AudioIcon {
+    width: 50px;
+    cursor: pointer;
+ }
