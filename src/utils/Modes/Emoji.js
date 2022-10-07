@@ -104,6 +104,8 @@ const EMOJI_MAP = [
 ];
 
 const emoji = (props) => (
+    
+    
     <span role="img" className={props.className} onClick={props.clickHandler}>
         <span>{String.fromCodePoint(EMOJI_MAP[props.num])}</span>
     </span>

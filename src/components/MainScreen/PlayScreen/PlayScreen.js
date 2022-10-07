@@ -3,14 +3,16 @@ import { connect } from 'react-redux';
 import SlideShow from './SlideShow/SlideShow';
 import AnswerScreen from './AnswerScreen/AnswerScreen';
 import AnswerScreenArithmetic from './AnswerScreen/AnswerScreenArithmetic';
-import {ARITHMETIC_MODE, CARDS_MODE, SHAPES_MODE} from '../../../store/constants';
-
+import AnswerScreenKids from './AnswerScreen/AnswerScreenKids';
+import {ARITHMETIC_MODE, CARDS_MODE, SHAPES_MODE, KIDS_MODE} from '../../../store/constants';
 
 export const MAX_LEVEL = 31;
 const MAX_NUM_ITEMS = 42;
+const MAX_NUM_ITEMS_KIDS = 16;
 const ITEMS_LEVEL_1 = 2;
 const TOTAL_NUM_ITEMS = 100;
 const TOTAL_NUM_ITEMS_CARDS = 52;
+const TOTAL_NUM_ITEMS_KIDS = 16;
 const MIN_NUMBER_ARITHMETIC = -99;
 const RANGE_ITEMS_ARITHMETIC = 199;
 const INTERVAL_BETWEEN_ITEMS_FASTER = 1300;
@@ -18,6 +20,7 @@ const INTERVAL_BETWEEN_ITEMS_SLOWER = 1600;
 const EXTRA_TIME_SHAPES = 700;
 const EXTRA_TIME_CARDS = 700;
 const EXTRA_TIME_ARITHMETIC = 1000;
+const EXTRA_TIME_KIDS = 1300;
 const LEVEL_START_SLOWER_INTERVALS = 10;
 const ARITHMETIC_RANGE_SIZE = 50;
 const ARITHMETIC_ITEMS_DISPLAYED = 30;
@@ -36,12 +39,14 @@ function getRandomSubarray(arr, size) {
 class PlayScreen extends Component {
 
     numItems = ITEMS_LEVEL_1 + parseInt((this.props.lvl -1) / 3);
-    totalNumItems = this.props.mode === CARDS_MODE ? TOTAL_NUM_ITEMS_CARDS : TOTAL_NUM_ITEMS;
+    totalNumItems = this.props.mode === CARDS_MODE ? TOTAL_NUM_ITEMS_CARDS : this.props.mode === KIDS_MODE ? TOTAL_NUM_ITEMS_KIDS : TOTAL_NUM_ITEMS;
     totalItems = 
         this.props.mode === ARITHMETIC_MODE ? null
+        : this.props.mode === KIDS_MODE ? getRandomSubarray([...Array(this.totalNumItems).keys()], MAX_NUM_ITEMS_KIDS)
         : getRandomSubarray([...Array(this.totalNumItems).keys()], MAX_NUM_ITEMS-this.props.lvl+1).sort((a, b) => a - b);
     intervalBetweenItems = (this.props.lvl < LEVEL_START_SLOWER_INTERVALS ? INTERVAL_BETWEEN_ITEMS_FASTER : INTERVAL_BETWEEN_ITEMS_SLOWER)
-    + (this.props.mode === SHAPES_MODE ? EXTRA_TIME_SHAPES : (this.props.mode === CARDS_MODE ? EXTRA_TIME_CARDS : (this.props.mode === ARITHMETIC_MODE ? EXTRA_TIME_ARITHMETIC : 0)));
+    + (this.props.mode === SHAPES_MODE ? EXTRA_TIME_SHAPES : this.props.mode === CARDS_MODE ? EXTRA_TIME_CARDS : this.props.mode === ARITHMETIC_MODE ? EXTRA_TIME_ARITHMETIC 
+        : this.props.mode === KIDS_MODE ? EXTRA_TIME_KIDS : 0);
     
     state = {
         item: 0,
@@ -82,38 +87,48 @@ class PlayScreen extends Component {
             );
         }
         else {
-            if(this.props.mode === ARITHMETIC_MODE) {
-                const correctAnswer = this.state.itemList.reduce((a,b) => a + b, 0);
-                const rangeSeed = getRandomInt(0, ARITHMETIC_RANGE_SIZE);
-                const possibleAnswers = getRandomSubarray([...Array(ARITHMETIC_RANGE_SIZE).keys()].map(i => i + correctAnswer - rangeSeed), ARITHMETIC_ITEMS_DISPLAYED);
-                if (!possibleAnswers.includes(correctAnswer)) {
-                    possibleAnswers.pop();
-                    possibleAnswers.push(correctAnswer);
-                }
-                possibleAnswers.sort(function(a,b) { return a - b; });
+            switch(this.props.mode) {
+                case ARITHMETIC_MODE:
+                    const correctAnswer = this.state.itemList.reduce((a,b) => a + b, 0);
+                    const rangeSeed = getRandomInt(0, ARITHMETIC_RANGE_SIZE);
+                    const possibleAnswers = getRandomSubarray([...Array(ARITHMETIC_RANGE_SIZE).keys()].map(i => i + correctAnswer - rangeSeed), ARITHMETIC_ITEMS_DISPLAYED);
+                    if (!possibleAnswers.includes(correctAnswer)) {
+                        possibleAnswers.pop();
+                        possibleAnswers.push(correctAnswer);
+                    }
+                    possibleAnswers.sort(function(a,b) { return a - b; });
 
-                return (
-                    <AnswerScreenArithmetic 
-                        correctAnswer={correctAnswer}
-                        possibleAnswers={possibleAnswers}
-                        isLastLevel={this.props.lvl === MAX_LEVEL}
-                />
-                );
-            }
-            else {
-                return (
-                    <AnswerScreen 
-                        numItems={this.numItems}
-                        totalItems={this.totalItems}
-                        itemList={this.state.itemList}
-                        isLastLevel={this.props.lvl === MAX_LEVEL}
-                        mode={this.props.mode}
-                />
-                );
+                    return (
+                        <AnswerScreenArithmetic 
+                            correctAnswer={correctAnswer}
+                            possibleAnswers={possibleAnswers}
+                            isLastLevel={this.props.lvl === MAX_LEVEL}
+                        />
+                    );
+                case KIDS_MODE:
+                    return (
+                        <AnswerScreenKids 
+                            numItems={this.numItems}
+                            totalItems={this.totalItems}
+                            itemList={this.state.itemList}
+                            isLastLevel={this.props.lvl === MAX_LEVEL}
+                            mode={this.props.mode}
+                        />
+                    );
+                default:
+                    return (
+                        <AnswerScreen 
+                            numItems={this.numItems}
+                            totalItems={this.totalItems}
+                            itemList={this.state.itemList}
+                            isLastLevel={this.props.lvl === MAX_LEVEL}
+                            mode={this.props.mode}
+                        />
+                    );
             }
         }
-    } 
-}
+    }
+} 
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);

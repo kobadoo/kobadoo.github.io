@@ -62,6 +62,7 @@ const StartScreen = (props) => {
                     <ToggleButton selected={props.mode === 3} value={3} style={toggleButtonStyle}>Arithmetic</ToggleButton>
                     <ToggleButton selected={props.mode === 1} value={1} style={toggleButtonStyle}>Flags</ToggleButton>
                     <ToggleButton selected={props.mode === 4} value={4} style={toggleButtonStyle}>Shapes</ToggleButton>
+                    <ToggleButton selected={props.mode === 6} value={6} style={toggleButtonStyle}>Kids</ToggleButton>
                 </ToggleButtonGroup>
             </div>
 

@@ -36,12 +36,28 @@
     padding: 10px;
 }
 
+.Kids {
+   font-size: 8rem;
+   padding: 5px;
+}
+
 .EvenItem {
    color: purple;
 }
 
 .OddItem {
    color: navy;
+}
+
+.Question {
+   font-size: 2.5em;
+   margin: 20px 0 20px 0;
+}
+
+.AudioIcon {
+   margin-left: 10px;
+   vertical-align: middle;
+   width: 50px;
 }
 
 .AnswerScreenItem {
@@ -107,8 +123,24 @@
       font-size: 3rem;
    }
 
+   .Kids {
+      font-size: 5rem;
+      padding: 5px;
+   }
+
    .Numbers {
       font-size: 2rem;
       padding: 8px;
+   }
+
+   .AudioIcon {
+      margin-left: 10px;
+      vertical-align: middle;
+      width: 20px;
+   }
+
+   .Question {
+      font-size: 1.8em;
+      margin: 10px 0 10px 0;
    }
 }

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import classes from './IntroScreen.module.css';
-import {FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, SHAPES_MODE, CARDS_MODE} from '../../../store/constants';
+import {FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, SHAPES_MODE, CARDS_MODE, KIDS_MODE} from '../../../store/constants';
 import { startLevel, changeWatchedVideo } from '../../../store/actions/actions';
 
 const INTERVAL_BEFORE_LEVEL_1 = 2000;
@@ -26,6 +26,9 @@ const IntroScreen = (props) => {
       case CARDS_MODE:
         textMode = <h1>Memorize these playing cards in order</h1>;
         break;
+      case KIDS_MODE:
+        textMode = <h1>Look carefully and answer the questions</h1>;
+        break;
       default: // EMOJIS_MODE
         textMode = <h1>Memorize these emojis in order</h1>
     }
@@ -40,13 +43,13 @@ const IntroScreen = (props) => {
             return () => {
                 clearInterval(timeout);        }
         }
-    }, [props.watchedVideo]);
+    }, [props.watchedVideo, props]);
 
     useEffect(() => {
         if(!props.showAds) {
             props.onChangeWatchedVideo(true);
         }
-    }, [props.showAds]);
+    }, [props.showAds, props]);
 
     if(props.showAds) {
         window.aiptag.cmd.player.push(function() {

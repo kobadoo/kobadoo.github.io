@@ -4,7 +4,7 @@ import classes from './TransitionScreen.module.css';
 import { startLevel, togglePause } from '../../../store/actions/actions';
 import { MAX_LEVEL } from '../PlayScreen/PlayScreen';
 
-const INTERVAL_BETWEEN_LEVELS = 2500;
+const INTERVAL_BETWEEN_LEVELS = 3000;
 const CUP = 0X1F3C6;
 const APPLAUSE = 0X1F44F;
 const CHAMPAGNE = 0X1F37E;
@@ -72,7 +72,7 @@ const TransitionScreen = (props) => {
         // Returned function will be called on component unmount 
         return () => {
             clearInterval(timeout);        }
-    }, [props.paused, props.showAds]);
+    }, [props.paused, props.showAds, props]);
 
     return (
         <div className={classes.TransitionScreen}>
