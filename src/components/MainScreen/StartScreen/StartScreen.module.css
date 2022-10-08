@@ -13,6 +13,9 @@
     font-size: 1.2rem;
     font-weight: 500;
     padding: 10px 10px;
+    max-width: 690px;
+    display: inline-block;
+
 }
 
 .SelectModeText {
