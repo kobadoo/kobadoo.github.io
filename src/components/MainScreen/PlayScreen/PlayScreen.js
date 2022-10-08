@@ -12,7 +12,7 @@ const MAX_NUM_ITEMS_KIDS = 16;
 const ITEMS_LEVEL_1 = 2;
 const TOTAL_NUM_ITEMS = 100;
 const TOTAL_NUM_ITEMS_CARDS = 52;
-const TOTAL_NUM_ITEMS_KIDS = 113;
+const TOTAL_NUM_ITEMS_KIDS = 112;
 const MIN_NUMBER_ARITHMETIC = -99;
 const RANGE_ITEMS_ARITHMETIC = 199;
 const INTERVAL_BETWEEN_ITEMS_FASTER = 1300;
@@ -44,7 +44,7 @@ class PlayScreen extends Component {
         this.props.mode === ARITHMETIC_MODE ? null
         : this.props.mode === KIDS_MODE ? getRandomSubarray([...Array(this.totalNumItems).keys()], MAX_NUM_ITEMS_KIDS)
         : getRandomSubarray([...Array(this.totalNumItems).keys()], MAX_NUM_ITEMS-this.props.lvl+1).sort((a, b) => a - b);
-    intervalBetweenItems = (this.props.lvl < LEVEL_START_SLOWER_INTERVALS ? INTERVAL_BETWEEN_ITEMS_FASTER : INTERVAL_BETWEEN_ITEMS_SLOWER)
+    intervalBetweenItems = ((this.props.lvl < LEVEL_START_SLOWER_INTERVALS || this.props.KIDS_MODE === KIDS_MODE) ? INTERVAL_BETWEEN_ITEMS_FASTER : INTERVAL_BETWEEN_ITEMS_SLOWER)
     + (this.props.mode === SHAPES_MODE ? EXTRA_TIME_SHAPES : this.props.mode === CARDS_MODE ? EXTRA_TIME_CARDS : this.props.mode === ARITHMETIC_MODE ? EXTRA_TIME_ARITHMETIC 
         : this.props.mode === KIDS_MODE ? EXTRA_TIME_KIDS : 0);
     

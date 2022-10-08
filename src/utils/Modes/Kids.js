@@ -41,7 +41,6 @@ const KIDS_MAP = [
     {text: "Un regalo", question: "¿Dónde está el regalo?", hex: 0x1F381, fileName: "present", lang: "es"},
     {text: "Una tarta", question: "¿Dónde está la tarta?", hex: 0x1F382, fileName: "cake", lang: "es"},
     {text: "Una calabaza", question: "¿Dónde está la calabaza?", hex: 0x1F383, fileName: "pumpkin", lang: "es"},
-    {text: "Papá Noél", question: "¿Dónde está Papá Noél?", hex: 0x1F385, fileName: "santa", lang: "es"},
     {text: "Un globo", question: "¿Dónde está el globo?", hex: 0x1F388, fileName: "balloon", lang: "es"},
     {text: "Un circo", question: "¿Dónde está el circo?", hex: 0x1F3AA, fileName: "circus", lang: "es"},
     {text: "Un piano", question: "¿Dónde está el piano?", hex: 0x1F3B9, fileName: "piano", lang: "es"},
