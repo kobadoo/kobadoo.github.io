@@ -54,7 +54,7 @@ const StartScreen = (props) => {
             }
 
             <h3 className={classes.HeaderText}>
-                <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, playing cards, numbers, arithmetic calculations, flags or geometric shapes.
+                <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, playing cards, numbers, arithmetic calculations, flags or geometric shapes. Children can also learn new words in English and Spanish using the kids mode.
             </h3>
 
             <div>
