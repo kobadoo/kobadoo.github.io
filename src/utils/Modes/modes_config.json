@@ -3,7 +3,7 @@
         "name": "Emojis",
         "introScreenText": "Memorize these emojis in order",
         "maxItemsAnswerScreen": 42,
-        "totalNumItems": 100,
+        "totalNumItems": 160,
         "intervalSecondsEasyLevels": 1300,
         "intervalSecondsDifficultLevels": 1600,
         "firstDifficultLevel": 10
