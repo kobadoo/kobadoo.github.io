@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.bb84da3f.css",
-    "main.js": "/static/js/main.21d4ef59.js",
+    "main.js": "/static/js/main.c86d8a51.js",
     "static/js/787.17bfbb77.chunk.js": "/static/js/787.17bfbb77.chunk.js",
     "static/media/applause.mp3": "/static/media/applause.aecca5541265fbdb8305.mp3",
     "static/media/modes.png": "/static/media/modes.ed995d88a41006ef3196.png",
@@ -21,9 +21,7 @@
     "static/media/queen_of_diamonds.png": "/static/media/queen_of_diamonds.0899aab5e2261cf49c8c.png",
     "static/media/lost.mp3": "/static/media/lost.6b2eb1aa1ffcec110107.mp3",
     "static/media/train.png": "/static/media/train.a535035ab2a2a59c8ea4.png",
-    "static/media/santa_q.mp3": "/static/media/santa_q.3b74a225d38784b919d7.mp3",
     "static/media/google-play-badge.png": "/static/media/google-play-badge.f902960a94878ee0da67.png",
-    "static/media/santa.mp3": "/static/media/santa.cb897abf7024461cc9c0.mp3",
     "static/media/va.png": "/static/media/va.9c9a3974c92c08ffcb09.png",
     "static/media/ace_of_spades.png": "/static/media/ace_of_spades.549441620dc25636f212.png",
     "static/media/rainbow_q.mp3": "/static/media/rainbow_q.e18a33f56e09fd574237.mp3",
@@ -252,11 +250,11 @@
     "static/media/sun.mp3": "/static/media/sun.f871987296ef45256caa.mp3",
     "index.html": "/index.html",
     "main.bb84da3f.css.map": "/static/css/main.bb84da3f.css.map",
-    "main.21d4ef59.js.map": "/static/js/main.21d4ef59.js.map",
+    "main.c86d8a51.js.map": "/static/js/main.c86d8a51.js.map",
     "787.17bfbb77.chunk.js.map": "/static/js/787.17bfbb77.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.bb84da3f.css",
-    "static/js/main.21d4ef59.js"
+    "static/js/main.c86d8a51.js"
   ]
 }
