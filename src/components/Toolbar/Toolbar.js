@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import classes from './Toolbar.module.css';
 import { abortGame } from '../../store/actions/actions';
 import { MAX_LEVEL } from '../MainScreen/PlayScreen/PlayScreen';
-import { getModeName } from '../MainScreen/EndScreen/EndScreen';
+import modes_config from '../../utils/Modes/modes_config.json';
 
 const APP_NAME = 'KOBADOO';
 const MOTTO = 'memory game';
@@ -14,7 +14,7 @@ const toolbar = (props) => (
         <div className={classes.Logo} onClick={props.onAbortGame}><Link to="/">{APP_NAME}</Link></div>
         { (props.hasStarted || props.lvl > 1) ?
             <React.Fragment>
-                <div className={classes.Mode}>{getModeName(props.mode)}</div> 
+                <div className={classes.Mode}>{modes_config[props.mode].name}</div> 
                 <div className={classes.GameStats}>
                     <div className={classes.ToolbarItem}>Level: <strong>{props.lvl} / {MAX_LEVEL}</strong></div>
                     <div className={classes.ToolbarItem}>Score: <strong>{props.scr}</strong></div>

@@ -39,10 +39,10 @@ const slideShow = (props) => {
         case KIDS_MODE:                 
             return (
                 <div className={classes.SlideShowScreen}>
-                    <KidsEmoji className={classes.SlideShowFont} num={props.item} />
-                    <KidsAudio className={classes.SlideShowFont} num={props.item} />
-                    <KidsLabel className={classes.KidsLabel} num={props.item} />
-                    <img src={Audio} className={classes.AudioIcon} onClick={() => playAudioByItemNumber(props.item)} alt="Play audio" />
+                    <KidsEmoji className={classes.SlideShowFont} num={props.item} lang={props.lang} />
+                    <KidsAudio className={classes.SlideShowFont} num={props.item} lang={props.lang} />
+                    <KidsLabel className={classes.KidsLabel} num={props.item} lang={props.lang} />
+                    <img src={Audio} className={classes.AudioIcon} onClick={() => playAudioByItemNumber(props.item, props.lang)} alt="Play audio" />
                 </div>);
         default: // EMOJIS_MODE
             return (
@@ -54,7 +54,8 @@ const slideShow = (props) => {
 
 const mapStateToProps = state => {
     return {
-        mode: state.mode
+        mode: state.mode,
+        lang: state.lang
     };
 };
 

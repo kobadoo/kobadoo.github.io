@@ -6,6 +6,7 @@ export const RESTART_GAME = 'RESTART_GAME';
 export const ABORT_GAME = 'ABORT_GAME';
 export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 export const CHANGE_MODE = 'CHANGE_MODE';
+export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const SHOW_INTRO = 'SHOW_INTRO';
 export const CHANGE_SHOW_ADS = 'CHANGE_SHOW_ADS';
 export const CHANGE_WATCHED_VIDEO = 'CHANGE_WATCHED_VIDEO';

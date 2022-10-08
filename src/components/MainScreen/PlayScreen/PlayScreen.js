@@ -4,26 +4,11 @@ import SlideShow from './SlideShow/SlideShow';
 import AnswerScreen from './AnswerScreen/AnswerScreen';
 import AnswerScreenArithmetic from './AnswerScreen/AnswerScreenArithmetic';
 import AnswerScreenKids from './AnswerScreen/AnswerScreenKids';
-import {ARITHMETIC_MODE, CARDS_MODE, SHAPES_MODE, KIDS_MODE} from '../../../store/constants';
+import {ARITHMETIC_MODE, KIDS_MODE} from '../../../store/constants';
+import modes_config from '../../../utils/Modes/modes_config.json';
 
 export const MAX_LEVEL = 31;
-const MAX_NUM_ITEMS = 42;
-const MAX_NUM_ITEMS_KIDS = 16;
 const ITEMS_LEVEL_1 = 2;
-const TOTAL_NUM_ITEMS = 100;
-const TOTAL_NUM_ITEMS_CARDS = 52;
-const TOTAL_NUM_ITEMS_KIDS = 112;
-const MIN_NUMBER_ARITHMETIC = -99;
-const RANGE_ITEMS_ARITHMETIC = 199;
-const INTERVAL_BETWEEN_ITEMS_FASTER = 1300;
-const INTERVAL_BETWEEN_ITEMS_SLOWER = 1600;
-const EXTRA_TIME_SHAPES = 700;
-const EXTRA_TIME_CARDS = 700;
-const EXTRA_TIME_ARITHMETIC = 1000;
-const EXTRA_TIME_KIDS = 1500;
-const LEVEL_START_SLOWER_INTERVALS = 10;
-const ARITHMETIC_RANGE_SIZE = 50;
-const ARITHMETIC_ITEMS_DISPLAYED = 30;
 
 function getRandomSubarray(arr, size) {
     var shuffled = arr.slice(0), i = arr.length, min = i - size, temp, index;
@@ -39,14 +24,9 @@ function getRandomSubarray(arr, size) {
 class PlayScreen extends Component {
 
     numItems = ITEMS_LEVEL_1 + parseInt((this.props.lvl -1) / 3);
-    totalNumItems = this.props.mode === CARDS_MODE ? TOTAL_NUM_ITEMS_CARDS : this.props.mode === KIDS_MODE ? TOTAL_NUM_ITEMS_KIDS : TOTAL_NUM_ITEMS;
-    totalItems = 
-        this.props.mode === ARITHMETIC_MODE ? null
-        : this.props.mode === KIDS_MODE ? getRandomSubarray([...Array(this.totalNumItems).keys()], MAX_NUM_ITEMS_KIDS)
-        : getRandomSubarray([...Array(this.totalNumItems).keys()], MAX_NUM_ITEMS-this.props.lvl+1).sort((a, b) => a - b);
-    intervalBetweenItems = ((this.props.lvl < LEVEL_START_SLOWER_INTERVALS || this.props.KIDS_MODE === KIDS_MODE) ? INTERVAL_BETWEEN_ITEMS_FASTER : INTERVAL_BETWEEN_ITEMS_SLOWER)
-    + (this.props.mode === SHAPES_MODE ? EXTRA_TIME_SHAPES : this.props.mode === CARDS_MODE ? EXTRA_TIME_CARDS : this.props.mode === ARITHMETIC_MODE ? EXTRA_TIME_ARITHMETIC 
-        : this.props.mode === KIDS_MODE ? EXTRA_TIME_KIDS : 0);
+    totalItems = this.props.mode === KIDS_MODE ? getRandomSubarray([...Array(modes_config[this.props.mode].totalNumItems).keys()], modes_config[this.props.mode].maxItemsAnswerScreen)
+        : getRandomSubarray([...Array(modes_config[this.props.mode].totalNumItems).keys()], modes_config[this.props.mode].maxItemsAnswerScreen-this.props.lvl+1).sort((a, b) => a - b);
+    intervalBetweenItems = this.props.lvl < modes_config[this.props.mode].firstDifficultLevel ? modes_config[this.props.mode].intervalSecondsEasyLevels : modes_config[this.props.mode].intervalSecondsDifficultLevels;
     
     state = {
         item: 0,
@@ -57,7 +37,7 @@ class PlayScreen extends Component {
     componentDidMount() {
         this.setState({
             itemList: 
-                this.props.mode === ARITHMETIC_MODE ? getRandomSubarray([...Array(RANGE_ITEMS_ARITHMETIC).keys()].map(i => i + MIN_NUMBER_ARITHMETIC), this.numItems)
+                this.props.mode === ARITHMETIC_MODE ? getRandomSubarray([...Array(modes_config[this.props.mode].rangeDisplayedItems).keys()].map(i => i +modes_config[this.props.mode].minNumberRange), this.numItems)
                 : getRandomSubarray(this.totalItems, this.numItems)
         });
         this.timeout = setInterval(() => {
@@ -90,8 +70,8 @@ class PlayScreen extends Component {
             switch(this.props.mode) {
                 case ARITHMETIC_MODE:
                     const correctAnswer = this.state.itemList.reduce((a,b) => a + b, 0);
-                    const rangeSeed = getRandomInt(0, ARITHMETIC_RANGE_SIZE);
-                    const possibleAnswers = getRandomSubarray([...Array(ARITHMETIC_RANGE_SIZE).keys()].map(i => i + correctAnswer - rangeSeed), ARITHMETIC_ITEMS_DISPLAYED);
+                    const rangeSeed = getRandomInt(0, modes_config[this.props.mode].rangeSeedItems);
+                    const possibleAnswers = getRandomSubarray([...Array(modes_config[this.props.mode].rangeSeedItems).keys()].map(i => i + correctAnswer - rangeSeed), modes_config[this.props.mode].maxItemsAnswerScreen);
                     if (!possibleAnswers.includes(correctAnswer)) {
                         possibleAnswers.pop();
                         possibleAnswers.push(correctAnswer);

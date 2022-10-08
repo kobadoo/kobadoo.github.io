@@ -29,7 +29,7 @@ const AnswerScreenKids = (props) => {
             }
         }
         else {
-            playQuestionAudioByItemNumber(props.itemList[correctItems]);
+            playQuestionAudioByItemNumber(props.itemList[correctItems], props.lang);
         }
     }, [correctItems, props]);
 
@@ -66,8 +66,8 @@ const AnswerScreenKids = (props) => {
     return (
         <div className={classes.AnswerScreen}>
             <div className={classes.Question}>
-                {correctItems < props.numItems ? <KidsQuestion num={props.itemList[correctItems]} /> : null }
-                <img src={Volume} className={classes.AudioIcon} onClick={() => playQuestionAudioByItemNumber(props.itemList[correctItems])} width="50px" alt="Play audio" />
+                {correctItems < props.numItems ? <KidsQuestion num={props.itemList[correctItems]} lang={props.lang}/> : null }
+                <img src={Volume} className={classes.AudioIcon} onClick={() => playQuestionAudioByItemNumber(props.itemList[correctItems], props.lang)} width="50px" alt="Play audio" />
             </div>
             <div className={classes.ItemsList}>
             {props.totalItems.map((value, index) => {
@@ -76,7 +76,8 @@ const AnswerScreenKids = (props) => {
                         className={classes.Kids + ' ' + assignStyle(value)}
                         clickHandler={() => itemClickHandler(index, value)}
                         key={index} 
-                        num={value} />;
+                        num={value}
+                        lang={props.lang} />;
                 }
                 else {
                     return false;
@@ -93,7 +94,8 @@ const AnswerScreenKids = (props) => {
 
 const mapStateToProps = state => {
     return {
-        showAds: state.showAds
+        showAds: state.showAds,
+        lang: state.lang
     }
 }
 

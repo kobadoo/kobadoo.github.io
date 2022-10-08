@@ -68,6 +68,13 @@ export const changeMode = (newValue) => {
     };
 };
 
+export const changeLanguage = (newValue) => {
+    return {
+        type: actionTypes.CHANGE_LANGUAGE,
+        value: newValue
+    };
+};
+
 export const showIntro = () => {
     return {
         type: actionTypes.SHOW_INTRO

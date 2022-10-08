@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import classes from './TransitionScreen.module.css';
 import { startLevel, togglePause } from '../../../store/actions/actions';
 import { MAX_LEVEL } from '../PlayScreen/PlayScreen';
+import { KIDS_MODE } from '../../../store/constants';
 
 const INTERVAL_BETWEEN_LEVELS = 3000;
 const CUP = 0X1F3C6;
@@ -87,7 +88,7 @@ const TransitionScreen = (props) => {
             }
 
             <div className={classes.LevelText}><h2>Level {props.lvl - 1} of {MAX_LEVEL} completed!</h2></div>
-            { props.lvl < 4 ? <div className={classes.Stats}><strong>{STATS_MAP[props.lvl - 2]}%</strong> players reach this level <span>{String.fromCodePoint(OK)}</span></div> :
+                { props.mode === KIDS_MODE ? null : props.lvl < 4 ? <div className={classes.Stats}><strong>{STATS_MAP[props.lvl - 2]}%</strong> players reach this level <span>{String.fromCodePoint(OK)}</span></div> :
                     props.lvl >=4 && props.lvl < 7 ?<div className={classes.Stats}>Good job! <strong>{STATS_MAP[props.lvl - 2]}%</strong> players get here <span>{String.fromCodePoint(MUSCLE)}</span></div> :
                     props.lvl >=7 && props.lvl < 10 ?<div className={classes.Stats}>Well done! <strong>{STATS_MAP[props.lvl - 2]}%</strong> players reach this level <span>{String.fromCodePoint(NICE)}</span></div> :
                     props.lvl >=10 && props.lvl < 13 ?<div className={classes.Stats}>Amazing! Only <strong>{STATS_MAP[props.lvl - 2]}%</strong> players get here <span>{String.fromCodePoint(BALLOON)}</span></div> :
@@ -116,7 +117,8 @@ const mapStateToProps = state => {
     return {
         lvl: state.level,
         paused: state.isPaused,
-        showAds: state.showAds
+        showAds: state.showAds,
+        mode: state.mode
     }
 }
 

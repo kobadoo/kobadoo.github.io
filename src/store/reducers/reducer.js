@@ -5,6 +5,7 @@ import {EMOJIS_MODE} from '../constants';
 const initialState = {
     level: 1,
     score: 0,
+    lang: 'EN',
     hasLevelStarted: false,
     hasGameEnded: false,
     isPaused: false,
@@ -107,6 +108,13 @@ const changeMode = (state, action) => {
     return updateObject(state, updatedState);
 };
 
+const changeLanguage = (state, action) => {
+    const updatedState = {
+        lang: action.value
+    };
+    return updateObject(state, updatedState);
+};
+
 const showIntro = (state) => {
     const updatedState = {
         showIntro: true
@@ -156,6 +164,9 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.CHANGE_MODE:
             return changeMode(state, action);
+
+        case actionTypes.CHANGE_LANGUAGE:
+            return changeLanguage(state, action);
 
         case actionTypes.SHOW_INTRO:
             return showIntro(state, action);

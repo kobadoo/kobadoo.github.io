@@ -1,37 +1,14 @@
 import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import classes from './IntroScreen.module.css';
-import {FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, SHAPES_MODE, CARDS_MODE, KIDS_MODE} from '../../../store/constants';
 import { startLevel, changeWatchedVideo } from '../../../store/actions/actions';
+import modes_config from '../../../utils/Modes/modes_config.json';
 
 const INTERVAL_BEFORE_LEVEL_1 = 2000;
 
 const IntroScreen = (props) => {
 
-    let textMode = null;
-
-    switch(props.mode) {
-      case FLAGS_MODE:
-        textMode = <h1>Memorize these flags in order</h1>;
-        break;
-      case NUMBERS_MODE:
-        textMode = <h1>Memorize these numbers in order</h1>;
-        break;
-      case SHAPES_MODE:
-        textMode = <h1>Memorize these geometric shapes in order</h1>;
-        break;
-      case ARITHMETIC_MODE:
-        textMode = <h1>Add up all these numbers</h1>;
-        break;
-      case CARDS_MODE:
-        textMode = <h1>Memorize these playing cards in order</h1>;
-        break;
-      case KIDS_MODE:
-        textMode = <h1>Play and learn new words</h1>;
-        break;
-      default: // EMOJIS_MODE
-        textMode = <h1>Memorize these emojis in order</h1>
-    }
+    let textMode = <h1>{modes_config[props.mode].introScreenText}</h1>;
 
     useEffect(() => {
         if (props.watchedVideo) {

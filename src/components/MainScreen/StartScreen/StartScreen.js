@@ -1,14 +1,14 @@
 import React, {useEffect} from 'react';
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup, RadioGroup, Radio, FormControlLabel } from '@mui/material';
 import { connect } from 'react-redux';
 import classes from './StartScreen.module.css';
 import Footer from '../../Footer/Footer';
-import { changeMode, showIntro } from '../../../store/actions/actions';
+import { changeMode, changeLanguage, showIntro } from '../../../store/actions/actions';
 import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
 import BulbImg from '../../../images/bulb.png';
-import ModesImg from '../../../images/modes.png';
 import GooglePlayImg from '../../../images/google-play-badge.png';
+import {Slideshow} from './SlideShow';
 
 
 const StartScreen = (props) => {
@@ -34,6 +34,10 @@ const StartScreen = (props) => {
 
     const handleMode = (_, newMode) => {
         props.onChangeMode(newMode);
+    };
+
+    const handleLanguage = (_, newLang) => {
+        props.onChangeLanguage(newLang);
     };
 
     return (
@@ -66,6 +70,14 @@ const StartScreen = (props) => {
                 </ToggleButtonGroup>
             </div>
 
+            {props.mode === 6 ? 
+                <RadioGroup row style={toggleGroupStyle} onChange={handleLanguage}>
+                    <FormControlLabel value="EN" control={<Radio checked={props.lang === 'EN'} />} label="English" />
+                    <FormControlLabel value="ES" control={<Radio checked={props.lang === 'ES'} />} label="Español" />
+                </RadioGroup>
+                : null
+            }
+
             <div className={classes.ButtonsDiv}>
                 <button 
                     className={classes.StartButton} 
@@ -74,9 +86,9 @@ const StartScreen = (props) => {
             </div>
 
             <div className={classes.BenefitsText}>
-                <img className={classes.ModesImage} src={ModesImg} alt="" />
-                <h3>Six game modes</h3>
-                <p>You can practice your working memory with six different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>two-digit numbers</strong>, <strong>arithmetic</strong> calculations, <strong>flags</strong> of the world or coloured geometric <strong>shapes</strong>.</p>
+                <Slideshow />
+                <h3>Seven game modes</h3>
+                <p>You can practice your working memory with different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>two-digit numbers</strong>, <strong>arithmetic</strong> calculations, <strong>flags</strong> of the world or coloured geometric <strong>shapes</strong>. Children can also learn new vocabulary in <strong>English</strong> or <strong>Spanish</strong> using the <strong>kids</strong> mode.</p>
             </div>
 
             { props.showAds ? <div id='kobadoo-com_300x250_1' className={classes.Ad300x250} /> : null }
@@ -85,7 +97,7 @@ const StartScreen = (props) => {
                 <img className={classes.StartImage} src={MonkeyImg} alt="" />
                 <h3>How does it work?</h3>
                 <p>Select a mode, click on <i>Start Game</i> and <strong>memorize</strong> the items that are displayed.
-                Then <strong>select them in the right order</strong> to be able to reach the next level. In the <strong>arithmetic</strong> mode, sum up all the numbers and select the result. It gets more challenging over time! 
+                Then <strong>select them in the right order</strong> to be able to reach the next level. In the <strong>arithmetic</strong> mode, sum up all the numbers and select the result. It gets more challenging over time! The <strong>kids</strong> mode is a fun way for children to learn new vocabulary in different languages. 
                 <strong> 100% free</strong>, no download or sign up required. <strong>Play on mobile</strong> for the best experience.</p>
             </div>
 
@@ -120,14 +132,16 @@ const StartScreen = (props) => {
 const mapStateToProps = state => {
     return {
         showAds: state.showAds,
-        mode: state.mode
+        mode: state.mode,
+        lang: state.lang
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onStartGame: () => dispatch(showIntro()),
-        onChangeMode: (value) => dispatch(changeMode(value))
+        onChangeMode: (value) => dispatch(changeMode(value)),
+        onChangeLanguage: (value) => dispatch(changeLanguage(value))
     };
 };
 
