@@ -12,7 +12,7 @@
         "name": "Flags",
         "introScreenText": "Memorize these flags in order",
         "maxItemsAnswerScreen": 42,
-        "totalNumItems": 100,
+        "totalNumItems": 132,
         "intervalSecondsEasyLevels": 1300,
         "intervalSecondsDifficultLevels": 1600,
         "firstDifficultLevel": 10
