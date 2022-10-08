@@ -159,8 +159,8 @@ const EMOJI_MAP = [
     0x1F993,
     0x1F996,
     0x1F31B,
-    0x1F31F,
-    0x1F327
+    0x1F327,
+    0x1F33D
 ];
 
 const emoji = (props) => (
