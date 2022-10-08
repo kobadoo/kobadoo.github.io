@@ -27,7 +27,7 @@ const IntroScreen = (props) => {
         textMode = <h1>Memorize these playing cards in order</h1>;
         break;
       case KIDS_MODE:
-        textMode = <h1>Look carefully and answer the questions</h1>;
+        textMode = <h1>Play and learn new words</h1>;
         break;
       default: // EMOJIS_MODE
         textMode = <h1>Memorize these emojis in order</h1>
