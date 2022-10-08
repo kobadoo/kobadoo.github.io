@@ -1,16 +1,21 @@
 {
   "files": {
-    "main.css": "/static/css/main.53cfc7fd.css",
-    "main.js": "/static/js/main.f74eec96.js",
+    "main.css": "/static/css/main.343f20a3.css",
+    "main.js": "/static/js/main.9f2782d6.js",
     "static/js/787.0cc80266.chunk.js": "/static/js/787.0cc80266.chunk.js",
     "static/media/applause.mp3": "/static/media/applause.aecca5541265fbdb8305.mp3",
-    "static/media/modes.png": "/static/media/modes.ed995d88a41006ef3196.png",
+    "static/media/mode_kids.png": "/static/media/mode_kids.96007806d80df14009d2.png",
+    "static/media/mode_emojis.png": "/static/media/mode_emojis.022cdcacb38598aad9ee.png",
+    "static/media/mode_cards.png": "/static/media/mode_cards.57c33d7ce9483c886935.png",
+    "static/media/mode_numbers.png": "/static/media/mode_numbers.b712ce088f9d0add825c.png",
     "static/media/bulb.png": "/static/media/bulb.cade1cbfb5a85eb7b504.png",
+    "static/media/mode_arithmetic.png": "/static/media/mode_arithmetic.d316777ec55f757f5a3e.png",
     "static/media/king_of_hearts.png": "/static/media/king_of_hearts.8eb74959199956ea8e1f.png",
     "static/media/queen_of_clubs.png": "/static/media/queen_of_clubs.f07f8b7bfea6c131a14d.png",
     "static/media/monkey.png": "/static/media/monkey.6c594cbd1508a4064ab9.png",
     "static/media/jack_of_hearts.png": "/static/media/jack_of_hearts.b6be96aa43a4619633aa.png",
     "static/media/king_of_diamonds.png": "/static/media/king_of_diamonds.d4084602605f5ffa627e.png",
+    "static/media/mode_shapes.png": "/static/media/mode_shapes.1ac6c84aa5991961f7ef.png",
     "static/media/queen_of_hearts.png": "/static/media/queen_of_hearts.911e091ecf38d3540e0a.png",
     "static/media/jack_of_spades.png": "/static/media/jack_of_spades.b0b1c618cdc49acf501e.png",
     "static/media/king_of_clubs.png": "/static/media/king_of_clubs.c1f86e2ba8a3c85fe991.png",
@@ -18,6 +23,7 @@
     "static/media/jack_of_diamonds.png": "/static/media/jack_of_diamonds.05dec5e337d78c50894e.png",
     "static/media/king_of_spades.png": "/static/media/king_of_spades.5b4c79a79cc57df1075d.png",
     "static/media/queen_of_spades.png": "/static/media/queen_of_spades.58c7ea042496498b7042.png",
+    "static/media/mode_flags.png": "/static/media/mode_flags.86dc6cefcdbf94f8c311.png",
     "static/media/queen_of_diamonds.png": "/static/media/queen_of_diamonds.0899aab5e2261cf49c8c.png",
     "static/media/lost.mp3": "/static/media/lost.6b2eb1aa1ffcec110107.mp3",
     "static/media/train.png": "/static/media/train.a535035ab2a2a59c8ea4.png",
@@ -249,12 +255,12 @@
     "static/media/owl.mp3": "/static/media/owl.e5f8484e5a547e09067b.mp3",
     "static/media/sun.mp3": "/static/media/sun.f871987296ef45256caa.mp3",
     "index.html": "/index.html",
-    "main.53cfc7fd.css.map": "/static/css/main.53cfc7fd.css.map",
-    "main.f74eec96.js.map": "/static/js/main.f74eec96.js.map",
+    "main.343f20a3.css.map": "/static/css/main.343f20a3.css.map",
+    "main.9f2782d6.js.map": "/static/js/main.9f2782d6.js.map",
     "787.0cc80266.chunk.js.map": "/static/js/787.0cc80266.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.53cfc7fd.css",
-    "static/js/main.f74eec96.js"
+    "static/css/main.343f20a3.css",
+    "static/js/main.9f2782d6.js"
   ]
 }
