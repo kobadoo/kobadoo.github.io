@@ -3,12 +3,13 @@ import { ToggleButton, ToggleButtonGroup, RadioGroup, Radio, FormControlLabel } 
 import { connect } from 'react-redux';
 import classes from './StartScreen.module.css';
 import Footer from '../../Footer/Footer';
-import { changeMode, changeLanguage, showIntro } from '../../../store/actions/actions';
+import { changeMode, changeLanguage, showIntro, activateAudio } from '../../../store/actions/actions';
 import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
 import BulbImg from '../../../images/bulb.png';
 import GooglePlayImg from '../../../images/google-play-badge.png';
-import {Slideshow} from './SlideShow';
+import {ThumbnailSlideShow} from './ThumbnailSlideShow';
+import { KIDS_MODE } from '../../../store/constants';
 
 
 const StartScreen = (props) => {
@@ -81,12 +82,12 @@ const StartScreen = (props) => {
             <div className={classes.ButtonsDiv}>
                 <button 
                     className={classes.StartButton} 
-                    onClick={props.onStartGame}>Start Game</button>
+                    onClick={() => props.onStartGame(props.mode)}>Start Game</button>
                 <a href="https://play.google.com/store/apps/details?id=com.kobadoo" target="_new"><img className={classes.GooglePlayButton} src={GooglePlayImg} alt="Google Play"/></a>
             </div>
 
             <div className={classes.BenefitsText}>
-                <Slideshow />
+                <ThumbnailSlideShow />
                 <h3>Seven game modes</h3>
                 <p>You can practice your working memory with different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>two-digit numbers</strong>, <strong>arithmetic</strong> calculations, <strong>flags</strong> of the world or coloured geometric <strong>shapes</strong>. Children can also learn new vocabulary in <strong>English</strong> or <strong>Spanish</strong> using the <strong>kids</strong> mode.</p>
             </div>
@@ -139,7 +140,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onStartGame: () => dispatch(showIntro()),
+        onStartGame: (mode) => {
+            if (mode === KIDS_MODE) {
+                const audio = new Audio();
+                dispatch(activateAudio(audio));
+            }
+            dispatch(showIntro());
+        },
         onChangeMode: (value) => dispatch(changeMode(value)),
         onChangeLanguage: (value) => dispatch(changeLanguage(value))
     };

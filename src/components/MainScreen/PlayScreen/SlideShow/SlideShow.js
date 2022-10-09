@@ -6,7 +6,7 @@ import {Flag, Label} from '../../../../utils/Modes/Flag';
 import {Shape, ShapeName} from '../../../../utils/Modes/Shapes';
 import {PlayingCard, PlayingCardLabel} from '../../../../utils/Modes/Card';
 import {NUMBERS_MODE, FLAGS_MODE, ARITHMETIC_MODE, SHAPES_MODE, CARDS_MODE, KIDS_MODE} from '../../../../store/constants'
-import { KidsAudio, KidsEmoji, KidsLabel, playAudioByItemNumber } from '../../../../utils/Modes/Kids';
+import { KidsEmoji, KidsLabel, playAudioByItemNumber } from '../../../../utils/Modes/Kids';
 import Audio from '../../../../images/audio.png';
 
 const slideShow = (props) => {
@@ -37,12 +37,13 @@ const slideShow = (props) => {
                     <PlayingCardLabel className={classes.PlayingCardLabel} num={props.item} />
                 </div>);
         case KIDS_MODE:                 
+            playAudioByItemNumber(props.item, props.lang, props.audio);
             return (
                 <div className={classes.SlideShowScreen}>
                     <KidsEmoji className={classes.SlideShowFont} num={props.item} lang={props.lang} />
-                    <KidsAudio className={classes.SlideShowFont} num={props.item} lang={props.lang} />
                     <KidsLabel className={classes.KidsLabel} num={props.item} lang={props.lang} />
-                    <img src={Audio} className={classes.AudioIcon} onClick={() => playAudioByItemNumber(props.item, props.lang)} alt="Play audio" />
+                    <img src={Audio} className={classes.AudioIcon} 
+                        onClick={() => playAudioByItemNumber(props.item, props.lang, props.audio)} alt="Play audio" />
                 </div>);
         default: // EMOJIS_MODE
             return (
@@ -55,7 +56,8 @@ const slideShow = (props) => {
 const mapStateToProps = state => {
     return {
         mode: state.mode,
-        lang: state.lang
+        lang: state.lang,
+        audio: state.audio
     };
 };
 

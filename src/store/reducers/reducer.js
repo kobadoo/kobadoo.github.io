@@ -12,7 +12,8 @@ const initialState = {
     showIntro: false,
     showAds: false,
     watchedVideo: false,
-    mode: EMOJIS_MODE
+    mode: EMOJIS_MODE,
+    audio: null
 };
 
 const POINTS_PER_COMPLETED_LEVEL = 100;
@@ -136,6 +137,13 @@ const changeWatchedVideo = (state, action) => {
     return updateObject(state, updatedState);
 };
 
+const activateAudio = (state, action) => {
+    const updatedState = {
+        audio: action.value
+    };
+    return updateObject(state, updatedState);
+};
+
 
 const reducer = (state = initialState, action) => {
 
@@ -176,6 +184,9 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.CHANGE_WATCHED_VIDEO:
             return changeWatchedVideo(state, action);
+
+        case actionTypes.ACTIVATE_AUDIO:
+            return activateAudio(state, action);
 
         default:
             return state;

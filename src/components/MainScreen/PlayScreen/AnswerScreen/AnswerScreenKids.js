@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import classes from './AnswerScreen.module.css';
-import {KidsEmoji, KidsQuestion, playQuestionAudioByItemNumber} from '../../../../utils/Modes/Kids';
+import {KidsEmoji, KidsQuestion, playAudioByItemNumber} from '../../../../utils/Modes/Kids';
 import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
 import Applause from '../../../../audio/applause.mp3';
 import Lost from '../../../../audio/lost.mp3';
@@ -24,12 +24,13 @@ const AnswerScreenKids = (props) => {
                 props.onEndGame();
             }
             else {
-                new Audio(Applause).play();
+                props.audio.src=Applause;
+                props.audio.play();
                 props.onLevelPassed();
             }
         }
         else {
-            playQuestionAudioByItemNumber(props.itemList[correctItems], props.lang);
+            playAudioByItemNumber(props.itemList[correctItems], props.lang, props.audio, true);
         }
     }, [correctItems, props]);
 
@@ -41,7 +42,8 @@ const AnswerScreenKids = (props) => {
             setCorrectItems(prevCount => prevCount + 1 );
         } 
         else {
-            new Audio(Lost).play();
+            props.audio.src=Lost;
+            props.audio.play();
             setLostGame(true);
             setFailedItem(value);
             setExpectedItem(props.itemList[correctItems]);
@@ -67,7 +69,8 @@ const AnswerScreenKids = (props) => {
         <div className={classes.AnswerScreen}>
             <div className={classes.Question}>
                 {correctItems < props.numItems ? <KidsQuestion num={props.itemList[correctItems]} lang={props.lang}/> : null }
-                <img src={Volume} className={classes.AudioIcon} onClick={() => playQuestionAudioByItemNumber(props.itemList[correctItems], props.lang)} width="50px" alt="Play audio" />
+                <img src={Volume} className={classes.AudioIcon} 
+                    onClick={() => playAudioByItemNumber(props.itemList[correctItems], props.lang, props.audio, true)} width="50px" alt="Play audio" />
             </div>
             <div className={classes.ItemsList}>
             {props.totalItems.map((value, index) => {
@@ -95,7 +98,8 @@ const AnswerScreenKids = (props) => {
 const mapStateToProps = state => {
     return {
         showAds: state.showAds,
-        lang: state.lang
+        lang: state.lang,
+        audio: state.audio
     }
 }
 

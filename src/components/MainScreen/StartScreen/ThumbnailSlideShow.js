@@ -11,7 +11,7 @@ import ModeKidsImg from '../../../images/mode_kids.png';
 const delay = 2500;
 const MAX_SLIDES = 4;
 
-export function Slideshow() {
+export function ThumbnailSlideShow() {
   const [index, setIndex] = React.useState(0);
   const timeoutRef = React.useRef(null);
 
@@ -40,8 +40,7 @@ export function Slideshow() {
     <div className={classes.slideshow}>
       <div
         className={classes.slideshowSlider}
-        style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
-      >
+        style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }} >
           <img className={classes.ModesImg} src={ModeEmojisImg} alt="" />
           <img className={classes.ModesImg} src={ModeFlagsImg} alt="" />
           <img className={classes.ModesImg} src={ModeNumbersImg} alt="" />

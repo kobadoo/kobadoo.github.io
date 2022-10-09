@@ -94,3 +94,10 @@ export const changeWatchedVideo = (newValue) => {
         value: newValue
     };
 };
+
+export const activateAudio = (newValue) => {
+    return {
+        type: actionTypes.ACTIVATE_AUDIO,
+        value: newValue
+    };
+};

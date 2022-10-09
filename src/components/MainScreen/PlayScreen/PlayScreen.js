@@ -31,7 +31,7 @@ class PlayScreen extends Component {
     state = {
         item: 0,
         showAnswerScreen: false,
-        itemList: [0]
+        itemList: []
     }
 
     componentDidMount() {
@@ -60,10 +60,11 @@ class PlayScreen extends Component {
     render() {
         if (!this.state.showAnswerScreen) {
             return (
-                <SlideShow 
-                    item={this.state.itemList[this.state.item]}
-                    mode={this.props.mode}
-                />
+                this.state.itemList.length > 0 ?
+                    <SlideShow 
+                        item={this.state.itemList[this.state.item]}
+                        mode={this.props.mode}
+                    /> : null
             );
         }
         else {

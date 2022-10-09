@@ -2,6 +2,7 @@ import React from 'react';
 
 const audio = require.context("../../audio", true);
 
+/* eslint no-eval: 0 */
 // eslint-disable-next-line no-unused-vars
 const KIDS_MAP_ES = [
     {text: "Un ratón", question: "¿Dónde está el ratón?", hex: 0x1F401, fileName: "mouse"},
@@ -234,12 +235,8 @@ const KIDS_MAP_EN = [
     {text: "The rain", question: "Where is the rain?", hex: 0x1F327, fileName: "rain"}
 ];
 
-export const KidsAudio = (props) => (
-    <audio src={audio('./' + props.lang + "/" + eval("KIDS_MAP_"+ props.lang)[props.num].fileName + '.mp3')} autoPlay/>
-);
-
 export const KidsEmoji = (props) => (
-    <span role="img" className={props.className} onClick={props.clickHandler}>
+    <span role="img" className={props.className} onClick={props.clickHandler} >
         <span>{String.fromCodePoint(eval("KIDS_MAP_"+ props.lang)[props.num].hex)}</span>
     </span>
 );
@@ -256,10 +253,10 @@ export const KidsQuestion = (props) => (
     </span>
 );
 
-export function playQuestionAudioByItemNumber(itemNumber, lang) {
-    return new Audio(audio('./' + lang + "/" + eval("KIDS_MAP_"+ lang)[itemNumber].fileName + '_q.mp3')).play();
-}
-
-export function playAudioByItemNumber(itemNumber, lang) {
-    return new Audio(audio('./' + lang + "/" + eval("KIDS_MAP_"+ lang)[itemNumber].fileName + '.mp3')).play();
+export function playAudioByItemNumber(itemNumber, lang, audioObject, isQuestion) {
+    audioObject.src = audio('./' + lang + "/" + eval("KIDS_MAP_"+ lang)[itemNumber].fileName 
+        + (isQuestion ? '_q' : '') + '.mp3');
+    audioObject.play().catch(() => {
+          // Auto-play was prevented
+        });
 }
