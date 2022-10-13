@@ -5,7 +5,7 @@ import Emoji from '../../../utils/Modes/Emoji';
 import { changeScreen } from '../../../../store/actions/actions';
 import { END_GAME } from '../../../../store/actions/actionTypes';
 
-const INTERVAL_BETWEEN_EMOJIS = 2000;
+const INTERVAL_BETWEEN_EMOJIS = 1500;
 
 const SlideShow = (props) => {
     const [currentItem, setCurrentItem] = useState(0);

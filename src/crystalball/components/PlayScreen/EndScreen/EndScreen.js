@@ -20,7 +20,7 @@ import {
     ViberIcon
   } from 'react-share'
 
-const URL = 'http://crystalball.kobadoo.com';
+const URL = 'https://kobadoo.com/#/crystalball';
 const HASHTAG = '#CrystalBall';
 const ICON_SIZE = 40;
 

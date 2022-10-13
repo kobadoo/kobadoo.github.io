@@ -86,8 +86,8 @@
 @media only screen and (max-width: 1023px) {
 
     .Emojis {
-        font-size: 4.5rem;
-        margin: 0px 5px 0px 5px;
+        font-size: 4rem;
+        margin: 0px 2px 0px 2px;
     }
 
     .EndScreen h2 {
@@ -101,6 +101,14 @@
         width: 120px;
         cursor: pointer;
         margin-top: 20px;
+    }
+
+    .ShareText {
+        text-align: center;
+        margin-top: 10px;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 1.2rem;
+        font-weight: normal;
     }
 
     .Ad728x90 {
