@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../utils/objectUpdater';
-import {EMOJIS_MODE} from '../constants';
+import {EMOJIS_MODE, CARD_SELECTION} from '../constants';
 
 const initialState = {
     level: 1,
@@ -13,7 +13,8 @@ const initialState = {
     showAds: false,
     watchedVideo: false,
     mode: EMOJIS_MODE,
-    audio: null
+    audio: null,
+    currentScreen: CARD_SELECTION
 };
 
 const POINTS_PER_COMPLETED_LEVEL = 100;
@@ -144,6 +145,13 @@ const activateAudio = (state, action) => {
     return updateObject(state, updatedState);
 };
 
+const changeScreen = (state, action) => {
+    const updatedState = {
+        currentScreen: action.value
+    };
+    return updateObject(state, updatedState);
+};
+
 
 const reducer = (state = initialState, action) => {
 
@@ -187,6 +195,9 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.ACTIVATE_AUDIO:
             return activateAudio(state, action);
+
+        case actionTypes.CHANGE_SCREEN:
+            return changeScreen(state, action);
 
         default:
             return state;

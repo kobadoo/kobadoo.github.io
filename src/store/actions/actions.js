@@ -101,3 +101,10 @@ export const activateAudio = (newValue) => {
         value: newValue
     };
 };
+
+export const changeScreen = (newValue) => {
+    return {
+        type: actionTypes.CHANGE_SCREEN,
+        value: newValue
+    };
+};

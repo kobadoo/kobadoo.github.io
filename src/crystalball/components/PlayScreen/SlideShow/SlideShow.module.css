@@ -1,0 +1,15 @@
+.SlideShowScreen {
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+    text-align: center;
+    background-color: #F0F0F0;
+}
+
+.SlideShowFont {
+    display: inline-block;
+    margin-top: 150px;
+    font-size: 16rem;   
+}

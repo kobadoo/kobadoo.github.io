@@ -1,0 +1,36 @@
+.CardSelectionScreen {
+    top: 56px;
+    position: absolute;
+    display: block;
+    width: 100%;
+    margin: auto;
+    height: 100%;
+    overflow: scroll;
+    text-align: center;
+    background-color: #F0F0F0;
+}
+
+.PlayingCard {
+  width: 120px;
+  padding: 4px 2px 2px 2px;
+  cursor: pointer;
+}
+
+.CardSelectionScreenItem {
+    cursor:pointer;
+ }
+
+
+@media only screen and (max-width: 1023px) {
+
+  .ItemsList {
+     width: 100%;
+     margin: auto;
+   }
+  
+  .PlayingCard {
+    width: 75px;
+    padding: 1px 2px 1px 2px;
+    display: inline-block;
+  }
+}

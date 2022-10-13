@@ -1,0 +1,117 @@
+.EndScreen {
+    top: 56px;
+    position: absolute;
+    display: block;
+    width: 100%;
+    margin: auto;
+    height: 100%;
+    overflow: hidden;
+    text-align: center;
+    background-color: #F0F0F0;
+}
+
+.EndScreen h2 {
+    margin: 15px;
+    color: teal;
+    font-weight: 400;
+    margin-top: 30px;
+    font-size: 3rem;
+}
+
+.RestartButton {
+    background-color: green;
+    color: white;
+    font-size: 1.6rem;
+    padding: 5px;
+    width: 160px;
+    cursor: pointer;
+    outline: none;
+    left: 50%;
+    margin-top: 30px;
+}
+
+.RestartButton:hover {
+    background-color: aquamarine;
+    color: white;
+}
+
+.Emojis {
+    font-size: 7rem;
+    display: inline-block;
+    margin: 0px 20px 0px 20px;
+}
+
+.ShareText {
+    text-align: center;
+    margin-top: 15px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.2rem;
+    font-weight: normal;
+}
+
+.ShareButtons {
+    text-align: center;
+    margin: 0px;
+}
+
+.ShareButton {
+    padding: 5px;
+}
+
+.Ad728x90 {
+    display: block;
+    height: 90px;
+}
+
+.Ad300x250 {
+    position: relative;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.Ad160x600L {
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.Ad160x600R {
+    display: block;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+@media only screen and (max-width: 1023px) {
+
+    .Emojis {
+        font-size: 4.5rem;
+        margin: 0px 5px 0px 5px;
+    }
+
+    .EndScreen h2 {
+        margin: 20px 0 0 0;
+        font-size: 2.4rem;
+    }
+
+    .RestartButton {
+        font-size: 1.5rem;
+        padding: 0;
+        width: 120px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    .Ad728x90 {
+        display: none;
+    }
+
+    .Ad160x600L {
+        display: none;
+    }
+
+    .Ad160x600R {
+        display: none;
+    }
+}

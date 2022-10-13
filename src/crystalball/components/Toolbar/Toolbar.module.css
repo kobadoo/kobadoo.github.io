@@ -1,0 +1,38 @@
+.Toolbar {
+    height: 56px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    background-color: aquamarine;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    z-index: 100;
+}
+
+.ToolbarItem {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.Logo {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color:teal;
+    position: fixed;
+    left: 20px;
+}
+
+.Logo a {
+    color:teal;
+    text-decoration: none;
+}
+
+.Mode {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: teal;
+    position: fixed;
+    left: 200px;
+}
