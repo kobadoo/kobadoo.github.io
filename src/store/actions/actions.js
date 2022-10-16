@@ -1,6 +1,7 @@
 import axios from '../../utils/axios-stats';
 import { eventGA } from '../../utils/Analytics';
 import * as actionTypes from './actionTypes';
+import modes_config from '../../utils/Modes/modes_config.json';
 
 export const increaseScore = (addedScore) => {
     return {
@@ -29,9 +30,9 @@ export const endGame = () => {
             score: state.score,
             timestamp: date + ' ' + time
         }
-        const score = String(state.score);
-        const mode = String(state.mode);
-        eventGA(mode, state.level, score);
+        const mode = modes_config[state.mode];
+        eventGA('Events by Mode', mode);
+        eventGA('Events by Level', state.level);
         axios.post('/stats.json', stats);
     };
 };
