@@ -28,7 +28,8 @@ export const endGame = () => {
             mode: state.mode,
             level: state.level,
             score: state.score,
-            timestamp: date + ' ' + time
+            timestamp: date + ' ' + time,
+            language: state.lang
         }
         const mode = modes_config[state.mode].name;
         eventGA('Events by Mode', mode);
