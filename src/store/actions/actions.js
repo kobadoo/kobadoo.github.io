@@ -30,7 +30,7 @@ export const endGame = () => {
             score: state.score,
             timestamp: date + ' ' + time
         }
-        const mode = modes_config[state.mode];
+        const mode = modes_config[state.mode].name;
         eventGA('Events by Mode', mode);
         eventGA('Events by Level', state.level);
         axios.post('/stats.json', stats);
