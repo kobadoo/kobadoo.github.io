@@ -5,6 +5,9 @@
 	<meta name="viewport" content="minimal-ui, user-scalable=no, initial-scale=1, maximum-scale=1, width=device-width" />
 	<meta http-equiv="refresh" content="85; URL=https://www.kobadoo.com/ads.html">
 	<title>Ads</title>
+	<style>
+		div    {display: inline-block;}
+		</style>
 	<script>
 	window.aiptag = window.aiptag || {cmd: []};
 	aiptag.cmd.display = aiptag.cmd.display || [];
@@ -52,9 +55,13 @@
 		}
 	}
 
+	function randomIntFromInterval(min, max) { // min and max included 
+  		return Math.floor(Math.random() * (max - min + 1) + min)
+	}
+
 	setTimeout(function(){
 		show_preroll();
-	}, 40000);
+	}, randomIntFromInterval(0, 50000));
 
 		</script>
 	<script async src="//api.adinplay.com/libs/aiptag/pub/KBD/kobadoo.com/tag.min.js"></script>
