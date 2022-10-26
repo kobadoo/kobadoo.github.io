@@ -4,6 +4,7 @@ import { PageView, initGA } from './utils/Analytics';
 import { Route, Switch } from 'react-router-dom';
 import Toolbar from './components/Toolbar/Toolbar';
 import MainScreen from './components/MainScreen/MainScreen';
+import NotFound from './components/NotFound/NotFound';
 import Credits from './components/Legal/Credits';
 import Privacy from './components/Legal/Privacy';
 import Terms from './components/Legal/Terms';
@@ -34,6 +35,7 @@ const App = (props) => {
         <Route path="/privacy" exact component={Privacy} onUpdate={() => window.scrollTo(0, 0)} />
         <Route path="/crystalball" exact component={CrystalBall} onUpdate={() => window.scrollTo(0, 0)} />
         <Route path="/" exact component={MainScreen} />
+        <Route path="*" component={NotFound} />
       </Switch>
     </ScrollToTop>
   );
