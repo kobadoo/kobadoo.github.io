@@ -236,7 +236,7 @@ const KIDS_MAP_EN = [
 ];
 
 export const KidsEmoji = (props) => (
-    <span role="img" className={props.className} onClick={props.clickHandler} >
+    <span role="img" className={props.className} onTouchStart={props.touchHandler} onMouseDown={props.clickHandler}>
         <span>{String.fromCodePoint(eval("KIDS_MAP_"+ props.lang)[props.num].hex)}</span>
     </span>
 );

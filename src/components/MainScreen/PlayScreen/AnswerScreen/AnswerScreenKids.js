@@ -17,6 +17,7 @@ const AnswerScreenKids = (props) => {
     const [disabledItems, setDisabledItems] = useState([]);
     const [failedItem, setFailedItem] = useState(null);
     const [expectedItem, setExpectedItem] = useState(null);
+    const [useTouch, setUseTouch] = useState(null);
 
     useEffect(() => {
         if(correctItems === props.numItems) {            
@@ -33,6 +34,19 @@ const AnswerScreenKids = (props) => {
             playAudioByItemNumber(props.itemList[correctItems], props.lang, props.audio, true);
         }
     }, [correctItems, props]);
+
+    /* onTouchStart (mobile/tablet) triggers, once done, the onMouseDown / onClick unless we prevent it this way */
+    const handleTouchStart = (index, value) => {
+        setUseTouch(true);
+        itemClickHandler(index, value);
+    }
+
+    const handleMouseDown = (index, value) => {
+        if(useTouch) {
+            return;
+        }
+        itemClickHandler(index, value);
+    }
 
     const itemClickHandler = (index, value) => {
 
@@ -77,7 +91,8 @@ const AnswerScreenKids = (props) => {
                 if(disabledItems.indexOf(index) === -1) {
                     return <KidsEmoji
                         className={classes.Kids + ' ' + assignStyle(value)}
-                        clickHandler={() => itemClickHandler(index, value)}
+                        clickHandler={() => handleMouseDown(index, value)}
+                        touchHandler={() => handleTouchStart(index, value)}
                         key={index} 
                         num={value}
                         lang={props.lang} />;

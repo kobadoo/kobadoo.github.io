@@ -8,6 +8,7 @@
     overflow: scroll;
     text-align: center;
     background-color: #F0F0F0;
+    touch-action: none; /* Prevent pull-to-refresh */
 }
 
 .Flags {
