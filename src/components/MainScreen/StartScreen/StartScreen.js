@@ -21,15 +21,12 @@ const StartScreen = (props) => {
         if (props.showAds) {
             window.aiptag.cmd.display.push( () => {
                 window.aipDisplayTag.display('kobadoo-com_300x100'); 
+                window.aipDisplayTag.display('kobadoo-com_300x250');
                 window.aipDisplayTag.display('kobadoo-com_300x250_1');
-                window.aipDisplayTag.display('kobadoo-com_300x250_2');
                 window.aipDisplayTag.display('kobadoo-com_300x250_3');
-                window.aipDisplayTag.display('kobadoo-com_300x250_4');
                 window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
                 window.aipDisplayTag.display('kobadoo-com_160x600_2');
                 window.aipDisplayTag.display('kobadoo-com_728x90_1');
-                window.aipDisplayTag.display('kobadoo-com_728x90_2');
-                window.aipDisplayTag.display('kobadoo-com_300x250');
             });
         }
     }, [props.showAds]);
@@ -93,7 +90,7 @@ const StartScreen = (props) => {
                 <p>You can practice your working memory with different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>two-digit numbers</strong>, <strong>arithmetic</strong> calculations, <strong>flags</strong> of the world or coloured geometric <strong>shapes</strong>. Children can also learn new vocabulary in <strong>English</strong> or <strong>Spanish</strong> using the <strong>kids</strong> mode.</p>
             </div>
 
-            { props.showAds ? <div id='kobadoo-com_300x250_1' className={classes.Ad300x250} /> : null }
+            { props.showAds ? <div id='kobadoo-com_300x250' className={classes.Ad300x250} /> : null }
             
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={MonkeyImg} alt="" />
@@ -103,7 +100,7 @@ const StartScreen = (props) => {
                 <strong> 100% free</strong>, no download or sign up required. <strong>Play on mobile</strong> for the best experience.</p>
             </div>
 
-            { props.showAds ? <div id='kobadoo-com_300x250' className={classes.Ad300x250} /> : null }
+            { props.showAds ? <div id='kobadoo-com_300x250_1' className={classes.Ad300x250} /> : null }
 
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={BulbImg} alt="" />
@@ -120,8 +117,6 @@ const StartScreen = (props) => {
                    Some adults have also improved their brain functions through this kind of exercises [<a href="https://psycnet.apa.org/record/2011-13119-001" target="_new">4</a>] [<a href="https://psycnet.apa.org/record/2017-10607-007" target="_new">5</a>]. Finally, some studies [<a href="https://www.sciencedirect.com/science/article/abs/pii/S0149763413000158" target="_new">6</a>] [<a href="https://www.mitpressjournals.org/doi/full/10.1162/jocn_a_00478" target="_new">7</a>] suggest that training your working memory can <strong>improve your mood</strong> by releasing dopamine in the brain.</p>
             </div>
 
-            { props.showAds ? <div id='kobadoo-com_300x250_4' className={classes.Ad300x250} /> : null }
-
             <div className={classes.BenefitsText}>
                 <div role="img" className={classes.Emoji}>
                     <span>{String.fromCodePoint(CRYSTAL_BALL_EMOJI)}</span>
@@ -133,13 +128,6 @@ const StartScreen = (props) => {
                     onClick={() => window.location.href = '/#/crystalball'}>Play Crystal Ball</button>
             </div>
             
-            { props.showAds ? (
-                <React.Fragment>
-                    <div id='kobadoo-com_300x250_2' className={classes.Ad300x250_2} />
-                    <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
-                </React.Fragment>
-                ) : null
-            }
             <Footer />
         </div>
     );

@@ -122,7 +122,7 @@
     display: none;
 }
 
-.Ad300x250_2 {
+.Ad300x250 {
     display: none;
 }
 
@@ -145,12 +145,6 @@
     height: 90px;
 }
 
-.Ad300x250 {
-    display: block;
-    margin-top: 10px;
-    height: 250px;
-}
-
 .Emoji {
     display: inline-block;
     margin: 60px 0 70px 0;
@@ -171,7 +165,7 @@
       height: 100px;
     }
 
-    .Ad300x250_2 {
+    .Ad300x250 {
         display: block;
         height: 250px;
     }
