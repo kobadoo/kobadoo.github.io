@@ -10,7 +10,7 @@ const CardSelectionScreen = (props) => {
     return (
         <div className={classes.CardSelectionScreen}>
             <div>
-                <h2>Choose one card</h2>
+                <h2>Ask a question & choose a card</h2>
             </div>
             <div className={classes.ItemsList}>
             {props.itemList.map((value, index) => {

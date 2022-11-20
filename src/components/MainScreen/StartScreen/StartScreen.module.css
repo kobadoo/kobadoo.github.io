@@ -87,6 +87,25 @@
     color: white;
 }
 
+.CrystalBallButton {
+    background-color: darkviolet;
+    color: white;
+    font-size: 1.5rem;
+    padding: 5px;
+    width: 200px;
+    height: 40px;
+    border: 1px solid darkviolet;
+    cursor: pointer;
+    outline: none;
+    border-radius: 4px;
+    margin-bottom: 25px;
+}
+
+.CrystalBallButton:hover {
+    background-color: violet;
+    color: white;
+}
+
 .StartImage {
     display: inline-block;
     width: 150px;
@@ -130,6 +149,12 @@
     display: block;
     margin-top: 10px;
     height: 250px;
+}
+
+.Emoji {
+    display: inline-block;
+    margin: 60px 0 70px 0;
+    font-size: 10rem;   
 }
 
 @media only screen and (max-width: 1023px) {

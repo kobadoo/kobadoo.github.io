@@ -10,12 +10,15 @@
     background-color: #F0F0F0;
 }
 
-.EndScreen h2 {
-    margin: 15px;
-    color: teal;
-    font-weight: 400;
-    margin-top: 30px;
-    font-size: 3rem;
+.EndScreen h3 {
+    margin: 15px 0 10px 0;
+    font-size: 2rem;
+}
+
+.EndScreen p {
+    font-size: 1.2rem;
+    font-style: italic;
+    margin: 0 5px 0 5px;
 }
 
 .RestartButton {
@@ -85,14 +88,20 @@
 
 @media only screen and (max-width: 1023px) {
 
+    .EndScreen h3 {
+        margin: 10px 0 2px 0;
+        font-size: 1.3rem;
+    }
+    
+    .EndScreen p {
+        font-size: 0.8rem;
+        font-style: italic;
+        margin: 0 5px 0 5px;
+    }
+
     .Emojis {
         font-size: 4rem;
         margin: 0px 2px 0px 2px;
-    }
-
-    .EndScreen h2 {
-        margin: 20px 0 0 0;
-        font-size: 2.4rem;
     }
 
     .RestartButton {

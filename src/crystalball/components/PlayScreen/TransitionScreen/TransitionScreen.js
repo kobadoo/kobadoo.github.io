@@ -9,7 +9,7 @@ const CRYSTAL_BALL_EMOJI = 0x1F52E;
 
 const TransitionScreen = (props) => {
 
-    const introText = <h1>This is the future that awaits you...</h1>;
+    const introText = <h1>This is the fortune that awaits you...</h1>;
 
     useEffect(() => {
         const timeout = setInterval(() => {

@@ -9,7 +9,7 @@ const APP_NAME = 'CRYSTAL BALL';
 const toolbar = (props) => (
     <div className={classes.Toolbar}>
         <div className={classes.Logo} onClick={() => props.onAbortGame()}>{APP_NAME}</div>
-        <div className={classes.Mode}>Future telling</div> 
+        <div className={classes.Mode}>Fortune Teller</div> 
     </div>
 );
 

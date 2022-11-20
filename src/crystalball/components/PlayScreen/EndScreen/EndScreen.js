@@ -51,13 +51,13 @@ const EndScreen = (props) => {
                 </React.Fragment>
                 ) : null
             }
-            <h2>Good luck!</h2>
-
             <div>
                 {props.itemList.map((value, index) => {
                     return <Emoji className={classes.Emojis} key={index} num={value} />
                 })}
             </div>
+            <h3>What does it mean?</h3>
+            <p>Each emoji has a special meaning in the context of your life. It is up to you how to interpret them.</p>
 
             <button className={classes.RestartButton} onClick={() => props.onChangeScreen(CARD_SELECTION)}>Try again</button>
 

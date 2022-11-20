@@ -11,7 +11,7 @@ const initialState = {
     isPaused: false,
     showIntro: false,
     showAds: false,
-    watchedVideo: false,
+    watchedVideo: true,
     mode: EMOJIS_MODE,
     audio: null,
     currentScreen: CARD_SELECTION
@@ -89,7 +89,7 @@ const abortGame = (state) => {
         isPaused: false,
         hasLevelStarted: false,
         hasGameEnded: false,
-        watchedVideo: false
+        watchedVideo: true
     };
     return updateObject(state, updatedState);
 };

@@ -8,7 +8,7 @@ import { END_GAME } from '../../../store/actions/actionTypes';
 import EndScreen from './EndScreen/EndScreen';
 
 const NUM_EMOJIS_DISPLAYED = 4;
-const TOTAL_EMOJIS = 106;
+const TOTAL_EMOJIS = 104;
 const NUM_CARDS_DISPLAYED = 16;
 const TOTAL_CARDS = 52;
 
