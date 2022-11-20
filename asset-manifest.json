@@ -1,7 +1,7 @@
 {
   "main.css": "/static/css/main.6c59be8e.chunk.css",
-  "main.js": "/static/js/main.27b1317b.chunk.js",
-  "main.js.map": "/static/js/main.27b1317b.chunk.js.map",
+  "main.js": "/static/js/main.5f4b6157.chunk.js",
+  "main.js.map": "/static/js/main.5f4b6157.chunk.js.map",
   "runtime~main.js": "/static/js/runtime~main.3781dd4f.js",
   "runtime~main.js.map": "/static/js/runtime~main.3781dd4f.js.map",
   "static/js/2.36849bad.chunk.js": "/static/js/2.36849bad.chunk.js",
@@ -9,7 +9,7 @@
   "static/js/3.61b8a1a8.chunk.js": "/static/js/3.61b8a1a8.chunk.js",
   "static/js/3.61b8a1a8.chunk.js.map": "/static/js/3.61b8a1a8.chunk.js.map",
   "index.html": "/index.html",
-  "precache-manifest.65bc0af02dc8457d739e75246022f7a5.js": "/precache-manifest.65bc0af02dc8457d739e75246022f7a5.js",
+  "precache-manifest.43b3b1fa115cdd2b7c62f2d733423810.js": "/precache-manifest.43b3b1fa115cdd2b7c62f2d733423810.js",
   "service-worker.js": "/service-worker.js",
   "static/css/main.6c59be8e.chunk.css.map": "/static/css/main.6c59be8e.chunk.css.map",
   "static/media/ace_of_spades.png": "/static/media/ace_of_spades.e2b7391f.png",
