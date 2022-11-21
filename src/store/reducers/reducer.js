@@ -87,6 +87,7 @@ const abortGame = (state) => {
         level: 1,
         score: 0,
         isPaused: false,
+        lang: 'EN',
         hasLevelStarted: false,
         hasGameEnded: false,
         watchedVideo: true
@@ -105,7 +106,8 @@ const togglePause = (state) => {
 
 const changeMode = (state, action) => {
     const updatedState = {
-        mode: action.value
+        mode: action.value,
+        lang: 'EN'
     };
     return updateObject(state, updatedState);
 };

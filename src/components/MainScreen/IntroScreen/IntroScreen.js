@@ -8,7 +8,7 @@ const INTERVAL_BEFORE_LEVEL_1 = 2000;
 
 const IntroScreen = (props) => {
 
-    let textMode = <h1>{modes_config[props.mode].introScreenText}</h1>;
+    let textMode = <h1>{modes_config[props.mode].introScreenText[props.language]}</h1>;
 
     useEffect(() => {
         if (props.watchedVideo) {
@@ -67,7 +67,8 @@ const mapStateToProps = state => {
     return {
         mode: state.mode,
         showAds: state.showAds,
-        watchedVideo: state.watchedVideo
+        watchedVideo: state.watchedVideo,
+        language: state.lang
     }
 }
 

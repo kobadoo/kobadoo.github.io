@@ -1,7 +1,10 @@
 [
     {
         "name": "Emojis",
-        "introScreenText": "Memorize these emojis in order",
+        "introScreenText": 
+        {
+            "EN": "Memorize these emojis in order"
+        },
         "maxItemsAnswerScreen": 42,
         "totalNumItems": 159,
         "intervalSecondsEasyLevels": 1300,
@@ -10,7 +13,10 @@
     },
     {
         "name": "Flags",
-        "introScreenText": "Memorize these flags in order",
+        "introScreenText": 
+        {
+            "EN": "Memorize these flags in order"
+        },
         "maxItemsAnswerScreen": 42,
         "totalNumItems": 132,
         "intervalSecondsEasyLevels": 1700,
@@ -19,7 +25,10 @@
     },
     {
         "name": "Numbers",
-        "introScreenText": "Memorize these numbers in order",
+        "introScreenText": 
+        {
+            "EN": "Memorize these numbers in order"
+        },
         "maxItemsAnswerScreen": 42,
         "totalNumItems": 100,
         "intervalSecondsEasyLevels": 1300,
@@ -28,7 +37,10 @@
     },
     {
         "name": "Arithmetic",
-        "introScreenText": "Add up all these numbers",
+        "introScreenText": 
+        {
+            "EN": "Add up all these numbers"
+        },
         "maxItemsAnswerScreen": 30,
         "totalNumItems": 100,
         "intervalSecondsEasyLevels": 2500,
@@ -40,7 +52,10 @@
     },
     {
         "name": "Shapes",
-        "introScreenText": "Memorize these geometric shapes in order",
+        "introScreenText": 
+        {
+            "EN": "Memorize these geometric shapes in order"
+        },
         "maxItemsAnswerScreen": 42,
         "totalNumItems": 100,
         "intervalSecondsEasyLevels": 2000,
@@ -49,7 +64,10 @@
     },
     {
         "name": "Cards",
-        "introScreenText": "Memorize these playing cards in order",
+        "introScreenText": 
+        {
+            "EN": "Memorize these playing cards in order"
+        },
         "maxItemsAnswerScreen": 42,
         "totalNumItems": 52,
         "intervalSecondsEasyLevels": 2000,
@@ -58,7 +76,11 @@
     },
     {
         "name": "Kids",
-        "introScreenText": "Play and learn new words",
+        "introScreenText": 
+        {
+            "EN": "Play and learn new words",
+            "ES": "Juega y aprende nuevas palabras"
+        },
         "maxItemsAnswerScreen": 12,
         "totalNumItems": 111,
         "intervalSecondsEasyLevels": 2500,
