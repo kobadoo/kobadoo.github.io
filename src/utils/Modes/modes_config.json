@@ -59,7 +59,7 @@
     {
         "name": "Kids",
         "introScreenText": "Play and learn new words",
-        "maxItemsAnswerScreen": 16,
+        "maxItemsAnswerScreen": 12,
         "totalNumItems": 111,
         "intervalSecondsEasyLevels": 2500,
         "intervalSecondsDifficultLevels": 2500,

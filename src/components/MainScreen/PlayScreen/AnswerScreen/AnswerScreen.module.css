@@ -38,8 +38,8 @@
 }
 
 .Kids {
-   font-size: 8rem;
-   padding: 5px;
+   font-size: 9rem;
+   padding: 20px;
 }
 
 .EvenItem {
@@ -51,7 +51,7 @@
 }
 
 .Question {
-   font-size: 2.5em;
+   font-size: 3em;
    margin: 20px 0 20px 0;
 }
 
@@ -126,8 +126,9 @@
    }
 
    .Kids {
-      font-size: 4rem;
-      padding: 5px;
+      display: inline-block;
+      font-size: 5rem;
+      padding: 10px 10px 10px 10px;
    }
 
    .Numbers {
@@ -143,7 +144,7 @@
    }
 
    .Question {
-      font-size: 1.8em;
+      font-size: 1.5em;
       margin: 10px 0 10px 0;
    }
 }
