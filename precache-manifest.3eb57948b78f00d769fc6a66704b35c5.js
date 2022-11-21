@@ -1,10 +1,10 @@
 self.__precacheManifest = [
   {
-    "revision": "153f7df75ea222330467",
-    "url": "/static/css/main.a3d86186.chunk.css"
+    "revision": "996f91061a3adb136128",
+    "url": "/static/css/main.a25ae0b4.chunk.css"
   },
   {
-    "revision": "153f7df75ea222330467",
+    "revision": "996f91061a3adb136128",
     "url": "/static/js/main.58e18ab8.chunk.js"
   },
   {
@@ -1920,7 +1920,7 @@ self.__precacheManifest = [
     "url": "/static/media/zebra_q.edaf0e49.mp3"
   },
   {
-    "revision": "2169e296134e2eff161d64b2320c75cb",
+    "revision": "53960a7d0cdd3889fd36a079b52bbcb7",
     "url": "/index.html"
   }
 ];
