@@ -126,7 +126,7 @@ const StartScreen = (props) => {
                 <p>Learn what the future awaits you with this fun game that uses cards and emojis to tell your fortune.</p>
                 <button 
                     className={classes.CrystalBallButton} 
-                    onClick={() => window.location.href = '/#/crystalball'}>Play Crystal Ball</button>
+                    onClick={() => window.open('/#/crystalball', '_blank')}>Play Crystal Ball</button>
             </div>
             
             <Footer />

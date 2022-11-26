@@ -302,7 +302,7 @@ const KIDS_MAP_NO = [
     {text: "En kjole", question: "Hvor er kjolen?", hex: 0x1F457, fileName: "dress"},
     {text: "En sko", question: "Hvor er skoen?", hex: 0x1F45E, fileName: "shoe"},
     {text: "En gutt", question: "Hvor er gutten?", hex: 0x1F466, fileName: "boy"},
-    {text: "Ei jente", question: "Hvo er jenta?", hex: 0x1F467, fileName: "girl"},
+    {text: "Ei jente", question: "Hvor er jenta?", hex: 0x1F467, fileName: "girl"},
     {text: "En bok", question: "Hvor er boken?", hex: 0x1F4D7, fileName: "book"},
     {text: "En telefon", question: "Hvor er telefonen?", hex: 0x1F4F1, fileName: "phone"},
     {text: "En brann", question: "Hvor er brannen?", hex: 0x1F525, fileName: "fire"},
