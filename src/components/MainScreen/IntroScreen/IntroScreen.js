@@ -9,6 +9,7 @@ const INTERVAL_BEFORE_LEVEL_1 = 2000;
 const IntroScreen = (props) => {
 
     let textMode = <h1>{modes_config[props.mode].introScreenText[props.language]}</h1>;
+    let subTextMode = <h2>{modes_config[props.mode].introScreenSubText[props.language]}</h2>;
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -56,7 +57,7 @@ const IntroScreen = (props) => {
         return (
             <div className={classes.IntroScreen}>
                 {textMode}
-                <h2>Get ready!</h2>
+                {subTextMode}
             </div>
         );
     }

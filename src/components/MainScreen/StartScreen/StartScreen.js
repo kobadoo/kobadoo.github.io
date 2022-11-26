@@ -53,7 +53,7 @@ const StartScreen = (props) => {
             }
 
             <h3 className={classes.HeaderText}>
-                <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, playing cards, numbers, arithmetic calculations, flags or geometric shapes. Children can also learn new words in English, Spanish and Norwegian using the Kids mode.
+                <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, playing cards, numbers, arithmetic calculations, flags or geometric shapes. Children can also learn new words in different languages using the <i>Kids</i> mode.
             </h3>
 
             <div>
@@ -88,7 +88,7 @@ const StartScreen = (props) => {
             <div className={classes.BenefitsText}>
                 <ThumbnailSlideShow />
                 <h3>Seven game modes</h3>
-                <p>You can practice your working memory with different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>two-digit numbers</strong>, <strong>arithmetic</strong> calculations, <strong>flags</strong> of the world or coloured geometric <strong>shapes</strong>. Children can also learn new vocabulary in <strong>English</strong>, <strong>Spanish</strong> or <strong>Norwegian</strong> using the <strong>kids</strong> mode.</p>
+                <p>You can practice your working memory with different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>two-digit numbers</strong>, <strong>arithmetic</strong> calculations, <strong>flags</strong> of the world or coloured geometric <strong>shapes</strong>. Children can also learn new vocabulary in <strong>English</strong>, <strong>Spanish</strong> or <strong>Norwegian</strong> using the <strong><i>Kids</i></strong> mode.</p>
             </div>
 
             { props.showAds ? <div id='kobadoo-com_300x250' className={classes.Ad300x250} /> : null }

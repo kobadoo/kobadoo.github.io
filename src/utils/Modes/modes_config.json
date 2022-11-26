@@ -5,6 +5,10 @@
         {
             "EN": "Memorize these emojis in order"
         },
+        "introScreenSubText": 
+        {
+            "EN": "Get ready!"
+        },
         "maxItemsAnswerScreen": 42,
         "totalNumItems": 159,
         "intervalSecondsEasyLevels": 1300,
@@ -16,6 +20,10 @@
         "introScreenText": 
         {
             "EN": "Memorize these flags in order"
+        },
+        "introScreenSubText": 
+        {
+            "EN": "Get ready!"
         },
         "maxItemsAnswerScreen": 42,
         "totalNumItems": 132,
@@ -29,6 +37,10 @@
         {
             "EN": "Memorize these numbers in order"
         },
+        "introScreenSubText": 
+        {
+            "EN": "Get ready!"
+        },
         "maxItemsAnswerScreen": 42,
         "totalNumItems": 100,
         "intervalSecondsEasyLevels": 1300,
@@ -40,6 +52,10 @@
         "introScreenText": 
         {
             "EN": "Add up all these numbers"
+        },
+        "introScreenSubText": 
+        {
+            "EN": "Get ready!"
         },
         "maxItemsAnswerScreen": 30,
         "totalNumItems": 100,
@@ -56,6 +72,10 @@
         {
             "EN": "Memorize these geometric shapes in order"
         },
+        "introScreenSubText": 
+        {
+            "EN": "Get ready!"
+        },
         "maxItemsAnswerScreen": 42,
         "totalNumItems": 100,
         "intervalSecondsEasyLevels": 2000,
@@ -67,6 +87,10 @@
         "introScreenText": 
         {
             "EN": "Memorize these playing cards in order"
+        },
+        "introScreenSubText": 
+        {
+            "EN": "Get ready!"
         },
         "maxItemsAnswerScreen": 42,
         "totalNumItems": 52,
@@ -81,6 +105,12 @@
             "EN": "Play and learn new words",
             "ES": "Juega y aprende nuevas palabras",
             "NO": "Spill og lær nye ord"
+        },
+        "introScreenSubText": 
+        {
+            "EN": "Get ready!",
+            "ES": "¡Prepárate!",
+            "NO": "Gjør deg klar!"
         },
         "maxItemsAnswerScreen": 12,
         "totalNumItems": 111,
