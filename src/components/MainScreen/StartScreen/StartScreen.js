@@ -73,6 +73,7 @@ const StartScreen = (props) => {
                 <RadioGroup row style={toggleGroupStyle} onChange={handleLanguage}>
                     <FormControlLabel value="EN" control={<Radio checked={props.lang === 'EN'} />} label="English" />
                     <FormControlLabel value="ES" control={<Radio checked={props.lang === 'ES'} />} label="Español" />
+                    <FormControlLabel value="NO" control={<Radio checked={props.lang === 'NO'} />} label="Norsk" />
                 </RadioGroup>
                 : null
             }

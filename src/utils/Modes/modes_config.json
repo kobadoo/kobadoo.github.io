@@ -79,7 +79,8 @@
         "introScreenText": 
         {
             "EN": "Play and learn new words",
-            "ES": "Juega y aprende nuevas palabras"
+            "ES": "Juega y aprende nuevas palabras",
+            "NO": "Spill og lær nye ord"
         },
         "maxItemsAnswerScreen": 12,
         "totalNumItems": 111,

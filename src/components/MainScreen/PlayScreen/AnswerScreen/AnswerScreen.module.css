@@ -9,6 +9,9 @@
     text-align: center;
     background-color: #F0F0F0;
     touch-action: none; /* Prevent pull-to-refresh */
+    -webkit-user-select: none; /* Prevent select text Safari */
+    -ms-user-select: none; /* Prevent select text IE 10 and IE 11 */
+    user-select: none; /* Prevent select text Standard syntax */
 }
 
 .Flags {

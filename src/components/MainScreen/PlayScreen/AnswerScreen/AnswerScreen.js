@@ -20,6 +20,8 @@ const AnswerScreen = (props) => {
     const [expectedItem, setExpectedItem] = useState(null);
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+        
         if(correctItems === props.numItems) {            
             if(props.isLastLevel) {
                 props.onEndGame();

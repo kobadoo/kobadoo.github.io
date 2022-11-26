@@ -11,6 +11,8 @@ const IntroScreen = (props) => {
     let textMode = <h1>{modes_config[props.mode].introScreenText[props.language]}</h1>;
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+        
         if (props.watchedVideo) {
             const timeout = setInterval(() => {
                 props.onStartLevel();
