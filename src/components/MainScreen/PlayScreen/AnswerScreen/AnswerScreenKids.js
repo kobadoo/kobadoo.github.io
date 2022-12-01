@@ -57,7 +57,7 @@ const AnswerScreenKids = (props) => {
             setDisabledItems(prevList => [...prevList,index]);
             setCorrectItems(prevCount => prevCount + 1 );
         } 
-        else {
+        else if (failedItem === null) { // Avoid clicking again after failure
             props.audio.src=Lost;
             props.audio.play();
             setLostGame(true);

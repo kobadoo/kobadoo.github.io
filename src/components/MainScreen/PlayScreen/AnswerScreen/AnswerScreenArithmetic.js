@@ -23,7 +23,7 @@ const AnswerScreenArithmetic = (props) => {
                 props.onLevelPassed();
             }
         } 
-        else {
+        else if (failedItem === null) { // Avoid clicking again after failure
             setLostGame(true);
             setFailedItem(value);
             setExpectedItem(props.correctAnswer);
