@@ -17,12 +17,12 @@
 .Flags {
    width: 158px;
    height: 103px;
-   padding: 10px;
+   padding: 6px;
 }
 
 .PlayingCard {
-   width: 110px;
-   padding: 10px;
+   width: 108px;
+   padding: 6px;
 }
 
 .Shapes {
@@ -32,18 +32,18 @@
 
 .Emojis {
    font-size: 6rem;
-   padding: 15px;
+   padding: 12px;
 }
 
 .Numbers {
-   font-size: 5.8rem;
+   font-size: 5rem;
     display: inline-block;
     padding: 12px;
 }
 
 .Kids {
-   font-size: 9rem;
-   padding: 20px;
+   font-size: 8rem;
+   padding: 16px;
 }
 
 .EvenItem {
