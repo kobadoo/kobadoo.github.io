@@ -4,7 +4,6 @@ import classes from './AnswerScreen.module.css';
 import {KidsEmoji, KidsQuestion, playAudioByItemNumber} from '../../../../utils/Modes/Kids';
 import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
 import Applause from '../../../../audio/applause.mp3';
-import CorrectAnswer from '../../../../audio/correct.mp3';
 import Lost from '../../../../audio/lost.mp3';
 import Volume from '../../../../images/audio.png';
 
@@ -54,8 +53,6 @@ const AnswerScreenKids = (props) => {
     const itemClickHandler = (index, value) => {
 
         if (props.itemList[correctItems] === value) {
-            props.audio.src=CorrectAnswer;
-            props.audio.play();
             props.onScoreIncreased(POINTS_PER_CORRECT_ANSWER);
             setDisabledItems(prevList => [...prevList,index]);
             setCorrectItems(prevCount => prevCount + 1 );
