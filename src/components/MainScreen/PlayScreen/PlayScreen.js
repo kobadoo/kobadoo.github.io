@@ -25,7 +25,7 @@ class PlayScreen extends Component {
 
     numItems = ITEMS_LEVEL_1 + parseInt((this.props.lvl -1) / 3);
     totalItems = this.props.mode === KIDS_MODE ? getRandomSubarray([...Array(modes_config[this.props.mode].totalNumItems).keys()], modes_config[this.props.mode].maxItemsAnswerScreen)
-        : getRandomSubarray([...Array(modes_config[this.props.mode].totalNumItems).keys()], modes_config[this.props.mode].maxItemsAnswerScreen-this.props.lvl+1).sort((a, b) => a - b);
+        : getRandomSubarray([...Array(modes_config[this.props.mode].totalNumItems).keys()], modes_config[this.props.mode].maxItemsAnswerScreen-parseInt((this.props.lvl -1) / 3)).sort((a, b) => a - b);
     intervalBetweenItems = this.props.lvl < modes_config[this.props.mode].firstDifficultLevel ? modes_config[this.props.mode].intervalSecondsEasyLevels : modes_config[this.props.mode].intervalSecondsDifficultLevels;
     
     state = {

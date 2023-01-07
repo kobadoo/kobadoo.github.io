@@ -9,7 +9,7 @@
         {
             "EN": "Get ready!"
         },
-        "maxItemsAnswerScreen": 42,
+        "maxItemsAnswerScreen": 30,
         "totalNumItems": 159,
         "intervalSecondsEasyLevels": 1300,
         "intervalSecondsDifficultLevels": 1600,
@@ -25,7 +25,7 @@
         {
             "EN": "Get ready!"
         },
-        "maxItemsAnswerScreen": 42,
+        "maxItemsAnswerScreen": 30,
         "totalNumItems": 132,
         "intervalSecondsEasyLevels": 1700,
         "intervalSecondsDifficultLevels": 2000,
@@ -41,7 +41,7 @@
         {
             "EN": "Get ready!"
         },
-        "maxItemsAnswerScreen": 42,
+        "maxItemsAnswerScreen": 30,
         "totalNumItems": 100,
         "intervalSecondsEasyLevels": 1300,
         "intervalSecondsDifficultLevels": 1600,
@@ -76,7 +76,7 @@
         {
             "EN": "Get ready!"
         },
-        "maxItemsAnswerScreen": 42,
+        "maxItemsAnswerScreen": 30,
         "totalNumItems": 100,
         "intervalSecondsEasyLevels": 2000,
         "intervalSecondsDifficultLevels": 2300,
@@ -92,7 +92,7 @@
         {
             "EN": "Get ready!"
         },
-        "maxItemsAnswerScreen": 42,
+        "maxItemsAnswerScreen": 30,
         "totalNumItems": 52,
         "intervalSecondsEasyLevels": 2000,
         "intervalSecondsDifficultLevels": 2300,

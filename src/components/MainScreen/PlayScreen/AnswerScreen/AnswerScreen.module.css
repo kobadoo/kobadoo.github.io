@@ -15,29 +15,30 @@
 }
 
 .Flags {
-   width: 138px;
-   height: 90px;
-   padding: 4px 2px 2px 2px;
+   width: 158px;
+   height: 103px;
+   padding: 10px;
 }
 
 .PlayingCard {
-   width: 103px;
-   padding: 4px 2px 2px 2px;
+   width: 110px;
+   padding: 10px;
 }
 
 .Shapes {
-   width: 110px;
-   padding: 4px 2px 2px 2px;
+   width: 120px;
+   padding: 10px;
 }
 
 .Emojis {
-   font-size: 5rem;
+   font-size: 6rem;
+   padding: 15px;
 }
 
 .Numbers {
-   font-size: 5rem;
+   font-size: 5.8rem;
     display: inline-block;
-    padding: 10px;
+    padding: 12px;
 }
 
 .Kids {
@@ -109,23 +110,24 @@
    
 
    .Flags {
-      width: 46px;
-      height: 30px;
-      padding: 2px 2px 8px 2px;
+      width: 63px;
+      height: 41px;
+      padding: 4px;
    }
 
    .PlayingCard {
-      width: 43px;
-      padding: 1px 2px 1px 2px;
+      width: 50px;
+      padding: 4px;
    }
 
    .Shapes {
-      width: 46px;
-      padding: 2px 2px 4px 2px;
+      width: 50px;
+      padding: 10px;
    }
 
    .Emojis {
-      font-size: 3rem;
+      font-size: 3.3rem;
+      padding: 3px;
    }
 
    .Kids {
