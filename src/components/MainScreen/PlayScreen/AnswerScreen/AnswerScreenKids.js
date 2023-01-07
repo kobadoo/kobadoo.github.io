@@ -70,7 +70,11 @@ const AnswerScreenKids = (props) => {
         }
     }
 
-    const assignStyle = (value) => {
+    const assignStyle = (value, index) => {
+        if (disabledItems.includes(index)) {
+            return classes.ItemCorrect;
+        }
+
         switch (value) {
             case failedItem:
                 return classes.ItemFailed;
@@ -90,18 +94,13 @@ const AnswerScreenKids = (props) => {
             </div>
             <div className={classes.ItemsList}>
             {props.totalItems.map((value, index) => {
-                if(disabledItems.indexOf(index) === -1) {
-                    return <KidsEmoji
-                        className={classes.Kids + ' ' + assignStyle(value)}
-                        clickHandler={() => handleMouseDown(index, value)}
-                        touchHandler={() => handleTouchStart(index, value)}
-                        key={index} 
-                        num={value}
-                        lang={props.lang} />;
-                }
-                else {
-                    return false;
-                }
+                return <KidsEmoji
+                    className={classes.Kids + ' ' + assignStyle(value, index)}
+                    clickHandler={() => handleMouseDown(index, value)}
+                    touchHandler={() => handleTouchStart(index, value)}
+                    key={index} 
+                    num={value}
+                    lang={props.lang} />;
             })}
             </div>
 

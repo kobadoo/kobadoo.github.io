@@ -69,6 +69,12 @@
 .AnswerScreenItem {
     cursor:pointer
  }
+
+.ItemCorrect {
+   background-color: lawngreen;
+   pointer-events: none;
+   opacity: 0.15;
+}
  
  .ItemFailed {
     background-color: red;

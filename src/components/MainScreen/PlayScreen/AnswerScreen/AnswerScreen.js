@@ -50,7 +50,11 @@ const AnswerScreen = (props) => {
         }
     }
 
-    const assignStyle = (value) => {
+    const assignStyle = (value, index) => {
+
+        if (disabledItems.includes(index)) {
+            return classes.ItemCorrect;
+        }
         switch (value) {
             case failedItem:
                 return classes.ItemFailed;
@@ -68,42 +72,37 @@ const AnswerScreen = (props) => {
             </div>
             <div className={classes.ItemsList}>
             {props.totalItems.map((value, index) => {
-                if(disabledItems.indexOf(index) === -1) {
-                    switch (props.mode) {
-                        case NUMBERS_MODE:
-                            return <div 
-                                className={classes.Numbers + ' ' + ((index % 2) ? classes.EvenItem : classes.OddItem ) + ' ' + assignStyle(value) }
-                                onClick={() => itemClickHandler(index, value)}
-                                key={index} 
-                                >{value}</div>
-                        case FLAGS_MODE:
-                            return <Flag 
-                                className={classes.Flags + ' ' + assignStyle(value)}
-                                clickHandler={() => itemClickHandler(index, value)}
-                                key={index} 
-                                num={value} />
-                        case SHAPES_MODE:
-                            return <Shape 
-                                className={classes.Shapes + ' ' + assignStyle(value)}
-                                clickHandler={() => itemClickHandler(index, value)}
-                                key={index} 
-                                num={value} />
-                        case CARDS_MODE:
-                            return <PlayingCard 
-                                className={classes.PlayingCard + ' ' + assignStyle(value)}
-                                clickHandler={() => itemClickHandler(index, value)}
-                                key={index} 
-                                num={value} />
-                        default: // EMOJIS_MODE
-                            return <Emoji 
-                                className={classes.Emojis + ' ' + assignStyle(value)}
-                                clickHandler={() => itemClickHandler(index, value)}
-                                key={index} 
-                                num={value} />
-                    }
-                }
-                else {
-                    return false;
+                switch (props.mode) {
+                    case NUMBERS_MODE:
+                        return <div 
+                            className={classes.Numbers + ' ' + ((index % 2) ? classes.EvenItem : classes.OddItem ) + ' ' + assignStyle(value, index) }
+                            onClick={() => itemClickHandler(index, value)}
+                            key={index} 
+                            >{value}</div>
+                    case FLAGS_MODE:
+                        return <Flag 
+                            className={classes.Flags + ' ' + assignStyle(value, index)}
+                            clickHandler={() => itemClickHandler(index, value)}
+                            key={index} 
+                            num={value} />
+                    case SHAPES_MODE:
+                        return <Shape 
+                            className={classes.Shapes + ' ' + assignStyle(value, index)}
+                            clickHandler={() => itemClickHandler(index, value)}
+                            key={index} 
+                            num={value} />
+                    case CARDS_MODE:
+                        return <PlayingCard 
+                            className={classes.PlayingCard + ' ' + assignStyle(value, index)}
+                            clickHandler={() => itemClickHandler(index, value)}
+                            key={index} 
+                            num={value} />
+                    default: // EMOJIS_MODE
+                        return <Emoji 
+                            className={classes.Emojis + ' ' + assignStyle(value, index)}
+                            clickHandler={() => itemClickHandler(index, value)}
+                            key={index} 
+                            num={value} />
                 }
             })}
             </div>
