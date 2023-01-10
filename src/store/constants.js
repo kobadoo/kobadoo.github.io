@@ -6,7 +6,7 @@ export const ARITHMETIC_MODE = 3;
 export const SHAPES_MODE = 4;
 export const CARDS_MODE = 5;
 export const KIDS_MODE = 6;
-export const CRYSTAL_BALL = 99;
+export const CRYSTAL_BALL = 7;
 
 // Crystal Ball
 export const CARD_SELECTION = 0;

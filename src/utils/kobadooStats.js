@@ -4,6 +4,9 @@
 
 'use strict';
 
+let maxLevel = 0;
+let maxScore = 0;
+let timestamp;
 let jsonData = require('./kobadoo-default-rtdb-export');
 let gamesPlayed = 0;
 let mode;
@@ -25,7 +28,7 @@ for (var key in jsonData.stats) {
     else {
         mode = 0; // All games before creating "mode" were Emojis (mode=0)
     }
-    if (jsonData.stats[key].score > gamesByMode[mode].maxScore) {
+    if (jsonData.stats[key].hasOwnProperty('score') && jsonData.stats[key].score > gamesByMode[mode].maxScore) {
         gamesByMode[mode].maxScore = jsonData.stats[key].score;
         gamesByMode[mode].maxLevel = jsonData.stats[key].level;
         gamesByMode[mode].timestamp = jsonData.stats[key].timestamp;
@@ -52,7 +55,7 @@ console.log(' Arithmetic: ' + gamesByMode[3].gamesPlayed);
 console.log(' Shapes: ' + gamesByMode[4].gamesPlayed);
 console.log(' Cards: ' + gamesByMode[5].gamesPlayed);
 console.log(' Kids: ' + gamesByMode[6].gamesPlayed + " (EN: " + gamesByMode[6].langEn + ' ES: ' + gamesByMode[6].langEs + ' NO: ' + gamesByMode[6].langNo + ')');
-console.log(' Crystal Ball: ' + gamesByMode[99].gamesPlayed);
+console.log(' Crystal Ball: ' + gamesByMode[7].gamesPlayed);
 
 console.log('\n---RECORDS---');
 console.log('Emojis: ' + 'level ' + gamesByMode[0].maxLevel + ' score ' + gamesByMode[0].maxScore + ' timestamp ' + gamesByMode[0].timestamp);
