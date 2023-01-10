@@ -88,7 +88,7 @@ const StartScreen = (props) => {
             <div className={classes.BenefitsText}>
                 <ThumbnailSlideShow />
                 <h3>Seven game modes</h3>
-                <p>You can practice your working memory with different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>two-digit numbers</strong>, <strong>arithmetic</strong> calculations, <strong>flags</strong> of the world or coloured geometric <strong>shapes</strong>. Children can also learn new vocabulary in <strong>English</strong>, <strong>Spanish</strong> or <strong>Norwegian</strong> using the <strong><i>Kids</i></strong> mode.</p>
+                <p>You can practice your working memory with different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>two-digit numbers</strong>, <strong>arithmetic</strong> calculations, <strong>flags</strong> of the world or coloured geometric <strong>shapes</strong>. Children can also learn new vocabulary in <strong>English</strong>, <strong>Spanish</strong> or <strong>Norwegian</strong> using the <strong><i>Kids</i></strong> mode. Watch all the demos on <a href="https://www.youtube.com/@kobadoo/videos" target="_new">our Youtube channel</a>!</p>
             </div>
 
             { props.showAds ? <div id='kobadoo-com_300x250' className={classes.Ad300x250} /> : null }
@@ -123,7 +123,7 @@ const StartScreen = (props) => {
                     <span>{String.fromCodePoint(CRYSTAL_BALL_EMOJI)}</span>
                 </div>
                 <h3>Try Kobadoo Crystal Ball!</h3>
-                <p>Learn what the future awaits you with this fun game that uses cards and emojis to tell your fortune.</p>
+                <p>Learn what the future awaits you with this fun game that uses playing cards and emojis to tell your fortune.</p>
                 <button 
                     className={classes.CrystalBallButton} 
                     onClick={() => window.open('/#/crystalball', '_blank')}>Play Crystal Ball</button>

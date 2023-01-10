@@ -19,7 +19,7 @@ const SlideShow = (props) => {
 
     useEffect(() => {
         if (currentItem === props.itemList.length) {
-            props.onChangeScreen(END_GAME);    
+            props.onChangeScreen(END_GAME);
         }
     }, [currentItem]);
 

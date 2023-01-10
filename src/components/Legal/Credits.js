@@ -18,7 +18,7 @@ const Credits = () => {
         </ul>
 
         <center>
-             <p><i>(c) Kobadoo, 2022. All rights reserved.</i></p>
+             <p><i>(c) Kobadoo, 2023. All rights reserved.</i></p>
         </center>
     </div>
     );

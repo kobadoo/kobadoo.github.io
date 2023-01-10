@@ -2,6 +2,7 @@ import axios from '../../utils/axios-stats';
 import { eventGA } from '../../utils/Analytics';
 import * as actionTypes from './actionTypes';
 import modes_config from '../../utils/Modes/modes_config.json';
+import { CRYSTAL_BALL } from '../constants';
 
 export const increaseScore = (addedScore) => {
     return {
@@ -105,8 +106,23 @@ export const activateAudio = (newValue) => {
 };
 
 export const changeScreen = (newValue) => {
-    return {
-        type: actionTypes.CHANGE_SCREEN,
-        value: newValue
+    return (dispatch) => {
+        dispatch({
+            type: actionTypes.CHANGE_SCREEN,
+            value: newValue
+        });
+        if (newValue === actionTypes.END_GAME) {
+            // Send stats without waiting for it
+            const today = new Date();
+            const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            const mode = "Crystal Ball";
+            const stats = {
+                mode: CRYSTAL_BALL,
+                timestamp: date + ' ' + time,
+            }
+            eventGA('Events by Mode', mode);
+            axios.post('/stats.json', stats);
+        }
     };
 };

@@ -1,7 +1,7 @@
 # Kobadoo App
 
-Kobadoo is a free memory game that trains your brain using funny emojis.
+Kobadoo is a free game to train your brain by memorizing emojis, playing cards, numbers, arithmetic, flags or geometric shapes. Children can also learn new words in English, Spanish and Norwegian using the Kids mode.
 
 For further information about Kobadoo, please contact us on `hello (at) kobadoo.com`.
 
-(c) Kobadoo, 2022. All rights reserved.
+(c) Kobadoo, 2023. All rights reserved.
