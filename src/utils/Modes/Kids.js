@@ -119,7 +119,17 @@ const KIDS_MAP_ES = [
     {text: "Un coche de policía", question: "¿Dónde está el coche de policía?", hex: 0x1F694, fileName: "policecar"},
     {text: "Un camión de bomberos", question: "¿Donde está el camión de bomberos?", hex: 0x1F692, fileName: "fireengine"},
     {text: "Un tranvía", question: "¿Dónde está el tranvía?", hex: 0x1F683, fileName: "tram"},
-    {text: "Un cohete", question: "¿Dónde está el cohete?", hex: 0x1F680, fileName: "rocket"}
+    {text: "Un cohete", question: "¿Dónde está el cohete?", hex: 0x1F680, fileName: "rocket"},
+    {text: "Un muñeco de nieve", question: "¿Dónde está el muñeco de nieve?", hex: 0x26C4, fileName: "snowman"},
+    {text: "Una montaña", question: "¿Dónde está la montaña?", hex: 0x26F0, fileName: "mountain"},
+    {text: "Una ola", question: "¿Dónde está la ola?", hex: 0x1F30A, fileName: "wave"},
+    {text: "Una piña", question: "¿Dónde está la piña?", hex: 0x1F34D, fileName: "pineapple"},
+    {text: "Una galleta", question: "¿Dónde está la galleta?", hex: 0x1F36A, fileName: "cookie"},
+    {text: "Un castillo", question: "¿Dónde está el castillo?", hex: 0x1F3F0, fileName: "castle"},
+    {text: "Un ciervo", question: "¿Dónde está el ciervo?", hex: 0x1F98C, fileName: "deer"},
+    {text: "Un portátil", question: "¿Dónde está el portátil?", hex: 0x1F4BB, fileName: "laptop"},
+    {text: "Una trompeta", question: "¿Dónde está la trompeta?", hex: 0x1F3BA, fileName: "trumpet"},
+    {text: "Una mariquita", question: "¿Dónde está la mariquita?", hex: 0x1F41E, fileName: "ladybug"}
 ];
 
 // eslint-disable-next-line no-unused-vars
@@ -238,7 +248,17 @@ const KIDS_MAP_EN = [
     {text: "A police car", question: "Where is the police car?", hex: 0x1F694, fileName: "policecar"},
     {text: "A fire engine", question: "Where is the fire engine?", hex: 0x1F692, fileName: "fireengine"},
     {text: "A tram", question: "Where is the tram?", hex: 0x1F683, fileName: "tram"},
-    {text: "A rocket", question: "Where is the rocket?", hex: 0x1F680, fileName: "rocket"}
+    {text: "A rocket", question: "Where is the rocket?", hex: 0x1F680, fileName: "rocket"},
+    {text: "A snowman", question: "Where is the snowman?", hex: 0x26C4, fileName: "snowman"},
+    {text: "A mountain", question: "Where is the mountain?", hex: 0x26F0, fileName: "mountain"},
+    {text: "A wave", question: "Where is the wave?", hex: 0x1F30A, fileName: "wave"},
+    {text: "A pineapple", question: "Where is the pineapple?", hex: 0x1F34D, fileName: "pineapple"},
+    {text: "A cookie", question: "Where is the cookie?", hex: 0x1F36A, fileName: "cookie"},
+    {text: "A castle", question: "Where is the castle?", hex: 0x1F3F0, fileName: "castle"},
+    {text: "A deer", question: "Where is the deer?", hex: 0x1F98C, fileName: "deer"},
+    {text: "A laptop", question: "Where is the laptop?", hex: 0x1F4BB, fileName: "laptop"},
+    {text: "A trumpet", question: "Where is the trumpet?", hex: 0x1F3BA, fileName: "trumpet"},
+    {text: "A ladybug", question: "Where is the ladybug?", hex: 0x1F41E, fileName: "ladybug"}
 ];
 
 // eslint-disable-next-line no-unused-vars
@@ -357,7 +377,17 @@ const KIDS_MAP_NO = [
     {text: "En politibil", question: "Hvor er politibilen?", hex: 0x1F694, fileName: "policecar"},
     {text: "En brannbil", question: "Hvor er brannbilen?", hex: 0x1F692, fileName: "fireengine"},
     {text: "En trikk", question: "Hvor er trikken?", hex: 0x1F683, fileName: "tram"},
-    {text: "En rakett", question: "Hvor er raketten?", hex: 0x1F680, fileName: "rocket"}
+    {text: "En rakett", question: "Hvor er raketten?", hex: 0x1F680, fileName: "rocket"},
+    {text: "En snømann", question: "Hvor er snømannen?", hex: 0x26C4, fileName: "snowman"},
+    {text: "Et fjell", question: "Hvor er fjellet?", hex: 0x26F0, fileName: "mountain"},
+    {text: "En bølge", question: "Hvor er bølgen?", hex: 0x1F30A, fileName: "wave"},
+    {text: "En ananas", question: "Hvor er ananasen?", hex: 0x1F34D, fileName: "pineapple"},
+    {text: "En kjeks", question: "Hvor er kjeksen?", hex: 0x1F36A, fileName: "cookie"},
+    {text: "Et slott", question: "Hvor er slottet?", hex: 0x1F3F0, fileName: "castle"},
+    {text: "En hjort", question: "Hvor er hjorten?", hex: 0x1F98C, fileName: "deer"},
+    {text: "En datamaskin", question: "Hvor er datamaskinen?", hex: 0x1F4BB, fileName: "laptop"},
+    {text: "En trompet", question: "Hvor er trompeten?", hex: 0x1F3BA, fileName: "trumpet"},
+    {text: "En marihøne", question: "Hvor er marihøna?", hex: 0x1F41E, fileName: "ladybug"}
 ];
 
 export const KidsEmoji = (props) => (
