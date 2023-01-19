@@ -18,7 +18,6 @@
 .env.test.local
 .env.production.local
 /public/ads.html
-/src/utils/*.json
 
 npm-debug.log*
 yarn-debug.log*
