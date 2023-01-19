@@ -6,7 +6,7 @@ import {Flag} from '../../../../utils/Modes/Flag';
 import { Shape } from '../../../../utils/Modes/Shapes';
 import { PlayingCard } from '../../../../utils/Modes/Card';
 import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
-import {NUMBERS_MODE, FLAGS_MODE, SHAPES_MODE, CARDS_MODE} from '../../../../store/constants'
+import {NUMBERS_MODE, FLAGS_MODE, SHAPES_MODE, CARDS_MODE} from '../../../../store/constants';
 
 const POINTS_PER_CORRECT_ANSWER = 20;
 const INTERVAL_BEFORE_GAME_OVER = 5000;
@@ -19,9 +19,7 @@ const AnswerScreen = (props) => {
     const [failedItem, setFailedItem] = useState(null);
     const [expectedItem, setExpectedItem] = useState(null);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        
+    useEffect(() => {        
         if(correctItems === props.numItems) {            
             if(props.isLastLevel) {
                 props.onEndGame();

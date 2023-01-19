@@ -11,8 +11,6 @@ import Audio from '../../../../images/audio.png';
 
 const slideShow = (props) => {
 
-    window.scrollTo(0, 0);
-
     switch (props.mode) {
         case NUMBERS_MODE:
         case ARITHMETIC_MODE:

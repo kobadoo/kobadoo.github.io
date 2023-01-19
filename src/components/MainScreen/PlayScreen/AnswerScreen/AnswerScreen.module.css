@@ -5,7 +5,7 @@
     width: 100%;
     margin: auto;
     height: 100%;
-    overflow: scroll;
+    overflow: hidden;
     text-align: center;
     background-color: #F0F0F0;
     touch-action: none; /* Prevent pull-to-refresh */

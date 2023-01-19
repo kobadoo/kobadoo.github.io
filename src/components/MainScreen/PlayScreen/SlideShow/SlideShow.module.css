@@ -1,11 +1,11 @@
 .SlideShowScreen {
     top: 100px;
-    position: absolute;
+    position: relative;
     display: block;
     width: 100%;
     margin: auto;
     height: 100%;
-    overflow: scroll;
+    overflow: hidden;
     text-align: center;
 }
 
