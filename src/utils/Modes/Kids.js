@@ -129,7 +129,8 @@ const KIDS_MAP_ES = [
     {text: "Un ciervo", question: "¿Dónde está el ciervo?", hex: 0x1F98C, fileName: "deer"},
     {text: "Un portátil", question: "¿Dónde está el portátil?", hex: 0x1F4BB, fileName: "laptop"},
     {text: "Una trompeta", question: "¿Dónde está la trompeta?", hex: 0x1F3BA, fileName: "trumpet"},
-    {text: "Una mariquita", question: "¿Dónde está la mariquita?", hex: 0x1F41E, fileName: "ladybug"}
+    {text: "Una mariquita", question: "¿Dónde está la mariquita?", hex: 0x1F41E, fileName: "ladybug"},
+    {text: "Maíz", question: "¿Dónde está el maíz?", hex: 0x1F33D, fileName: "corn"}
 ];
 
 // eslint-disable-next-line no-unused-vars
@@ -258,7 +259,8 @@ const KIDS_MAP_EN = [
     {text: "A deer", question: "Where is the deer?", hex: 0x1F98C, fileName: "deer"},
     {text: "A laptop", question: "Where is the laptop?", hex: 0x1F4BB, fileName: "laptop"},
     {text: "A trumpet", question: "Where is the trumpet?", hex: 0x1F3BA, fileName: "trumpet"},
-    {text: "A ladybug", question: "Where is the ladybug?", hex: 0x1F41E, fileName: "ladybug"}
+    {text: "A ladybug", question: "Where is the ladybug?", hex: 0x1F41E, fileName: "ladybug"},
+    {text: "Corn", question: "Where is the corn?", hex: 0x1F33D, fileName: "corn"}
 ];
 
 // eslint-disable-next-line no-unused-vars
@@ -387,7 +389,8 @@ const KIDS_MAP_NO = [
     {text: "En hjort", question: "Hvor er hjorten?", hex: 0x1F98C, fileName: "deer"},
     {text: "En datamaskin", question: "Hvor er datamaskinen?", hex: 0x1F4BB, fileName: "laptop"},
     {text: "En trompet", question: "Hvor er trompeten?", hex: 0x1F3BA, fileName: "trumpet"},
-    {text: "En marihøne", question: "Hvor er marihøna?", hex: 0x1F41E, fileName: "ladybug"}
+    {text: "En marihøne", question: "Hvor er marihøna?", hex: 0x1F41E, fileName: "ladybug"},
+    {text: "Mais", question: "Hvor er maisen?", hex: 0x1F33D, fileName: "corn"}
 ];
 
 export const KidsEmoji = (props) => (
