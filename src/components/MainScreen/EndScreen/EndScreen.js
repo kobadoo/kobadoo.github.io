@@ -4,9 +4,8 @@ import { restartGame } from '../../../store/actions/actions';
 import MonkeyImg from '../../../images/monkey.png';
 import { MAX_LEVEL } from '../PlayScreen/PlayScreen';
 import modes_config from '../../../utils/Modes/modes_config.json';
-import {KIDS_MODE} from '../../../store/constants';
-
-
+import {ARITHMETIC_MODE, KIDS_MODE} from '../../../store/constants';
+import statsSummary from '../../../utils/statsSummary.json';
 import classes from './EndScreen.module.css';
 import { 
     FacebookShareButton, 
@@ -65,6 +64,9 @@ const EndScreen = (props) => {
                 <h3>Level: <div className={classes.Results}>{props.lvl} / {MAX_LEVEL}</div></h3>
                 <h3>Score: <div className={classes.Results}>{props.scr}</div></h3>
                 { props.mode === KIDS_MODE ? null : 
+                    <div className={classes.AnimalMemory}><div className={classes.AnimalName}>{statsSummary[props.mode].percentileByLevel[props.lvl-1]}%</div> players reached this level.</div>
+                }
+                { (props.mode === KIDS_MODE || props.mode === ARITHMETIC_MODE) ? null : 
                     props.lvl < 4 ? <div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>bad memory</div>, like a <div className={classes.AnimalName}>goldfish</div> <span>{String.fromCodePoint(GOLDFISH)}</span></div> :
                     props.lvl >=4 && props.lvl < 8 ?<div className={classes.AnimalMemory}>You are <div className={classes.AnimalName}>rather forgetful</div>, just like a <div className={classes.AnimalName}>bee</div> <span>{String.fromCodePoint(BEE)}</span></div> :
                     props.lvl >=8 && props.lvl < 13 ?<div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>average human memory</div> <span>{String.fromCodePoint(HUMAN)}</span></div> :

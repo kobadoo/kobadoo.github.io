@@ -78,7 +78,8 @@ for (var i=0; i < gamesByMode.length - 1; i++) {
     gamesPlayed = 0;
     for (var j=TOTAL_LEVELS-1; j >= 0; j--) {
         gamesPlayed += gamesByMode[i].gamesByLevel[j];
-        gamesByMode[i].percentileByLevel[j] = (gamesPlayed * 100 / gamesByMode[i].gamesPlayed).toFixed(5);;
+        var percentile = (gamesPlayed * 100 / gamesByMode[i].gamesPlayed);
+        gamesByMode[i].percentileByLevel[j] = +percentile.toFixed(5); // Trick to avoid unnecessary decimals
     }
 }
  

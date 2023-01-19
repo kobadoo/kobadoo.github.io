@@ -18,40 +18,6 @@ const MUSCLE = 0X1F4AA;
 const NICE = 0X1F44C;
 const OK = 0X1F44D;
 
-const STATS_MAP = [
-    99, // level 2
-    94, // level 3
-    91, // level 4
-    84, // level 5
-    79, // level 6
-    73, // level 7
-    65, // level 8
-    59, // level 9
-    52, // level 10
-    42, // level 11
-    35, // level 12
-    28, // level 13
-    17, // level 14
-    11, // level 15
-    7, // level 16
-    2, // level 17
-    0.9, // level 18
-    0.4, // level 19
-    0.04, // level 20
-    0.01, // level 21
-    0.006, // level 22
-    0.002, // level 23
-    0.0005, // level 24
-    0.0002, // level 25
-    0.00014, // level 26
-    0.00008, // level 27
-    0.00004, // level 28
-    0.00003, // level 29
-    0.00002, // level 30
-    0.00001 // level 31
-]
-
-
 const TransitionScreen = (props) => {
 
     useEffect(() => {
