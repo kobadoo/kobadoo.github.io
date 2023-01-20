@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import { useHistory } from "react-router-dom";
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { connect } from 'react-redux';
 import classes from './StartScreen.module.css';
@@ -8,13 +9,15 @@ import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
 import BulbImg from '../../../images/bulb.png';
 import GooglePlayImg from '../../../images/google-play-badge.png';
-import {ThumbnailSlideShow} from './ThumbnailSlideShow';
+import { ThumbnailSlideShow } from './ThumbnailSlideShow';
+import { modeIdToModeName } from '../../../utils/Modes/ModeUtils';
 
 const StartScreen = (props) => {
 
     const toggleButtonStyle = {borderLeft: '1px solid rgba(0, 0, 0, 0.12)'};
     const toggleGroupStyle = {display: 'inline-block'};
     const CRYSTAL_BALL_EMOJI = 0x1F52E;
+    const history = useHistory();
 
     useEffect(() => {
         if (props.showAds) {
@@ -31,7 +34,10 @@ const StartScreen = (props) => {
     }, [props.showAds]);
 
     const handleMode = (_, newMode) => {
+        let path = '/' + modeIdToModeName(newMode);
+        history.push(path);
         props.onChangeMode(newMode);
+        props.onStartGame();
     };
 
     return (
@@ -52,7 +58,7 @@ const StartScreen = (props) => {
             </h3>
 
             <div>
-                <p className={classes.SelectModeText}>Select a mode</p>
+                <p className={classes.SelectModeText}>Select a mode to play</p>
                 <ToggleButtonGroup color='primary' onChange={handleMode} exclusive style={toggleGroupStyle}>
                     <ToggleButton selected={props.mode === 0} value={0} style={toggleButtonStyle}>Emojis</ToggleButton>
                     <ToggleButton selected={props.mode === 5} value={5} style={toggleButtonStyle}>Cards</ToggleButton>
@@ -64,17 +70,10 @@ const StartScreen = (props) => {
                 </ToggleButtonGroup>
             </div>
 
-            <div className={classes.ButtonsDiv}>
-                <button 
-                    className={classes.StartButton} 
-                    onClick={() => props.onStartGame(props.mode)}>Start Game</button>
-                <a href="https://play.google.com/store/apps/details?id=com.kobadoo" target="_new"><img className={classes.GooglePlayButton} src={GooglePlayImg} alt="Google Play"/></a>
-            </div>
-
             <div className={classes.BenefitsText}>
                 <ThumbnailSlideShow />
                 <h3>Seven game modes</h3>
-                <p>You can practice your working memory with different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>two-digit numbers</strong>, <strong>arithmetic</strong> calculations, <strong>flags</strong> of the world or coloured geometric <strong>shapes</strong>. Children can also learn new vocabulary in <strong>English</strong>, <strong>Spanish</strong> or <strong>Norwegian</strong> using the <strong><i>Kids</i></strong> mode. Watch all the demos on <a href="https://www.youtube.com/@kobadoo/videos" target="_new">our Youtube channel</a>!</p>
+                <p>You can practice your working memory with different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>two-digit numbers</strong>, <strong>arithmetic</strong> calculations, <strong>flags</strong> of the world or coloured geometric <strong>shapes</strong>. Children can also learn new vocabulary in <strong>English</strong>, <strong>Spanish</strong> or <strong>Norwegian</strong> using the <strong><i>Kids</i></strong> mode, with several studies [<a href="https://blog.kobadoo.com/2023/01/how-kobadoo-kids-helps-children-develop.html" target="_new">1</a>] backing the effectiveness of this technique. Watch all the demos on <a href="https://www.youtube.com/@kobadoo/videos" target="_new">our Youtube channel</a>!</p>
             </div>
 
             { props.showAds ? <div id='kobadoo-com_300x250' className={classes.Ad300x250} /> : null }
@@ -82,9 +81,10 @@ const StartScreen = (props) => {
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={MonkeyImg} alt="" />
                 <h3>How does it work?</h3>
-                <p>Select a mode, click on <i>Start Game</i> and <strong>memorize</strong> the items that are displayed.
-                Then <strong>select them in the right order</strong> to be able to reach the next level. In the <strong>arithmetic</strong> mode, sum up all the numbers and select the result. It gets more challenging over time! The <strong><i>Kids</i></strong> mode is a fun way for children to learn new vocabulary in different languages, with several studies [<a href="https://blog.kobadoo.com/2023/01/how-kobadoo-kids-helps-children-develop.html" target="_new">1</a>] backing the effectiveness of this technique.&nbsp;
-                <i>Kobadoo</i> is <strong> 100% free</strong>, no download or sign up is required. <strong>Play on mobile</strong> for the best experience.</p>
+                <p>Choose a mode and <strong>memorize</strong> the items that are displayed.
+                Then select them <strong>in the right order</strong> to reach the next level. In the <strong>arithmetic</strong> mode, sum up all the numbers and select the result. It gets more challenging over time! The <strong><i>Kids</i></strong> mode is a fun way for children to learn new vocabulary in different languages.&nbsp;
+                <i>Kobadoo</i> is <strong> 100% free</strong>, no sign up is required. Play directly on browser or install the Android app.</p>
+                <a href="https://play.google.com/store/apps/details?id=com.kobadoo" target="_new"><img className={classes.GooglePlayButton} src={GooglePlayImg} alt="Google Play"/></a>
             </div>
 
             { props.showAds ? <div id='kobadoo-com_300x250_1' className={classes.Ad300x250} /> : null }

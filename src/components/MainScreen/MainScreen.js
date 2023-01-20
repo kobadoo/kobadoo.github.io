@@ -6,15 +6,16 @@ import PlayScreen from './PlayScreen/PlayScreen';
 import TransitionScreen from './TransitionScreen/TransitionScreen';
 import EndScreen from './EndScreen/EndScreen';
 import { showIntro, changeMode } from '../../store/actions/actions';
-import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, CARDS_MODE, KIDS_MODE} from '../../store/constants';
+import { modeNameToModeId } from '../../utils/Modes/ModeUtils';
+import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, SHAPES_MODE, CARDS_MODE, KIDS_MODE} from '../../store/constants';
 
 const MainScreen = (props) => {
 
     useEffect(() => {
         // If a mode is entered as parameter, enter directly that mode
-        var mode = parseInt(props.match.params.mode);
+        var mode = modeNameToModeId(props.match.params.mode);
         switch (mode) {
-            case EMOJIS_MODE: case FLAGS_MODE: case NUMBERS_MODE: case ARITHMETIC_MODE: case CARDS_MODE: case KIDS_MODE:
+            case EMOJIS_MODE: case FLAGS_MODE: case NUMBERS_MODE: case ARITHMETIC_MODE: case SHAPES_MODE: case CARDS_MODE: case KIDS_MODE:
                 props.onStartGame(mode); break;
             default: break;
         }

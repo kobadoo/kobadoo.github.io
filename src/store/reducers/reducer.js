@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../utils/objectUpdater';
-import {EMOJIS_MODE, CARD_SELECTION} from '../constants';
+import {CARD_SELECTION} from '../constants';
 
 const initialState = {
     level: 1,
@@ -12,7 +12,7 @@ const initialState = {
     showIntro: false,
     showAds: false,
     watchedVideo: true,
-    mode: EMOJIS_MODE,
+    mode: null,
     audio: null,
     currentScreen: CARD_SELECTION
 };
@@ -88,6 +88,7 @@ const abortGame = (state) => {
         score: 0,
         isPaused: false,
         lang: null,
+        mode: null,
         hasLevelStarted: false,
         hasGameEnded: false,
         showIntro: false,

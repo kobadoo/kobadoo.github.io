@@ -5,6 +5,7 @@ import MonkeyImg from '../../../images/monkey.png';
 import { MAX_LEVEL } from '../PlayScreen/PlayScreen';
 import modes_config from '../../../utils/Modes/modes_config.json';
 import {ARITHMETIC_MODE, KIDS_MODE} from '../../../store/constants';
+import { modeIdToModeName } from '../../../utils/Modes/ModeUtils';
 import statsSummary from '../../../utils/statsSummary.json';
 import classes from './EndScreen.module.css';
 import { 
@@ -34,7 +35,7 @@ const CUP = 0X1F3C6;
 
 const EndScreen = (props) => {
 
-    const URL = 'https://www.kobadoo.com/#/' + props.mode;
+    const URL = 'https://www.kobadoo.com/#/' + modeIdToModeName(props.mode);
     const QUOTE = 'I reached level ' + props.lvl + ' at Kobadoo ' + modes_config[props.mode].name + ' memory game! Can you beat me?\n';
 
     useEffect(() => {
