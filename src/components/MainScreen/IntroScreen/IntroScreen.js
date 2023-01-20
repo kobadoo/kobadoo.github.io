@@ -38,6 +38,13 @@ const IntroScreen = (props) => {
         if(!props.showAds) {
             props.onChangeWatchedVideo(true);
         }
+
+        if (props.mode === KIDS_MODE && props.lang === null && props.showAds) {
+            window.aiptag.cmd.display.push( () => {
+                window.aipDisplayTag.display('kobadoo-com_300x250_4');
+                window.aipDisplayTag.display('kobadoo-com_728x90_2');
+            })
+        }
     }, [props.showAds, props]);
 
     if(props.showAds) {
@@ -66,6 +73,10 @@ const IntroScreen = (props) => {
         return (
             <div className={classes.IntroScreen}>
 
+                {(props.mode === KIDS_MODE && props.lang === null && props.showAds) ? 
+                    <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} /> : null
+                }
+
                 { props.lang === null ? selectLanguageText : textMode }
 
                 {(props.mode === KIDS_MODE && props.lang === null) ?
@@ -74,6 +85,9 @@ const IntroScreen = (props) => {
                         <ToggleButton value={'ES'} style={toggleButtonStyle}>Español</ToggleButton>
                         <ToggleButton value={'NO'} style={toggleButtonStyle}>Norsk</ToggleButton>
                     </ToggleButtonGroup> : subTextMode }
+
+                { (props.mode === KIDS_MODE && props.lang === null && props.showAds) ? <div id='kobadoo-com_300x250_4' className={classes.Ad300x250} /> : null }  
+                
             </div>
         );
     }
