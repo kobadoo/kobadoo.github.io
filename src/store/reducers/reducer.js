@@ -5,7 +5,7 @@ import {EMOJIS_MODE, CARD_SELECTION} from '../constants';
 const initialState = {
     level: 1,
     score: 0,
-    lang: 'EN',
+    lang: null,
     hasLevelStarted: false,
     hasGameEnded: false,
     isPaused: false,
@@ -87,7 +87,7 @@ const abortGame = (state) => {
         level: 1,
         score: 0,
         isPaused: false,
-        lang: 'EN',
+        lang: null,
         hasLevelStarted: false,
         hasGameEnded: false,
         watchedVideo: true
@@ -106,8 +106,7 @@ const togglePause = (state) => {
 
 const changeMode = (state, action) => {
     const updatedState = {
-        mode: action.value,
-        lang: 'EN'
+        mode: action.value
     };
     return updateObject(state, updatedState);
 };

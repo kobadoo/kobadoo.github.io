@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import classes from './CardSelectionScreen.module.css';
 import { PlayingCard } from '../../../utils/Modes/Card';

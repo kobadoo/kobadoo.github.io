@@ -35,6 +35,7 @@ const App = (props) => {
         <Route path="/privacy" exact component={Privacy} onUpdate={() => window.scrollTo(0, 0)} />
         <Route path="/crystalball" exact component={CrystalBall} onUpdate={() => window.scrollTo(0, 0)} />
         <Route path="/" exact component={MainScreen} />
+        <Route path="/:mode" exact component={MainScreen} />
         <Route path="*" component={NotFound} />
       </Switch>
     </ScrollToTop>

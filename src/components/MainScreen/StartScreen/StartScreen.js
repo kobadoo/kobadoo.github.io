@@ -1,15 +1,14 @@
 import React, {useEffect} from 'react';
-import { ToggleButton, ToggleButtonGroup, RadioGroup, Radio, FormControlLabel } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { connect } from 'react-redux';
 import classes from './StartScreen.module.css';
 import Footer from '../../Footer/Footer';
-import { changeMode, changeLanguage, showIntro, activateAudio } from '../../../store/actions/actions';
+import { changeMode, showIntro } from '../../../store/actions/actions';
 import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
 import BulbImg from '../../../images/bulb.png';
 import GooglePlayImg from '../../../images/google-play-badge.png';
 import {ThumbnailSlideShow} from './ThumbnailSlideShow';
-import { KIDS_MODE } from '../../../store/constants';
 
 const StartScreen = (props) => {
 
@@ -33,10 +32,6 @@ const StartScreen = (props) => {
 
     const handleMode = (_, newMode) => {
         props.onChangeMode(newMode);
-    };
-
-    const handleLanguage = (_, newLang) => {
-        props.onChangeLanguage(newLang);
     };
 
     return (
@@ -68,15 +63,6 @@ const StartScreen = (props) => {
                     <ToggleButton selected={props.mode === 6} value={6} style={toggleButtonStyle}>Kids</ToggleButton>
                 </ToggleButtonGroup>
             </div>
-
-            {props.mode === 6 ? 
-                <RadioGroup row style={toggleGroupStyle} onChange={handleLanguage}>
-                    <FormControlLabel value="EN" control={<Radio checked={props.lang === 'EN'} />} label="English" />
-                    <FormControlLabel value="ES" control={<Radio checked={props.lang === 'ES'} />} label="Español" />
-                    <FormControlLabel value="NO" control={<Radio checked={props.lang === 'NO'} />} label="Norsk" />
-                </RadioGroup>
-                : null
-            }
 
             <div className={classes.ButtonsDiv}>
                 <button 
@@ -144,15 +130,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onStartGame: (mode) => {
-            if (mode === KIDS_MODE) {
-                const audio = new Audio();
-                dispatch(activateAudio(audio));
-            }
-            dispatch(showIntro());
-        },
+        onStartGame: () => { dispatch(showIntro())},
         onChangeMode: (value) => dispatch(changeMode(value)),
-        onChangeLanguage: (value) => dispatch(changeLanguage(value))
     };
 };
 

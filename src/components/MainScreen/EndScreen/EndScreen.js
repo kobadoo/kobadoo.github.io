@@ -22,7 +22,6 @@ import {
     ViberIcon
   } from 'react-share'
 
-const URL = 'https://www.kobadoo.com';
 const HASHTAG = '#kobadoo';
 const ICON_SIZE = 40;
 const GOLDFISH = 0x1F420;
@@ -35,6 +34,7 @@ const CUP = 0X1F3C6;
 
 const EndScreen = (props) => {
 
+    const URL = 'https://www.kobadoo.com/#/' + props.mode;
     const QUOTE = 'I reached level ' + props.lvl + ' at Kobadoo ' + modes_config[props.mode].name + ' memory game! Can you beat me?\n';
 
     useEffect(() => {
