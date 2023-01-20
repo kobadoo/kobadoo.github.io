@@ -90,6 +90,7 @@ const abortGame = (state) => {
         lang: null,
         hasLevelStarted: false,
         hasGameEnded: false,
+        showIntro: false,
         watchedVideo: true
     };
     return updateObject(state, updatedState);
