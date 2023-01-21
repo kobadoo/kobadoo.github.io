@@ -25,7 +25,7 @@ const IntroScreen = (props) => {
         
         if (props.watchedVideo && (props.mode !== KIDS_MODE || props.lang !== null)) {
             const timeout = setInterval(() => {
-                props.onStartLevel(props.lang);
+                props.onStartLevel();
             }, INTERVAL_BEFORE_LEVEL_1);
         
             // Returned function will be called on component unmount 
@@ -80,7 +80,7 @@ const IntroScreen = (props) => {
                 { props.lang === null ? selectLanguageText : textMode }
 
                 {(props.mode === KIDS_MODE && props.lang === null) ?
-                    <ToggleButtonGroup color='primary' onChange={(_, newLang) => props.onStartLevel(newLang)} exclusive style={toggleGroupStyle}>
+                    <ToggleButtonGroup color='primary' onChange={(_, newLang) => props.onKidsStart(newLang)} exclusive style={toggleGroupStyle}>
                         <ToggleButton value={'EN'} style={toggleButtonStyle}>English</ToggleButton>
                         <ToggleButton value={'ES'} style={toggleButtonStyle}>Español</ToggleButton>
                         <ToggleButton value={'NO'} style={toggleButtonStyle}>Norsk</ToggleButton>
@@ -107,10 +107,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onStartLevel: (lang) => {
+        onKidsStart: (lang) => {
             const audio = new Audio();
             dispatch(activateAudio(audio));
             dispatch(changeLanguage(lang));
+            dispatch(startLevel());
+        },
+        onStartLevel: () => {
             dispatch(startLevel());
         },
         onChangeWatchedVideo: (watchedVideo) => dispatch(changeWatchedVideo(watchedVideo)),
