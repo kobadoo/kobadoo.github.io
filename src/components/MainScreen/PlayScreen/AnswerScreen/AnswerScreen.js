@@ -112,12 +112,6 @@ const AnswerScreen = (props) => {
     );
 }
 
-const mapStateToProps = state => {
-    return {
-        showAds: state.showAds
-    }
-}
-
 const mapDispatchToProps = dispatch => {
     return {
         onLevelPassed: () => dispatch(passLevel()),
@@ -126,4 +120,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AnswerScreen);
+export default connect(null, mapDispatchToProps)(AnswerScreen);

@@ -21,16 +21,6 @@ const OK = 0X1F44D;
 const TransitionScreen = (props) => {
 
     useEffect(() => {
-
-        if (props.showAds && props.paused) {
-            window.aiptag.cmd.display.push( () => {
-                window.aipDisplayTag.display('kobadoo-com_300x250_4');
-                window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
-                window.aipDisplayTag.display('kobadoo-com_160x600_2');
-                window.aipDisplayTag.display('kobadoo-com_728x90_2');
-            })
-        }
-
         const timeout = setInterval(() => {
             if(!props.paused) {
                 props.onStartLevel();
@@ -40,19 +30,10 @@ const TransitionScreen = (props) => {
         // Returned function will be called on component unmount 
         return () => {
             clearInterval(timeout);        }
-    }, [props.paused, props.showAds, props]);
+    }, [props.paused, props]);
 
     return (
         <div className={classes.TransitionScreen}>
-
-            {(props.showAds && props.paused) ? 
-                <React.Fragment>
-                    <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
-                    <div id='kobadoo-com_160x600_1' className={classes.Ad160x600L} />
-                    <div id='kobadoo-com_160x600_2' className={classes.Ad160x600R} />
-                </React.Fragment>
-                : null
-            }
 
             <div className={classes.LevelText}><h2>Level {props.lvl - 1} of {MAX_LEVEL} completed!</h2></div>
                 { props.mode === KIDS_MODE ? null : props.lvl < 4 ? <div className={classes.Stats}><strong>{statsSummary[props.mode].percentileByLevel[props.lvl-1]}%</strong> players achieve this <span>{String.fromCodePoint(OK)}</span></div> :
@@ -73,8 +54,6 @@ const TransitionScreen = (props) => {
                     onClick={props.onTogglePause}>{props.paused ? 'Resume' : 'Pause'}
                 </button>
             </div>
-
-            {props.showAds && props.paused ? <div id='kobadoo-com_300x250_4' className={classes.Ad300x250} /> : null }
             
         </div>
     );
@@ -84,7 +63,6 @@ const mapStateToProps = state => {
     return {
         lvl: state.level,
         paused: state.isPaused,
-        showAds: state.showAds,
         mode: state.mode
     }
 }

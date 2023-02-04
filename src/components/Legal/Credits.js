@@ -24,10 +24,4 @@ const Credits = () => {
     );
 };
 
-const mapStateToProps = state => {
-    return {
-        showAds: state.showAds
-    }
-}
-
-export default connect(mapStateToProps, )(Credits);
+export default connect(null, null)(Credits);

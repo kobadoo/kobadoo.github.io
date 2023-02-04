@@ -84,20 +84,6 @@ export const showIntro = () => {
     };
 };
 
-export const changeShowAds = (newValue) => {
-    return {
-        type: actionTypes.CHANGE_SHOW_ADS,
-        value: newValue
-    };
-};
-
-export const changeWatchedVideo = (newValue) => {
-    return {
-        type: actionTypes.CHANGE_WATCHED_VIDEO,
-        value: newValue
-    };
-};
-
 export const activateAudio = (newValue) => {
     return {
         type: actionTypes.ACTIVATE_AUDIO,

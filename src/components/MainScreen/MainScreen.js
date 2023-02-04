@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import StartScreen from './StartScreen/StartScreen';
 import IntroScreen from './IntroScreen/IntroScreen';
@@ -11,15 +12,17 @@ import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, SHAPES_MODE, CAR
 
 const MainScreen = (props) => {
 
+    const { mode } = useParams();
+
     useEffect(() => {
         // If a mode is entered as parameter, enter directly that mode
-        var mode = modeNameToModeId(props.match.params.mode);
-        switch (mode) {
+        var modeId = modeNameToModeId(mode);
+        switch (modeId) {
             case EMOJIS_MODE: case FLAGS_MODE: case NUMBERS_MODE: case ARITHMETIC_MODE: case SHAPES_MODE: case CARDS_MODE: case KIDS_MODE:
-                props.onStartGame(mode); break;
+                props.onStartGame(modeId); break;
             default: break;
         }
-    }, []);
+    }, [mode]);
     
     if (!props.startedLevel) {
         if (props.showIntro) {

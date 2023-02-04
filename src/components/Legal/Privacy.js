@@ -5,7 +5,6 @@ const privacy = () => (
 
     <div className={classes.Legal}>
         <h2>Privacy Policy</h2>
-        <button onClick={window.aipAPItag.showCMPScreen}>Adjust your privacy settings</button>
 
         <p>At Kobadoo, accessible from <a href="https://www.kobadoo.com">https://www.kobadoo.com</a> and <a href="https://blog.kobadoo.com">https://blog.kobadoo.com</a>, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Kobadoo and how we use it.</p>
 

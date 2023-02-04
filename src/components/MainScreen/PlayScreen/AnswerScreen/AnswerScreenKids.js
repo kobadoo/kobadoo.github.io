@@ -113,7 +113,6 @@ const AnswerScreenKids = (props) => {
 
 const mapStateToProps = state => {
     return {
-        showAds: state.showAds,
         lang: state.lang,
         audio: state.audio
     }
