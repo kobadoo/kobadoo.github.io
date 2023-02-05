@@ -10,13 +10,11 @@ import reducer from './store/reducers/reducer';
 const store = configureStore({ reducer: reducer })
 
 const app = (
-  <React.StrictMode>
-    <Provider store={store}>
-      <HashRouter>
-        <App />
-      </HashRouter>
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <HashRouter>
+      <App />
+    </HashRouter>
+  </Provider>
 );
 
 const rootElement = document.getElementById("root");

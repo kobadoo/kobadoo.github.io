@@ -84,13 +84,6 @@ export const showIntro = () => {
     };
 };
 
-export const activateAudio = (newValue) => {
-    return {
-        type: actionTypes.ACTIVATE_AUDIO,
-        value: newValue
-    };
-};
-
 export const changeScreen = (newValue) => {
     return (dispatch) => {
         dispatch({

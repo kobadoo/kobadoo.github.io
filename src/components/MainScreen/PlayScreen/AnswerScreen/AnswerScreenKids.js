@@ -27,13 +27,13 @@ const AnswerScreenKids = (props) => {
                 props.onEndGame();
             }
             else {
-                props.audio.src=Applause;
-                props.audio.play();
+                props.audioObject.src=Applause;
+                props.audioObject.play();
                 props.onLevelPassed();
             }
         }
         else {
-            playAudioByItemNumber(props.itemList[correctItems], props.lang, props.audio, true);
+            playAudioByItemNumber(props.itemList[correctItems], props.lang, props.audioObject, true);
         }
     }, [correctItems, props]);
 
@@ -58,8 +58,8 @@ const AnswerScreenKids = (props) => {
             setCorrectItems(prevCount => prevCount + 1 );
         } 
         else if (failedItem === null) { // Avoid clicking again after failure
-            props.audio.src=Lost;
-            props.audio.play();
+            props.audioObject.src=Lost;
+            props.audioObject.play();
             setLostGame(true);
             setFailedItem(value);
             setExpectedItem(props.itemList[correctItems]);
@@ -90,7 +90,7 @@ const AnswerScreenKids = (props) => {
             <div className={classes.Question}>
                 {correctItems < props.numItems ? <KidsQuestion num={props.itemList[correctItems]} lang={props.lang}/> : null }
                 <img src={Volume} className={classes.AudioIcon} 
-                    onClick={() => playAudioByItemNumber(props.itemList[correctItems], props.lang, props.audio, true)} width="50px" alt="Play audio" />
+                    onClick={() => playAudioByItemNumber(props.itemList[correctItems], props.lang, props.audioObject, true)} width="50px" alt="Play audio" />
             </div>
             <div className={classes.ItemsList}>
             {props.totalItems.map((value, index) => {
@@ -114,7 +114,6 @@ const AnswerScreenKids = (props) => {
 const mapStateToProps = state => {
     return {
         lang: state.lang,
-        audio: state.audio
     }
 }
 

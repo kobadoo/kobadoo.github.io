@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import classes from './IntroScreen.module.css';
-import { startLevel, activateAudio, changeLanguage } from '../../../store/actions/actions';
+import { startLevel, changeLanguage } from '../../../store/actions/actions';
 import modes_config from '../../../utils/Modes/modes_config.json';
 import { KIDS_MODE } from '../../../store/constants';
 
@@ -60,8 +60,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onKidsStart: (lang) => {
-            const audio = new Audio();
-            dispatch(activateAudio(audio));
             dispatch(changeLanguage(lang));
             dispatch(startLevel());
         },

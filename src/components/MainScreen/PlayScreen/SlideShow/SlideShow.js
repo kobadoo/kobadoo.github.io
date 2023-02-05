@@ -37,13 +37,13 @@ const slideShow = (props) => {
                     <PlayingCardLabel className={classes.PlayingCardLabel} num={props.item} />
                 </div>);
         case KIDS_MODE:                 
-            playAudioByItemNumber(props.item, props.lang, props.audio);
+            playAudioByItemNumber(props.item, props.lang, props.audioObject);
             return (
                 <div className={classes.SlideShowScreen}>
                     <KidsEmoji className={classes.SlideShowFont} num={props.item} lang={props.lang} />
                     <KidsLabel className={classes.KidsLabel} num={props.item} lang={props.lang} />
                     <img src={Audio} className={classes.AudioIcon} 
-                        onClick={() => playAudioByItemNumber(props.item, props.lang, props.audio)} alt="Play audio" />
+                        onClick={() => playAudioByItemNumber(props.item, props.lang, props.audioObject)} alt="Play audio" />
                 </div>);
         default: // EMOJIS_MODE
             return (
@@ -57,7 +57,6 @@ const mapStateToProps = state => {
     return {
         mode: state.mode,
         lang: state.lang,
-        audio: state.audio
     };
 };
 

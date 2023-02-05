@@ -8,5 +8,4 @@ export const TOGGLE_PAUSE = 'TOGGLE_PAUSE';
 export const CHANGE_MODE = 'CHANGE_MODE';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const SHOW_INTRO = 'SHOW_INTRO';
-export const ACTIVATE_AUDIO = 'ACTIVATE_AUDIO';
 export const CHANGE_SCREEN = 'CHANGE_SCREEN';

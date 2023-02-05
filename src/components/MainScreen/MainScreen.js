@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import StartScreen from './StartScreen/StartScreen';
@@ -13,6 +13,7 @@ import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, SHAPES_MODE, CAR
 const MainScreen = (props) => {
 
     const { mode } = useParams();
+    const [audioObject, setAudioObject] = useState(null);
 
     useEffect(() => {
         // If a mode is entered as parameter, enter directly that mode
@@ -23,6 +24,15 @@ const MainScreen = (props) => {
             default: props.onAbortGame(); break;
         }
     }, [mode]);
+
+    useEffect(() => {
+        if (props.endedGame) {
+            setAudioObject(null);
+        }
+        else {
+            setAudioObject(new Audio());
+        }
+    }, [props.endedGame]);
     
     if (!props.startedLevel) {
         if (props.showIntro) {
@@ -37,7 +47,7 @@ const MainScreen = (props) => {
     }
     else {
         if (!props.endedGame) {
-            return <PlayScreen />
+            return <PlayScreen audioObject = {audioObject} />
         }
         else {
             return <EndScreen />

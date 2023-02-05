@@ -11,7 +11,6 @@ const initialState = {
     isPaused: false,
     showIntro: false,
     mode: null,
-    audio: null,
     currentScreen: CARD_SELECTION
 };
 
@@ -116,13 +115,6 @@ const showIntro = (state) => {
     return updateObject(state, updatedState);
 };
 
-const activateAudio = (state, action) => {
-    const updatedState = {
-        audio: action.value
-    };
-    return updateObject(state, updatedState);
-};
-
 const changeScreen = (state, action) => {
     const updatedState = {
         currentScreen: action.value
@@ -164,9 +156,6 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.SHOW_INTRO:
             return showIntro(state, action);
-
-        case actionTypes.ACTIVATE_AUDIO:
-            return activateAudio(state, action);
 
         case actionTypes.CHANGE_SCREEN:
             return changeScreen(state, action);

@@ -38,7 +38,7 @@ class PlayScreen extends Component {
         this.setState({
             itemList: 
                 this.props.mode === ARITHMETIC_MODE ? getRandomSubarray([...Array(modes_config[this.props.mode].rangeSeedItems).keys()].map(i => i +modes_config[this.props.mode].minNumberRange), this.numItems)
-                : getRandomSubarray(this.totalItems, this.numItems)
+                : getRandomSubarray(this.totalItems, this.numItems),
         });
         this.timeout = setInterval(() => {
             if (this.state.item < this.numItems - 1) {
@@ -64,6 +64,7 @@ class PlayScreen extends Component {
                     <SlideShow 
                         item={this.state.itemList[this.state.item]}
                         mode={this.props.mode}
+                        audioObject={this.props.audioObject}
                     /> : null
             );
         }
@@ -94,6 +95,7 @@ class PlayScreen extends Component {
                             itemList={this.state.itemList}
                             isLastLevel={this.props.lvl === MAX_LEVEL}
                             mode={this.props.mode}
+                            audioObject={this.props.audioObject}
                         />
                     );
                 default:
