@@ -1,5 +1,5 @@
 import modes_config from './modes_config.json';
-import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, CARDS_MODE, KIDS_MODE, SHAPES_MODE} from '../../store/constants';
+import {EMOJIS_MODE, FLAGS_MODE, NUMBERS_MODE, ARITHMETIC_MODE, CARDS_MODE, KIDS_MODE, SHAPES_MODE, NO_MODE} from '../../store/constants';
 
 
 export const modeIdToModeName = (modeId) => {
@@ -15,6 +15,7 @@ export const modeNameToModeId = (modeName) => {
     case 'shapes': return SHAPES_MODE;
     case 'cards': return CARDS_MODE;
     case 'kids': return KIDS_MODE;
-    default: return null;
+    case undefined: case '': case null: return NO_MODE; // StartScreen
+    default: return null; // 404 error
   }
 };

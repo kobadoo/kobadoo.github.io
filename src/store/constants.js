@@ -7,6 +7,7 @@ export const SHAPES_MODE = 4;
 export const CARDS_MODE = 5;
 export const KIDS_MODE = 6;
 export const CRYSTAL_BALL = 7;
+export const NO_MODE = 99;
 
 // Crystal Ball
 export const CARD_SELECTION = 0;
