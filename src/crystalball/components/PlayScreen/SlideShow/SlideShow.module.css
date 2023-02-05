@@ -13,3 +13,9 @@
     margin-top: 150px;
     font-size: 12rem;   
 }
+
+@media (prefers-color-scheme: dark) {
+    .SlideShowScreen {
+      background-color: #202020;
+    }
+}

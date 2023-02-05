@@ -22,3 +22,13 @@
     margin-top: 20px;
     font-size: 10rem;   
 }
+
+@media (prefers-color-scheme: dark) {
+    .TransitionScreen {
+        background-color: #202020;
+    }
+
+    .TransitionScreen h1 {
+        color: white;
+    }
+}
