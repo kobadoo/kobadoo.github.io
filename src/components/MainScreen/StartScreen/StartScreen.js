@@ -13,11 +13,10 @@ import { modeIdToModeName } from '../../../utils/Modes/ModeUtils';
 
 const StartScreen = (props) => {
 
-    const toggleButtonStyle = {borderLeft: '1px solid rgba(0, 0, 0, 0.12)'};
+    const toggleButtonStyle = {borderLeft: '1px solid rgba(0, 0, 0, 0.12)', backgroundColor: 'whitesmoke'};
     const toggleGroupStyle = {display: 'inline-block'};
     const CRYSTAL_BALL_EMOJI = 0x1F52E;
     const navigate = useNavigate();
-
     const handleMode = (_, newMode) => {
         let path = '/' + modeIdToModeName(newMode);
         navigate(path);

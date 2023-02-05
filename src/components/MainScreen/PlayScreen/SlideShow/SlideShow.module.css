@@ -51,3 +51,9 @@
     width: 50px;
     cursor: pointer;
  }
+
+ @media (prefers-color-scheme: dark) {
+    .AudioIcon {
+       filter: invert(1);
+    }
+}

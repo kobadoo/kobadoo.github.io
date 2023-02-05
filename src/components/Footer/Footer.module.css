@@ -23,3 +23,16 @@
     display: inline;
     padding: 0 6px;
 }
+
+@media (prefers-color-scheme: dark) {
+    .Footer {
+        background-color: #202020;
+    }
+    .Footer a {
+        color: whitesmoke
+    }
+
+    .Footer :hover {
+        color: lightskyblue
+    }
+}

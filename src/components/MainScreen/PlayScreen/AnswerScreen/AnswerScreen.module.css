@@ -159,3 +159,21 @@
       margin: 10px 0 10px 0;
    }
 }
+
+@media (prefers-color-scheme: dark) {
+   .AnswerScreen {
+     background-color: #202020;
+   }
+
+   .EvenItem {
+      color: lightyellow;
+   }
+   
+   .OddItem {
+      color: lightpink;
+   }
+
+   .AudioIcon {
+      filter: invert(1);
+   }
+ }

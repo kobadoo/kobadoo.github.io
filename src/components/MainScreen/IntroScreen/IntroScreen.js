@@ -10,7 +10,7 @@ const INTERVAL_BEFORE_LEVEL_1 = 2000;
 
 const IntroScreen = (props) => {
 
-    const toggleButtonStyle = {borderLeft: '1px solid rgba(0, 0, 0, 0.12)'};
+    const toggleButtonStyle = {borderLeft: '1px solid rgba(0, 0, 0, 0.12)', backgroundColor: 'whitesmoke'};
     const toggleGroupStyle = {display: 'inline-block', margin: '30px 0px 30px 0px' };
     let textMode = <h1>{modes_config[props.mode].introScreenText[props.lang]}</h1>;
     let subTextMode = <h2>{modes_config[props.mode].introScreenSubText[props.lang]}</h2>;

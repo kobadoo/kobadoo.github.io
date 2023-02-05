@@ -13,3 +13,12 @@
     margin: 50px 20px 0px 20px;
     color:teal
 }
+
+@media (prefers-color-scheme: dark) {
+    .IntroScreen h1 {
+      color: white;
+    }
+    .IntroScreen h2 {
+      color: white;
+    }
+}

@@ -108,3 +108,9 @@
 .ShareButton {
     padding: 5px;
 }
+
+@media (prefers-color-scheme: dark) {
+    .AnimalName {
+        color: lightskyblue
+    }
+  }
