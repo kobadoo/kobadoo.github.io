@@ -22,8 +22,8 @@ const MainScreen = (props) => {
         var modeId = modeNameToModeId(mode);
         switch (modeId) {
             case EMOJIS_MODE: case FLAGS_MODE: case NUMBERS_MODE: case ARITHMETIC_MODE: case SHAPES_MODE: case CARDS_MODE: case KIDS_MODE:
-                props.onStartGame(modeId); break;
-            case NO_MODE: props.onAbortGame(); break; // StartScreen
+                props.onStartGame(modeId); setIs404(false); break;
+            case NO_MODE: props.onAbortGame(); setIs404(false); break; // StartScreen
             default: setIs404(true); break; // 404 error
         }
     }, [mode]);
