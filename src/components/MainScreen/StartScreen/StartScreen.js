@@ -4,7 +4,6 @@ import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { connect } from 'react-redux';
 import classes from './StartScreen.module.css';
 import Footer from '../../Footer/Footer';
-import { changeMode, showIntro } from '../../../store/actions/actions';
 import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
 import BulbImg from '../../../images/bulb.png';
@@ -22,8 +21,6 @@ const StartScreen = (props) => {
     const handleMode = (_, newMode) => {
         let path = '/' + modeIdToModeName(newMode);
         navigate(path);
-        props.onChangeMode(newMode);
-        props.onStartGame();
     };
 
     return (
@@ -97,11 +94,4 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        onStartGame: () => { dispatch(showIntro())},
-        onChangeMode: (value) => dispatch(changeMode(value)),
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(StartScreen);
+export default connect(mapStateToProps, null)(StartScreen);

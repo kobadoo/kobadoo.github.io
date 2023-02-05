@@ -26,8 +26,9 @@ const App = () => {
         <Route path="/terms" element={<Terms/>} onUpdate={() => window.scrollTo(0, 0)} />
         <Route path="/privacy" element={<Privacy/>} onUpdate={() => window.scrollTo(0, 0)} />
         <Route path="/crystalball" element={<CrystalBall/>} onUpdate={() => window.scrollTo(0, 0)} />
-        <Route path="/" element={<MainScreen/>} />
-        <Route path="/:mode" element={<MainScreen/>} />
+        <Route path="/" element={<MainScreen/>} >
+          <Route path="/:mode" element={<MainScreen/>} />
+        </Route>
         <Route path="*" element={<NotFound/>} />
       </Routes>
     </ScrollToTop>
