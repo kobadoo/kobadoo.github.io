@@ -13,7 +13,7 @@ import { modeIdToModeName } from '../../../utils/Modes/ModeUtils';
 
 const StartScreen = (props) => {
 
-    const toggleButtonStyle = {borderLeft: '1px solid rgba(0, 0, 0, 0.12)', backgroundColor: 'whitesmoke'};
+    const toggleButtonStyle = {borderLeft: '1px solid rgba(0, 0, 0, 0.12)', backgroundColor: 'whitesmoke', color: 'teal'};
     const toggleGroupStyle = {display: 'inline-block'};
     const CRYSTAL_BALL_EMOJI = 0x1F52E;
     const navigate = useNavigate();

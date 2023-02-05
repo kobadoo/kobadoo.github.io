@@ -29,6 +29,7 @@ const AnswerScreenKids = (props) => {
             else {
                 props.audioObject.src=Applause;
                 props.audioObject.play();
+                props.audioObject.playbackRate = 1.25;
                 props.onLevelPassed();
             }
         }
