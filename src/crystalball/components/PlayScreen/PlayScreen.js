@@ -7,7 +7,7 @@ import { CARD_SELECTION, SLIDESHOW, TRANSITION } from '../../../store/constants'
 import { END_GAME } from '../../../store/actions/actionTypes';
 import EndScreen from './EndScreen/EndScreen';
 
-const NUM_EMOJIS_DISPLAYED = 5;
+const NUM_EMOJIS_DISPLAYED = 4;
 const TOTAL_EMOJIS = 104;
 const NUM_CARDS_DISPLAYED = 16;
 const TOTAL_CARDS = 52;

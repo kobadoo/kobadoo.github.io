@@ -40,7 +40,7 @@
 .Emojis {
     font-size: 7rem;
     display: inline-block;
-    margin: 0px 20px 0px 20px;
+    margin: 30px 20px 0px 20px;
 }
 
 .ShareText {
@@ -53,7 +53,7 @@
 
 .ShareButtons {
     text-align: center;
-    margin: 20px 0px;
+    margin: 5px 0px 20px 0px;
 }
 
 .ShareButton {
@@ -75,7 +75,7 @@
 
     .Emojis {
         font-size: 4rem;
-        margin: 0px 2px 0px 2px;
+        margin: 15px 2px 0px 2px;
     }
 
     .RestartButton {

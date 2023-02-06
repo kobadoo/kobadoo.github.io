@@ -32,7 +32,7 @@ const EndScreen = (props) => {
 
     return (
         <div className={classes.EndScreen}>
-            <div>
+            <div className={classes.EmojiList}>
                 {props.itemList.map((value, index) => {
                     return <Emoji className={classes.Emojis} key={index} num={value} />
                 })}
