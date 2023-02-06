@@ -13,7 +13,7 @@ import { modeIdToModeName } from '../../../utils/Modes/ModeUtils';
 
 const StartScreen = (props) => {
 
-    const toggleButtonStyle = {border: '1px solid rgba(0, 0, 0, 0.12)', WebkitBackdropFilter: 'contrast(80%)', backdropFilter: 'contrast(80%)', color: 'teal'};
+    const toggleButtonStyle = {border: '1px solid rgba(80, 80, 80, 0.75)', WebkitBackdropFilter: 'contrast(80%)', backdropFilter: 'contrast(80%)', color: 'teal'};
     const toggleGroupStyle = {display: 'inline-block'};
     const CRYSTAL_BALL_EMOJI = 0x1F52E;
     const navigate = useNavigate();
