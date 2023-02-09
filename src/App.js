@@ -10,16 +10,24 @@ import Privacy from './components/Legal/Privacy';
 import Terms from './components/Legal/Terms';
 import ScrollToTop from './utils/ScrollToTop';
 import CrystalBall from './crystalball/CrystalBall';
+import { changeShowAds } from './store/actions/actions';
 
-const App = () => {
+const App = (props) => {
 
   useEffect(() => {
     initGA('G-5103PX7L4F');
     PageView();
+    document.addEventListener("aip_consentrejected", function(e) {
+      props.onChangeShowAds(false);
+    });
+    document.addEventListener("aip_consentapproved", function(e) {
+        props.onChangeShowAds(true);
+    });
   }, []);
   
   return (
     <ScrollToTop>
+      <div id="preroll"></div>
       <Toolbar />
       <Routes>
         <Route path="/credits" element={<Credits/>} onUpdate={() => window.scrollTo(0, 0)} />
@@ -35,4 +43,10 @@ const App = () => {
   );
 }
 
-export default connect(null, null)(App);
+const mapDispatchToProps = dispatch => {
+  return {
+      onChangeShowAds: (newValue) => dispatch(changeShowAds(newValue))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(App);

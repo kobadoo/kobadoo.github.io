@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import classes from './EndScreen.module.css';
 import { changeScreen } from '../../../../store/actions/actions';
@@ -30,8 +30,27 @@ const EndScreen = (props) => {
     + getEmojiHex(props.itemList[0]) + ' ' + getEmojiHex(props.itemList[1]) + ' ' + getEmojiHex(props.itemList[2]) + ' ' + getEmojiHex(props.itemList[3])
     + ' What about yours?\n';
 
+    useEffect(() => {
+        if (props.showAds) {
+            window.aiptag.cmd.display.push( () => {
+                window.aipDisplayTag.display('kobadoo-com_300x250_2');
+                window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
+                window.aipDisplayTag.display('kobadoo-com_160x600_2');
+                window.aipDisplayTag.display('kobadoo-com_728x90_2'); 
+            })
+        }
+    }, [props.showAds]);
+
     return (
         <div className={classes.EndScreen}>
+            { props.showAds ? (
+                <React.Fragment>
+                    <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
+                    <div id='kobadoo-com_160x600_1' className={classes.Ad160x600L} />
+                    <div id='kobadoo-com_160x600_2' className={classes.Ad160x600R} />
+                </React.Fragment>
+                ) : null
+            }
             <div className={classes.EmojiList}>
                 {props.itemList.map((value, index) => {
                     return <Emoji className={classes.Emojis} key={index} num={value} />
@@ -65,9 +84,18 @@ const EndScreen = (props) => {
                     </EmailShareButton>
                 </div>
             </React.Fragment>
+
+            { props.showAds ? <div id='kobadoo-com_300x250_2' className={classes.Ad300x250} /> : null }
+
         </div>
     );
 }
+
+const mapStateToProps = state => {
+    return {
+        showAds: state.showAds
+    };
+};
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -75,4 +103,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(null, mapDispatchToProps)(EndScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(EndScreen);

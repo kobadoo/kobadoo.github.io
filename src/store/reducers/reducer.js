@@ -10,6 +10,8 @@ const initialState = {
     hasGameEnded: false,
     isPaused: false,
     showIntro: false,
+    showAds: false,
+    watchedVideo: true,
     mode: null,
     currentScreen: CARD_SELECTION
 };
@@ -61,12 +63,20 @@ const restartGame = (state, action) => {
         return score;
     };
 
+    const hasWatchedVideo = level => {
+        if (level > 1)
+            return false;
+        else
+            return true;
+    };
+
     const updatedState = { 
         level: action.value,
         score: getScoreFromLevel(action.value),
         hasLevelStarted: false,
         hasGameEnded: false,
-        showIntro: true
+        showIntro: true,
+        watchedVideo: hasWatchedVideo(action.value)
     };
     return updateObject(state, updatedState);
 };
@@ -80,7 +90,8 @@ const abortGame = (state) => {
         mode: null,
         hasLevelStarted: false,
         hasGameEnded: false,
-        showIntro: false
+        showIntro: false,
+        watchedVideo: true
     };
     return updateObject(state, updatedState);
 };
@@ -111,6 +122,20 @@ const changeLanguage = (state, action) => {
 const showIntro = (state) => {
     const updatedState = {
         showIntro: true
+    };
+    return updateObject(state, updatedState);
+};
+
+const changeShowAds = (state, action) => {
+    const updatedState = {
+        showAds: action.value
+    };
+    return updateObject(state, updatedState);
+};
+
+const changeWatchedVideo = (state, action) => {
+    const updatedState = {
+        watchedVideo: action.value
     };
     return updateObject(state, updatedState);
 };
@@ -156,6 +181,12 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.SHOW_INTRO:
             return showIntro(state, action);
+
+        case actionTypes.CHANGE_SHOW_ADS:
+            return changeShowAds(state, action);
+
+        case actionTypes.CHANGE_WATCHED_VIDEO:
+            return changeWatchedVideo(state, action);
 
         case actionTypes.CHANGE_SCREEN:
             return changeScreen(state, action);

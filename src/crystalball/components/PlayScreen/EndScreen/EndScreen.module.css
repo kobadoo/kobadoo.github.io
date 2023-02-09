@@ -60,6 +60,31 @@
     padding: 5px;
 }
 
+.Ad728x90 {
+    display: block;
+    height: 90px;
+}
+
+.Ad300x250 {
+    position: relative;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.Ad160x600L {
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.Ad160x600R {
+    display: block;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
 @media only screen and (max-width: 1023px) {
 
     .EndScreen h3 {
@@ -92,5 +117,17 @@
         font-family: 'Open Sans', sans-serif;
         font-size: 1.2rem;
         font-weight: normal;
+    }
+
+    .Ad728x90 {
+        display: none;
+    }
+
+    .Ad160x600L {
+        display: none;
+    }
+
+    .Ad160x600R {
+        display: none;
     }
 }

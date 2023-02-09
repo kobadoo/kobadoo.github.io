@@ -17,7 +17,7 @@
 .env.development.local
 .env.test.local
 .env.production.local
-/public/ads.html
+/public/ads.*
 /src/utils/*.json
 
 npm-debug.log*

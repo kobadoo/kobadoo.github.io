@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { connect } from 'react-redux';
@@ -14,9 +14,24 @@ import { modeIdToModeName } from '../../../utils/Modes/ModeUtils';
 const StartScreen = (props) => {
 
     const toggleButtonStyle = {border: '1px solid rgba(80, 80, 80, 0.75)', WebkitBackdropFilter: 'contrast(80%)', backdropFilter: 'contrast(80%)', color: 'mediumvioletred'};
-    const toggleGroupStyle = {display: 'inline-block'};
+    const toggleGroupStyle = {display: 'inline-block', margin: '0px 0px 30px 0px'};
     const CRYSTAL_BALL_EMOJI = 0x1F52E;
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (props.showAds) {
+            window.aiptag.cmd.display.push( () => {
+                window.aipDisplayTag.display('kobadoo-com_300x100'); 
+                window.aipDisplayTag.display('kobadoo-com_300x250');
+                window.aipDisplayTag.display('kobadoo-com_300x250_1');
+                window.aipDisplayTag.display('kobadoo-com_300x250_3');
+                window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
+                window.aipDisplayTag.display('kobadoo-com_160x600_2');
+                window.aipDisplayTag.display('kobadoo-com_728x90_1');
+            });
+        }
+    }, [props.showAds]);
+
     const handleMode = (_, newMode) => {
         let path = '/' + modeIdToModeName(newMode);
         navigate(path);
@@ -24,6 +39,16 @@ const StartScreen = (props) => {
 
     return (
         <div className={classes.StartScreen}>
+
+            { props.showAds ? (
+                <React.Fragment>
+                    <center><div id='kobadoo-com_300x100' className={classes.Ad300x100} /></center>
+                    <div id='kobadoo-com_160x600_1' className={classes.Ad160x600L} />
+                    <div id='kobadoo-com_160x600_2' className={classes.Ad160x600R} />
+                    <div id='kobadoo-com_728x90_1' className={classes.Ad728x90} />
+                </React.Fragment>
+                ) : null
+            }
 
             <h3 className={classes.HeaderText}>
                 <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, playing cards, numbers, arithmetic calculations, flags or geometric shapes. Children can also learn new words in different languages using the <i>Kids</i> mode.
@@ -42,11 +67,15 @@ const StartScreen = (props) => {
                 </ToggleButtonGroup>
             </div>
 
+            { props.showAds ? <div id='kobadoo-com_300x250' className={classes.Ad300x250} /> : null }
+
             <div className={classes.BenefitsText}>
                 <ThumbnailSlideShow />
                 <h3>Seven game modes</h3>
                 <p>You can practice your working memory with different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>two-digit numbers</strong>, <strong>arithmetic</strong> calculations, <strong>flags</strong> of the world or coloured geometric <strong>shapes</strong>. Children can also learn new vocabulary in <strong>English</strong>, <strong>Spanish</strong> or <strong>Norwegian</strong> using the <strong><i>Kids</i></strong> mode, with several studies [<a href="https://blog.kobadoo.com/2023/01/how-kobadoo-kids-helps-children-develop.html" target="_new">1</a>] backing the effectiveness of this technique. Watch all the demos on <a href="https://www.youtube.com/@kobadoo/videos" target="_new">our Youtube channel</a>!</p>
             </div>
+
+            { props.showAds ? <div id='kobadoo-com_300x250_1' className={classes.Ad300x250} /> : null }
             
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={MonkeyImg} alt="" />
@@ -56,6 +85,8 @@ const StartScreen = (props) => {
                 <i>Kobadoo</i> is <strong> 100% free</strong>, no sign up is required. Play directly on browser or install the Android app.</p>
                 <a href="https://play.google.com/store/apps/details?id=com.kobadoo" target="_new"><img className={classes.GooglePlayButton} src={GooglePlayImg} alt="Google Play"/></a>
             </div>
+
+            { props.showAds ? <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} /> : null }
 
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={BulbImg} alt="" />
@@ -88,6 +119,7 @@ const StartScreen = (props) => {
 
 const mapStateToProps = state => {
     return {
+        showAds: state.showAds,
         mode: state.mode,
         lang: state.lang
     }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { restartGame } from '../../../store/actions/actions';
 import MonkeyImg from '../../../images/monkey.png';
@@ -38,8 +38,27 @@ const EndScreen = (props) => {
     const URL = 'https://www.kobadoo.com/#/' + modeIdToModeName(props.mode);
     const QUOTE = 'I reached level ' + props.lvl + ' at Kobadoo ' + modes_config[props.mode].name + ' memory game! Can you beat me?\n';
 
+    useEffect(() => {
+        if (props.showAds) {
+            window.aiptag.cmd.display.push( () => {
+                window.aipDisplayTag.display('kobadoo-com_300x100');
+                window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
+                window.aipDisplayTag.display('kobadoo-com_160x600_2');
+                window.aipDisplayTag.display('kobadoo-com_728x90_2'); 
+            })
+        }
+    }, [props.showAds]);
+
     return (
         <div className={classes.EndScreen}>
+            { props.showAds ? (
+                <React.Fragment>
+                    <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} />
+                    <div id='kobadoo-com_160x600_1' className={classes.Ad160x600L} />
+                    <div id='kobadoo-com_160x600_2' className={classes.Ad160x600R} />
+                </React.Fragment>
+                ) : null
+            }
             <div>
                 {(props.lvl === MAX_LEVEL) ? <h2>Game Completed!</h2>: <h2>Game Over!</h2>}
                 {(props.lvl === MAX_LEVEL) ? <span className={classes.Cup}>{String.fromCodePoint(CUP)}</span> : <img className={classes.EndImage} src={MonkeyImg} alt="" /> }
@@ -88,6 +107,7 @@ const EndScreen = (props) => {
                     </EmailShareButton>
                 </div>
             </React.Fragment>
+            { (props.showAds && props.lvl < MAX_LEVEL) ? <div id='kobadoo-com_300x100' className={classes.Ad300x100} /> : null }
         </div>
     );
 }
@@ -96,7 +116,9 @@ const mapStateToProps = state => {
     return {
         lvl: state.level,
         scr: state.score,
-        mode: state.mode
+        mode: state.mode,
+        showAds: state.showAds
+
     };
 };
 
