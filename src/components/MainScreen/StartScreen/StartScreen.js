@@ -67,8 +67,6 @@ const StartScreen = (props) => {
                 </ToggleButtonGroup>
             </div>
 
-            { props.showAds ? <div id='kobadoo-com_300x250' className={classes.Ad300x250} /> : null }
-
             <div className={classes.BenefitsText}>
                 <ThumbnailSlideShow />
                 <h3>Seven game modes</h3>
@@ -86,13 +84,13 @@ const StartScreen = (props) => {
                 <a href="https://play.google.com/store/apps/details?id=com.kobadoo" target="_new"><img className={classes.GooglePlayButton} src={GooglePlayImg} alt="Google Play"/></a>
             </div>
 
-            { props.showAds ? <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} /> : null }
-
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={BulbImg} alt="" />
                 <h3>What is <i>working memory</i>?</h3>
                 <p>Working memory is a form of short-term memory, where you temporarily hold information in your mind while processing it. When you play <i>Kobadoo</i> you are actively using your working memory. There are several scientific studies that suggest training of working memory has <strong>beneficial effects</strong> and can <strong>increase your cognitive functions</strong>. You can learn more about working memory on <a href="https://blog.kobadoo.com/2022/02/what-is-working-memory-how-to-train-it.html" target="_new">this blog post</a></p>
             </div>
+
+            { props.showAds ? <div id='kobadoo-com_300x250' className={classes.Ad300x250} /> : null }
 
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={TrainImg} alt="" />
@@ -111,6 +109,8 @@ const StartScreen = (props) => {
                     className={classes.CrystalBallButton} 
                     onClick={() => window.open('/#/crystalball', '_blank')}>Play Crystal Ball</button>
             </div>
+
+            { props.showAds ? <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} /> : null }
             
             <Footer />
         </div>
