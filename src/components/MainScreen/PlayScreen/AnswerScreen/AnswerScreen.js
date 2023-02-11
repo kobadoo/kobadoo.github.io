@@ -5,7 +5,7 @@ import Emoji from '../../../../utils/Modes/Emoji';
 import {Flag} from '../../../../utils/Modes/Flag';
 import { Shape } from '../../../../utils/Modes/Shapes';
 import { PlayingCard } from '../../../../utils/Modes/Card';
-import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
+import { passLevel, increaseScore, endGame, gameCompleted } from '../../../../store/actions/actions';
 import {NUMBERS_MODE, FLAGS_MODE, SHAPES_MODE, CARDS_MODE} from '../../../../store/constants';
 
 const POINTS_PER_CORRECT_ANSWER = 20;
@@ -22,6 +22,7 @@ const AnswerScreen = (props) => {
     useEffect(() => {        
         if(correctItems === props.numItems) {            
             if(props.isLastLevel) {
+                props.onGameCompleted();
                 props.onEndGame();
             }
             else {
@@ -115,8 +116,9 @@ const AnswerScreen = (props) => {
 const mapDispatchToProps = dispatch => {
     return {
         onLevelPassed: () => dispatch(passLevel()),
-        onEndGame: () => { dispatch(endGame()) },
-        onScoreIncreased: (addedScr) => dispatch(increaseScore(addedScr))
+        onEndGame: () => dispatch(endGame()),
+        onScoreIncreased: (addedScr) => dispatch(increaseScore(addedScr)),
+        onGameCompleted: () => dispatch(gameCompleted())
     };
 };
 

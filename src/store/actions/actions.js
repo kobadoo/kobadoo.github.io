@@ -119,3 +119,9 @@ export const changeScreen = (newValue) => {
         }
     };
 };
+
+export const gameCompleted = () => {
+    return {
+        type: actionTypes.GAME_COMPLETED
+    };
+};

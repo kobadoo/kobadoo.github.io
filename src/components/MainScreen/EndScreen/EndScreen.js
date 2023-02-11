@@ -30,6 +30,7 @@ const BEE = 0X1F41D;
 const HUMAN = 0x1F469;
 const ELEPHANT = 0x1F418;
 const DOLPHIN = 0X1F42C;
+const WHALE = 0X1F40B;
 const CUP = 0X1F3C6;
 
 
@@ -37,6 +38,7 @@ const EndScreen = (props) => {
 
     const URL = 'https://www.kobadoo.com/#/' + modeIdToModeName(props.mode);
     const QUOTE = 'I reached level ' + props.lvl + ' at Kobadoo ' + modes_config[props.mode].name + ' memory game! Can you beat me?\n';
+    var statsLevel = statsSummary[props.mode].percentileByLevel[props.lvl-1];
 
     useEffect(() => {
         if (props.showAds) {
@@ -60,25 +62,26 @@ const EndScreen = (props) => {
                 ) : null
             }
             <div>
-                {(props.lvl === MAX_LEVEL) ? <h2>Game Completed!</h2>: <h2>Game Over!</h2>}
-                {(props.lvl === MAX_LEVEL) ? <span className={classes.Cup}>{String.fromCodePoint(CUP)}</span> : <img className={classes.EndImage} src={MonkeyImg} alt="" /> }
+                {props.gameCompleted ? <h2>Game Completed!</h2>: <h2>Game Over!</h2>}
+                {props.gameCompleted ? <span className={classes.Cup}>{String.fromCodePoint(CUP)}</span> : <img className={classes.EndImage} src={MonkeyImg} alt="" /> }
                 <h3>Level: <div className={classes.Results}>{props.lvl} / {MAX_LEVEL}</div></h3>
                 <h3>Score: <div className={classes.Results}>{props.scr}</div></h3>
                 { props.mode === KIDS_MODE ? null : 
-                    <div className={classes.AnimalMemory}><div className={classes.AnimalName}>{statsSummary[props.mode].percentileByLevel[props.lvl-1]}%</div> players reached this level.</div>
+                    <div className={classes.AnimalMemory}><div className={classes.AnimalName}>{statsLevel}%</div> players reached this level.</div>
                 }
                 { (props.mode === KIDS_MODE || props.mode === ARITHMETIC_MODE) ? null : 
-                    props.lvl < 3 ? <div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>bad memory</div>, like a <div className={classes.AnimalName}>goldfish</div> <span>{String.fromCodePoint(GOLDFISH)}</span></div> :
-                    props.lvl >=3 && props.lvl < 6 ?<div className={classes.AnimalMemory}>You are <div className={classes.AnimalName}>rather forgetful</div>, just like a <div className={classes.AnimalName}>bee</div> <span>{String.fromCodePoint(BEE)}</span></div> :
-                    props.lvl >=6 && props.lvl < 11 ?<div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>average human memory</div> <span>{String.fromCodePoint(HUMAN)}</span></div> :
-                    props.lvl >=11 && props.lvl < 18 ?<div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>great memory</div>, just like an <div className={classes.AnimalName}>elephant</div> <span>{String.fromCodePoint(ELEPHANT)}</span></div> :
-                    props.lvl >=18 ? <div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>extraordinary memory</div>, like a <div className={classes.AnimalName}>dolphin</div> <span>{String.fromCodePoint(DOLPHIN)}</span></div> : null }
+                    statsLevel >= 80 ? <div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>bad memory</div>, like a <div className={classes.AnimalName}>goldfish</div> <span>{String.fromCodePoint(GOLDFISH)}</span></div> :
+                    statsLevel <80 && statsLevel >= 60 ?<div className={classes.AnimalMemory}>You are <div className={classes.AnimalName}>rather forgetful</div>, just like a <div className={classes.AnimalName}>bee</div> <span>{String.fromCodePoint(BEE)}</span></div> :
+                    statsLevel <60 && statsLevel >= 40 ?<div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>average human memory</div> <span>{String.fromCodePoint(HUMAN)}</span></div> :
+                    statsLevel <40 && statsLevel >= 10 ?<div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>great memory</div>, just like a <div className={classes.AnimalName}>whale</div> <span>{String.fromCodePoint(WHALE)}</span></div> :
+                    statsLevel <10 && statsLevel >= 1 ?<div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>amazing memory</div>, like an <div className={classes.AnimalName}>elephant</div> <span>{String.fromCodePoint(ELEPHANT)}</span></div> :
+                    statsLevel <1 ? <div className={classes.AnimalMemory}>You have <div className={classes.AnimalName}>extraordinary memory</div>, like a <div className={classes.AnimalName}>dolphin</div> <span>{String.fromCodePoint(DOLPHIN)}</span></div> : null }
             </div>
             <div>
                 <button 
                     className={classes.RestartButton} 
                     onClick={() => props.onRestartGame(1) }>Restart Game</button>
-                {(props.lvl > 2 && props.lvl < MAX_LEVEL) ? 
+                {(props.lvl > 2 && !props.gameCompleted) ? 
                     <button 
                         className={classes.ContinueButton} 
                         onClick={() => props.onRestartGame(props.lvl - 1) }>Continue level {props.lvl -1}</button>
@@ -107,7 +110,7 @@ const EndScreen = (props) => {
                     </EmailShareButton>
                 </div>
             </React.Fragment>
-            { (props.showAds && props.lvl < MAX_LEVEL) ? <div id='kobadoo-com_300x100' className={classes.Ad300x100} /> : null }
+            { (props.showAds && !props.gameCompleted) ? <div id='kobadoo-com_300x100' className={classes.Ad300x100} /> : null }
         </div>
     );
 }
@@ -117,8 +120,8 @@ const mapStateToProps = state => {
         lvl: state.level,
         scr: state.score,
         mode: state.mode,
-        showAds: state.showAds
-
+        showAds: state.showAds,
+        gameCompleted: state.gameCompleted
     };
 };
 
