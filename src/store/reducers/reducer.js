@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../../utils/objectUpdater';
-import {CARD_SELECTION} from '../constants';
+import {ARITHMETIC_MODE, CARD_SELECTION} from '../constants';
 
 const initialState = {
     level: 1,
@@ -51,12 +51,17 @@ const endGame = (state) => {
 
 const restartGame = (state, action) => {
 
-    const getScoreFromLevel = level => {
+    const getScoreFromLevel = (level, mode) => {
         let score = 0;
         if (level > 1) {
-            score = score + (level-1) * 100;
-            for (var i = 1; i < level; i++) {
-                score = score + ((2 + parseInt((i-1) / 3)) * 20);
+            if (state.mode === ARITHMETIC_MODE) {
+                score = score + (level-1) * 120;
+            }
+            else {
+                score = score + (level-1) * 100;
+                for (var i = 1; i < level; i++) {
+                    score = score + ((2 + parseInt((i-1) / 3)) * 20);
+                }
             }
         }
 
@@ -72,7 +77,7 @@ const restartGame = (state, action) => {
 
     const updatedState = { 
         level: action.value,
-        score: getScoreFromLevel(action.value),
+        score: getScoreFromLevel(action.value, state.mode),
         hasLevelStarted: false,
         hasGameEnded: false,
         showIntro: true,
