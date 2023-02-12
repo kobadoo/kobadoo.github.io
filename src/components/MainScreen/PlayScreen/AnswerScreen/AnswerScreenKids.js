@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import classes from './AnswerScreen.module.css';
 import {KidsEmoji, KidsQuestion, playAudioByItemNumber} from '../../../../utils/Modes/Kids';
-import { passLevel, increaseScore, endGame, gameCompleted } from '../../../../store/actions/actions';
+import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
 import Applause from '../../../../audio/applause.mp3';
 import Lost from '../../../../audio/lost.mp3';
 import Volume from '../../../../images/audio.png';
@@ -24,7 +24,6 @@ const AnswerScreenKids = (props) => {
         
         if(correctItems === props.numItems) {            
             if(props.isLastLevel) {
-                props.onGameCompleted();
                 props.onEndGame();
             }
             else {
@@ -123,8 +122,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onLevelPassed: () => dispatch(passLevel()),
         onEndGame: () => dispatch(endGame()),
-        onScoreIncreased: (addedScr) => dispatch(increaseScore(addedScr)),
-        onGameCompleted: () => dispatch(gameCompleted())
+        onScoreIncreased: (addedScr) => dispatch(increaseScore(addedScr))
     };
 };
 

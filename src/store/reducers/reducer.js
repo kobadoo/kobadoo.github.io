@@ -13,7 +13,6 @@ const initialState = {
     showAds: false,
     watchedVideo: true,
     mode: null,
-    gameCompleted: false,
     currentScreen: CARD_SELECTION
 };
 
@@ -77,8 +76,7 @@ const restartGame = (state, action) => {
         hasLevelStarted: false,
         hasGameEnded: false,
         showIntro: true,
-        watchedVideo: hasWatchedVideo(action.value),
-        gameCompleted: false
+        watchedVideo: hasWatchedVideo(action.value)
     };
     return updateObject(state, updatedState);
 };
@@ -93,8 +91,7 @@ const abortGame = (state) => {
         hasLevelStarted: false,
         hasGameEnded: false,
         showIntro: false,
-        watchedVideo: true,
-        gameCompleted: false
+        watchedVideo: true
     };
     return updateObject(state, updatedState);
 };
@@ -150,14 +147,6 @@ const changeScreen = (state, action) => {
     return updateObject(state, updatedState);
 };
 
-const gameCompleted = (state) => {
-    const updatedState = {
-        gameCompleted: true
-    };
-    return updateObject(state, updatedState);
-};
-
-
 const reducer = (state = initialState, action) => {
 
     switch (action.type) {
@@ -200,9 +189,6 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.CHANGE_SCREEN:
             return changeScreen(state, action);
-
-        case actionTypes.GAME_COMPLETED:
-            return gameCompleted(state);
 
         default:
             return state;

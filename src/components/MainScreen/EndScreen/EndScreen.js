@@ -39,6 +39,7 @@ const EndScreen = (props) => {
     const URL = 'https://www.kobadoo.com/#/' + modeIdToModeName(props.mode);
     const QUOTE = 'I reached level ' + props.lvl + ' at Kobadoo ' + modes_config[props.mode].name + ' memory game! Can you beat me?\n';
     var statsLevel = statsSummary[props.mode].percentileByLevel[props.lvl-1];
+    var isGameCompleted = props.scr === modes_config[props.mode].gameCompletedScore;
 
     useEffect(() => {
         if (props.showAds) {
@@ -62,8 +63,8 @@ const EndScreen = (props) => {
                 ) : null
             }
             <div>
-                {props.gameCompleted ? <h2>Game Completed!</h2>: <h2>Game Over!</h2>}
-                {props.gameCompleted ? <span className={classes.Cup}>{String.fromCodePoint(CUP)}</span> : <img className={classes.EndImage} src={MonkeyImg} alt="" /> }
+                {isGameCompleted ? <h2>Game Completed!</h2>: <h2>Game Over!</h2>}
+                {isGameCompleted ? <span className={classes.Cup}>{String.fromCodePoint(CUP)}</span> : <img className={classes.EndImage} src={MonkeyImg} alt="" /> }
                 <h3>Level: <div className={classes.Results}>{props.lvl} / {MAX_LEVEL}</div></h3>
                 <h3>Score: <div className={classes.Results}>{props.scr}</div></h3>
                 { props.mode === KIDS_MODE ? null : 
@@ -81,7 +82,7 @@ const EndScreen = (props) => {
                 <button 
                     className={classes.RestartButton} 
                     onClick={() => props.onRestartGame(1) }>Restart Game</button>
-                {(props.lvl > 2 && !props.gameCompleted) ? 
+                {(props.lvl > 2 && !isGameCompleted) ? 
                     <button 
                         className={classes.ContinueButton} 
                         onClick={() => props.onRestartGame(props.lvl - 1) }>Continue level {props.lvl -1}</button>
@@ -110,7 +111,7 @@ const EndScreen = (props) => {
                     </EmailShareButton>
                 </div>
             </React.Fragment>
-            { (props.showAds && !props.gameCompleted) ? <div id='kobadoo-com_300x100' className={classes.Ad300x100} /> : null }
+            { (props.showAds && !isGameCompleted) ? <div id='kobadoo-com_300x100' className={classes.Ad300x100} /> : null }
         </div>
     );
 }
@@ -120,8 +121,7 @@ const mapStateToProps = state => {
         lvl: state.level,
         scr: state.score,
         mode: state.mode,
-        showAds: state.showAds,
-        gameCompleted: state.gameCompleted
+        showAds: state.showAds
     };
 };
 
