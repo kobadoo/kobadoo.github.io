@@ -6,9 +6,8 @@ import {Flag} from '../../../../utils/Modes/Flag';
 import { Shape } from '../../../../utils/Modes/Shapes';
 import { PlayingCard } from '../../../../utils/Modes/Card';
 import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
-import {NUMBERS_MODE, FLAGS_MODE, SHAPES_MODE, CARDS_MODE} from '../../../../store/constants';
+import {NUMBERS_MODE, FLAGS_MODE, SHAPES_MODE, CARDS_MODE, POINTS_PER_CORRECT_ANSWER, POINTS_GAME_COMPLETED} from '../../../../store/constants';
 
-const POINTS_PER_CORRECT_ANSWER = 20;
 const INTERVAL_BEFORE_GAME_OVER = 5000;
 
 const AnswerScreen = (props) => {
@@ -22,6 +21,7 @@ const AnswerScreen = (props) => {
     useEffect(() => {        
         if(correctItems === props.numItems) {            
             if(props.isLastLevel) {
+                props.onScoreIncreased(POINTS_GAME_COMPLETED);
                 props.onEndGame();
             }
             else {

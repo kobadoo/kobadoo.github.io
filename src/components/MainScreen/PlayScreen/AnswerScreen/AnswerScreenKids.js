@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import classes from './AnswerScreen.module.css';
 import {KidsEmoji, KidsQuestion, playAudioByItemNumber} from '../../../../utils/Modes/Kids';
 import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
+import {POINTS_PER_CORRECT_ANSWER, POINTS_GAME_COMPLETED} from '../../../../store/constants';
 import Applause from '../../../../audio/applause.mp3';
 import Lost from '../../../../audio/lost.mp3';
 import Volume from '../../../../images/audio.png';
 
-const POINTS_PER_CORRECT_ANSWER = 20;
 const INTERVAL_BEFORE_GAME_OVER = 5000;
 
 const AnswerScreenKids = (props) => {
@@ -24,6 +24,7 @@ const AnswerScreenKids = (props) => {
         
         if(correctItems === props.numItems) {            
             if(props.isLastLevel) {
+                props.onScoreIncreased(POINTS_GAME_COMPLETED);
                 props.onEndGame();
             }
             else {

@@ -14,3 +14,8 @@ export const CARD_SELECTION = 0;
 export const TRANSITION = 1;
 export const SLIDESHOW = 2;
 export const SUMMARY = 3;
+
+// Scoring
+export const POINTS_PER_CORRECT_ANSWER = 20;
+export const POINTS_PER_COMPLETED_LEVEL = 100;
+export const POINTS_GAME_COMPLETED = 200;

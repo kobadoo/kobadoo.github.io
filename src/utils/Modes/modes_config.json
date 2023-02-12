@@ -14,7 +14,7 @@
         "intervalSecondsEasyLevels": 1300,
         "intervalSecondsDifficultLevels": 1600,
         "firstDifficultLevel": 10,
-        "gameCompletedScore": 7140
+        "gameCompletedScore": 7340
     },
     {
         "name": "Flags",
@@ -31,7 +31,7 @@
         "intervalSecondsEasyLevels": 1700,
         "intervalSecondsDifficultLevels": 2000,
         "firstDifficultLevel": 10,
-        "gameCompletedScore": 7140
+        "gameCompletedScore": 7340
     },
     {
         "name": "Numbers",
@@ -48,7 +48,7 @@
         "intervalSecondsEasyLevels": 1300,
         "intervalSecondsDifficultLevels": 1600,
         "firstDifficultLevel": 10,
-        "gameCompletedScore": 7140
+        "gameCompletedScore": 7340
     },
     {
         "name": "Arithmetic",
@@ -68,7 +68,7 @@
         "rangeSeedItems": 199,
         "rangeDisplayedItems": 50,
         "minNumberRange": -99,
-        "gameCompletedScore": 3620
+        "gameCompletedScore": 3820
     },
     {
         "name": "Shapes",
@@ -85,7 +85,7 @@
         "intervalSecondsEasyLevels": 2000,
         "intervalSecondsDifficultLevels": 2300,
         "firstDifficultLevel": 10,
-        "gameCompletedScore": 7140
+        "gameCompletedScore": 7340
     },
     {
         "name": "Cards",
@@ -102,7 +102,7 @@
         "intervalSecondsEasyLevels": 2000,
         "intervalSecondsDifficultLevels": 2300,
         "firstDifficultLevel": 10,
-        "gameCompletedScore": 7140
+        "gameCompletedScore": 7340
     },
     {
         "name": "Kids",
@@ -123,6 +123,6 @@
         "intervalSecondsEasyLevels": 2500,
         "intervalSecondsDifficultLevels": 2500,
         "firstDifficultLevel": 32,
-        "gameCompletedScore": 7140
+        "gameCompletedScore": 7340
     }
 ]

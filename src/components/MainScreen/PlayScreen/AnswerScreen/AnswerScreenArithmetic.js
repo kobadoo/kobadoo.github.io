@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import classes from './AnswerScreen.module.css';
 import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
+import {POINTS_PER_CORRECT_ANSWER, POINTS_GAME_COMPLETED} from '../../../../store/constants';
 
-const POINTS_PER_CORRECT_ANSWER = 20;
 const INTERVAL_BEFORE_GAME_OVER = 4000;
 
 const AnswerScreenArithmetic = (props) => {
@@ -17,6 +17,7 @@ const AnswerScreenArithmetic = (props) => {
         if (props.correctAnswer === value) {
             props.onScoreIncreased(POINTS_PER_CORRECT_ANSWER);
             if(props.isLastLevel) {
+                props.onScoreIncreased(POINTS_GAME_COMPLETED);
                 props.onEndGame();
             }
             else {
