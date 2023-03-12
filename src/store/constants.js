@@ -19,3 +19,6 @@ export const SUMMARY = 3;
 export const POINTS_PER_CORRECT_ANSWER = 20;
 export const POINTS_PER_COMPLETED_LEVEL = 100;
 export const POINTS_GAME_COMPLETED = 200;
+
+// TIMEOUTS
+export const TIMEOUT_BEFORE_GAME_OVER = 5000;

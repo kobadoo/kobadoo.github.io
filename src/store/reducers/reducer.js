@@ -35,7 +35,8 @@ const passLevel = (state) => {
 const startLevel = (state) => {
     const updatedState = {
         hasLevelStarted: true,
-        showIntro: false
+        showIntro: false,
+        hasGameEnded: false
     };
     return updateObject(state, updatedState);
 };

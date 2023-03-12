@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import classes from './AnswerScreen.module.css';
 import {KidsEmoji, KidsQuestion, playAudioByItemNumber} from '../../../../utils/Modes/Kids';
 import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
-import {POINTS_PER_CORRECT_ANSWER, POINTS_GAME_COMPLETED} from '../../../../store/constants';
+import {POINTS_PER_CORRECT_ANSWER, POINTS_GAME_COMPLETED, TIMEOUT_BEFORE_GAME_OVER} from '../../../../store/constants';
 import Applause from '../../../../audio/applause.mp3';
 import Lost from '../../../../audio/lost.mp3';
 import Volume from '../../../../images/audio.png';
 
-const INTERVAL_BEFORE_GAME_OVER = 5000;
 
 const AnswerScreenKids = (props) => {
 
@@ -39,6 +38,11 @@ const AnswerScreenKids = (props) => {
         }
     }, [correctItems, props]);
 
+    useEffect(()=>{
+        // Ensure timeout is cleared when unmounted (e.g. abortGame via Toolbar)
+        () => clearTimeout(timeoutRef.current)
+    },[]);
+
     /* onTouchStart (mobile/tablet) triggers, once done, the onMouseDown / onClick unless we prevent it this way */
     const handleTouchStart = (index, value) => {
         setUseTouch(true);
@@ -65,10 +69,10 @@ const AnswerScreenKids = (props) => {
             setLostGame(true);
             setFailedItem(value);
             setExpectedItem(props.itemList[correctItems]);
-            const timeout = setInterval(() => {
+            if(timeoutRef.current) { clearTimeout(timeoutRef.current); }
+            timeoutRef.current = setTimeout(() => {
                 props.onEndGame();
-                clearInterval(timeout);
-            }, INTERVAL_BEFORE_GAME_OVER);    
+            }, TIMEOUT_BEFORE_GAME_OVER);
         }
     }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import classes from './AnswerScreen.module.css';
 import Emoji from '../../../../utils/Modes/Emoji';
@@ -6,12 +6,11 @@ import {Flag} from '../../../../utils/Modes/Flag';
 import { Shape } from '../../../../utils/Modes/Shapes';
 import { PlayingCard } from '../../../../utils/Modes/Card';
 import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';
-import {NUMBERS_MODE, FLAGS_MODE, SHAPES_MODE, CARDS_MODE, POINTS_PER_CORRECT_ANSWER, POINTS_GAME_COMPLETED} from '../../../../store/constants';
-
-const INTERVAL_BEFORE_GAME_OVER = 5000;
+import {NUMBERS_MODE, FLAGS_MODE, SHAPES_MODE, CARDS_MODE, POINTS_PER_CORRECT_ANSWER, POINTS_GAME_COMPLETED, TIMEOUT_BEFORE_GAME_OVER} from '../../../../store/constants';
 
 const AnswerScreen = (props) => {
 
+    const timeoutRef = useRef(null);
     const [lostGame, setLostGame] = useState(false);
     const [correctItems, setCorrectItems] = useState(0);
     const [disabledItems, setDisabledItems] = useState([]);
@@ -30,6 +29,11 @@ const AnswerScreen = (props) => {
         }
     }, [correctItems]);
 
+    useEffect(()=>{
+        // Ensure timeout is cleared when unmounted (e.g. abortGame via Toolbar)
+        () => clearTimeout(timeoutRef.current)
+    },[]);
+
     const itemClickHandler = (index, value) => {
 
         if (props.itemList[correctItems] === value) {
@@ -41,10 +45,10 @@ const AnswerScreen = (props) => {
             setLostGame(true);
             setFailedItem(value);
             setExpectedItem(props.itemList[correctItems]);
-            const timeout = setInterval(() => {
+            if(timeoutRef.current) { clearTimeout(timeoutRef.current); }
+            timeoutRef.current = setTimeout(() => {
                 props.onEndGame();
-                clearInterval(timeout);
-            }, INTERVAL_BEFORE_GAME_OVER);    
+            }, TIMEOUT_BEFORE_GAME_OVER);
         }
     }
 
