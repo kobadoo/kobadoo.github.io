@@ -6,6 +6,7 @@ import AnswerScreenArithmetic from './AnswerScreen/AnswerScreenArithmetic';
 import AnswerScreenKids from './AnswerScreen/AnswerScreenKids';
 import {ARITHMETIC_MODE, KIDS_MODE} from '../../../store/constants';
 import modes_config from '../../../utils/Modes/modes_config.json';
+import { showAnswerScreen } from '../../../store/actions/actions';
 
 export const MAX_LEVEL = 31;
 const ITEMS_LEVEL_1 = 2;
@@ -30,7 +31,6 @@ class PlayScreen extends Component {
     
     state = {
         item: 0,
-        showAnswerScreen: false,
         itemList: []
     }
 
@@ -47,7 +47,7 @@ class PlayScreen extends Component {
                 }));
             }
             else {
-                this.setState({showAnswerScreen: true})
+                this.props.onShowAnswerScreen();
                 clearInterval(this.timeout);
             }
         }, this.intervalBetweenItems);
@@ -58,7 +58,7 @@ class PlayScreen extends Component {
     }
 
     render() {
-        if (!this.state.showAnswerScreen) {
+        if (!this.props.answerScreen) {
             return (
                 this.state.itemList.length > 0 ?
                     <SlideShow 
@@ -122,8 +122,15 @@ function getRandomInt(min, max) {
 const mapStateToProps = state => {
     return {
         lvl: state.level,
-        mode: state.mode
+        mode: state.mode,
+        answerScreen: state.showAnswerScreen
     }
 }
 
-export default connect(mapStateToProps)(PlayScreen);
+const mapDispatchToProps = dispatch => {
+    return {
+        onShowAnswerScreen: () => dispatch(showAnswerScreen())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlayScreen);

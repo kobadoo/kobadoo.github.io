@@ -11,6 +11,7 @@ import Volume from '../../../../images/audio.png';
 
 const AnswerScreenKids = (props) => {
 
+    const timeoutRef = useRef(null);
     const [lostGame, setLostGame] = useState(false);
     const [correctItems, setCorrectItems] = useState(0);
     const [disabledItems, setDisabledItems] = useState([]);

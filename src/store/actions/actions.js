@@ -84,6 +84,12 @@ export const showIntro = () => {
     };
 };
 
+export const showAnswerScreen = () => {
+    return {
+        type: actionTypes.SHOW_ANSWER_SCREEN
+    };
+};
+
 export const changeShowAds = (newValue) => {
     return {
         type: actionTypes.CHANGE_SHOW_ADS,

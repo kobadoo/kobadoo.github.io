@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import classes from './AnswerScreen.module.css';
 import { passLevel, increaseScore, endGame } from '../../../../store/actions/actions';

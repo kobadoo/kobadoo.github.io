@@ -10,6 +10,7 @@ const initialState = {
     hasGameEnded: false,
     isPaused: false,
     showIntro: false,
+    showAnswerScreen: false,
     showAds: false,
     watchedVideo: true,
     mode: null,
@@ -27,7 +28,8 @@ const passLevel = (state) => {
     const updatedState = {
         level: state.level + 1,
         score: state.score + POINTS_PER_COMPLETED_LEVEL,
-        hasLevelStarted: false
+        hasLevelStarted: false,
+        showAnswerScreen: false,
     };
     return updateObject(state, updatedState);
 };
@@ -36,6 +38,7 @@ const startLevel = (state) => {
     const updatedState = {
         hasLevelStarted: true,
         showIntro: false,
+        showAnswerScreen: false,
         hasGameEnded: false
     };
     return updateObject(state, updatedState);
@@ -43,7 +46,7 @@ const startLevel = (state) => {
 
 const endGame = (state) => {
     const updatedState = { 
-        hasGameEnded: true 
+        hasGameEnded: state.showAnswerScreen ? true : false
     };
     return updateObject(state, updatedState);
 };
@@ -78,6 +81,7 @@ const restartGame = (state, action) => {
         level: action.value,
         score: getScoreFromLevel(action.value, state.mode),
         hasLevelStarted: false,
+        showAnswerScreen: false,
         hasGameEnded: false,
         showIntro: true,
         watchedVideo: hasWatchedVideo(action.value)
@@ -95,6 +99,7 @@ const abortGame = (state) => {
         hasLevelStarted: false,
         hasGameEnded: false,
         showIntro: false,
+        showAnswerScreen: false,
         watchedVideo: true
     };
     return updateObject(state, updatedState);
@@ -126,6 +131,13 @@ const changeLanguage = (state, action) => {
 const showIntro = (state) => {
     const updatedState = {
         showIntro: true
+    };
+    return updateObject(state, updatedState);
+};
+
+const showAnswerScreen = (state) => {
+    const updatedState = {
+        showAnswerScreen: true
     };
     return updateObject(state, updatedState);
 };
@@ -184,6 +196,9 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.SHOW_INTRO:
             return showIntro(state);
+
+        case actionTypes.SHOW_ANSWER_SCREEN:
+            return showAnswerScreen(state);
 
         case actionTypes.CHANGE_SHOW_ADS:
             return changeShowAds(state, action);
