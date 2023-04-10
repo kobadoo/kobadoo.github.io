@@ -18,6 +18,7 @@
 .env.test.local
 .env.production.local
 /public/ads.*
+/public/NoSleep.min.js
 /src/utils/*.json
 
 npm-debug.log*
