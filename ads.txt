@@ -1,5 +1,5 @@
 ##################################
-# AdinPlay.com ads.txt - 2023-04-14
+# AdinPlay.com ads.txt - 2023-06-02
 ##################################
 
 OWNERDOMAIN=kobadoo.com
@@ -730,6 +730,55 @@ admanmedia.com, 43, RESELLER
 sharethrough.com, OAW69Fon, RESELLER, d53b998a7bd4ecd2
 contextweb.com, 560288, RESELLER, 89ff185a4c4e857c
 
+
+#nobid
+
+nobid.io, 22931676975, DIRECT
+xandr.com, 11429, RESELLER, f5ab79cb980f11d1
+sharethrough.com, aRE1degH, RESELLER, d53b998a7bd4ecd2
+sonobi.com, 7ad1b9f952, RESELLER, d1a215d9eb5aee9e
+sharethrough.com, UvcAx8IL, RESELLER, d53b998a7bd4ecd2
+amxrtb.com, 105199579, RESELLER
+yahoo.com,49648,RESELLER
+rubiconproject.com, 24434, RESELLER, 0bfd66d529a55807
+minutemedia.com, 01gerz67grgj, RESELLER
+pubmatic.com, 161683, RESELLER, 5d62403b186f2ace
+appnexus.com, 8381, RESELLER, f5ab79cb980f11d1
+triplelift.com, 6030, RESELLER, 6c33edb13117fd86
+sonobi.com, 37fbaf262c, RESELLER, d1a215d9eb5aee9e
+openx.com, 540780517, RESELLER, 6a698e2ec38604c6
+rubiconproject.com, 17598, RESELLER, 0bfd66d529a55807
+indexexchange.com, 196326, RESELLER, 50b1c356f2c5c8fc
+yahoo.com, 59407, RESELLER, e1a5b5b6e3255540
+sharethrough.com, xz7QjFBY, RESELLER, d53b998a7bd4ecd2
+inmobi.com,8f261ace12c3486ba2e0d2011cd97976,RESELLER,83e75a7ae333ca9d
+risecodes.com, 63ea59eef828de0001cf1773, RESELLER
+amxrtb.com, 105199691, RESELLER
+inmobi.com, 9e311c7a68e94888aac7fbb4272381e2, RESELLER, 83e75a7ae333ca9d
+video.unrulymedia.com, 1352466146, RESELLER
+yahoo.com, 59261, RESELLER, e1a5b5b6e3255540
+gumgum.com, 13926, RESELLER, ffdef49475d318a9
+onetag.com, 694e68b73971b58, RESELLER
+lijit.com, 273657, RESELLER, fafdf38b16bf6b2b
+sovrn.com, 273657, RESELLER, fafdf38b16bf6b2b
+mediafuse.com, 389, RESELLER
+appnexus.com, 9538, RESELLER, f5ab79cb980f11d1
+yahoo.com, 57872, RESELLER
+video.unrulymedia.com, 2997140015, RESELLER
+indexexchange.com, 182257, RESELLER, 50b1c356f2c5c8fc
+152media.info,152M374,RESELLER
+appnexus.com, 3153, RESELLER, f5ab79cb980f11d1
+#media.net_serverside_displayvideo
+media.net, 8CUV34PJ4, DIRECT
+sharethrough.com, koRtppYA, RESELLER, d53b998a7bd4ecd2
+
+#AdaptMX
+
+amxrtb.com, 105199723, DIRECT
+appnexus.com, 12290, RESELLER
+pubmatic.com, 161527, RESELLER
+rubiconproject.com, 23844, RESELLER
+
 ##################################
-# AdinPlay.com ads.txt - 2023-04-14
+# AdinPlay.com ads.txt - 2023-06-02
 ##################################
