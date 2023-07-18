@@ -1,5 +1,5 @@
 ##################################
-# AdinPlay.com ads.txt - 2023-06-29
+# AdinPlay.com ads.txt - 2023-07-11
 ##################################
 
 OWNERDOMAIN=kobadoo.com
@@ -786,6 +786,7 @@ rubiconproject.com, 23844, RESELLER
 
 
 # Adagio
+
 adagio.io, 1361, RESELLER
 # Adagio - Magnite
 rubiconproject.com, 19116, RESELLER, 0bfd66d529a55807
@@ -798,10 +799,22 @@ onetag.com, 6b859b96c564fbe, RESELLER
 # Adagio - Index Exchange
 indexexchange.com, 194558, RESELLER
 
+
 #freewheel
+
 freewheel.tv, 1598995, RESELLER
 freewheel.tv, 1599004, RESELLER
 
+#pgam
+
+pgamssp.com, 64661fa49d522e327b0a8b84, DIRECT
+freewheel.tv, 1489202, RESELLER
+freewheel.tv, 1488706, RESELLER
+rubiconproject.com, 24852, RESELLER, 0bfd66d529a55807
+pubmatic.com, 162623, RESELLER, 5d62403b186f2ace
+video.unrulymedia.com, 5921144960123684292, RESELLER
+appnexus.com, 9291, RESELLER
+
 ##################################
-# AdinPlay.com ads.txt - 2023-06-29
+# AdinPlay.com ads.txt - 2023-07-11
 ##################################
