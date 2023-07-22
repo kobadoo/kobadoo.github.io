@@ -1,5 +1,5 @@
 ##################################
-# AdinPlay.com ads.txt - 2023-07-20
+# AdinPlay.com ads.txt - 2023-07-21
 ##################################
 
 OWNERDOMAIN=kobadoo.com
@@ -822,6 +822,13 @@ appnexus.com, 9291, RESELLER
 sonobi.com, 3ee2ca3952, DIRECT, d1a215d9eb5aee9e
 
 
+#Rich Audience
+
+richaudience.com, kWVs0vbyki, DIRECT
+appnexus.com, 2928, DIRECT
+appnexus.com, 8233, DIRECT
+
+
 ##################################
-# AdinPlay.com ads.txt - 2023-07-20
+# AdinPlay.com ads.txt - 2023-07-21
 ##################################
