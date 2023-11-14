@@ -1,5 +1,5 @@
 ##################################
-# AdinPlay.com ads.txt - 2023-11-02
+# AdinPlay.com ads.txt - 2023-11-14
 ##################################
 
 OWNERDOMAIN=kobadoo.com
@@ -916,7 +916,8 @@ amxrtb.com, 105199691, RESELLER
 freewheel.tv, 1590601, RESELLER
 freewheel.tv, 1590606, RESELLER
 smartadserver.com, 4284, RESELLER
+adform.com, 3119, RESELLER, 9f5210a2f0999e3
 
 ##################################
-# AdinPlay.com ads.txt - 2023-11-02
+# AdinPlay.com ads.txt - 2023-11-14
 ##################################
