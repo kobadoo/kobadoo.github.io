@@ -1,5 +1,5 @@
 ##################################
-# AdinPlay.com ads.txt - 2023-11-14
+# AdinPlay.com ads.txt - 2024-02-08
 ##################################
 
 OWNERDOMAIN=kobadoo.com
@@ -129,6 +129,9 @@ adyoulike.com,7463c359225e043c111036d7a29affa5,RESELLER
 minutemedia.com,01gya4708ddm,RESELLER
 visiblemeasures.com,1052,RESELLER
 undertone.com,4205,RESELLER,d954590d0cb265b9
+admedia.com,AM1601,RESELLER
+triplelift.com,8472,DIRECT,6c33edb13117fd86
+kargo.com,8824,RESELLER
 
 
 
@@ -895,29 +898,65 @@ adform.com, 2657, RESELLER, 9f5210a2f0999e32
 pubmatic.com, 160557, RESELLER, 5d62403b186f2ace
 indexexchange.com, 206233, RESELLER, 50b1c356f2c5c8fc
 themediagrid.com, 1J3ZI6, DIRECT, 35d5010d7789b49d
+themediagrid.com, WF71T3, DIRECT, 35d5010d7789b49d
 
 #Rise
 risecodes.com, 643813aab7212c00011c3f28, DIRECT
-pubmatic.com, 160295, RESELLER, 5d62403b186f2ace
+risecodes.com, 63832beef8189a00015cb6d3, RESELLER
+risecodes.com, 6486c6155b231000010244b0, RESELLER
+risecodes.com, 64e346c45ab8e700016b45cd, RESELLER
+risecodes.com, 6548dccf58df6d00010625d2, RESELLER 
+sharethrough.com, bXzzb1bR, RESELLER, d53b998a7bd4ecd2
 xandr.com, 14082, RESELLER
+xandr.com, 15840, RESELLER
 rubiconproject.com, 23876, RESELLER, 0bfd66d529a55807
-openx.com, 537140488, RESELLER, 6a698e2ec38604c6
-sharethrough.com, 5926d422, RESELLER, d53b998a7bd4ecd2
-themediagrid.com, 4DQHAP, RESELLER, 35d5010d7789b49d
-media.net, 8CUQ6928Q, RESELLER
-sonobi.com, 4a289cdd79, RESELLER, d1a215d9eb5aee9e
+rubiconproject.com, 26292, RESELLER, 0bfd66d529a55807
+pubmatic.com, 160295, RESELLER, 5d62403b186f2ace
+inmobi.com, 9e311c7a68e94888aac7fbb4272381e2, RESELLER
 video.unrulymedia.com, 335119963, RESELLER
-contextweb.com,562615,RESELLER,89ff185a4c4e857c
-onetag.com, 69f48c2160c8113, RESELLER
-33across.com, 0010b00002Xbn7QAAR, RESELLER, bbea06d9c4d2853c
-yieldmo.com, 2754490424016969782, RESELLER
+video.unrulymedia.com, 169764768, RESELLER
+contextweb.com ,562615,RESELLER,89ff185a4c4e857c
 loopme.com, 11362, RESELLER, 6c8d5f95897a5a3b
-amxrtb.com, 105199691, RESELLER
+Media.net, 8CU12AQ1Y, RESELLER
+sonobi.com, 03254ac707, RESELLER, d1a215d9eb5aee9e
+themediagrid.com, DY1OVP, RESELLER, 35d5010d7789b49d
+onetag.com, 69f48c2160c8113, RESELLER
+smartadserver.com, 4284, RESELLER
+conversantmedia.com, 100242, RESELLER, 03113cd04947736d
+adform.com, 3119, RESELLER, 9f5210a2f0999e32
 freewheel.tv, 1590601, RESELLER
 freewheel.tv, 1590606, RESELLER
-smartadserver.com, 4284, RESELLER
-adform.com, 3119, RESELLER, 9f5210a2f0999e3
+openx.com, 537140488, RESELLER, 6a698e2ec38604c6
+yieldmo.com, 2754490424016969782, RESELLER
+
+#Block
+blockthrough.com, 5130683165442048, DIRECT
+pubmatic.com, 160377, RESELLER, 5d62403b186f2ace
+rubiconproject.com, 23718, RESELLER, 0bfd66d529a55807
+appnexus.com, 6979, RESELLER
+lijit.com, 251666, RESELLER, fafdf38b16bf6b2b
+lijit.com, 251666-eb, RESELLER, fafdf38b16bf6b2b
+video.unrulymedia.com, 2444764291, RESELLER
+contextweb.com, 558511, RESELLER
+krushmedia.com, AJxF6R572a9M6CaTvK, RESELLER
+criteo.com, 8990, RESELLER
+smartadserver.com, 4485, RESELLER, 060d053dcf45cbf3
+smartadserver.com, 4485-OB, RESELLER, 060d053dcf45cbf3
+Contextweb.com, 562926, RESELLER, 89ff185a4c4e857c
+
+# VT Amazon TAM
+
+aps.amazon.com,70247b00-ff8f-4016-b3ab-8344daf96e09,DIRECT
+indexexchange.com, 193067, DIRECT, 50b1c356f2c5c8fc
+triplelift.com, 6059, DIRECT, 6c33edb13117fd86
+sharethrough.com, 31c129df, DIRECT, d53b998a7bd4ecd2
+appnexus.com, 806, DIRECT, f5ab79cb980f11d1
+risecodes.com, 5fa94677b2db6a00015b22a9, DIRECT
+minutemedia.com, 01gerz6y43ck, RESELLER
+themediagrid.com, LTW57M, DIRECT, 35d5010d7789b49d
+vidazoo.com, 655c85dc63ceeb606a0f365f, DIRECT, b6ada874b4d7d0b2
+smartadserver.com, 3490, DIRECT
 
 ##################################
-# AdinPlay.com ads.txt - 2023-11-14
+# AdinPlay.com ads.txt - 2024-02-08
 ##################################
