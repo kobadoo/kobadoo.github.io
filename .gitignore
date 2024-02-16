@@ -20,6 +20,7 @@
 public/ads.txt
 public/ads.html
 /public/NoSleep.min.js
+/public/.well-known
 /src/utils/*.json
 
 npm-debug.log*
