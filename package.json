@@ -24,7 +24,7 @@
   },
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -b master -d build",
+    "deploy": "gh-pages -b master -d build -t",
     "start": "react-scripts start --host 0.0.0.0",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
