@@ -1,5 +1,5 @@
 ##################################
-# AdinPlay.com ads.txt - 2024-04-09
+# AdinPlay.com ads.txt - 2024-04-17
 ##################################
 
 OWNERDOMAIN=kobadoo.com
@@ -132,7 +132,7 @@ undertone.com,4205,RESELLER,d954590d0cb265b9
 imds.tv,AM1601,RESELLER,ae6c32151e71f19d
 triplelift.com,8472,DIRECT,6c33edb13117fd86
 kargo.com,8824,RESELLER
-
+start.io,123111883,RESELLER
 
 
 # 33Across 
@@ -797,5 +797,5 @@ vidazoo.com, 655c85dc63ceeb606a0f365f, DIRECT, b6ada874b4d7d0b2
 smartadserver.com, 3490, DIRECT
 
 ##################################
-# AdinPlay.com ads.txt - 2024-04-09
+# AdinPlay.com ads.txt - 2024-04-17
 ##################################
