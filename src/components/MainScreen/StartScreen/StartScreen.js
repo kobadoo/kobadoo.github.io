@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { connect } from 'react-redux';
@@ -18,20 +18,6 @@ const StartScreen = (props) => {
     const CRYSTAL_BALL_EMOJI = 0x1F52E;
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (props.showAds) {
-            window.aiptag.cmd.display.push( () => {
-                window.aipDisplayTag.display('kobadoo-com_300x100'); 
-                window.aipDisplayTag.display('kobadoo-com_300x250');
-                window.aipDisplayTag.display('kobadoo-com_300x250_1');
-                window.aipDisplayTag.display('kobadoo-com_300x250_3');
-                window.aipDisplayTag.display('kobadoo-com_160x600_1'); 
-                window.aipDisplayTag.display('kobadoo-com_160x600_2');
-                window.aipDisplayTag.display('kobadoo-com_728x90_1');
-            });
-        }
-    }, [props.showAds]);
-
     const handleMode = (_, newMode) => {
         let path = '/' + modeIdToModeName(newMode);
         navigate(path);
@@ -39,16 +25,6 @@ const StartScreen = (props) => {
 
     return (
         <div className={classes.StartScreen}>
-
-            { props.showAds ? (
-                <React.Fragment>
-                    <center><div id='kobadoo-com_300x100' className={classes.Ad300x100} /></center>
-                    <div id='kobadoo-com_160x600_1' className={classes.Ad160x600L} />
-                    <div id='kobadoo-com_160x600_2' className={classes.Ad160x600R} />
-                    <div id='kobadoo-com_728x90_1' className={classes.Ad728x90} />
-                </React.Fragment>
-                ) : null
-            }
 
             <h3 className={classes.HeaderText}>
                 <strong>Kobadoo</strong> is a free game that trains your brain by memorizing emojis, playing cards, numbers, arithmetic calculations, flags or geometric shapes. Children can also learn new words in different languages using the <i>Kids</i> mode.
@@ -72,8 +48,6 @@ const StartScreen = (props) => {
                 <h3>Seven game modes</h3>
                 <p>You can practice your working memory with different modes: <strong>emojis</strong>, playing <strong>cards</strong>, <strong>two-digit numbers</strong>, <strong>arithmetic</strong> calculations, <strong>flags</strong> of the world or coloured geometric <strong>shapes</strong>. Children can also learn new vocabulary in <strong>English</strong>, <strong>Spanish</strong> or <strong>Norwegian</strong> using the <strong><i>Kids</i></strong> mode, with several studies [<a href="https://blog.kobadoo.com/2023/01/how-kobadoo-kids-helps-children-develop.html" target="_blank" rel="noopener noreferrer">1</a>] backing the effectiveness of this technique. Watch all the demos on <a href="https://www.youtube.com/@kobadoo/videos" target="_blank" rel="noopener noreferrer">our Youtube channel</a>!</p>
             </div>
-
-            { props.showAds ? <div id='kobadoo-com_300x250_1' className={classes.Ad300x250} /> : null }
             
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={MonkeyImg} alt="" />
@@ -89,8 +63,6 @@ const StartScreen = (props) => {
                 <h3>What is <i>working memory</i>?</h3>
                 <p>Working memory is a form of short-term memory, where you temporarily hold information in your mind while processing it. When you play <i>Kobadoo</i> you are actively using your working memory. There are several scientific studies that suggest training of working memory has <strong>beneficial effects</strong> and can <strong>increase your cognitive functions</strong>. You can learn more about working memory on <a href="https://blog.kobadoo.com/2022/02/what-is-working-memory-how-to-train-it.html" target="_blank" rel="noopener noreferrer">this blog post</a></p>
             </div>
-
-            { props.showAds ? <div id='kobadoo-com_300x250' className={classes.Ad300x250} /> : null }
 
             <div className={classes.BenefitsText}>
                 <img className={classes.StartImage} src={TrainImg} alt="" />
@@ -109,8 +81,6 @@ const StartScreen = (props) => {
                     className={classes.CrystalBallButton} 
                     onClick={() => window.open('/#/crystalball', '_blank')}>Play Crystal Ball</button>
             </div>
-
-            { props.showAds ? <div id='kobadoo-com_300x250_3' className={classes.Ad300x250} /> : null }
             
             <Footer />
         </div>
@@ -119,7 +89,6 @@ const StartScreen = (props) => {
 
 const mapStateToProps = state => {
     return {
-        showAds: state.showAds,
         mode: state.mode,
         lang: state.lang
     }

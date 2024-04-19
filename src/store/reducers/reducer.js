@@ -11,8 +11,6 @@ const initialState = {
     isPaused: false,
     showIntro: false,
     showAnswerScreen: false,
-    showAds: false,
-    watchedVideo: true,
     mode: null,
     currentScreen: CARD_SELECTION
 };
@@ -70,13 +68,6 @@ const restartGame = (state, action) => {
         return score;
     };
 
-    const hasWatchedVideo = level => {
-        if (level > 1)
-            return false;
-        else
-            return true;
-    };
-
     const updatedState = { 
         level: action.value,
         score: getScoreFromLevel(action.value, state.mode),
@@ -84,7 +75,6 @@ const restartGame = (state, action) => {
         showAnswerScreen: false,
         hasGameEnded: false,
         showIntro: true,
-        watchedVideo: hasWatchedVideo(action.value)
     };
     return updateObject(state, updatedState);
 };
@@ -100,7 +90,6 @@ const abortGame = (state) => {
         hasGameEnded: false,
         showIntro: false,
         showAnswerScreen: false,
-        watchedVideo: true
     };
     return updateObject(state, updatedState);
 };
@@ -138,20 +127,6 @@ const showIntro = (state) => {
 const showAnswerScreen = (state) => {
     const updatedState = {
         showAnswerScreen: true
-    };
-    return updateObject(state, updatedState);
-};
-
-const changeShowAds = (state, action) => {
-    const updatedState = {
-        showAds: action.value
-    };
-    return updateObject(state, updatedState);
-};
-
-const changeWatchedVideo = (state, action) => {
-    const updatedState = {
-        watchedVideo: action.value
     };
     return updateObject(state, updatedState);
 };
@@ -199,12 +174,6 @@ const reducer = (state = initialState, action) => {
 
         case actionTypes.SHOW_ANSWER_SCREEN:
             return showAnswerScreen(state);
-
-        case actionTypes.CHANGE_SHOW_ADS:
-            return changeShowAds(state, action);
-
-        case actionTypes.CHANGE_WATCHED_VIDEO:
-            return changeWatchedVideo(state, action);
 
         case actionTypes.CHANGE_SCREEN:
             return changeScreen(state, action);

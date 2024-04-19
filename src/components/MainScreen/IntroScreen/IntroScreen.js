@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import classes from './IntroScreen.module.css';
-import { startLevel, changeWatchedVideo, changeLanguage } from '../../../store/actions/actions';
+import { startLevel, changeLanguage } from '../../../store/actions/actions';
 import modes_config from '../../../utils/Modes/modes_config.json';
 import { KIDS_MODE } from '../../../store/constants';
 
@@ -23,7 +23,7 @@ const IntroScreen = (props) => {
             props.onChangeLanguage('EN');
         }
         
-        if (props.watchedVideo && (props.mode !== KIDS_MODE || props.lang !== null)) {
+        if (props.mode !== KIDS_MODE || props.lang !== null) {
             const timeout = setInterval(() => {
                 props.onStartLevel();
             }, INTERVAL_BEFORE_LEVEL_1);
@@ -32,76 +32,26 @@ const IntroScreen = (props) => {
             return () => {
                 clearInterval(timeout);        }
         }
-    }, [props.watchedVideo, props]);
+    }, [props]);
 
-    useEffect(() => {
-        if(!props.showAds) {
-            props.onChangeWatchedVideo(true);
-        }
-        if (props.mode === KIDS_MODE && props.lang === null && props.showAds) {
-            window.aiptag.cmd.display.push( () => {
-                window.aipDisplayTag.display('kobadoo-com_300x250_4');
-                window.aipDisplayTag.display('kobadoo-com_728x90_2');
-            })
-        }
-    }, [props.showAds, props]);
-
-    if(props.showAds) {
-        window.aiptag.cmd.player.push(function() {
-            window.aiptag.adplayer = new window.aipPlayer({
-                AD_WIDTH: 960,
-                AD_HEIGHT: 540,
-                AD_DISPLAY: 'fullscreen', //default, fullscreen, center, fill
-                TRUSTED: true,
-                LOADING_TEXT: 'loading advertisement',
-                PREROLL_ELEM: function() {return document.getElementById('preroll')},
-                AIP_COMPLETE: function () {props.onChangeWatchedVideo(true)}
-            });
-        });
-    }
-
-    if (props.showAds && !props.watchedVideo) {
-        if (typeof window.aiptag.adplayer !== 'undefined') {
-            window.aiptag.cmd.player.push(function() { window.aiptag.adplayer.startPreRoll(); });
-        } else {
-            props.onChangeWatchedVideo(true);
-        }
-    }
-
-    if (props.watchedVideo) {
-        return (
-            <div className={classes.IntroScreen}>
-
-                {(props.mode === KIDS_MODE && props.lang === null && props.showAds) ? 
-                    <div id='kobadoo-com_728x90_2' className={classes.Ad728x90} /> : null
-                }
-
-                { props.lang === null ? selectLanguageText : textMode }
-
-                {(props.mode === KIDS_MODE && props.lang === null) ?
-                    <ToggleButtonGroup color='primary' onChange={(_, newLang) => props.onKidsStart(newLang)} exclusive style={toggleGroupStyle}>
-                        <ToggleButton value={'EN'} style={toggleButtonStyle}>English</ToggleButton>
-                        <ToggleButton value={'ES'} style={toggleButtonStyle}>Español</ToggleButton>
-                        <ToggleButton value={'NO'} style={toggleButtonStyle}>Norsk</ToggleButton>
-                    </ToggleButtonGroup> : subTextMode }
-
-                { (props.mode === KIDS_MODE && props.lang === null && props.showAds) ? <div id='kobadoo-com_300x250_4' className={classes.Ad300x250} /> : null }  
-
-            </div>
-        );
-    }
-    else {
-        return null;
-    }
+    return (
+        <div className={classes.IntroScreen}>
+            { props.lang === null ? selectLanguageText : textMode }
+            {(props.mode === KIDS_MODE && props.lang === null) ?
+                <ToggleButtonGroup color='primary' onChange={(_, newLang) => props.onKidsStart(newLang)} exclusive style={toggleGroupStyle}>
+                    <ToggleButton value={'EN'} style={toggleButtonStyle}>English</ToggleButton>
+                    <ToggleButton value={'ES'} style={toggleButtonStyle}>Español</ToggleButton>
+                    <ToggleButton value={'NO'} style={toggleButtonStyle}>Norsk</ToggleButton>
+                </ToggleButtonGroup> : subTextMode }
+        </div>
+    );
 }
 
 
 const mapStateToProps = state => {
     return {
         mode: state.mode,
-        lang: state.lang,
-        showAds: state.showAds,
-        watchedVideo: state.watchedVideo,
+        lang: state.lang
     }
 }
 
@@ -114,7 +64,6 @@ const mapDispatchToProps = dispatch => {
         onStartLevel: () => {
             dispatch(startLevel());
         },
-        onChangeWatchedVideo: (watchedVideo) => dispatch(changeWatchedVideo(watchedVideo)),
         onChangeLanguage: (lang) => dispatch(changeLanguage(lang))
     };
 };

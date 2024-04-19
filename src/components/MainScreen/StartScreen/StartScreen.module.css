@@ -114,60 +114,11 @@
     font-size: 10rem;   
 }
 
-.Ad300x100 {
-    display: none;
-}
-
-.Ad300x250 {
-    display: none;
-}
-
-.Ad160x600L {
-    display: block;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-}
-
-.Ad160x600R {
-    display: block;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-}
-
-.Ad728x90 {
-    display: block;
-    height: 90px;
-}
-
 @media only screen and (max-width: 1023px) {
     .ModesImage {
         display: inline-block;
         width: 340px;
         margin-bottom: 10px;
         margin-left: -5px;
-    }
-
-    .Ad300x100 {
-        display: block;
-        height: 100px;
-    }
-
-    .Ad300x250 {
-        display: block;
-        height: 250px;
-    }
-
-    .Ad160x600L {
-        display: none;
-    }
-
-    .Ad160x600R {
-        display: none;
-    }
-
-    .Ad728x90 {
-        display: none;
     }
 }
