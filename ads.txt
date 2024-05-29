@@ -6,6 +6,9 @@ OWNERDOMAIN=kobadoo.com
 MANAGERDOMAIN=adinplay.com
 adinplay.com, KBD, DIRECT
 
+#Adsense
+google.com, pub-2852428416753185, DIRECT, f08c47fec0942fa0
+
 #Google
 google.com, pub-3282547114800347, RESELLER, f08c47fec0942fa0
 
