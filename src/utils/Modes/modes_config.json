@@ -110,12 +110,14 @@
         {
             "EN": "Play and learn new words",
             "ES": "Juega y aprende nuevas palabras",
+            "FR": "Jouez et apprenez de nouveaux mots",
             "NO": "Spill og lær nye ord"
         },
         "introScreenSubText": 
         {
             "EN": "Get ready!",
             "ES": "¡Prepárate!",
+            "FR": "Sois prêt!",
             "NO": "Gjør deg klar!"
         },
         "maxItemsAnswerScreen": 12,
