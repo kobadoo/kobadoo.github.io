@@ -41,6 +41,7 @@ const IntroScreen = (props) => {
                 <ToggleButtonGroup color='primary' onChange={(_, newLang) => props.onKidsStart(newLang)} exclusive style={toggleGroupStyle}>
                     <ToggleButton value={'EN'} style={toggleButtonStyle}>English</ToggleButton>
                     <ToggleButton value={'ES'} style={toggleButtonStyle}>Español</ToggleButton>
+                    <ToggleButton value={'FR'} style={toggleButtonStyle}>Français</ToggleButton>
                     <ToggleButton value={'NO'} style={toggleButtonStyle}>Norsk</ToggleButton>
                 </ToggleButtonGroup> : subTextMode }
         </div>

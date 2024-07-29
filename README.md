@@ -1,6 +1,6 @@
 # Kobadoo App
 
-Kobadoo is a free game to train your brain by memorizing emojis, playing cards, numbers, arithmetic calculations, flags or geometric shapes. Children can also learn new words in English, Spanish and Norwegian using the Kids mode.
+Kobadoo is a free game to train your brain by memorizing emojis, playing cards, numbers, arithmetic calculations, flags or geometric shapes. Children can also learn new words in English, Spanish, French and Norwegian using the Kids mode.
 
 ## Set up
 1. Run `npm install`
