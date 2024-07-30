@@ -121,7 +121,7 @@
             "NO": "Gjør deg klar!"
         },
         "maxItemsAnswerScreen": 12,
-        "totalNumItems": 126,
+        "totalNumItems": 194,
         "intervalSecondsEasyLevels": 2500,
         "intervalSecondsDifficultLevels": 2500,
         "firstDifficultLevel": 32,
