@@ -463,14 +463,15 @@
         }
 
         function startHandler() {
-            if (foodInterval) {
-                clearInterval(foodInterval);
-            }
-            isGameOver = true;
-            gameRunning = false;
             initGame();
             gameRunning = true;
             gameLoop();
+        }
+
+        function restartHandler() {
+            initGame();
+            gameLoop();
+            gameRunning = true;
         }
 
         document.addEventListener('visibilitychange', () => {
@@ -488,7 +489,7 @@
                 }
             }
             if (e.key === 'r' && isGameOver) {
-                startHandler();
+                restartHandler();
             } else if (e.key === 'p') {
                 pauseHandler();
             } else if (e.key === 's' && !gameRunning) {
@@ -523,12 +524,12 @@
         });
 
         restartButton.addEventListener('click', () => {
-            startHandler();
+            restartHandler();
         });
 
         pauseButton.addEventListener('click', () => {
+            console.log('3');
             pauseHandler();
-
         });
 
         if (window.innerWidth >= 768) {
