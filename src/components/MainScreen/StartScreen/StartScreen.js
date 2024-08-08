@@ -7,6 +7,7 @@ import Footer from '../../Footer/Footer';
 import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
 import BulbImg from '../../../images/bulb.png';
+import VeganImg from '../../../images/vegan_quest_banner.png';
 import GooglePlayImg from '../../../images/google-play-badge.png';
 import { ThumbnailSlideShow } from './ThumbnailSlideShow';
 import { modeIdToModeName } from '../../../utils/Modes/ModeUtils';
@@ -75,11 +76,22 @@ const StartScreen = (props) => {
                 <div role="img" className={classes.Emoji}>
                     <span>{String.fromCodePoint(CRYSTAL_BALL_EMOJI)}</span>
                 </div>
-                <h3>Try Kobadoo Crystal Ball!</h3>
+                <h3>Try Crystal Ball!</h3>
                 <p>Learn what the future awaits you with this fun game that uses playing cards and emojis to tell your fortune.</p>
                 <button 
                     className={classes.CrystalBallButton} 
                     onClick={() => window.open('/#/crystalball', '_blank')}>Play Crystal Ball</button>
+            </div>
+
+            <div className={classes.BenefitsText}>
+                <div role="img">
+                    <img className={classes.VeganImage} src={VeganImg} alt="" />
+                </div>
+                <h3>Try Vegan Quest!</h3>
+                <p>In this addictive game, you will help our vegan hero thrive in a world of falling food. Collect as many vegan food items as possible while avoiding non-vegan temptations.</p>
+                <button 
+                    className={classes.VeganQuestButton} 
+                    onClick={() => window.open('/VeganQuest.html', '_blank')}>Play Vegan Quest</button>
             </div>
             
             <Footer />
