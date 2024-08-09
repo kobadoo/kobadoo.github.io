@@ -267,6 +267,7 @@
         const MIN_SPEED = 0.2;
 
         let score, level, lives, foodArray, salivaFaceX, isGameOver, salivaFaceY, isPaused, gameRunning, foodInterval, foodSpawnInterval, isplayedEmoji, animationFrameId;
+        let adsLoaded = false;
         let isMobile = window.innerWidth < 768;
         canvas.width = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.90;
         canvas.height = isMobile ? window.innerHeight - 200 : window.innerHeight - 220;
@@ -284,6 +285,9 @@
         const pukeEmoji = '\u{1F92E}';
 
         function initGame() {
+            if (!adsLoaded) {
+                loadGoogleAds();
+            }
             score = 0;
             level = 1;
             lives = 3;
@@ -554,18 +558,17 @@
             }
         }
 
-        startButton.addEventListener('click', showControlButtons);
-        restartButton.addEventListener('click', showControlButtons);
-    </script>
-
-    <script>
-        window.onload = function() {
+        function loadGoogleAds() {
             var adsScript = document.createElement('script');
             adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185";
             adsScript.crossOrigin = "anonymous";
             adsScript.async = true;
             document.head.appendChild(adsScript);
+            adsLoaded = true;
         };
+
+        startButton.addEventListener('click', showControlButtons);
+        restartButton.addEventListener('click', showControlButtons);
     </script>
 </body>
 </html>
