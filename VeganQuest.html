@@ -528,9 +528,6 @@
             salivaFaceY = canvas.height - 55;
             instructions.style.width = `${canvas.width - 50}px`;
             instructions.style.top = `${(canvas.height / 2) + 50}px`;
-            if (!adsLoaded) {
-                loadGoogleAds();
-            }
         });
 
         leftButton.addEventListener('touchstart', (e) => {
