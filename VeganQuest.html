@@ -318,8 +318,8 @@
         }
 
         function drawSalivaFace() {
-            ctx.font = FONT_SIZE_SALIVA_FACE_DESKTOP;
-            ctx.fillText(displayedEmoji, 10, 10);
+            ctx.font = isMobile ? FONT_SIZE_SALIVA_FACE_MOBILE : FONT_SIZE_SALIVA_FACE_DESKTOP;
+            ctx.fillText(displayedEmoji, 10, salivaFaceY);
         }
 
         function drawFood() {
