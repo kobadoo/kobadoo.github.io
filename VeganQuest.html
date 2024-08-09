@@ -319,7 +319,8 @@
 
         function drawSalivaFace() {
             ctx.font = isMobile ? FONT_SIZE_SALIVA_FACE_MOBILE : FONT_SIZE_SALIVA_FACE_DESKTOP;
-            ctx.fillText(displayedEmoji, 10, 10);
+            ctx.fillText(displayedEmoji, salivaFaceX, salivaFaceY);
+            
         }
 
         function drawFood() {
