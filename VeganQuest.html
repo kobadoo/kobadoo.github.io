@@ -90,7 +90,7 @@
             position: absolute;
             bottom: 10px;
             width: 80%;
-            display: flex;
+            display: none;
             justify-content: space-between;
             padding: 0 5%;
         }
@@ -229,7 +229,7 @@
     </div>
     <div id="gameOverMessage">GAME OVER!</div>
     <div id="pauseMessage">PAUSED</div>
-    <canvas id="gameCanvas"></canvas>
+    <canvas id="gameCanvas" style="display:none;"></canvas>
     <div id="operationButtons" class="start-buttons" style="display:none;">
         <button id="startButton">START</button>
         <button id="restartButton" style="display:none;">RESTART</button>
@@ -273,8 +273,8 @@
         salivaFaceY = canvas.height - 55;
         instructions.style.width = `${canvas.width - 50}px`;
         instructions.style.top = `${(canvas.height / 2) + 50}px`;
+        document.getElementById('gameCanvas').style.display = 'block';
         document.getElementById('operationButtons').style.display = 'flex';
-        document.getElementById('controlButtons').style.display = 'flex';
 
         const veganFood = ['\u{1F966}', '\u{1F345}', '\u{1F956}', '\u{1F951}', '\u{1F33D}', '\u{1F349}', '\u{1F952}', '\u{1F346}', '\u{1F955}', '\u{1F353}', '\u{1F347}'];
         const nonVeganFood = ['\u{1F364}', '\u{1F354}', '\u{1F356}', '\u{1F357}', '\u{1F32D}', '\u{1F357}', '\u{1F969}', '\u{1F953}', '\u{1F95B}', '\u{1F95A}', '\u{1F9C0}'];
@@ -516,8 +516,6 @@
             salivaFaceY = canvas.height - 55;
             instructions.style.width = `${canvas.width - 50}px`;
             instructions.style.top = `${(canvas.height / 2) + 50}px`;
-            document.getElementById('operationButtons').style.display = 'flex';
-            document.getElementById('controlButtons').style.display = 'flex';
         });
 
         leftButton.addEventListener('touchstart', (e) => {
