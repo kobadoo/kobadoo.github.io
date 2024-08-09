@@ -475,6 +475,9 @@
             pauseMessage.style.display = isPaused ? 'block' : 'none';
             if (isPaused) {
                 cancelAnimationFrame(animationFrameId);
+                if (!adsLoaded) {
+                    loadGoogleAds();
+                }
             } else if (!isGameOver) {
                 gameRunning = true;
                 gameLoop();
@@ -482,9 +485,6 @@
         }
 
         function startHandler() {
-            if (!adsLoaded) {
-                loadGoogleAds();
-            }
             initGame();
             gameRunning = true;
             gameLoop();
