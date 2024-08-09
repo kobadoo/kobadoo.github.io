@@ -292,7 +292,7 @@
             pauseButton.textContent = "PAUSE";
             instructions.style.display = 'none';
             foodSpawnInterval = INITIAL_FOOD_SPAWN_INTERVAL;
-
+            drawSalivaFace();
             drawScoreboard();
             updateLivesDisplay();
             if (foodInterval) {
@@ -466,6 +466,7 @@
             initGame();
             gameRunning = true;
             gameLoop();
+            drawSalivaFace();
         }
 
         function restartHandler() {
