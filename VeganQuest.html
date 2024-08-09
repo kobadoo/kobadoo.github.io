@@ -482,6 +482,9 @@
         }
 
         function startHandler() {
+            if (!adsLoaded) {
+                loadGoogleAds();
+            }
             initGame();
             gameRunning = true;
             gameLoop();
