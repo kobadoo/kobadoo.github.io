@@ -259,18 +259,17 @@
         const SPEED_FACTOR = 0.5;
         const MIN_SPEED = 0.2;
 
-        let score, level, lives, foodArray, salivaFaceX, isGameOver, isPaused, gameRunning, foodInterval, foodSpawnInterval, isplayedEmoji, animationFrameId;
+        let score, level, lives, foodArray, salivaFaceX, salivaFaceY, isPaused, gameRunning, foodInterval, foodSpawnInterval, isplayedEmoji, animationFrameId;
         let isMobile = window.innerWidth < 768;
         canvas.width = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.90;
         canvas.height = isMobile ? window.innerHeight - 200 : window.innerHeight - 220;
+        salivaFaceY = canvas.height - 55;
         instructions.style.width = `${canvas.width - 50}px`;
         instructions.style.top = `${(canvas.height / 2) + 50}px`;
 
         const veganFood = ['\u{1F966}', '\u{1F345}', '\u{1F956}', '\u{1F951}', '\u{1F33D}', '\u{1F349}', '\u{1F952}', '\u{1F346}', '\u{1F955}', '\u{1F353}', '\u{1F347}'];
         const nonVeganFood = ['\u{1F364}', '\u{1F354}', '\u{1F356}', '\u{1F357}', '\u{1F32D}', '\u{1F357}', '\u{1F969}', '\u{1F953}', '\u{1F95B}', '\u{1F95A}', '\u{1F9C0}'];
         const foodItems = [...veganFood, ...nonVeganFood];
-        const salivaFaceY = canvas.height - 55;
-        alert(canvas.height + " " + salivaFaceY);
         const salivaFaceEmoji = '\u{1F924}';
         const savourEmoji = '\u{1F60B}';
         const pukeEmoji = '\u{1F92E}';
@@ -505,6 +504,7 @@
             isMobile = window.innerWidth < 768;
             canvas.width = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.90;
             canvas.height = isMobile ? window.innerHeight - 200 : window.innerHeight - 220;
+            salivaFaceY = canvas.height - 55;
             instructions.style.width = `${canvas.width - 50}px`;
             instructions.style.top = `${(canvas.height / 2) + 50}px`;
         });
