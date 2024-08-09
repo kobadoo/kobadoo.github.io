@@ -269,7 +269,7 @@
         const veganFood = ['\u{1F966}', '\u{1F345}', '\u{1F956}', '\u{1F951}', '\u{1F33D}', '\u{1F349}', '\u{1F952}', '\u{1F346}', '\u{1F955}', '\u{1F353}', '\u{1F347}'];
         const nonVeganFood = ['\u{1F364}', '\u{1F354}', '\u{1F356}', '\u{1F357}', '\u{1F32D}', '\u{1F357}', '\u{1F969}', '\u{1F953}', '\u{1F95B}', '\u{1F95A}', '\u{1F9C0}'];
         const foodItems = [...veganFood, ...nonVeganFood];
-        const salivaFaceY = canvas.height - 55;
+        const salivaFaceY = 100;
         const salivaFaceEmoji = '\u{1F924}';
         const savourEmoji = '\u{1F60B}';
         const pukeEmoji = '\u{1F92E}';
@@ -279,7 +279,7 @@
             level = 1;
             lives = 3;
             foodArray = [];
-            salivaFaceX = canvas.width / 2 - 30;
+            salivaFaceX = 100;
             isGameOver = false;
             isPaused = false;
             gameRunning = false;
@@ -320,7 +320,6 @@
         function drawSalivaFace() {
             ctx.font = isMobile ? FONT_SIZE_SALIVA_FACE_MOBILE : FONT_SIZE_SALIVA_FACE_DESKTOP;
             ctx.fillText(displayedEmoji, salivaFaceX, salivaFaceY);
-            alert(displayedEmoji + " " + salivaFaceX + " " + salivaFaceY);
         }
 
         function drawFood() {
@@ -467,6 +466,7 @@
             initGame();
             gameRunning = true;
             gameLoop();
+            drawSalivaFace()
         }
 
         function restartHandler() {
