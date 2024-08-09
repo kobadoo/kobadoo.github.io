@@ -11,9 +11,6 @@
     <meta property="og:type" content="website" />
     <title>Vegan Quest</title>
 
-    <!-- Google Adsense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185" crossorigin="anonymous"></script>
-
     <style>
         body, html {
             margin: 0;
@@ -93,7 +90,7 @@
             position: absolute;
             bottom: 10px;
             width: 80%;
-            display: flex;
+            display: none;
             justify-content: space-between;
             padding: 0 5%;
         }
@@ -232,13 +229,13 @@
     </div>
     <div id="gameOverMessage">GAME OVER!</div>
     <div id="pauseMessage">PAUSED</div>
-    <canvas id="gameCanvas"></canvas>
-    <div class="start-buttons">
+    <canvas id="gameCanvas" style="display:none;"></canvas>
+    <div id="operationButtons" class="start-buttons" style="display:none;">
         <button id="startButton">START</button>
         <button id="restartButton" style="display:none;">RESTART</button>
         <button id="pauseButton" style="display:none;">PAUSE</button>
     </div>
-    <div class="control-buttons">
+    <div id="controlButtons" class="control-buttons" style="display:none;">
         <button id="leftButton" class="arrow-button left-arrow"></button>
         <button id="rightButton" class="arrow-button right-arrow"></button>
     </div>
@@ -270,12 +267,15 @@
         const MIN_SPEED = 0.2;
 
         let score, level, lives, foodArray, salivaFaceX, isGameOver, salivaFaceY, isPaused, gameRunning, foodInterval, foodSpawnInterval, isplayedEmoji, animationFrameId;
+        let adsLoaded = false;
         let isMobile = window.innerWidth < 768;
         canvas.width = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.90;
         canvas.height = isMobile ? window.innerHeight - 200 : window.innerHeight - 220;
         salivaFaceY = canvas.height - 55;
         instructions.style.width = `${canvas.width - 50}px`;
         instructions.style.top = `${(canvas.height / 2) + 50}px`;
+        document.getElementById('gameCanvas').style.display = 'block';
+        document.getElementById('operationButtons').style.display = 'flex';
 
         const veganFood = ['\u{1F966}', '\u{1F345}', '\u{1F956}', '\u{1F951}', '\u{1F33D}', '\u{1F349}', '\u{1F952}', '\u{1F346}', '\u{1F955}', '\u{1F353}', '\u{1F347}'];
         const nonVeganFood = ['\u{1F364}', '\u{1F354}', '\u{1F356}', '\u{1F357}', '\u{1F32D}', '\u{1F357}', '\u{1F969}', '\u{1F953}', '\u{1F95B}', '\u{1F95A}', '\u{1F9C0}'];
@@ -517,6 +517,9 @@
             salivaFaceY = canvas.height - 55;
             instructions.style.width = `${canvas.width - 50}px`;
             instructions.style.top = `${(canvas.height / 2) + 50}px`;
+            if (!adsLoaded) {
+                loadGoogleAds();
+            }
         });
 
         leftButton.addEventListener('touchstart', (e) => {
@@ -554,6 +557,15 @@
                 document.querySelector('.control-buttons').style.display = 'flex';
             }
         }
+
+        function loadGoogleAds() {
+            var adsScript = document.createElement('script');
+            adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185";
+            adsScript.crossOrigin = "anonymous";
+            adsScript.async = true;
+            document.head.appendChild(adsScript);
+            adsLoaded = true;
+        };
 
         startButton.addEventListener('click', showControlButtons);
         restartButton.addEventListener('click', showControlButtons);
