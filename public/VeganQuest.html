@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Embark on an exciting journey in Vegan Quest, where your mission is to help our vegan hero thrive in a world of falling food. With just the left and right arrow keys, you'll navigate through a cascade of delectable vegan delights and perilous non-vegan pitfalls. In Vegan Quest, your task is simple yet challenging: collect as many vegan food items as possible while avoiding non-vegan temptations. Each piece of vegan food you catch will earn you 20 points. But beware! Every non-vegan item you accidentally gather will cost you one of your 3 lives. Advance to the next level to refill your lives."/>
+    <meta property="og:title" content="Vegan Quest" />
+    <meta property="og:description" content="Embark on an exciting journey in Vegan Quest, where your mission is to help our vegan hero thrive in a world of falling food. With just the left and right arrow keys, you'll navigate through a cascade of delectable vegan delights and perilous non-vegan pitfalls. In Vegan Quest, your task is simple yet challenging: collect as many vegan food items as possible while avoiding non-vegan temptations. Each piece of vegan food you catch will earn you 20 points. But beware! Every non-vegan item you accidentally gather will cost you one of your 3 lives. Advance to the next level to refill your lives."/>
+    <meta property="og:url" content="https://www.kobadoo.com/VeganQuest.html" />
+    <meta property="og:image" content="https://www.kobadoo.com/vegan_quest_socialmedia.jpg" />
+    <meta property="og:type" content="website" />
     <title>Vegan Quest</title>
+
+    <!-- Google Adsense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185" crossorigin="anonymous"></script>
+
     <style>
         body, html {
             margin: 0;
@@ -213,7 +223,7 @@
     <div id="instructions">
         <script>
             document.write(window.innerWidth < 768 
-                ? 'Use the left and right arrows to help our hero eat vegan food while avoiding non-vegan temptations.<br><br>Earn points and refill your 3 lives by jumping to the next level. It gets more challenging over time!.'
+                ? 'Use the left and right arrows to help our hero eat vegan food while avoiding non-vegan temptations.<br><br>Earn points and refill your 3 lives by jumping to the next level. It gets more challenging over time!'
                 : 'Help our hero eat vegan food while avoiding non-vegan temptations.<br><br>Earn points and refill your 3 lives by jumping to the next level. It gets more difficult over time!<br><br>Use arrow keys <- -> for movement, P to pause, R to restart, S to start.');
         </script>
     </div>
@@ -259,17 +269,17 @@
         const SPEED_FACTOR = 0.5;
         const MIN_SPEED = 0.2;
 
-        let score, level, lives, foodArray, salivaFaceX, isGameOver, isPaused, gameRunning, foodInterval, foodSpawnInterval, isplayedEmoji;
+        let score, level, lives, foodArray, salivaFaceX, isGameOver, salivaFaceY, isPaused, gameRunning, foodInterval, foodSpawnInterval, isplayedEmoji, animationFrameId;
         let isMobile = window.innerWidth < 768;
         canvas.width = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.90;
         canvas.height = isMobile ? window.innerHeight - 200 : window.innerHeight - 220;
+        salivaFaceY = canvas.height - 55;
         instructions.style.width = `${canvas.width - 50}px`;
         instructions.style.top = `${(canvas.height / 2) + 50}px`;
 
         const veganFood = ['\u{1F966}', '\u{1F345}', '\u{1F956}', '\u{1F951}', '\u{1F33D}', '\u{1F349}', '\u{1F952}', '\u{1F346}', '\u{1F955}', '\u{1F353}', '\u{1F347}'];
         const nonVeganFood = ['\u{1F364}', '\u{1F354}', '\u{1F356}', '\u{1F357}', '\u{1F32D}', '\u{1F357}', '\u{1F969}', '\u{1F953}', '\u{1F95B}', '\u{1F95A}', '\u{1F9C0}'];
         const foodItems = [...veganFood, ...nonVeganFood];
-        const salivaFaceY = canvas.height - 55;
         const salivaFaceEmoji = '\u{1F924}';
         const savourEmoji = '\u{1F60B}';
         const pukeEmoji = '\u{1F92E}';
@@ -292,7 +302,6 @@
             pauseButton.textContent = "PAUSE";
             instructions.style.display = 'none';
             foodSpawnInterval = INITIAL_FOOD_SPAWN_INTERVAL;
-            drawSalivaFace();
             drawScoreboard();
             updateLivesDisplay();
             if (foodInterval) {
@@ -447,7 +456,7 @@
                 drawScoreboard();
                 drawSalivaFace();
                 if (gameRunning) {
-                    requestAnimationFrame(gameLoop);
+                    animationFrameId = requestAnimationFrame(gameLoop);
                 }
             }
         }
@@ -456,7 +465,9 @@
             isPaused = !isPaused;
             pauseButton.textContent = isPaused ? "UNPAUSE" : "PAUSE";
             pauseMessage.style.display = isPaused ? 'block' : 'none';
-            if (!isPaused && !isGameOver) {
+            if (isPaused) {
+                cancelAnimationFrame(animationFrameId);
+            } else if (!isGameOver) {
                 gameRunning = true;
                 gameLoop();
             }
@@ -470,9 +481,10 @@
         }
 
         function restartHandler() {
+            cancelAnimationFrame(animationFrameId);
             initGame();
-            gameLoop();
             gameRunning = true;
+            gameLoop();
         }
 
         document.addEventListener('visibilitychange', () => {
@@ -502,6 +514,7 @@
             isMobile = window.innerWidth < 768;
             canvas.width = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.90;
             canvas.height = isMobile ? window.innerHeight - 200 : window.innerHeight - 220;
+            salivaFaceY = canvas.height - 55;
             instructions.style.width = `${canvas.width - 50}px`;
             instructions.style.top = `${(canvas.height / 2) + 50}px`;
         });
@@ -529,7 +542,6 @@
         });
 
         pauseButton.addEventListener('click', () => {
-            console.log('3');
             pauseHandler();
         });
 
