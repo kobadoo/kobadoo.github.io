@@ -285,9 +285,6 @@
         const pukeEmoji = '\u{1F92E}';
 
         function initGame() {
-            if (!adsLoaded) {
-                loadGoogleAds();
-            }
             score = 0;
             level = 1;
             lives = 3;
@@ -520,6 +517,9 @@
             salivaFaceY = canvas.height - 55;
             instructions.style.width = `${canvas.width - 50}px`;
             instructions.style.top = `${(canvas.height / 2) + 50}px`;
+            if (!adsLoaded) {
+                loadGoogleAds();
+            }
         });
 
         leftButton.addEventListener('touchstart', (e) => {
