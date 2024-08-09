@@ -259,7 +259,7 @@
         const SPEED_FACTOR = 0.5;
         const MIN_SPEED = 0.2;
 
-        let score, level, lives, foodArray, salivaFaceX, isGameOver, isPaused, gameRunning, foodInterval, foodSpawnInterval, isplayedEmoji;
+        let score, level, lives, foodArray, salivaFaceX, isGameOver, isPaused, gameRunning, foodInterval, foodSpawnInterval, isplayedEmoji, animationFrameId;
         let isMobile = window.innerWidth < 768;
         canvas.width = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.90;
         canvas.height = isMobile ? window.innerHeight - 200 : window.innerHeight - 220;
@@ -447,7 +447,7 @@
                 drawScoreboard();
                 drawSalivaFace();
                 if (gameRunning) {
-                    requestAnimationFrame(gameLoop);
+                    animationFrameId = requestAnimationFrame(gameLoop);
                 }
             }
         }
@@ -456,7 +456,9 @@
             isPaused = !isPaused;
             pauseButton.textContent = isPaused ? "UNPAUSE" : "PAUSE";
             pauseMessage.style.display = isPaused ? 'block' : 'none';
-            if (!isPaused && !isGameOver) {
+            if (isPaused) {
+                cancelAnimationFrame(animationFrameId);
+            } else if (!isGameOver) {
                 gameRunning = true;
                 gameLoop();
             }
@@ -470,9 +472,10 @@
         }
 
         function restartHandler() {
+            cancelAnimationFrame(animationFrameId);
             initGame();
-            gameLoop();
             gameRunning = true;
+            gameLoop();
         }
 
         document.addEventListener('visibilitychange', () => {
@@ -529,7 +532,6 @@
         });
 
         pauseButton.addEventListener('click', () => {
-            console.log('3');
             pauseHandler();
         });
 
