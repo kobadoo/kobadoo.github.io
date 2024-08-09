@@ -11,8 +11,6 @@
     <meta property="og:type" content="website" />
     <title>Vegan Quest</title>
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185" crossorigin="anonymous"></script>
-
     <style>
         body, html {
             margin: 0;
@@ -560,6 +558,16 @@
 
         startButton.addEventListener('click', showControlButtons);
         restartButton.addEventListener('click', showControlButtons);
+    </script>
+
+    <script>
+        window.onload = function() {
+            var adsScript = document.createElement('script');
+            adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185";
+            adsScript.crossOrigin = "anonymous";
+            adsScript.async = true;
+            document.head.appendChild(adsScript);
+        };
     </script>
 </body>
 </html>
