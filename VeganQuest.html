@@ -11,6 +11,8 @@
     <meta property="og:type" content="website" />
     <title>Vegan Quest</title>
 
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185" crossorigin="anonymous"></script>
+
     <style>
         body, html {
             margin: 0;
@@ -90,7 +92,7 @@
             position: absolute;
             bottom: 10px;
             width: 80%;
-            display: flex;
+            display: none;
             justify-content: space-between;
             padding: 0 5%;
         }
@@ -109,7 +111,7 @@
         }
 
         .start-buttons {
-            display: flex;
+            display: none;
             justify-content: center;
             margin-top: 10px;
         }
@@ -273,6 +275,8 @@
         salivaFaceY = canvas.height - 55;
         instructions.style.width = `${canvas.width - 50}px`;
         instructions.style.top = `${(canvas.height / 2) + 50}px`;
+        document.getElementById('startButton').style.display = 'flex';
+        document.getElementById('controlButton').style.display = 'flex';
 
         const veganFood = ['\u{1F966}', '\u{1F345}', '\u{1F956}', '\u{1F951}', '\u{1F33D}', '\u{1F349}', '\u{1F952}', '\u{1F346}', '\u{1F955}', '\u{1F353}', '\u{1F347}'];
         const nonVeganFood = ['\u{1F364}', '\u{1F354}', '\u{1F356}', '\u{1F357}', '\u{1F32D}', '\u{1F357}', '\u{1F969}', '\u{1F953}', '\u{1F95B}', '\u{1F95A}', '\u{1F9C0}'];
@@ -514,6 +518,8 @@
             salivaFaceY = canvas.height - 55;
             instructions.style.width = `${canvas.width - 50}px`;
             instructions.style.top = `${(canvas.height / 2) + 50}px`;
+            document.getElementById('startButton').style.display = 'flex';
+            document.getElementById('controlButton').style.display = 'flex';
         });
 
         leftButton.addEventListener('touchstart', (e) => {
@@ -554,16 +560,6 @@
 
         startButton.addEventListener('click', showControlButtons);
         restartButton.addEventListener('click', showControlButtons);
-    </script>
-
-    <script>
-        window.onload = function() {
-            var adsScript = document.createElement('script');
-            adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185";
-            adsScript.crossOrigin = "anonymous";
-            adsScript.async = true;
-            document.head.appendChild(adsScript);
-        };
     </script>
 </body>
 </html>
