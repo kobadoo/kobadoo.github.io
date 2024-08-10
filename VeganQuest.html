@@ -296,7 +296,6 @@
             salivaFaceY = canvas.height - 55;
             instructions.style.width = `${canvas.width - 50}px`;
             instructions.style.top = `${(canvas.height / 2) + 50}px`;
-            alert(canvas.width + " " + canvas.height + " " + salivaFaceY + " " + instructions.style.top);
             document.getElementById('gameCanvas').style.display = 'block';
             document.getElementById('operationButtons').style.display = 'flex';
     }
@@ -517,6 +516,8 @@
             gameLoop();
         }
 
+        window.addEventListener('resize', setupCanvas);
+
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'hidden' && !isPaused) {
                 pauseHandler();
@@ -538,15 +539,6 @@
             } else if (e.key === 's' && !gameRunning) {
                 startHandler();
             }
-        });
-
-        window.addEventListener('resize', () => {
-            isMobile = window.innerWidth < 768;
-            canvas.width = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.90;
-            canvas.height = isMobile ? window.innerHeight - 200 : window.innerHeight - 220;
-            salivaFaceY = canvas.height - 55;
-            instructions.style.width = `${canvas.width - 50}px`;
-            instructions.style.top = `${(canvas.height / 2) + 50}px`;
         });
 
         leftButton.addEventListener('touchstart', (e) => {
