@@ -34,7 +34,7 @@
         }
 
         #titleContainer {
-            display: flex;
+            display: block;
             justify-content: center;
             align-items: center;
             position: relative;
@@ -49,11 +49,9 @@
             color: #00ff00;
         }
 
-        #lives {
-            position: absolute;
-            right: 0;
-            margin-left: 30px;
-            font-size: 20px;
+        #gameTitle a {
+            text-decoration: none;
+            color: #00ff00;
         }
 
         #instructions {
@@ -74,8 +72,7 @@
         }
 
         #scoreboard {
-            top: 10px;
-            left: 10px;
+            position: relative;
             font-size: 20px;
             font-weight: bold;
             padding: 10px;
@@ -119,8 +116,9 @@
         .start-buttons {
             display: flex;
             justify-content: center;
-            margin-top: 10px;
+            margin-top: 30px;
         }
+
 
         .start-buttons button {
             width: 150px;
@@ -134,6 +132,22 @@
             cursor: pointer;
             font-family: 'Press Start 2P', cursive;
         }
+
+        .pause-button {
+            position: absolute;
+            right: 0;
+            width: 70px;
+            padding: 13px 0;
+            margin: 8px;
+            font-size: 10px;
+            background: darkorange;
+            border: 2px solid white;
+            color: black;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Press Start 2P';
+        }
+
         .arrow-button {
             width: 45px;
             height: 45px;
@@ -183,16 +197,14 @@
             }
             #gameTitle {
                 font-size: 16px;
+                margin-bottom: 10px;
             }
             #lives {
                 font-size: 12px;
             }
             #scoreboard {
-                font-size: 12px;
-                top: 5px;
-                left: 5px;
-                padding: 5px;
-                margin: 10px;
+                font-size: 10px;
+                padding: 0;;
             }
             .control-buttons button {
                 font-size: 18px;
@@ -221,8 +233,10 @@
 </head>
 <body>
     <div id="titleContainer">
-        <div id="gameTitle">Vegan Quest</div>
-        <div id="lives">❤️❤️❤️</div>
+        <div id="gameTitle"><a href="./VeganQuest.html">Vegan Quest</a></div>
+        <div id="scoreboard">
+            Score: <span class="score-value">0</span> | Level: <span class="level-value">1</span> | <span id="lives">❤️❤️❤️</span>
+        </div>
     </div>
 
     <div id="instructions">
@@ -232,17 +246,15 @@
                 : 'Help our hero eat vegan food while avoiding non-vegan temptations.<br><br>Earn points and refill your 3 lives by jumping to the next level. It gets more difficult over time!<br><br>Use arrow keys <- -> for movement, P to pause, R to restart, S to start.');
         </script>
     </div>
-    <div id="scoreboard">
-        Score: <span class="score-value">0</span> | Level: <span class="level-value">1</span>
-    </div>
+
     <div id="gameOverMessage">GAME OVER!</div>
     <div id="pauseMessage">PAUSED</div>
     <canvas id="gameCanvas" style="display:none;"></canvas>
     <div id="operationButtons" class="start-buttons" style="display:none;">
         <button id="startButton">START</button>
         <button id="restartButton" style="display:none;">RESTART</button>
-        <button id="pauseButton" style="display:none;">PAUSE</button>
     </div>
+    <button id="pauseButton" class="pause-button" style="display:none;">PAUSE</button>
     <div id="controlButtons" class="control-buttons" style="display:none;">
         <button id="leftButton" class="arrow-button left-arrow"></button>
         <button id="rightButton" class="arrow-button right-arrow"></button>
@@ -282,6 +294,7 @@
         salivaFaceY = canvas.height - 55;
         instructions.style.width = `${canvas.width - 50}px`;
         instructions.style.top = `${(canvas.height / 2) + 50}px`;
+        alert(canvas.width + " " + canvas.height + " " + salivaFaceY + " " + instructions.style.top);
         document.getElementById('gameCanvas').style.display = 'block';
         document.getElementById('operationButtons').style.display = 'flex';
 
@@ -305,7 +318,6 @@
             gameOverMessage.style.display = 'none';
             pauseMessage.style.display = 'none';
             startButton.style.display = 'none';
-            restartButton.style.display = 'block';
             pauseButton.style.display = 'block';
             pauseButton.textContent = "PAUSE";
             instructions.style.display = 'none';
@@ -386,6 +398,8 @@
                         if (lives === 0) {
                             isGameOver = true;
                             gameOverMessage.style.display = 'block';
+                            pauseButton.style.display = 'none';
+                            restartButton.style.display = 'block';
                             if (foodInterval) {
                                 clearInterval(foodInterval);
                             }
@@ -471,7 +485,7 @@
 
         function pauseHandler() {
             isPaused = !isPaused;
-            pauseButton.textContent = isPaused ? "UNPAUSE" : "PAUSE";
+            pauseButton.textContent = isPaused ? "RESUME" : "PAUSE";
             pauseMessage.style.display = isPaused ? 'block' : 'none';
             if (isPaused) {
                 cancelAnimationFrame(animationFrameId);
@@ -528,6 +542,7 @@
             salivaFaceY = canvas.height - 55;
             instructions.style.width = `${canvas.width - 50}px`;
             instructions.style.top = `${(canvas.height / 2) + 50}px`;
+            alert("R " + canvas.width + " " + canvas.height + " " + salivaFaceY + " " + instructions.style.top);
         });
 
         leftButton.addEventListener('touchstart', (e) => {
