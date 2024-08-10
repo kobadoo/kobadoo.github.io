@@ -9,6 +9,7 @@
     <meta property="og:url" content="https://www.kobadoo.com/VeganQuest.html" />
     <meta property="og:image" content="https://www.kobadoo.com/vegan_quest_socialmedia.jpg" />
     <meta property="og:type" content="website" />
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XVVFLF1E2E"></script>
     <script>
@@ -17,6 +18,9 @@
         gtag('js', new Date());
         gtag('config', 'G-XVVFLF1E2E');
     </script>
+    <!-- Google Adsense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185" crossorigin="anonymous"></script>
+
     <title>Vegan Quest</title>
 
     <style>
@@ -281,7 +285,6 @@
         const MIN_SPEED = 0.2;
 
         let score, level, lives, foodArray, salivaFaceX, isGameOver, salivaFaceY, isPaused, gameRunning, foodInterval, foodSpawnInterval, isplayedEmoji, animationFrameId;
-        let adsLoaded = false;
 
         function setupCanvas() {
             isMobile = window.innerWidth < 768;
@@ -472,9 +475,6 @@
             pauseMessage.style.display = isPaused ? 'block' : 'none';
             if (isPaused) {
                 cancelAnimationFrame(animationFrameId);
-                if (!adsLoaded) {
-                    loadGoogleAds();
-                }
             } else if (!isGameOver) {
                 gameRunning = true;
                 gameLoop();
@@ -482,14 +482,9 @@
         }
 
         function startHandler() {
-            initGame();
-            gameRunning = true;
-            gameLoop();
-            drawSalivaFace();
-        }
-
-        function restartHandler() {
-            cancelAnimationFrame(animationFrameId);
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
             initGame();
             gameRunning = true;
             gameLoop();
@@ -512,7 +507,7 @@
                 }
             }
             if (e.key === 'r' && isGameOver) {
-                restartHandler();
+                startHandler();
             } else if (e.key === 'p') {
                 pauseHandler();
             } else if (e.key === 's' && !gameRunning) {
@@ -539,7 +534,7 @@
         });
 
         restartButton.addEventListener('click', () => {
-            restartHandler();
+            startHandler();
         });
 
         pauseButton.addEventListener('click', () => {
@@ -555,15 +550,6 @@
                 document.querySelector('.control-buttons').style.display = 'flex';
             }
         }
-
-        function loadGoogleAds() {
-            var adsScript = document.createElement('script');
-            adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185";
-            adsScript.crossOrigin = "anonymous";
-            adsScript.async = true;
-            document.head.appendChild(adsScript);
-            adsLoaded = true;
-        };
 
         startButton.addEventListener('click', showControlButtons);
         restartButton.addEventListener('click', showControlButtons);
