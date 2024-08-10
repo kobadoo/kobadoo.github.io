@@ -235,7 +235,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="titleContainer">
+    <div id="titleContainer" style="display:none;">
         <div id="gameTitle"><a href="./VeganQuest.html">Vegan Quest</a></div>
         <div id="scoreboard">
             Level <span class="level-value">1</span> | <span class="score-value">0</span> pts |  <span id="lives">❤️❤️❤️</span>
@@ -263,6 +263,7 @@
         <button id="rightButton" class="arrow-button right-arrow"></button>
     </div>
     <script>
+        const titleContainer = document.getElementById('titleContainer');
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const startButton = document.getElementById('startButton');
@@ -313,6 +314,7 @@
         const pukeEmoji = '\u{1F92E}';
 
         window.onload = function() {
+            titleContainer.style="display:block;"
             setupCanvas();
             instructions.style.display = 'block';
         };
