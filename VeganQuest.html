@@ -90,10 +90,15 @@
             font-size: 28px;
             font-weight: bold;
             text-align: center;
-        }
-        #gameOverMessage, #pauseMessage, .score-value, .level-value { 
+            text-shadow: 2px 2px 5px #000000;
+            background-color: rgba(0, 0, 0, 0.5);
             color: darkorange; 
         }
+        
+        .score-value, .level-value { 
+            color: darkorange; 
+        }
+
         .control-buttons {
             position: absolute;
             bottom: 20px;
@@ -493,7 +498,7 @@
         window.addEventListener('resize', setupCanvas);
 
         document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'hidden' && !isPaused) {
+            if (document.visibilityState === 'hidden' && !isPaused & !isGameOver & gameRunning) {
                 pauseHandler();
             }
         });
