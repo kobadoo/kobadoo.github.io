@@ -94,7 +94,7 @@
         .control-buttons {
             position: absolute;
             bottom: 10px;
-            width: 80%;
+            width: 90%;
             display: none;
             justify-content: space-between;
             padding: 0 5%;
@@ -115,10 +115,10 @@
 
         .start-buttons {
             display: flex;
+            position: absolute;
             justify-content: center;
             margin-top: 30px;
         }
-
 
         .start-buttons button {
             width: 150px;
@@ -292,10 +292,11 @@
         function setupCanvas() {
             isMobile = window.innerWidth < 768;
             canvas.width = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.90;
-            canvas.height = isMobile ? window.innerHeight - 200 : window.innerHeight - 220;
+            canvas.height = isMobile ? window.innerHeight - 140 : window.innerHeight - 160;
             salivaFaceY = canvas.height - 55;
             instructions.style.width = `${canvas.width - 50}px`;
-            instructions.style.top = `${(canvas.height / 2) + 50}px`;
+            instructions.style.top = `${(canvas.height / 2)}px`;
+            operationButtons.style.top = `${(canvas.height / 2) + 80}px`;
             document.getElementById('gameCanvas').style.display = 'block';
             document.getElementById('operationButtons').style.display = 'flex';
     }
