@@ -9,6 +9,7 @@
     <meta property="og:url" content="https://www.kobadoo.com/VeganQuest.html" />
     <meta property="og:image" content="https://www.kobadoo.com/vegan_quest_socialmedia.jpg" />
     <meta property="og:type" content="website" />
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XVVFLF1E2E"></script>
     <script>
@@ -17,6 +18,9 @@
         gtag('js', new Date());
         gtag('config', 'G-XVVFLF1E2E');
     </script>
+    <!-- Google Adsense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185" crossorigin="anonymous"></script>
+
     <title>Vegan Quest</title>
 
     <style>
@@ -34,7 +38,7 @@
         }
 
         #titleContainer {
-            display: flex;
+            display: block;
             justify-content: center;
             align-items: center;
             position: relative;
@@ -47,13 +51,16 @@
             font-weight: bold;
             text-shadow: 2px 2px 5px #000000;
             color: #00ff00;
+            margin-bottom: 10px;
         }
 
-        #lives {
-            position: absolute;
-            right: 0;
-            margin-left: 30px;
-            font-size: 20px;
+        #gameTitle a {
+            text-decoration: none;
+            color: #00ff00;
+        }
+
+        #gameTitle a:hover {
+            color: #30cf30;
         }
 
         #instructions {
@@ -62,53 +69,53 @@
             text-align: center;
             position: absolute;
             transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.7);
+            text-shadow: 2px 2px 5px #000000;
             padding: 20px;
             border-radius: 10px;
         }
 
         #gameCanvas {
-            border: 2px solid #ffffff;
-            background: #000000;
             margin-bottom: 30px;
         }
 
         #scoreboard {
-            top: 10px;
-            left: 10px;
-            font-size: 20px;
+            position: relative;
+            font-size: 14px;
             font-weight: bold;
-            padding: 10px;
             border-radius: 5px;
             transition: color 0.5s, font-size 0.5s;
             margin-bottom: 20px;
+            font-family: 'Press Start 2P';
         }
 
         #gameOverMessage, #pauseMessage {
             display: none;
             position: absolute;
-            top: 50%;
             font-size: 28px;
             font-weight: bold;
             text-align: center;
+            text-shadow: 2px 2px 5px #000000;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: darkorange; 
         }
-        #gameOverMessage { color: red; }
-        #pauseMessage { color: blue; }
+        
+        .score-value, .level-value { 
+            color: darkorange; 
+        }
+
         .control-buttons {
             position: absolute;
-            bottom: 10px;
-            width: 80%;
+            bottom: 20px;
+            width: 90%;
             display: none;
             justify-content: space-between;
-            padding: 0 5%;
         }
 
         .control-buttons button {
             padding: 10px;
             flex: 1;
             font-size: 18px;
-            background: blueviolet;
-            border: 2px solid #ffffff;
+            background: darkorange;
             color: #000000;
             border-radius: 10px;
             cursor: pointer;
@@ -118,8 +125,9 @@
 
         .start-buttons {
             display: flex;
+            position: absolute;
             justify-content: center;
-            margin-top: 10px;
+            margin-top: 30px;
         }
 
         .start-buttons button {
@@ -134,6 +142,30 @@
             cursor: pointer;
             font-family: 'Press Start 2P', cursive;
         }
+
+        .start-buttons button:hover {
+            background-color: #30cf30;
+        }
+
+        .pause-button {
+            position: absolute;
+            right: 0;
+            width: 130px;
+            padding: 18px 20px;
+            font-size: 14px;
+            background: darkorange;
+            border: 2px solid white;
+            color: black;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Press Start 2P';
+            margin: 20px 20px 0 20px;
+        }
+
+        .pause-button:hover {
+            background-color: orange;
+        }
+
         .arrow-button {
             width: 45px;
             height: 45px;
@@ -158,16 +190,42 @@
 
         .left-arrow::before {
             border-width: 15px 25px 15px 0;
-            border-color: transparent white transparent transparent;
+            border-color: transparent black transparent transparent;
         }
 
         .right-arrow::before {
             border-width: 15px 0 15px 25px;
-            border-color: transparent transparent transparent white;
+            border-color: transparent transparent transparent black;
         }
 
         .arrow-button:active::before {
             opacity: 0.7;
+        }
+
+        .Footer {
+            position: absolute;
+            bottom: 15px;
+            background-color: #121212;
+            width: 100%;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .Footer a {
+            color: whitesmoke;
+            text-decoration: none;
+        }
+
+        .Footer a:hover {
+            color: lightskyblue;
+        }
+
+        .FooterItem {
+            display: inline;
+            padding: 0 10px;
         }
 
         @media (max-width: 768px) {
@@ -183,16 +241,13 @@
             }
             #gameTitle {
                 font-size: 16px;
+                margin-bottom: 8px;
             }
             #lives {
-                font-size: 12px;
+                font-size: 10px;
             }
             #scoreboard {
-                font-size: 12px;
-                top: 5px;
-                left: 5px;
-                padding: 5px;
-                margin: 10px;
+                font-size: 9px;
             }
             .control-buttons button {
                 font-size: 18px;
@@ -201,14 +256,17 @@
             .start-buttons {
                 margin: 0;
             }
+            .pause-button {
+                width: 70px;
+                padding: 13px 0;
+                margin: 8px;
+                font-size: 10px;
+            }
             .start-buttons button {
                 font-size: 14px;
                 padding: 8px;
                 margin: 0 10px;
                 width: 140px;
-            }
-            #gameOverMessage, #pauseMessage {
-                top: 20%;
             }
         }
         @media (min-width: 768px) {
@@ -220,36 +278,46 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="titleContainer">
-        <div id="gameTitle">Vegan Quest</div>
-        <div id="lives">❤️❤️❤️</div>
+    <div id="titleContainer" style="display:none;">
+        <div id="gameTitle"><a href="./VeganQuest.html">Vegan Quest</a></div>
+        <div id="scoreboard">
+            Level <span class="level-value">1</span> | <span class="score-value">0</span> pts | <span id="lives">❤️❤️❤️</span>
+        </div>
     </div>
 
-    <div id="instructions">
+    <div id="instructions" style="display:none;">
         <script>
             document.write(window.innerWidth < 768 
                 ? 'Use the left and right arrows to help our hero eat vegan food while avoiding non-vegan temptations.<br><br>Earn points and refill your 3 lives by jumping to the next level. It gets more challenging over time!'
                 : 'Help our hero eat vegan food while avoiding non-vegan temptations.<br><br>Earn points and refill your 3 lives by jumping to the next level. It gets more difficult over time!<br><br>Use arrow keys <- -> for movement, P to pause, R to restart, S to start.');
         </script>
     </div>
-    <div id="scoreboard">
-        Score: <span class="score-value">0</span> | Level: <span class="level-value">1</span>
-    </div>
+
     <div id="gameOverMessage">GAME OVER!</div>
     <div id="pauseMessage">PAUSED</div>
     <canvas id="gameCanvas" style="display:none;"></canvas>
     <div id="operationButtons" class="start-buttons" style="display:none;">
         <button id="startButton">START</button>
         <button id="restartButton" style="display:none;">RESTART</button>
-        <button id="pauseButton" style="display:none;">PAUSE</button>
     </div>
+    <button id="pauseButton" class="pause-button" style="display:none;">PAUSE</button>
     <div id="controlButtons" class="control-buttons" style="display:none;">
         <button id="leftButton" class="arrow-button left-arrow"></button>
         <button id="rightButton" class="arrow-button right-arrow"></button>
     </div>
+
+    <div id="footer" class="Footer">
+        <div class="FooterItem"><a href="https://www.kobadoo.com/#/terms" target="_blank">Terms</a></div>
+        <div class="FooterItem">|</div>
+        <div class="FooterItem"><a href="https://www.kobadoo.com/#/privacy" target="_blank">Privacy</a></div>
+    </div>  
+
     <script>
+        const footer = document.getElementById('footer');
+        const titleContainer = document.getElementById('titleContainer');
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        const operationButtons = document.getElementById('operationButtons');
         const startButton = document.getElementById('startButton');
         const restartButton = document.getElementById('restartButton');
         const pauseButton = document.getElementById('pauseButton');
@@ -275,15 +343,20 @@
         const MIN_SPEED = 0.2;
 
         let score, level, lives, foodArray, salivaFaceX, isGameOver, salivaFaceY, isPaused, gameRunning, foodInterval, foodSpawnInterval, isplayedEmoji, animationFrameId;
-        let adsLoaded = false;
-        let isMobile = window.innerWidth < 768;
-        canvas.width = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.90;
-        canvas.height = isMobile ? window.innerHeight - 200 : window.innerHeight - 220;
-        salivaFaceY = canvas.height - 55;
-        instructions.style.width = `${canvas.width - 50}px`;
-        instructions.style.top = `${(canvas.height / 2) + 50}px`;
-        document.getElementById('gameCanvas').style.display = 'block';
-        document.getElementById('operationButtons').style.display = 'flex';
+
+        function setupCanvas() {
+            isMobile = window.innerWidth < 768;
+            canvas.width = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.90;
+            canvas.height = isMobile ? window.innerHeight - 150 : window.innerHeight - 170;
+            salivaFaceY = canvas.height - 55;
+            instructions.style.width = `${canvas.width - 50}px`;
+            instructions.style.top = `${(canvas.height / 2)}px`;
+            operationButtons.style.top = `${(canvas.height / 2) + 80}px`;
+            pauseMessage.style.top = `${(canvas.height / 2)}px`;
+            gameOverMessage.style.top = `${(canvas.height / 2)}px`;
+            document.getElementById('gameCanvas').style.display = 'block';
+            document.getElementById('operationButtons').style.display = 'flex';
+    }
 
         const veganFood = ['\u{1F966}', '\u{1F345}', '\u{1F956}', '\u{1F951}', '\u{1F33D}', '\u{1F349}', '\u{1F952}', '\u{1F346}', '\u{1F955}', '\u{1F353}', '\u{1F347}'];
         const nonVeganFood = ['\u{1F364}', '\u{1F354}', '\u{1F356}', '\u{1F357}', '\u{1F32D}', '\u{1F357}', '\u{1F969}', '\u{1F953}', '\u{1F95B}', '\u{1F95A}', '\u{1F9C0}'];
@@ -291,6 +364,12 @@
         const salivaFaceEmoji = '\u{1F924}';
         const savourEmoji = '\u{1F60B}';
         const pukeEmoji = '\u{1F92E}';
+
+        window.onload = function() {
+            titleContainer.style="display:block;"
+            setupCanvas();
+            instructions.style.display = 'block';
+        };
 
         function initGame() {
             score = 0;
@@ -302,10 +381,11 @@
             isPaused = false;
             gameRunning = false;
             displayedEmoji = salivaFaceEmoji;
+            footer.style.display = 'none';
             gameOverMessage.style.display = 'none';
             pauseMessage.style.display = 'none';
             startButton.style.display = 'none';
-            restartButton.style.display = 'block';
+            restartButton.style.display = 'none';
             pauseButton.style.display = 'block';
             pauseButton.textContent = "PAUSE";
             instructions.style.display = 'none';
@@ -386,6 +466,8 @@
                         if (lives === 0) {
                             isGameOver = true;
                             gameOverMessage.style.display = 'block';
+                            pauseButton.style.display = 'none';
+                            restartButton.style.display = 'block';
                             if (foodInterval) {
                                 clearInterval(foodInterval);
                             }
@@ -418,16 +500,6 @@
 
         function updateScore(points, color) {
             score += points;
-            const scoreValue = scoreboard.querySelector('.score-value');
-
-            if (scoreValue) {
-                scoreValue.style.color = color;
-                
-                setTimeout(() => {
-                    scoreValue.style.color = '#ffffff';
-                }, SCORE_UPDATE_INTERVAL);
-            }
-            
             updateLevel();
         }
 
@@ -436,7 +508,6 @@
                 level++;
                 lives = 3;
                 updateLivesDisplay();
-                updateScoreboardLevel('green');
                 foodSpawnInterval = calculateSpawnInterval(level);
                 if (foodInterval) {
                     clearInterval(foodInterval);
@@ -446,14 +517,6 @@
                 }, foodSpawnInterval);
             }
             drawScoreboard();
-        }
-
-        function updateScoreboardLevel(color) {
-            const levelValue = scoreboard.querySelector('.level-value');
-            levelValue.style.color = color;
-            setTimeout(() => {
-                levelValue.style.color = '#ffffff';
-            }, SCORE_UPDATE_INTERVAL);
         }
 
         function gameLoop() {
@@ -471,13 +534,10 @@
 
         function pauseHandler() {
             isPaused = !isPaused;
-            pauseButton.textContent = isPaused ? "UNPAUSE" : "PAUSE";
+            pauseButton.textContent = isPaused ? "RESUME" : "PAUSE";
             pauseMessage.style.display = isPaused ? 'block' : 'none';
             if (isPaused) {
                 cancelAnimationFrame(animationFrameId);
-                if (!adsLoaded) {
-                    loadGoogleAds();
-                }
             } else if (!isGameOver) {
                 gameRunning = true;
                 gameLoop();
@@ -485,21 +545,18 @@
         }
 
         function startHandler() {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
             initGame();
             gameRunning = true;
             gameLoop();
-            drawSalivaFace();
         }
 
-        function restartHandler() {
-            cancelAnimationFrame(animationFrameId);
-            initGame();
-            gameRunning = true;
-            gameLoop();
-        }
+        window.addEventListener('resize', setupCanvas);
 
         document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'hidden' && !isPaused) {
+            if (document.visibilityState === 'hidden' && !isPaused & !isGameOver & gameRunning) {
                 pauseHandler();
             }
         });
@@ -513,21 +570,12 @@
                 }
             }
             if (e.key === 'r' && isGameOver) {
-                restartHandler();
-            } else if (e.key === 'p') {
+                startHandler();
+            } else if (e.key === 'p' && !isGameOver) {
                 pauseHandler();
             } else if (e.key === 's' && !gameRunning) {
                 startHandler();
             }
-        });
-
-        window.addEventListener('resize', () => {
-            isMobile = window.innerWidth < 768;
-            canvas.width = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.90;
-            canvas.height = isMobile ? window.innerHeight - 200 : window.innerHeight - 220;
-            salivaFaceY = canvas.height - 55;
-            instructions.style.width = `${canvas.width - 50}px`;
-            instructions.style.top = `${(canvas.height / 2) + 50}px`;
         });
 
         leftButton.addEventListener('touchstart', (e) => {
@@ -549,7 +597,7 @@
         });
 
         restartButton.addEventListener('click', () => {
-            restartHandler();
+            startHandler();
         });
 
         pauseButton.addEventListener('click', () => {
@@ -565,15 +613,6 @@
                 document.querySelector('.control-buttons').style.display = 'flex';
             }
         }
-
-        function loadGoogleAds() {
-            var adsScript = document.createElement('script');
-            adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185";
-            adsScript.crossOrigin = "anonymous";
-            adsScript.async = true;
-            document.head.appendChild(adsScript);
-            adsLoaded = true;
-        };
 
         startButton.addEventListener('click', showControlButtons);
         restartButton.addEventListener('click', showControlButtons);

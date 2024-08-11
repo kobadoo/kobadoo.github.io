@@ -6,7 +6,7 @@ const terms = () => (
     <div className={classes.Legal}>
         <h2>Terms and Conditions</h2>
 
-        <p>These terms and conditions outline the rules and regulations for the use of Kobadoo's Website, located at https://www.kobadoo.com.</p>
+        <p>These terms and conditions outline the rules and regulations for the use of Kobadoo's Website and all its games and services, all located under the domain https://www.kobadoo.com.</p>
 
         <p>By accessing this website we assume you accept these terms and conditions. Do not continue to use Kobadoo if you do not agree to take all of the terms and conditions stated on this page.</p>
 

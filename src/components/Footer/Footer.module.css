@@ -13,10 +13,11 @@
 
 .Footer a {
     color: darkslategrey;
+    text-decoration: none;
 }
 
 .Footer :hover {
-    color:darkcyan
+    color:darkcyan;
 }
 
 .FooterItem {
@@ -29,10 +30,10 @@
         background-color: #202020;
     }
     .Footer a {
-        color: whitesmoke
+        color: whitesmoke;
     }
 
     .Footer :hover {
-        color: lightskyblue
+        color: lightskyblue;
     }
 }
