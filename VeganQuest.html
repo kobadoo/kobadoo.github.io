@@ -51,6 +51,7 @@
             font-weight: bold;
             text-shadow: 2px 2px 5px #000000;
             color: #00ff00;
+            margin-bottom: 10px;
         }
 
         #gameTitle a {
@@ -75,9 +76,8 @@
 
         #scoreboard {
             position: relative;
-            font-size: 20px;
+            font-size: 14px;
             font-weight: bold;
-            padding: 10px;
             border-radius: 5px;
             transition: color 0.5s, font-size 0.5s;
             margin-bottom: 20px;
@@ -142,16 +142,16 @@
         .pause-button {
             position: absolute;
             right: 0;
-            width: 70px;
-            padding: 13px 0;
-            margin: 8px;
-            font-size: 10px;
+            width: 130px;
+            padding: 18px 20px;
+            font-size: 14px;
             background: darkorange;
             border: 2px solid white;
             color: black;
             border-radius: 10px;
             cursor: pointer;
             font-family: 'Press Start 2P';
+            margin: 20px 20px 0 20px;
         }
 
         .arrow-button {
@@ -210,7 +210,6 @@
             }
             #scoreboard {
                 font-size: 9px;
-                padding: 0;;
             }
             .control-buttons button {
                 font-size: 18px;
@@ -218,6 +217,12 @@
             }
             .start-buttons {
                 margin: 0;
+            }
+            .pause-button {
+                width: 70px;
+                padding: 13px 0;
+                margin: 8px;
+                font-size: 10px;
             }
             .start-buttons button {
                 font-size: 14px;
@@ -518,7 +523,7 @@
             }
             if (e.key === 'r' && isGameOver) {
                 startHandler();
-            } else if (e.key === 'p') {
+            } else if (e.key === 'p' && !isGameOver) {
                 pauseHandler();
             } else if (e.key === 's' && !gameRunning) {
                 startHandler();
