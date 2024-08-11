@@ -190,6 +190,32 @@
             opacity: 0.7;
         }
 
+        .Footer {
+            position: absolute;
+            bottom: 15px;
+            background-color: #121212;
+            width: 100%;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .Footer a {
+            color: whitesmoke;
+            text-decoration: none;
+        }
+
+        .Footer :hover {
+            color: lightskyblue;
+        }
+
+        .FooterItem {
+            display: inline;
+            padding: 0 10px;
+        }
+
         @media (max-width: 768px) {
             #gameCanvas {
                 margin-bottom: 10px;
@@ -243,7 +269,7 @@
     <div id="titleContainer" style="display:none;">
         <div id="gameTitle"><a href="./VeganQuest.html">Vegan Quest</a></div>
         <div id="scoreboard">
-            Level <span class="level-value">1</span> | <span class="score-value">0</span> pts |  <span id="lives">❤️❤️❤️</span>
+            Level <span class="level-value">1</span> | <span class="score-value">0</span> pts | <span id="lives">❤️❤️❤️</span>
         </div>
     </div>
 
@@ -267,7 +293,15 @@
         <button id="leftButton" class="arrow-button left-arrow"></button>
         <button id="rightButton" class="arrow-button right-arrow"></button>
     </div>
+
+    <div id="footer" class="Footer">
+        <div class="FooterItem"><a href="https://www.kobadoo.com/#/terms" target="_blank">Terms</a></div>
+        <div class="FooterItem">|</div>
+        <div class="FooterItem"><a href="https://www.kobadoo.com/#/privacy" target="_blank">Privacy</a></div>
+    </div>  
+
     <script>
+        const footer = document.getElementById('footer');
         const titleContainer = document.getElementById('titleContainer');
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -334,6 +368,7 @@
             isPaused = false;
             gameRunning = false;
             displayedEmoji = salivaFaceEmoji;
+            footer.style.display = 'none';
             gameOverMessage.style.display = 'none';
             pauseMessage.style.display = 'none';
             startButton.style.display = 'none';
