@@ -288,8 +288,8 @@
     <div id="instructions" style="display:none;">
         <script>
             document.write(window.innerWidth < 768 
-                ? 'Use the left and right arrows to help our hero eat vegan food while avoiding non-vegan temptations.<br><br>Earn points and refill your 3 lives by jumping to the next level. It gets more challenging over time!'
-                : 'Help our hero eat vegan food while avoiding non-vegan temptations.<br><br>Earn points and refill your 3 lives by jumping to the next level. It gets more difficult over time!<br><br>Use arrow keys <- -> for movement, P to pause, R to restart, S to start.');
+                ? 'Use the left and right arrows or touch screen to help our hero eat vegan food while avoiding non-vegan temptations.<br><br>Earn points and refill your 3 lives by jumping to the next level. It gets more challenging over time!'
+                : 'Help our hero eat vegan food while avoiding non-vegan temptations.<br><br>Earn points and refill your 3 lives by jumping to the next level. It gets more difficult over time!<br><br>Use mouse, touch pad or arrow keys <- -> for movement, P to pause, R to restart, S to start.');
         </script>
     </div>
 
@@ -602,6 +602,32 @@
 
         pauseButton.addEventListener('click', () => {
             pauseHandler();
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isPaused && !isGameOver) {
+                const rect = canvas.getBoundingClientRect();
+                salivaFaceX = e.clientX - rect.left - 25;
+                salivaFaceX = Math.max(0, Math.min(salivaFaceX, canvas.width - 50)); 
+            }
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            if (!isPaused && !isGameOver) {
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                salivaFaceX = touch.clientX - rect.left - 25;
+                salivaFaceX = Math.max(0, Math.min(salivaFaceX, canvas.width - 50));
+            }
+        });
+
+        canvas.addEventListener('touchstart', (e) => {
+            if (!isPaused && !isGameOver) {
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                salivaFaceX = touch.clientX - rect.left - 25;
+                salivaFaceX = Math.max(0, Math.min(salivaFaceX, canvas.width - 50));
+            }
         });
 
         if (window.innerWidth >= 768) {
