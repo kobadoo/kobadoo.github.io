@@ -472,6 +472,13 @@
                                 clearInterval(foodInterval);
                             }
                             gameRunning = false;
+
+                            gtag('event', 'game_over', {
+                                'event_category': 'Game',
+                                'event_label': 'Vegan Quest',
+                                'value': score,
+                                'level': level
+                            });
                         }
                     }
                 }
@@ -538,9 +545,15 @@
             pauseMessage.style.display = isPaused ? 'block' : 'none';
             if (isPaused) {
                 cancelAnimationFrame(animationFrameId);
+                if (foodInterval) {
+                    clearInterval(foodInterval);
+                }
             } else if (!isGameOver) {
                 gameRunning = true;
                 gameLoop();
+                foodInterval = setInterval(() => {
+                    foodArray.push(randomFood());
+                }, foodSpawnInterval);
             }
         }
 
