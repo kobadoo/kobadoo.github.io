@@ -74,7 +74,7 @@ const StartScreen = (props) => {
 
             <div className={classes.BenefitsText}>
                 <div role="img" className={classes.Emoji}>
-                    <span>{String.fromCodePoint(CRYSTAL_BALL_EMOJI)}</span>
+                    <a href="/#/crystalball" target="_blank"><span>{String.fromCodePoint(CRYSTAL_BALL_EMOJI)}</span></a>
                 </div>
                 <h3>Try Crystal Ball!</h3>
                 <p>Learn what the future awaits you with this fun game that uses playing cards and emojis to tell your fortune.</p>
@@ -85,7 +85,7 @@ const StartScreen = (props) => {
 
             <div className={classes.BenefitsText}>
                 <div role="img">
-                    <img className={classes.VeganImage} src={VeganImg} alt="" />
+                    <a href="/VeganQuest.html" target="_blank"><img className={classes.VeganImage} src={VeganImg} alt="" /></a>
                 </div>
                 <h3>Try Vegan Quest!</h3>
                 <p>In this addictive game, you will help our vegan hero thrive in a world of falling food. Collect as many vegan food items as possible while avoiding non-vegan temptations.</p>
