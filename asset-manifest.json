@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.bfcc267d.css",
-    "main.js": "/static/js/main.aeb8b824.js",
+    "main.css": "/static/css/main.ed15a7af.css",
+    "main.js": "/static/js/main.87f3f244.js",
     "static/media/vegan_quest_banner.png": "/static/media/vegan_quest_banner.4904b6897f206eabe416.png",
     "static/media/applause.mp3": "/static/media/applause.aecca5541265fbdb8305.mp3",
     "static/media/mode_kids.png": "/static/media/mode_kids.96007806d80df14009d2.png",
@@ -421,11 +421,11 @@
     "static/media/egg.mp3": "/static/media/egg.31d11553881305a9d53b.mp3",
     "static/media/train.mp3": "/static/media/train.a2f813189d50aee0a98b.mp3",
     "index.html": "/index.html",
-    "main.bfcc267d.css.map": "/static/css/main.bfcc267d.css.map",
-    "main.aeb8b824.js.map": "/static/js/main.aeb8b824.js.map"
+    "main.ed15a7af.css.map": "/static/css/main.ed15a7af.css.map",
+    "main.87f3f244.js.map": "/static/js/main.87f3f244.js.map"
   },
   "entrypoints": [
-    "static/css/main.bfcc267d.css",
-    "static/js/main.aeb8b824.js"
+    "static/css/main.ed15a7af.css",
+    "static/js/main.87f3f244.js"
   ]
 }
