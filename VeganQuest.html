@@ -531,6 +531,8 @@
                 level++;
                 isUpdatingLevel = true;
                 isPaused = true;
+                lives = 3;
+                updateLivesDisplay();
                 pauseMessage.style.display = 'none';
                 cancelAnimationFrame(animationFrameId);
                 if (foodInterval) {
@@ -547,8 +549,6 @@
                         levelUpMessage.style.display = 'none';
                         isPaused = false;
                         isUpdatingLevel = false;
-                        lives = 3;
-                        updateLivesDisplay();
                         foodSpawnInterval = calculateSpawnInterval(level);
                         if (foodInterval) {
                             clearInterval(foodInterval);
