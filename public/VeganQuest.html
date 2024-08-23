@@ -88,7 +88,7 @@
             font-family: 'Press Start 2P';
         }
 
-        #gameOverMessage, #pauseMessage {
+        #gameOverMessage, #pauseMessage, #levelUpMessage {
             display: none;
             position: absolute;
             font-size: 28px;
@@ -97,6 +97,10 @@
             text-shadow: 2px 2px 5px #000000;
             background-color: rgba(0, 0, 0, 0.5);
             color: darkorange; 
+        }
+
+        #levelUpMessage {
+            animation: blink 1s linear infinite;
         }
         
         .score-value, .level-value { 
@@ -228,6 +232,10 @@
             padding: 0 10px;
         }
 
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
         @media (max-width: 768px) {
             #gameCanvas {
                 margin-bottom: 10px;
@@ -295,6 +303,7 @@
 
     <div id="gameOverMessage">GAME OVER!</div>
     <div id="pauseMessage">PAUSED</div>
+    <div id="levelUpMessage">LEVEL 1</div>
     <canvas id="gameCanvas" style="display:none;"></canvas>
     <div id="operationButtons" class="start-buttons" style="display:none;">
         <button id="startButton">START</button>
@@ -326,9 +335,11 @@
         const scoreboard = document.getElementById('scoreboard');
         const gameOverMessage = document.getElementById('gameOverMessage');
         const pauseMessage = document.getElementById('pauseMessage');
+        const levelUpMessage = document.getElementById('levelUpMessage');
         const livesElement = document.getElementById('lives');
         const instructions = document.getElementById('instructions');
 
+        // Setting variables
         const VELOCITY = 40;
         const VELOCITY_MOBILE = 20;
         const FONT_SIZE_SALIVA_FACE_DESKTOP = '50px Arial';
@@ -341,8 +352,17 @@
         const GAME_AREA_PADDING = 10;
         const SPEED_FACTOR = 0.5;
         const MIN_SPEED = 0.2;
+        const LEVEL_UP_PAUSE = 1500;
 
-        let score, level, lives, foodArray, salivaFaceX, isGameOver, salivaFaceY, isPaused, gameRunning, foodInterval, foodSpawnInterval, isplayedEmoji, animationFrameId;
+        // Emojis
+        const veganFood = ['\u{1F966}', '\u{1F345}', '\u{1F956}', '\u{1F951}', '\u{1F33D}', '\u{1F349}', '\u{1F952}', '\u{1F346}', '\u{1F955}', '\u{1F353}', '\u{1F347}'];
+        const nonVeganFood = ['\u{1F364}', '\u{1F354}', '\u{1F356}', '\u{1F357}', '\u{1F32D}', '\u{1F357}', '\u{1F969}', '\u{1F953}', '\u{1F95B}', '\u{1F95A}', '\u{1F9C0}'];
+        const foodItems = [...veganFood, ...nonVeganFood];
+        const salivaFaceEmoji = '\u{1F924}';
+        const savourEmoji = '\u{1F60B}';
+        const pukeEmoji = '\u{1F92E}';
+
+        let score, level, lives, foodArray, salivaFaceX, isGameOver, salivaFaceY, isPaused, gameRunning, foodInterval, foodSpawnInterval, isplayedEmoji, animationFrameId, isUpdatingLevel;
 
         function setupCanvas() {
             isMobile = window.innerWidth < 768;
@@ -354,16 +374,10 @@
             operationButtons.style.top = `${(canvas.height / 2) + 80}px`;
             pauseMessage.style.top = `${(canvas.height / 2)}px`;
             gameOverMessage.style.top = `${(canvas.height / 2)}px`;
+            levelUpMessage.style.top = `${(canvas.height / 2)}px`;
             document.getElementById('gameCanvas').style.display = 'block';
             document.getElementById('operationButtons').style.display = 'flex';
-    }
-
-        const veganFood = ['\u{1F966}', '\u{1F345}', '\u{1F956}', '\u{1F951}', '\u{1F33D}', '\u{1F349}', '\u{1F952}', '\u{1F346}', '\u{1F955}', '\u{1F353}', '\u{1F347}'];
-        const nonVeganFood = ['\u{1F364}', '\u{1F354}', '\u{1F356}', '\u{1F357}', '\u{1F32D}', '\u{1F357}', '\u{1F969}', '\u{1F953}', '\u{1F95B}', '\u{1F95A}', '\u{1F9C0}'];
-        const foodItems = [...veganFood, ...nonVeganFood];
-        const salivaFaceEmoji = '\u{1F924}';
-        const savourEmoji = '\u{1F60B}';
-        const pukeEmoji = '\u{1F92E}';
+        }
 
         window.onload = function() {
             titleContainer.style="display:block;"
@@ -380,10 +394,12 @@
             isGameOver = false;
             isPaused = false;
             gameRunning = false;
+            isUpdatingLevel = false;
             displayedEmoji = salivaFaceEmoji;
             footer.style.display = 'none';
             gameOverMessage.style.display = 'none';
             pauseMessage.style.display = 'none';
+            levelUpMessage.style.display = 'none';
             startButton.style.display = 'none';
             restartButton.style.display = 'none';
             pauseButton.style.display = 'block';
@@ -513,17 +529,42 @@
         function updateLevel() {
             if (score >= LEVEL_THRESHOLD * level) {
                 level++;
+                isUpdatingLevel = true;
+                isPaused = true;
                 lives = 3;
                 updateLivesDisplay();
-                foodSpawnInterval = calculateSpawnInterval(level);
+                drawScoreboard();
+                pauseMessage.style.display = 'none';
+                cancelAnimationFrame(animationFrameId);
                 if (foodInterval) {
                     clearInterval(foodInterval);
                 }
-                foodInterval = setInterval(() => {
-                    foodArray.push(randomFood());
-                }, foodSpawnInterval);
+                foodArray = [];
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const levelUpMessage = document.getElementById('levelUpMessage');
+                levelUpMessage.textContent = `LEVEL ${level}`;
+                levelUpMessage.style.display = 'block';
+
+                setTimeout(() => {
+                    if (isUpdatingLevel) {
+                        levelUpMessage.style.display = 'none';
+                        isPaused = false;
+                        isUpdatingLevel = false;
+                        foodSpawnInterval = calculateSpawnInterval(level);
+                        if (foodInterval) {
+                            clearInterval(foodInterval);
+                        }
+                        foodInterval = setInterval(() => {
+                            foodArray.push(randomFood());
+                        }, foodSpawnInterval);
+                        gameRunning = true;
+                        gameLoop();
+                    }
+                }, LEVEL_UP_PAUSE);
             }
-            drawScoreboard();
+            else {
+                drawScoreboard();
+            }
         }
 
         function gameLoop() {
@@ -540,9 +581,13 @@
         }
 
         function pauseHandler() {
-            isPaused = !isPaused;
+            if (!isUpdatingLevel) {
+                isPaused = !isPaused;
+            }
             pauseButton.textContent = isPaused ? "RESUME" : "PAUSE";
             pauseMessage.style.display = isPaused ? 'block' : 'none';
+            levelUpMessage.style.display = 'none';
+            isUpdatingLevel = false;
             if (isPaused) {
                 cancelAnimationFrame(animationFrameId);
                 if (foodInterval) {
