@@ -533,6 +533,7 @@
                 isPaused = true;
                 lives = 3;
                 updateLivesDisplay();
+                drawScoreboard();
                 pauseMessage.style.display = 'none';
                 cancelAnimationFrame(animationFrameId);
                 if (foodInterval) {
@@ -556,7 +557,6 @@
                         foodInterval = setInterval(() => {
                             foodArray.push(randomFood());
                         }, foodSpawnInterval);
-                        drawScoreboard();
                         gameRunning = true;
                         gameLoop();
                     }
