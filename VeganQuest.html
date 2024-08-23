@@ -88,7 +88,7 @@
             font-family: 'Press Start 2P';
         }
 
-        #gameOverMessage, #pauseMessage {
+        #gameOverMessage, #pauseMessage, #levelUpMessage {
             display: none;
             position: absolute;
             font-size: 28px;
@@ -97,6 +97,10 @@
             text-shadow: 2px 2px 5px #000000;
             background-color: rgba(0, 0, 0, 0.5);
             color: darkorange; 
+        }
+
+        #levelUpMessage {
+            animation: blink 1s linear infinite;
         }
         
         .score-value, .level-value { 
@@ -226,18 +230,6 @@
         .FooterItem {
             display: inline;
             padding: 0 10px;
-        }
-
-        #levelUpMessage {
-            display: none;
-            position: absolute;
-            font-size: 28px;
-            font-weight: bold;
-            text-align: center;
-            text-shadow: 2px 2px 5px #000000;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: darkorange;
-            animation: blink 1s linear infinite;
         }
 
         @keyframes blink {
