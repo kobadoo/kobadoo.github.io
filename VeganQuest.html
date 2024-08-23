@@ -7,7 +7,7 @@
     <meta property="og:title" content="Vegan Quest" />
     <meta property="og:description" content="Embark on an exciting journey in Vegan Quest, where your mission is to help our vegan hero thrive in a world of falling food. With just the left and right arrow keys, you'll navigate through a cascade of delectable vegan delights and perilous non-vegan pitfalls. In Vegan Quest, your task is simple yet challenging: collect as many vegan food items as possible while avoiding non-vegan temptations. Each piece of vegan food you catch will earn you 20 points. But beware! Every non-vegan item you accidentally gather will cost you one of your 3 lives. Advance to the next level to refill your lives."/>
     <meta property="og:url" content="https://www.kobadoo.com/VeganQuest.html" />
-    <meta property="og:image" content="https://www.kobadoo.com/vegan_quest_socialmedia.jpg" />
+    <meta property="og:image" content="https://www.kobadoo.com/vegabln_quest_socialmedia.jpg" />
     <meta property="og:type" content="website" />
 
     <!-- Google tag (gtag.js) -->
@@ -228,6 +228,22 @@
             padding: 0 10px;
         }
 
+        #levelUpMessage {
+            display: none;
+            position: absolute;
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 2px 2px 5px #000000;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: darkorange;
+            animation: blink 1s linear infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
         @media (max-width: 768px) {
             #gameCanvas {
                 margin-bottom: 10px;
@@ -295,6 +311,7 @@
 
     <div id="gameOverMessage">GAME OVER!</div>
     <div id="pauseMessage">PAUSED</div>
+    <div id="levelUpMessage">LEVEL 1</div>
     <canvas id="gameCanvas" style="display:none;"></canvas>
     <div id="operationButtons" class="start-buttons" style="display:none;">
         <button id="startButton">START</button>
@@ -329,6 +346,7 @@
         const livesElement = document.getElementById('lives');
         const instructions = document.getElementById('instructions');
 
+        // Setting variables
         const VELOCITY = 40;
         const VELOCITY_MOBILE = 20;
         const FONT_SIZE_SALIVA_FACE_DESKTOP = '50px Arial';
@@ -341,6 +359,15 @@
         const GAME_AREA_PADDING = 10;
         const SPEED_FACTOR = 0.5;
         const MIN_SPEED = 0.2;
+        const LEVEL_UP_PAUSE = 1500;
+
+        // Emojis
+        const veganFood = ['\u{1F966}', '\u{1F345}', '\u{1F956}', '\u{1F951}', '\u{1F33D}', '\u{1F349}', '\u{1F952}', '\u{1F346}', '\u{1F955}', '\u{1F353}', '\u{1F347}'];
+        const nonVeganFood = ['\u{1F364}', '\u{1F354}', '\u{1F356}', '\u{1F357}', '\u{1F32D}', '\u{1F357}', '\u{1F969}', '\u{1F953}', '\u{1F95B}', '\u{1F95A}', '\u{1F9C0}'];
+        const foodItems = [...veganFood, ...nonVeganFood];
+        const salivaFaceEmoji = '\u{1F924}';
+        const savourEmoji = '\u{1F60B}';
+        const pukeEmoji = '\u{1F92E}';
 
         let score, level, lives, foodArray, salivaFaceX, isGameOver, salivaFaceY, isPaused, gameRunning, foodInterval, foodSpawnInterval, isplayedEmoji, animationFrameId;
 
@@ -356,14 +383,7 @@
             gameOverMessage.style.top = `${(canvas.height / 2)}px`;
             document.getElementById('gameCanvas').style.display = 'block';
             document.getElementById('operationButtons').style.display = 'flex';
-    }
-
-        const veganFood = ['\u{1F966}', '\u{1F345}', '\u{1F956}', '\u{1F951}', '\u{1F33D}', '\u{1F349}', '\u{1F952}', '\u{1F346}', '\u{1F955}', '\u{1F353}', '\u{1F347}'];
-        const nonVeganFood = ['\u{1F364}', '\u{1F354}', '\u{1F356}', '\u{1F357}', '\u{1F32D}', '\u{1F357}', '\u{1F969}', '\u{1F953}', '\u{1F95B}', '\u{1F95A}', '\u{1F9C0}'];
-        const foodItems = [...veganFood, ...nonVeganFood];
-        const salivaFaceEmoji = '\u{1F924}';
-        const savourEmoji = '\u{1F60B}';
-        const pukeEmoji = '\u{1F92E}';
+        }
 
         window.onload = function() {
             titleContainer.style="display:block;"
@@ -513,17 +533,39 @@
         function updateLevel() {
             if (score >= LEVEL_THRESHOLD * level) {
                 level++;
-                lives = 3;
-                updateLivesDisplay();
-                foodSpawnInterval = calculateSpawnInterval(level);
+                isPaused = true;
+                cancelAnimationFrame(animationFrameId);
                 if (foodInterval) {
                     clearInterval(foodInterval);
                 }
-                foodInterval = setInterval(() => {
-                    foodArray.push(randomFood());
-                }, foodSpawnInterval);
+                foodArray = [];
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const levelUpMessage = document.getElementById('levelUpMessage');
+                levelUpMessage.textContent = `LEVEL ${level}`;
+                levelUpMessage.style.top = `${canvas.height / 2}px`;
+                levelUpMessage.style.left = `${canvas.width / 2 - levelUpMessage.clientWidth / 2}px`;
+                levelUpMessage.style.display = 'block';
+
+                setTimeout(() => {
+                    levelUpMessage.style.display = 'none';
+                    isPaused = false;
+                    lives = 3;
+                    updateLivesDisplay();
+                    foodSpawnInterval = calculateSpawnInterval(level);
+                    if (foodInterval) {
+                        clearInterval(foodInterval);
+                    }
+                    foodInterval = setInterval(() => {
+                        foodArray.push(randomFood());
+                    }, foodSpawnInterval);
+                    drawScoreboard();
+                    gameRunning = true;
+                    gameLoop();
+                }, LEVEL_UP_PAUSE);
             }
-            drawScoreboard();
+            else {
+                drawScoreboard();
+            }
         }
 
         function gameLoop() {
