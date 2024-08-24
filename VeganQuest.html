@@ -489,12 +489,7 @@
                             }
                             gameRunning = false;
 
-                            gtag('event', 'game_over', {
-                                'event_category': 'Game',
-                                'event_label': 'Vegan Quest',
-                                'value': score,
-                                'level': level
-                            });
+                            gtag('event', level + "-" + score);
                         }
                     }
                 }
