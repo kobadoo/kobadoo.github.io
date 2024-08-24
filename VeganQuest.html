@@ -416,6 +416,7 @@
                     foodArray.push(randomFood());
                 }
             }, foodSpawnInterval);
+            gtag('event', "game_played");
         }
 
         function calculateSpawnInterval(level) {
