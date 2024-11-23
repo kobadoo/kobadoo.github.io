@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Test your memory and geography skills with Flag Memory Match, where you match pairs of flags from 98 countries. With 6 increasingly challenging levels, each stage pushes your recall abilities further. Earn 20 points for every correct match, but be cautious—incorrect ones will cost you points. Advance to a new level and receive an extra 100 points! Perfect for all ages, Flag Memory Match combines fun and learning in a vibrant, user-friendly experience. Sharpen your mind while exploring the world’s flags. Can you conquer all levels and become the ultimate flag-matching master?"/>
+    <meta property="og:title" content="Flag Memory Match" />
+    <meta property="og:description" content="Test your memory and geography skills with Flag Memory Match, where you match pairs of flags from 98 countries. With 6 increasingly challenging levels, each stage pushes your recall abilities further. Earn 20 points for every correct match, but be cautious—incorrect ones will cost you points. Advance to a new level and receive an extra 100 points! Perfect for all ages, Flag Memory Match combines fun and learning in a vibrant, user-friendly experience. Sharpen your mind while exploring the world’s flags. Can you conquer all levels and become the ultimate flag-matching master?"/>
+    <meta property="og:url" content="https://www.kobadoo.com/FlagMemoryMatch.html" />
+    <meta property="og:image" content="https://www.kobadoo.com/flag_match_socialmedia.jpg" />
+    <meta property="og:type" content="website" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XVVFLF1E2E"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XVVFLF1E2E');
+    </script>
+    <!-- Google Adsense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185" crossorigin="anonymous"></script>
+
+    <title>Flag Memory Match</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e9f7f6;
+            flex-direction: column;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .scoreboard {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
+            position: relative;
+        }
+        .scoreboard div {
+            font-size: 1.5em;
+            flex: 1;
+            text-align: center;
+        }
+        .scoreboard .left, .scoreboard .right {
+            flex: none;
+            text-align: left;
+            width: 130px;
+        }
+        .scoreboard .center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-weight: bold;
+            font-size: 1.5em;
+            white-space: nowrap;
+        }
+        .value {
+            color: orange;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .animate-value {
+            animation: pop 0.3s;
+        }
+        @keyframes pop {
+            0% { transform: scale(1); color: orange; }
+            50% { transform: scale(1.3); color: #ff9800; }
+            100% { transform: scale(1); color: orange; }
+        }
+        .board {
+            display: grid;
+            gap: 10px;
+            justify-content: center;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 800px;
+            box-sizing: border-box;
+            height: 80vh;
+            max-height: 800px;
+            grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+        }
+
+        .card {
+            background-color: #b3cde0;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            border-radius: 10px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            overflow: hidden;
+        }
+
+        .board.level-1 .card:after {
+            font-size: 0.8em;
+            display: block;
+        }
+        .board.level-2 .card:after {
+            font-size: 0.6em;
+            display: block;
+        }
+        .board.level-other .card:after {
+            display: none;
+        }
+        .card:after {
+            content: attr(data-country);
+            position: absolute;
+            bottom: 5px;
+            font-size: 0.6em;
+            opacity: 0;
+            transition: opacity 0.3s;
+            width: 100%;
+            text-align: center;
+            padding: 0 5px;
+            box-sizing: border-box;
+        }
+        .card.revealed:after, .card.matched:after {
+            opacity: 1;
+        }
+        .card.revealed, .card.matched {
+            background-color: #f0a202;
+        }
+        .card.matched {
+            background-color: green !important;
+            cursor: default;
+        }
+        .card:not(.matched):hover {
+            transform: scale(1.05);
+        }
+        .completion-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            font-size: 2em;
+            flex-direction: column;
+            z-index: 1000;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .completion-message button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #f0a202;
+            color: #ffffff;
+            transition: background-color 0.3s;
+        }
+        .completion-message button:hover {
+            background-color: #d18e00;
+        }
+        @media (max-width: 600px) {
+            body {
+                justify-content: flex-start;
+            }
+            .scoreboard .left, .scoreboard .right {
+                width: 80px;
+            }
+            .scoreboard .center {
+                display: none;
+            }
+            .card {
+                aspect-ratio: 1 / 1;
+            }
+            .scoreboard div {
+                font-size: 1em;
+            }
+            .completion-message {
+                font-size: 1.5em;
+            }
+            .completion-message button {
+                font-size: 0.9em;
+                padding: 8px 16px;
+            }
+
+            .board.level-1 .card:after,
+            .board.level-2 .card:after,
+            .board.level-other .card:after {
+                display: none;
+            }
+
+            .board {
+                aspect-ratio: 1 / 1;
+                height: auto;
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scoreboard">
+        <div class="left">Level: <span id="level" class="value">1</span></div>
+        <div class="center">Flag Memory Match</div>
+        <div class="right">Score: <span id="score" class="value">0</span></div>
+    </div>
+    <div id="board" class="board"></div>
+
+    <script>
+        const MAX_LEVEL = 6;
+        const flags = [
+            { emoji: "🇬🇼", country: "Guinea-Bissau" },
+            { emoji: "🇪🇸", country: "Spain" },
+            { emoji: "🇸🇳", country: "Senegal" },
+            { emoji: "🇮🇹", country: "Italy" },
+            { emoji: "🇺🇸", country: "United States" },
+            { emoji: "🇫🇷", country: "France" },
+            { emoji: "🇬🇷", country: "Greece" },
+            { emoji: "🇩🇪", country: "Germany" },
+            { emoji: "🇨🇦", country: "Canada" },
+            { emoji: "🇯🇵", country: "Japan" },
+            { emoji: "🇧🇷", country: "Brazil" },
+            { emoji: "🇮🇳", country: "India" },
+            { emoji: "🇨🇳", country: "China" },
+            { emoji: "🇲🇽", country: "Mexico" },
+            { emoji: "🇿🇦", country: "South Africa" },
+            { emoji: "🇦🇺", country: "Australia" },
+            { emoji: "🇬🇧", country: "United Kingdom" },
+            { emoji: "🇬🇳", country: "Guinea" },
+            { emoji: "🇰🇷", country: "South Korea" },
+            { emoji: "🇹🇷", country: "Turkey" },
+            { emoji: "🇨🇭", country: "Switzerland" },
+            { emoji: "🇦🇷", country: "Argentina" },
+            { emoji: "🇱🇷", country: "Liberia" },
+            { emoji: "🇸🇪", country: "Sweden" },
+            { emoji: "🇳🇴", country: "Norway" },
+            { emoji: "🇩🇰", country: "Denmark" },
+            { emoji: "🇹🇭", country: "Thailand" },
+            { emoji: "🇳🇱", country: "Netherlands" },
+            { emoji: "🇮🇩", country: "Indonesia" },
+            { emoji: "🇵🇱", country: "Poland" },
+            { emoji: "🇵🇭", country: "Philippines" },
+            { emoji: "🇲🇾", country: "Malaysia" },
+            { emoji: "🇦🇹", country: "Austria" },
+            { emoji: "🇮🇷", country: "Iran" },
+            { emoji: "🇷🇴", country: "Romania" },
+            { emoji: "🇻🇳", country: "Vietnam" },
+            { emoji: "🇪🇬", country: "Egypt" },
+            { emoji: "🇪🇹", country: "Ethiopia" },
+            { emoji: "🇰🇪", country: "Kenya" },
+            { emoji: "🇸🇾", country: "Syria" },
+            { emoji: "🇳🇿", country: "New Zealand" },
+            { emoji: "🇸🇬", country: "Singapore" },
+            { emoji: "🇲🇲", country: "Myanmar" },
+            { emoji: "🇧🇩", country: "Bangladesh" },
+            { emoji: "🇳🇬", country: "Nigeria" },
+            { emoji: "🇬🇭", country: "Ghana" },
+            { emoji: "🇨🇴", country: "Colombia" },
+            { emoji: "🇵🇪", country: "Peru" },
+            { emoji: "🇧🇪", country: "Belgium" },
+            { emoji: "🇵🇹", country: "Portugal" },
+            { emoji: "🇫🇮", country: "Finland" },
+            { emoji: "🇮🇸", country: "Iceland" },
+            { emoji: "🇮🇪", country: "Ireland" },
+            { emoji: "🇮🇱", country: "Israel" },
+            { emoji: "🇱🇺", country: "Luxembourg" },
+            { emoji: "🇲🇹", country: "Malta" },
+            { emoji: "🇲🇦", country: "Morocco" },
+            { emoji: "🇸🇦", country: "Saudi Arabia" },
+            { emoji: "🇷🇸", country: "Serbia" },
+            { emoji: "🇸🇰", country: "Slovakia" },
+            { emoji: "🇸🇮", country: "Slovenia" },
+            { emoji: "🇸🇸", country: "South Sudan" },
+            { emoji: "🇱🇰", country: "Sri Lanka" },
+            { emoji: "🇸🇩", country: "Sudan" },
+            { emoji: "🇺🇦", country: "Ukraine" },
+            { emoji: "🇺🇾", country: "Uruguay" },
+            { emoji: "🇻🇪", country: "Venezuela" },
+            { emoji: "🇿🇼", country: "Zimbabwe" },
+            { emoji: "🇨🇺", country: "Cuba" },
+            { emoji: "🇭🇺", country: "Hungary" },
+            { emoji: "🇧🇾", country: "Belarus" },
+            { emoji: "🇨🇷", country: "Costa Rica" },
+            { emoji: "🇵🇦", country: "Panama" },
+            { emoji: "🇩🇴", country: "Dominican Republic" },
+            { emoji: "🇶🇦", country: "Qatar" },
+            { emoji: "🇧🇭", country: "Bahrain" },
+            { emoji: "🇨🇾", country: "Cyprus" },
+            { emoji: "🇪🇪", country: "Estonia" },
+            { emoji: "🇱🇻", country: "Latvia" },
+            { emoji: "🇱🇹", country: "Lithuania" },
+            { emoji: "🇧🇬", country: "Bulgaria" },
+            { emoji: "🇦🇱", country: "Albania" },
+            { emoji: "🇦🇿", country: "Azerbaijan" },
+            { emoji: "🇦🇲", country: "Armenia" },
+            { emoji: "🇰🇿", country: "Kazakhstan" },
+            { emoji: "🇺🇿", country: "Uzbekistan" },
+            { emoji: "🇲🇳", country: "Mongolia" },
+            { emoji: "🇳🇵", country: "Nepal" },
+            { emoji: "🇧🇹", country: "Bhutan" },
+            { emoji: "🇲🇻", country: "Maldives" },
+            { emoji: "🇧🇳", country: "Brunei" },
+            { emoji: "🇱🇦", country: "Laos" },
+            { emoji: "🇰🇭", country: "Cambodia" },
+            { emoji: "🇹🇲", country: "Turkmenistan" },
+            { emoji: "🇹🇯", country: "Tajikistan" },
+            { emoji: "🇰🇬", country: "Kyrgyzstan" },
+            { emoji: "🇰🇵", country: "North Korea" },
+            { emoji: "🇹🇼", country: "Taiwan" }
+        ];
+
+        let currentLevel = 1;
+        let totalScore = 0;
+        let boardSize, revealedFlags = [], matchedPairs = 0;
+        
+        const levelElement = document.getElementById('level');
+        const scoreElement = document.getElementById('score');
+        const boardElement = document.getElementById('board');
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function setupBoard(size) {
+            boardElement.innerHTML = '';
+            boardSize = size;
+            matchedPairs = 0;
+            revealedFlags = [];
+
+            boardElement.classList.remove('level-1', 'level-2', 'level-other');
+            if (currentLevel === 1) {
+                boardElement.classList.add('level-1');
+            } else if (currentLevel === 2) {
+                boardElement.classList.add('level-2');
+            } else {
+                boardElement.classList.add('level-other');
+            }
+
+            const uniqueCountries = [...new Set(flags.map(flag => flag.country))];
+            shuffleArray(uniqueCountries);
+
+            const numPairs = Math.floor((size * size) / 2);
+            if (numPairs > uniqueCountries.length) {
+                alert('Not enough unique flags to create the board.');
+                return;
+            }
+
+            const selectedCountries = uniqueCountries.slice(0, numPairs);
+            const selectedFlags = selectedCountries.flatMap(country => {
+                const flag = flags.find(f => f.country === country);
+                return [
+                    { emoji: flag.emoji, country: flag.country },
+                    { emoji: flag.emoji, country: flag.country }
+                ];
+            });
+
+            shuffleArray(selectedFlags);
+
+            boardElement.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+            boardElement.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+
+            selectedFlags.forEach(flag => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.flag = flag.emoji;
+                card.dataset.country = flag.country;
+                card.addEventListener('click', () => revealCard(card));
+                boardElement.appendChild(card);
+            });
+        }
+
+        function revealCard(card) {
+            if (revealedFlags.length < 2 && !card.classList.contains('revealed') && !card.classList.contains('matched')) {
+                card.classList.add('revealed');
+                card.textContent = card.dataset.flag;
+                revealedFlags.push(card);
+
+                if (revealedFlags.length === 2) {
+                    setTimeout(checkMatch, 1000);
+                }
+            }
+        }
+
+        function checkMatch() {
+            const [card1, card2] = revealedFlags;
+
+            if (card1.dataset.flag === card2.dataset.flag) {
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                updateScore(20);
+                matchedPairs += 1;
+
+                if (matchedPairs === Math.floor((boardSize * boardSize) / 2)) {
+                    updateScore(100);
+                    setTimeout(nextLevel, 1000);
+                }
+            } else {
+                updateScore(-1);
+                card1.classList.remove('revealed');
+                card2.classList.remove('revealed');
+                card1.textContent = '';
+                card2.textContent = '';
+            }
+            revealedFlags = [];
+        }
+
+        function updateScore(points) {
+            totalScore += points;
+            totalScore = Math.max(totalScore, 0);
+            scoreElement.classList.add('animate-value');
+            levelElement.classList.add('animate-value');
+            scoreElement.textContent = totalScore;
+            setTimeout(() => {
+                scoreElement.classList.remove('animate-value');
+                levelElement.classList.remove('animate-value');
+            }, 300);
+        }
+
+        function showCompletionMessage() {
+            const message = document.createElement('div');
+            message.className = 'completion-message';
+            message.innerHTML = `
+                <div style="font-size: 2.5em;">🏆 Congratulations! 🏆</div>
+                <div>You have completed the whole game.</div>
+                <div>Your Score: ${totalScore}</div>
+                <button onclick="restartGame()">Play Again</button>
+            `;
+            document.body.appendChild(message);
+        }
+
+        function restartGame() {
+            const message = document.querySelector('.completion-message');
+            if (message) {
+                message.remove();
+            }
+            currentLevel = 1;
+            totalScore = 0;
+            levelElement.textContent = currentLevel;
+            scoreElement.textContent = totalScore;
+            setupBoard(4);
+        }
+
+        function nextLevel() {
+            if (currentLevel < MAX_LEVEL) {
+                currentLevel += 1;
+                levelElement.textContent = currentLevel;
+                const newSize = 4 + 2 * (currentLevel - 1);
+                setupBoard(newSize);
+            } else {
+                showCompletionMessage();
+            }
+        }
+
+        setupBoard(4);
+    </script>
+</body>
+</html>
