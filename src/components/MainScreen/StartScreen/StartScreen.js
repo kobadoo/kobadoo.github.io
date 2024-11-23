@@ -8,6 +8,7 @@ import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
 import BulbImg from '../../../images/bulb.png';
 import VeganImg from '../../../images/vegan_quest_banner.png';
+import FlagMatchImg from '../../../images/flag_match_banner.jpg';
 import GooglePlayImg from '../../../images/google-play-badge.png';
 import { ThumbnailSlideShow } from './ThumbnailSlideShow';
 import { modeIdToModeName } from '../../../utils/Modes/ModeUtils';
@@ -92,6 +93,17 @@ const StartScreen = (props) => {
                 <button 
                     className={classes.VeganQuestButton} 
                     onClick={() => window.open('/VeganQuest.html', '_blank')}>Play Vegan Quest</button>
+            </div>
+
+            <div className={classes.BenefitsText}>
+                <div role="img">
+                    <a href="/FlagMemoryMatch.html" target="_blank"><img className={classes.VeganImage} src={FlagMatchImg} alt="" /></a>
+                </div>
+                <h3>Try Flag Memory Match!</h3>
+                <p>Test your memory and geography skills with this exciting game, where you match pairs of flags from 98 countries. With 6 increasingly challenging levels, each stage pushes your recall abilities further.</p>
+                <button 
+                    className={classes.FlagMatchButton} 
+                    onClick={() => window.open('/FlagMemoryMatch.html', '_blank')}>Play Flag Memory Match</button>
             </div>
             
             <Footer />

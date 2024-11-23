@@ -13,4 +13,4 @@ Kobadoo is a free game to train your brain by memorizing emojis, playing cards, 
 ## Contact
 For further information about Kobadoo, please contact us on `hello (at) kobadoo.com`.
 
-(c) Kobadoo, 2024. All rights reserved.
+(c) Kobadoo. All rights reserved.

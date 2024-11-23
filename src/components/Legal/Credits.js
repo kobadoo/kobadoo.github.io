@@ -8,7 +8,6 @@ const Credits = () => {
     <div className={classes.Legal}>
         <h2>Credits</h2>
         <ul>
-            <li>Game ideated by Sonja Gajic, specialist in clinical neuropsychology.</li>
             <li>Technical developement by <a href="https://www.arturocalvo.com" title="Arturo Calvo" target="_blank" rel="noopener noreferrer">Arturo Calvo</a></li>
             <li>Icons made by <a href="https://www.freepik.com" title="Freepik" target="_blank" rel="noopener noreferrer">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon" target="_blank" rel="noopener noreferrer">www.flaticon.com</a></li>
             <li>Text-to-speech by <a href="https://soundoftext.com/" title="Sound of Text" target="_blank" rel="noopener noreferrer">Sound of Text</a></li>
@@ -18,7 +17,7 @@ const Credits = () => {
         </ul>
 
         <center>
-             <p><i>(c) Kobadoo, 2024. All rights reserved.</i></p>
+             <p><i>(c) Kobadoo. All rights reserved.</i></p>
         </center>
     </div>
     );
