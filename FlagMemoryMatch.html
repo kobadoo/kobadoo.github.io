@@ -59,13 +59,12 @@
         .scoreboard .left, .scoreboard .right {
             flex: none;
             text-align: left;
-            width: 130px;
+            width: 140px;
         }
         .scoreboard .center {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            font-weight: bold;
             font-size: 1.5em;
             white-space: nowrap;
         }
@@ -110,28 +109,46 @@
             overflow: hidden;
         }
 
-        .board.level-1 .card:after {
-            font-size: 0.8em;
-            display: block;
+        .board.level-1 {
+            gap: 10px;
         }
-        .board.level-2 .card:after {
-            font-size: 0.6em;
-            display: block;
+        .board.level-2 {
+            gap: 8px;
         }
-        .board.level-other .card:after {
-            display: none;
+        .board.level-3 {
+            gap: 6px;
         }
+        .board.level-4 {
+            gap: 4px;
+        }
+        .board.level-5 {
+            gap: 2px;
+        }
+        .board.level-6 {
+            gap: 1px;
+        }
+
+        .board.level-1 .card {
+            font-size: 8em;
+        }
+        .board.level-2 .card {
+            font-size: 6em;
+        }
+        .board.level-3 .card {
+            font-size: 4em;
+        }
+        .board.level-4 .card {
+            font-size: 3em;
+        }
+        .board.level-5 .card {
+            font-size: 2em;
+        }
+        .board.level-6 .card {
+            font-size: 1.2em;
+        }
+        
         .card:after {
-            content: attr(data-country);
-            position: absolute;
-            bottom: 5px;
-            font-size: 0.6em;
-            opacity: 0;
-            transition: opacity 0.3s;
-            width: 100%;
-            text-align: center;
-            padding: 0 5px;
-            box-sizing: border-box;
+            display: none;
         }
         .card.revealed:after, .card.matched:after {
             opacity: 1;
@@ -200,12 +217,6 @@
             .completion-message button {
                 font-size: 0.9em;
                 padding: 8px 16px;
-            }
-
-            .board.level-1 .card:after,
-            .board.level-2 .card:after,
-            .board.level-other .card:after {
-                display: none;
             }
 
             .board {
@@ -334,6 +345,8 @@
         const levelElement = document.getElementById('level');
         const scoreElement = document.getElementById('score');
         const boardElement = document.getElementById('board');
+        const centerElement = document.querySelector('.scoreboard .center');
+        let hideTimeout = null;
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -349,14 +362,8 @@
             matchedPairs = 0;
             revealedFlags = [];
 
-            boardElement.classList.remove('level-1', 'level-2', 'level-other');
-            if (currentLevel === 1) {
-                boardElement.classList.add('level-1');
-            } else if (currentLevel === 2) {
-                boardElement.classList.add('level-2');
-            } else {
-                boardElement.classList.add('level-other');
-            }
+            boardElement.classList.remove('level-1', 'level-2', 'level-3', 'level-4', 'level-5', 'level-6');
+            boardElement.classList.add(`level-${currentLevel}`);
 
             const uniqueCountries = [...new Set(flags.map(flag => flag.country))];
             shuffleArray(uniqueCountries);
@@ -396,11 +403,22 @@
                 card.classList.add('revealed');
                 card.textContent = card.dataset.flag;
                 revealedFlags.push(card);
+                displayClickedCountry(card.dataset.flag, card.dataset.country);
 
                 if (revealedFlags.length === 2) {
                     setTimeout(checkMatch, 1000);
                 }
             }
+        }
+
+        function displayClickedCountry(flag, country) {
+            if (hideTimeout) {
+                clearTimeout(hideTimeout);
+            }            
+            centerElement.innerHTML = `${flag} ${country}`;
+            hideTimeout = setTimeout(() => {
+                centerElement.textContent = '';
+            }, 1000);
         }
 
         function checkMatch() {
