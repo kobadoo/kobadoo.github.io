@@ -419,7 +419,6 @@
         }
 
         function revealCard(card) {
-            showCompletionMessage()
             if (revealedFlags.length < 2 && !card.classList.contains('revealed') && !card.classList.contains('matched')) {
                 card.classList.add('revealed');
                 card.textContent = card.dataset.flag;
