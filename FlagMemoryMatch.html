@@ -496,6 +496,7 @@
             totalScore = 0;
             levelElement.textContent = currentLevel;
             scoreElement.textContent = totalScore;
+            updateLevelDisplay();
             setupBoard(4);
         }
 
@@ -504,12 +505,18 @@
                 currentLevel += 1;
                 levelElement.textContent = currentLevel;
                 const newSize = 4 + 2 * (currentLevel - 1);
+                updateLevelDisplay();
                 setupBoard(newSize);
             } else {
                 showCompletionMessage();
             }
         }
 
+        function updateLevelDisplay() {
+            levelElement.textContent = `${currentLevel}/${MAX_LEVEL}`;
+        }
+
+        updateLevelDisplay();
         setupBoard(4);
     </script>
 </body>
