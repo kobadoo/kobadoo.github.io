@@ -513,7 +513,7 @@
         }
 
         function updateLevelDisplay() {
-            levelElement.textContent = `<strong>${currentLevel}</strong>/${MAX_LEVEL}`;
+            levelElement.innerHTML = `<strong>${currentLevel}</strong>/${MAX_LEVEL}`;
         }
 
         updateLevelDisplay();
