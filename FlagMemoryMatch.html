@@ -425,7 +425,7 @@
                 displayClickedCountry(card.dataset.flag, card.dataset.country);
 
                 if (revealedFlags.length === 2) {
-                    setTimeout(checkMatch, 1000);
+                    setTimeout(checkMatch, 800);
                 }
             }
         }
@@ -513,7 +513,7 @@
         }
 
         function updateLevelDisplay() {
-            levelElement.textContent = `${currentLevel}/${MAX_LEVEL}`;
+            levelElement.textContent = `${currentLevel} / ${MAX_LEVEL}`;
         }
 
         updateLevelDisplay();
