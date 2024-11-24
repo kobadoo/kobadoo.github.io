@@ -18,7 +18,7 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-XVVFLF1E2E');
+        gtag('config', 'G-S8TGVY87K7');
     </script>
     <!-- Google Adsense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2852428416753185" crossorigin="anonymous"></script>
@@ -256,6 +256,7 @@
 
     <script>
         const MAX_LEVEL = 6;
+        const RECORD_SCORE = 4448;
         const flags = [
             { emoji: "🇬🇼", country: "Guinea-Bissau" },
             { emoji: "🇪🇸", country: "Spain" },
@@ -479,11 +480,13 @@
             const message = document.createElement('div');
             message.className = 'completion-message';
             message.innerHTML = `
-                <div style="font-size: 2.5em;">🏆 Congratulations! 🏆</div>
-                <div>You have completed the whole game.</div>
-                <div>Your Score: ${totalScore}</div>
+                <div style="font-size: 1.6em;">Congratulations!</div>
+                <div style="font-size: 2.5em; margin-bottom: 20px;">🏆</div>
+                <div style="font-size: 1.1em;">All-time record: ${RECORD_SCORE}</div>
+                <div style="font-size: 1.2em;">Your Score: <strong>${totalScore}</strong></div>
                 <button onclick="restartGame()">Play Again</button>
             `;
+            gtag('event', totalScore);
             document.body.appendChild(message);
         }
 
@@ -518,6 +521,7 @@
 
         updateLevelDisplay();
         setupBoard(4);
+        gtag('event', "game_played");
     </script>
 </body>
 </html>
