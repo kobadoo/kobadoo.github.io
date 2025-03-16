@@ -1,5 +1,4 @@
 import axios from '../../utils/axios-stats';
-import { eventGA } from '../../utils/Analytics';
 import * as actionTypes from './actionTypes';
 import modes_config from '../../utils/Modes/modes_config.json';
 import { CRYSTAL_BALL } from '../constants';

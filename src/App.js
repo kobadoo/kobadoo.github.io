@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { PageView, initGA } from './utils/Analytics';
 import { Route, Routes } from 'react-router-dom';
 import Toolbar from './components/Toolbar/Toolbar';
 import MainScreen from './components/MainScreen/MainScreen';
@@ -12,11 +11,6 @@ import ScrollToTop from './utils/ScrollToTop';
 import CrystalBall from './crystalball/CrystalBall';
 
 const App = () => {
-
-  useEffect(() => {
-    initGA('G-5103PX7L4F');
-    PageView();
-  }, []);
   
   return (
     <ScrollToTop>
