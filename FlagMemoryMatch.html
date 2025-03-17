@@ -475,7 +475,6 @@
                 <div style="font-size: 1.2em;">Your Score: <strong>${totalScore}</strong></div>
                 <button onclick="restartGame()">Play Again</button>
             `;
-            gtag('event', totalScore);
             document.body.appendChild(message);
         }
 
@@ -510,7 +509,6 @@
 
         updateLevelDisplay();
         setupBoard(4);
-        gtag('event', "game_played");
     </script>
 </body>
 </html>
