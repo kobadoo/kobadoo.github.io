@@ -405,7 +405,6 @@
                     foodArray.push(randomFood());
                 }
             }, foodSpawnInterval);
-            gtag('event', "game_played");
         }
 
         function calculateSpawnInterval(level) {
@@ -478,8 +477,6 @@
                                 clearInterval(foodInterval);
                             }
                             gameRunning = false;
-
-                            gtag('event', level + "-" + score);
                         }
                     }
                 }
