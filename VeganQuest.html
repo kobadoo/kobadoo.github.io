@@ -96,26 +96,6 @@
             color: darkorange; 
         }
 
-        .control-buttons {
-            position: absolute;
-            bottom: 20px;
-            width: 90%;
-            display: none;
-            justify-content: space-between;
-        }
-
-        .control-buttons button {
-            padding: 10px;
-            flex: 1;
-            font-size: 18px;
-            background: darkorange;
-            color: #000000;
-            border-radius: 10px;
-            cursor: pointer;
-            font-family: 'Press Start 2P', cursive;
-            margin: 0 20px;
-        }
-
         .start-buttons {
             display: flex;
             position: absolute;
@@ -157,42 +137,6 @@
 
         .pause-button:hover {
             background-color: orange;
-        }
-
-        .arrow-button {
-            width: 45px;
-            height: 45px;
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            position: relative;
-            padding: 0;
-        }
-
-        .arrow-button::before {
-            content: '';
-            display: inline-block;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .left-arrow::before {
-            border-width: 15px 25px 15px 0;
-            border-color: transparent black transparent transparent;
-        }
-
-        .right-arrow::before {
-            border-width: 15px 0 15px 25px;
-            border-color: transparent transparent transparent black;
-        }
-
-        .arrow-button:active::before {
-            opacity: 0.7;
         }
 
         .Footer {
@@ -246,10 +190,6 @@
             #scoreboard {
                 font-size: 9px;
             }
-            .control-buttons button {
-                font-size: 18px;
-                padding: 5px;
-            }
             .start-buttons {
                 margin: 0;
             }
@@ -266,11 +206,6 @@
                 width: 140px;
             }
         }
-        @media (min-width: 768px) {
-            .control-buttons {
-                display: none;
-            }
-        }
     </style>
     <link href="fonts/pressstart.css" rel="stylesheet">
 </head>
@@ -285,8 +220,8 @@
     <div id="instructions" style="display:none;">
         <script>
             document.write(window.innerWidth < 768 
-                ? 'Use the left and right arrows or touch screen to help our hero eat vegan food while avoiding non-vegan temptations.<br><br>Earn points and refill your 3 lives by jumping to the next level. It gets more challenging over time!'
-                : 'Help our hero eat vegan food while avoiding non-vegan temptations.<br><br>Earn points and refill your 3 lives by jumping to the next level. It gets more difficult over time!<br><br>Use mouse, touch pad or arrow keys <- -> for movement, P to pause, R to restart, S to start.');
+                ? 'Use your touch screen to help our hero eat vegan food while avoiding non-vegan temptations.<br><br>Earn points and refill your 3 lives by jumping to the next level. It gets more challenging over time!'
+                : 'Help our hero eat vegan food while avoiding non-vegan temptations.<br><br>Earn points and refill your 3 lives by jumping to the next level. It gets more challenging over time!<br><br>Use mouse, touch pad or arrow keys <- -> for movement, P to pause, R to restart, S to start.');
         </script>
     </div>
 
@@ -299,10 +234,6 @@
         <button id="restartButton" style="display:none;">RESTART</button>
     </div>
     <button id="pauseButton" class="pause-button" style="display:none;">PAUSE</button>
-    <div id="controlButtons" class="control-buttons" style="display:none;">
-        <button id="leftButton" class="arrow-button left-arrow"></button>
-        <button id="rightButton" class="arrow-button right-arrow"></button>
-    </div>
 
     <div id="footer" class="Footer">
         <div class="FooterItem"><a href="https://www.kobadoo.com/#/terms" target="_blank">Terms</a></div>
@@ -353,6 +284,10 @@
 
         let score, level, lives, foodArray, salivaFaceX, isGameOver, salivaFaceY, isPaused, gameRunning, foodInterval, foodSpawnInterval, isplayedEmoji, animationFrameId, isUpdatingLevel;
 
+        // Add global variable for arrow opacity
+        let showArrows = false;
+        let arrowOpacity = 1;
+
         function setupCanvas() {
             isMobile = window.innerWidth < 768;
             canvas.width = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.90;
@@ -374,6 +309,25 @@
             instructions.style.display = 'block';
         };
 
+        function initArrows() {
+            if (isMobile) {
+                showArrows = true;
+                arrowOpacity = 1;
+                setTimeout(() => {
+                    const fadeInterval = setInterval(() => {
+                        arrowOpacity -= 0.1;
+                        if (arrowOpacity <= 0) {
+                            arrowOpacity = 0;
+                            showArrows = false;
+                            clearInterval(fadeInterval);
+                        }
+                    }, 50);
+                }, 1000);
+            } else {
+                showArrows = false;
+            }
+        }
+
         function initGame() {
             score = 0;
             level = 1;
@@ -385,6 +339,7 @@
             gameRunning = false;
             isUpdatingLevel = false;
             displayedEmoji = salivaFaceEmoji;
+            initArrows();
             footer.style.display = 'none';
             gameOverMessage.style.display = 'none';
             pauseMessage.style.display = 'none';
@@ -422,6 +377,17 @@
         function drawSalivaFace() {
             ctx.font = isMobile ? FONT_SIZE_SALIVA_FACE_MOBILE : FONT_SIZE_SALIVA_FACE_DESKTOP;
             ctx.fillText(displayedEmoji, salivaFaceX, salivaFaceY);
+            if (showArrows && arrowOpacity > 0) {
+                ctx.save();
+                // Use rgba to apply fading effect in darkorange (rgba(255,140,0) is darkorange)
+                ctx.fillStyle = `rgba(255,140,0, ${arrowOpacity})`;
+                const faceWidth = isMobile ? 35 : 50;
+                // Draw left arrow on the left side of the face
+                ctx.fillText('⬅', salivaFaceX - 50, salivaFaceY);
+                // Draw right arrow on the right side of the face
+                ctx.fillText('⮕', salivaFaceX + faceWidth + 15, salivaFaceY);
+                ctx.restore();
+            }
         }
 
         function drawFood() {
@@ -451,6 +417,9 @@
 
                 if (food.y > canvas.height) {
                     foodArray.splice(i, 1);
+                    if (veganFood.includes(food.emoji)) {
+                        updateScore(-5, 'red');
+                    }
                 }
 
                 if (
@@ -504,7 +473,7 @@
         }
 
         function updateScore(points, color) {
-            score += points;
+            score = Math.max(score + points, 0);
             updateLevel();
         }
 
@@ -618,20 +587,6 @@
             }
         });
 
-        leftButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            if (!isPaused) {
-                salivaFaceX = Math.max(salivaFaceX - VELOCITY_MOBILE, 0);
-            }
-        });
-
-        rightButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            if (!isPaused) {
-                salivaFaceX = Math.min(salivaFaceX + VELOCITY_MOBILE, canvas.width - 35);
-            }
-        });
-
         startButton.addEventListener('click', () => {
             startHandler();
         });
@@ -669,19 +624,6 @@
                 salivaFaceX = Math.max(0, Math.min(salivaFaceX, canvas.width - 50));
             }
         });
-
-        if (window.innerWidth >= 768) {
-            document.querySelector('.control-buttons').style.display = 'none';
-        }
-
-        function showControlButtons() {
-            if (window.innerWidth < 768) {
-                document.querySelector('.control-buttons').style.display = 'flex';
-            }
-        }
-
-        startButton.addEventListener('click', showControlButtons);
-        restartButton.addEventListener('click', showControlButtons);
     </script>
 </body>
 </html>
