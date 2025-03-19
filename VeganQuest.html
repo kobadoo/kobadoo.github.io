@@ -377,13 +377,10 @@
             ctx.fillText(displayedEmoji, salivaFaceX, salivaFaceY);
             if (showArrows && arrowOpacity > 0) {
                 ctx.save();
-                // Use rgba to apply fading effect in darkorange (rgba(255,140,0) is darkorange)
                 ctx.fillStyle = `rgba(255,140,0, ${arrowOpacity})`;
                 const faceWidth = isMobile ? 35 : 50;
-                // Draw left arrow on the left side of the face
-                ctx.fillText('⬅', salivaFaceX - 50, salivaFaceY);
-                // Draw right arrow on the right side of the face
-                ctx.fillText('⮕', salivaFaceX + faceWidth + 15, salivaFaceY);
+                ctx.fillText('\u2B05', salivaFaceX - 50, salivaFaceY);
+                ctx.fillText('\u27A1', salivaFaceX + faceWidth + 15, salivaFaceY);
                 ctx.restore();
             }
         }
