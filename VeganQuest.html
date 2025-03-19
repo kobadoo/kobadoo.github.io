@@ -453,7 +453,7 @@
                 if (food.y > canvas.height) {
                     foodArray.splice(i, 1);
                     if (veganFood.includes(food.emoji)) {
-                        updateScore(-5, 'red');
+                        updateScore(-5);
                     }
                 }
 
@@ -464,7 +464,7 @@
                     food.x + emojiWidth > salivaFaceX
                 ) {
                     if (veganFood.includes(food.emoji)) {
-                        updateScore(20, 'green');
+                        updateScore(20);
                         foodArray.splice(i, 1);
                         changeFace(savourEmoji);
                     } else {
@@ -507,7 +507,7 @@
             }
         }
 
-        function updateScore(points, color) {
+        function updateScore(points) {
             score = Math.max(score + points, 0);
             updateLevel();
         }
