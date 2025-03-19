@@ -309,20 +309,43 @@
 
         function initArrows() {
             if (isMobile) {
-                showArrows = true;
-                arrowOpacity = 1;
-                setTimeout(() => {
-                    const fadeInterval = setInterval(() => {
-                        arrowOpacity -= 0.1;
-                        if (arrowOpacity <= 0) {
-                            arrowOpacity = 0;
-                            showArrows = false;
-                            clearInterval(fadeInterval);
-                        }
-                    }, 50);
-                }, 1000);
+            showArrows = true;
+            arrowOpacity = 1;
+            const steps = 10;
+            const interval = 80;
+            function fadeOut(callback) {
+                const fadeOutInt = setInterval(() => {
+                arrowOpacity -= 1 / steps;
+                if (arrowOpacity <= 0) {
+                    arrowOpacity = 0;
+                    clearInterval(fadeOutInt);
+                    if (callback) callback();
+                }
+                }, interval);
+            }
+
+            function fadeIn(callback) {
+                const fadeInInt = setInterval(() => {
+                arrowOpacity += 1 / steps;
+                if (arrowOpacity >= 1) {
+                    arrowOpacity = 1;
+                    clearInterval(fadeInInt);
+                    if (callback) callback();
+                }
+                }, interval);
+            }
+
+            fadeOut(() => {
+                fadeIn(() => {
+                fadeOut(() => {
+                    setTimeout(() => {
+                    showArrows = false;
+                    }, 500);
+                });
+                });
+            });
             } else {
-                showArrows = false;
+            showArrows = false;
             }
         }
 
@@ -376,16 +399,30 @@
             ctx.font = isMobile ? FONT_SIZE_SALIVA_FACE_MOBILE : FONT_SIZE_SALIVA_FACE_DESKTOP;
             ctx.fillText(displayedEmoji, salivaFaceX, salivaFaceY);
             if (showArrows && arrowOpacity > 0) {
-                ctx.save();
-                // Use rgba to apply fading effect in darkorange (rgba(255,140,0) is darkorange)
-                ctx.fillStyle = `rgba(255,140,0, ${arrowOpacity})`;
-                const faceWidth = isMobile ? 35 : 50;
-                // Draw left arrow on the left side of the face
-                ctx.fillText('⬅', salivaFaceX - 50, salivaFaceY);
-                // Draw right arrow on the right side of the face
-                ctx.fillText('⮕', salivaFaceX + faceWidth + 15, salivaFaceY);
-                ctx.restore();
+            drawBeautifulArrow(salivaFaceX - 50, salivaFaceY - 15, 'left');
+            const faceWidth = isMobile ? 35 : 50;
+            drawBeautifulArrow(salivaFaceX + faceWidth + 15, salivaFaceY - 15, 'right');
             }
+        }
+
+        function drawBeautifulArrow(x, y, direction) {
+            ctx.save();
+            ctx.beginPath();
+            const size = 30;
+            if (direction === 'left') {
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + size, y - size / 2);
+                ctx.lineTo(x + size, y + size / 2);
+            } else {
+                ctx.moveTo(x + size, y);
+                ctx.lineTo(x, y - size / 2);
+                ctx.lineTo(x, y + size / 2);
+            }
+            ctx.closePath();
+            ctx.fillStyle = "darkorange";
+            ctx.globalAlpha = arrowOpacity;
+            ctx.fill();
+            ctx.restore();
         }
 
         function drawFood() {
