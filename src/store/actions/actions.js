@@ -32,8 +32,6 @@ export const endGame = () => {
             language: state.lang
         }
         const mode = modes_config[state.mode].name;
-        eventGA('Events by Mode', mode);
-        eventGA('Events by Level', state.level);
         axios.post('/stats.json', stats);
     };
 };
@@ -105,7 +103,6 @@ export const changeScreen = (newValue) => {
                 mode: CRYSTAL_BALL,
                 timestamp: date + ' ' + time,
             }
-            eventGA('Events by Mode', mode);
             axios.post('/stats.json', stats);
         }
     };
