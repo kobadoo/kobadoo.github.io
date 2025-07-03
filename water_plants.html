@@ -131,22 +131,22 @@
         .barrel-post {
             position: absolute;
             bottom: 100%;
-            width: 10px;
-            height: 80%;
+            width: 14px;
+            height: 40px;
             background: var(--barrel-dark);
         }
-        .barrel-post.left { left: 5px; }
-        .barrel-post.right { right: 5px; }
+        .barrel-post.left { left: 8px; }
+        .barrel-post.right { right: 8px; }
         .barrel-roof {
             position: absolute;
-            bottom: calc(100% + 80%);
-            left: 5px;
-            width: 88%;
-            height: 40px;
+            bottom: calc(100% + 40px);
+            left: 8px;
+            width: calc(100% - 16px);
+            height: 20px;
             background: transparent;
             border: 10px solid var(--barrel-dark);
             border-bottom: none;
-            border-radius: 100px 100px 0 0;
+            border-radius: 40px 40px 0 0;
             box-sizing: border-box;
         }
         
@@ -555,11 +555,92 @@
             #top-ui-bar { font-size: 2vw; }
             #combo-display { font-size: 6vw; }
             #garden-health-container { height: 2.5vh; }
-            #mobile-controls { display: block; }
-            .popup { width: auto; max-width: 90%; }
-            .popup h1 { font-size: 6vw; }
-            .popup p { font-size: 3vw; }
-            .popup button { padding: 10px 20px; font-size: 3.5vw; }
+            #mobile-controls { display: none; }
+            .popup {
+                width: auto;
+                max-width: 98vw;
+                max-height: 80vh;
+                padding: 10px 5px 60px 5px;
+                border-radius: 10px;
+                font-size: 3vw;
+                overflow-y: auto;
+                box-sizing: border-box;
+                position: relative;
+            }
+            .popup h1 { font-size: 5vw; margin-bottom: 10px; }
+            .popup p { font-size: 2.5vw; }
+            .popup button {
+                padding: 8px 10px;
+                font-size: 3vw;
+                border-radius: 10px;
+            }
+            #nursery-upgrades {
+                gap: 8px;
+                margin-top: 10px;
+            }
+            .upgrade-item {
+                width: 44vw;
+                min-width: 120px;
+                max-width: 48vw;
+                padding: 8px;
+                font-size: 2.5vw;
+            }
+            .upgrade-item h4 {
+                font-size: 3vw;
+                margin: 0 0 4px 0;
+            }
+            .upgrade-item p {
+                font-size: 2.2vw;
+                margin: 0 0 6px 0;
+            }
+            .upgrade-item button {
+                font-size: 2.5vw;
+                padding: 6px 0;
+            }
+            #nursery-back-button {
+                position: relative;
+                width: 100%;
+                margin: 20px 0;
+                border-radius: 0 0 10px 10px;
+                z-index: 10;
+                background: #2a9d8f;
+            }
+            /* Well (water barrel) mobile optimization */
+            #water-barrel {
+                width: 18vw;
+                min-width: 70px;
+                height: 18vw;
+                min-height: 70px;
+                left: 41%;
+                bottom: 22%;
+                border-left-width: 6px;
+                border-right-width: 6px;
+            }
+            #water-barrel::before, #water-barrel::after {
+                height: 14px;
+                border-width: 3px;
+            }
+            .barrel-well-structure {
+                width: 100%;
+                height: 100%;
+            }
+            .barrel-post {
+                width: 14px;
+                height: 40px;
+                bottom: 100%;
+            }
+            .barrel-post.left { left: 8px; }
+            .barrel-post.right { right: 8px; }
+            .barrel-roof {
+                height: 20px;
+                border-width: 10px;
+                left: 8px;
+                width: calc(100% - 16px);
+                bottom: calc(100% + 40px);
+                border-radius: 40px 40px 0 0;
+            }
+            .shelf:nth-of-type(1) { bottom: 60% !important; }
+            .shelf:nth-of-type(2) { bottom: 15% !important; }
         }
     </style>
 </head>
@@ -625,7 +706,6 @@
                 <p><b>Desktop:</b> A/D or Arrows to move. Space/Click to water (tap for burst, hold for stream).</p>
                 <p><b>Mobile:</b> Tap floor to move. Use the 'Water' button.</p>
                 <button id="start-button">Start Gardening</button>
-                <button id="nursery-button-from-start">Visit Shop</button>
             </div>
         </div>
 
@@ -874,7 +954,22 @@
             lastTime = timestamp;
 
             updatePlayer(deltaTime);
-            handleWatering(deltaTime);
+            // On mobile, auto-water if close to a plant
+            if (isMobile()) {
+                const targetPlant = findClosestPlantInRange(CONSTANTS.WATERING_RANGE);
+                if (targetPlant && playerState.water > 0) {
+                    // Simulate watering stream
+                    const waterCost = CONSTANTS.PLAYER_WATER_STREAM_RATE * deltaTime;
+                    playerState.water -= waterCost;
+                    const thirstAmount = CONSTANTS.WATER_STREAM_THIRST_PER_SEC * deltaTime;
+                    waterPlant(targetPlant, thirstAmount);
+                    if (Math.random() < 0.7) {
+                        createWaterParticle(player.getBoundingClientRect(), targetPlant.element.getBoundingClientRect());
+                    }
+                }
+            } else {
+                handleWatering(deltaTime);
+            }
             updatePlants(deltaTime);
             updateEffects(deltaTime);
             updateUI();
@@ -1294,6 +1389,19 @@
         window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; if (e.key === ' ' || e.key === 'Spacebar') { isActionKeyDown = false; handleWaterEnd(); } });
         gameContainer.addEventListener('mousedown', e => { if (e.button !== 0 || e.target.closest('.popup')) return; isActionKeyDown = true; handleWaterStart(); });
         window.addEventListener('mouseup', e => { if (e.button !== 0) return; isActionKeyDown = false; handleWaterEnd(); });
+        
+        // Helper to detect mobile
+        function isMobile() {
+            return window.innerWidth <= 768 || window.innerHeight <= 500;
+        }
+        // Mobile: allow movement by tapping anywhere on the game area (not overlays/popups)
+        gameArea.addEventListener('pointerdown', e => {
+            if (!isMobile() || gameState !== 'PLAYING') return;
+            // Ignore if tapping on overlays, popups, or UI
+            if (e.target.closest('.popup') || e.target.closest('.overlay') || e.target.closest('#top-ui-bar')) return;
+            e.preventDefault();
+            playerTargetX = e.clientX - gameContainer.getBoundingClientRect().left;
+        }, { passive: false });
         
         floorArea.addEventListener('pointerdown', e => {
             if (gameState !== 'PLAYING') return;
