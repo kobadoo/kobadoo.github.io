@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Garden Guardian</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #87CEEB;
+            --floor-color: #a0522d;
+            --floor-dark: #8B4513;
+            --barrel-color: #654321;
+            --barrel-dark: #4a2d14;
+            --barrel-hoop: #707070;
+            --gnome-hat: #e63946;
+            --gnome-body: #457b9d;
+            --gnome-skin: #f1c27d;
+            --plant-pot: #d2691e;
+            --plant-pot-lip: #e08b3e;
+            --plant-stem: #228B22;
+            --sunflower-petal: #FFD700;
+            --fern-leaf: #006400;
+            --corpse-flower-bulb: #8A2BE2;
+            --flytrap-head: #C70039;
+            --water-color: #5dadec;
+            --water-special-fertilizer: #70e000;
+            --water-special-icy: #90e0ef;
+            --health-bar-fg: #32CD32;
+            --health-bar-warn: #ffca3a;
+            --health-bar-danger: #ff595e;
+            --health-bar-bg: rgba(0, 0, 0, 0.25);
+            --thirst-bar-fg: #1E90FF;
+            --thirst-bar-bg: #e0e0e0;
+            --text-color: #fff;
+            --text-stroke: #2b2d42;
+            --sunbeam-color: rgba(255, 248, 150, 0.35);
+            --heatwave-overlay: rgba(255, 120, 0, 0.1);
+            --font-family: 'Nunito', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            background-color: var(--bg-color);
+            font-family: var(--font-family);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            touch-action: none;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 1200px;
+            max-height: 800px;
+            margin: auto;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #87CEEB 0%, #B0E0E6 100%);
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            transform: translateZ(0); /* GPU acceleration */
+        }
+        
+        #game-container.shake {
+            animation: screen-shake 0.2s;
+        }
+
+        @keyframes screen-shake {
+            0%, 100% { transform: translate(0, 0) translateZ(0); }
+            25% { transform: translate(-5px, 0) translateZ(0); }
+            50% { transform: translate(5px, 0) translateZ(0); }
+            75% { transform: translate(-5px, 0) translateZ(0); }
+        }
+
+        .game-area {
+            position: absolute;
+            width: 100%;
+            height: 80%; /* Garden Area */
+            top: 0;
+        }
+
+        .floor-area {
+            position: absolute;
+            width: 100%;
+            height: 20%; /* Floor Area */
+            bottom: 0; /* Corrected from -20% */
+            background-color: var(--floor-color);
+            border-top: 5px solid var(--floor-dark);
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="20" viewBox="0 0 80 20"><path fill="%238B4513" fill-opacity="0.1" d="M0 10 H80 M0 0 V20 M80 0 V20"></path></svg>');
+        }
+
+        #water-barrel {
+            position: absolute;
+            left: 46%;
+            bottom: 20%;
+            width: 8%;
+            height: 12%;
+            background: linear-gradient(90deg, var(--barrel-color) 0%, var(--barrel-dark) 20%, var(--barrel-color) 50%, var(--barrel-dark) 80%, var(--barrel-color) 100%);
+            border-radius: 10px 10px 0 0;
+            box-sizing: border-box;
+            border-left: 4px solid var(--barrel-dark);
+            border-right: 4px solid var(--barrel-dark);
+            z-index: 0;
+        }
+        #water-barrel::before, #water-barrel::after {
+            content: '';
+            position: absolute;
+            width: 110%;
+            height: 10px;
+            background: var(--barrel-hoop);
+            border: 2px solid #555;
+            left: -5%;
+            box-sizing: border-box;
+        }
+        #water-barrel::before { top: 25%; }
+        #water-barrel::after { top: 65%; }
+
+        .barrel-well-structure {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        .barrel-post {
+            position: absolute;
+            bottom: 100%;
+            width: 10px;
+            height: 80%;
+            background: var(--barrel-dark);
+        }
+        .barrel-post.left { left: 5px; }
+        .barrel-post.right { right: 5px; }
+        .barrel-roof {
+            position: absolute;
+            bottom: calc(100% + 80%);
+            left: 5px;
+            width: 88%;
+            height: 40px;
+            background: transparent;
+            border: 10px solid var(--barrel-dark);
+            border-bottom: none;
+            border-radius: 100px 100px 0 0;
+            box-sizing: border-box;
+        }
+        
+        #player {
+            position: absolute;
+            width: 60px;
+            height: 84px;
+            bottom: 20%; /* Start on the floor */
+            left: 50%;
+            transform: translateX(-50%);
+            transform-origin: center bottom;
+            z-index: 10;
+        }
+        #player.idle .gnome-body-wrapper { animation: idle-bob 2s ease-in-out infinite; }
+        @keyframes idle-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+        #player.running .gnome-body-wrapper { animation: run-bob 0.3s linear infinite; }
+        @keyframes run-bob { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-4px) rotate(2deg); } }
+
+        .gnome-body-wrapper { transition: transform 0.2s; }
+        .gnome-body {
+            width: 48px; height: 36px; background-color: var(--gnome-body);
+            position: absolute; top: 80px; left: 6px; border-radius: 10px 10px 0 0;
+            z-index: 0;
+        }
+        .gnome-beard {
+            position: absolute; width: 52px; height: 42px; background: white;
+            top: 48px; left: 4px; border-radius: 0 0 50% 50%; z-index: 1;
+        }
+        .gnome-face {
+            position: absolute; width: 24px; height: 14px; background: var(--gnome-skin);
+            border-radius: 3px; top: 48px; left: 18px; z-index: 2;
+        }
+        .gnome-face::before, .gnome-face::after { /* eyes */
+            content: ''; position: absolute; width: 5px; height: 5px;
+            background: #222; border-radius: 50%; top: 3px;
+        }
+        .gnome-face::before { left: 4px; }
+        .gnome-face::after { right: 4px; }
+        .gnome-nose {
+            position: absolute; width: 10px; height: 10px; background: var(--gnome-skin);
+            border-radius: 50%; top: 6px; left: 7px; z-index: 4;
+        }
+        .gnome-hat {
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 48px solid var(--gnome-hat);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 3;
+        }
+        .gnome-hat::after { /* hat pompom */
+            content: ''; position: absolute; width: 10px; height: 10px;
+            background: #fff; border-radius: 50%; top: -5px; left: -5px;
+        }
+        
+        #player-water-meter {
+            position: absolute; top: -15px; left: 10px; width: 40px; height: 8px;
+            background-color: var(--thirst-bar-bg); border: 2px solid white;
+            border-radius: 5px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        #player-water-fill {
+            width: 100%; height: 100%; background-color: var(--thirst-bar-fg);
+            transition: width 0.2s, background-color 0.3s; border-radius: 2px;
+        }
+        
+        #watering-can {
+            position: absolute; width: 35px; height: 28px; background-color: #c0c0c0;
+            border: 3px solid #666; border-radius: 4px; top: 80px; left: -20px;
+            transition: background-color 0.3s; z-index: 5;
+        }
+        #watering-can::before { /* Spout */
+            content: ''; position: absolute; width: 20px; height: 10px; background: #c0c0c0;
+            border: 3px solid #666; border-left: none; border-radius: 0 100% 100% 0 / 0 50% 50% 0;
+            top: -8px; right: 25px; transform: rotate(-20deg);
+        }
+        
+        .water-stream, .floating-text {
+            position: absolute; pointer-events: none;
+            will-change: transform, opacity; display: none; /* Initially hidden for pooling */
+        }
+        .water-stream.active { display: block; }
+        .water-stream {
+            width: 8px; height: 8px; background-color: var(--water-color);
+            border-radius: 50%; opacity: 0.9; box-shadow: 0 0 5px var(--water-color);
+        }
+        
+        .splash-effect {
+            position: absolute; width: 30px; height: 30px; border-radius: 50%;
+            background: var(--water-color); opacity: 0.7;
+            animation: splash 0.3s ease-out forwards; transform-origin: center;
+        }
+        @keyframes splash { from { transform: scale(0); opacity: 0.7; } to { transform: scale(1); opacity: 0; } }
+
+        .shelf {
+            position: absolute; width: 100%; height: 20px; background-color: #cdaa7d;
+            border: 4px solid var(--floor-dark); box-sizing: border-box;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .plant-container {
+            position: absolute; bottom: 0; width: 10%; height: 15vh;
+            max-height: 120px; z-index: 1;
+        }
+        .plant-container.watered .plant { animation: perk-up 0.4s ease-out; }
+        @keyframes perk-up { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .plant-container.happy .plant { animation: jiggle 2.5s infinite ease-in-out; }
+        @keyframes jiggle { 0%, 100% { transform: rotate(-1deg); } 50% { transform: rotate(1deg); } }
+
+        .plant-pot {
+            position: absolute; bottom: 0; width: 80%; left: 10%;
+            height: 40%; background-color: var(--plant-pot);
+            border-radius: 0 0 10px 10px; border-top: 10px solid var(--plant-pot-lip);
+        }
+        
+        .plant {
+            position: absolute; bottom: 40%; left: 50%;
+            transform-origin: bottom center; transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+        
+        .thirst-meter {
+            position: absolute; bottom: -20px; width: 80%; left: 10%; height: 10px;
+            background-color: var(--thirst-bar-bg); border: 1px solid rgba(0,0,0,0.2);
+            border-radius: 5px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .thirst-fill {
+            width: 100%; height: 100%; background-color: var(--thirst-bar-fg);
+            border-radius: 4px; transition: width 0.2s linear, background-color 0.3s linear;
+        }
+        
+        /* Plant Types */
+        .sunflower .plant { width: 50px; height: 50px; margin-left: -25px; }
+        .sunflower .plant-stem { position: absolute; bottom: 0; left: 22px; width: 6px; height: 30px; background: var(--plant-stem); }
+        .sunflower .plant-head { position: absolute; bottom: 25px; left: 15px; width: 20px; height: 20px; background: #5a3a22; border-radius: 50%; transition: transform 0.5s ease; }
+        .sunflower .petal { background: var(--sunflower-petal); position: absolute; width: 10px; height: 20px; border-radius: 50%; left: 20px; top: -10px; transform-origin: 5px 25px;}
+        .sunflower .petal.p1 { transform: rotate(0deg); } .sunflower .petal.p2 { transform: rotate(45deg); } .sunflower .petal.p3 { transform: rotate(90deg); } .sunflower .petal.p4 { transform: rotate(135deg); } .sunflower .petal.p5 { transform: rotate(180deg); } .sunflower .petal.p6 { transform: rotate(225deg); } .sunflower .petal.p7 { transform: rotate(270deg); } .sunflower .petal.p8 { transform: rotate(315deg); }
+
+        .misty-fern .plant { width: 80px; height: 60px; margin-left: -40px; }
+        .misty-fern .fern-frond { position: absolute; bottom: 0; width: 10px; height: 50px; background: var(--fern-leaf); border-radius: 50% 50% 0 0; transform-origin: bottom center;}
+        .misty-fern .ff1 { left: 35px; }
+        .misty-fern .ff2 { left: 20px; transform: rotate(-25deg) scaleY(0.8); }
+        .misty-fern .ff3 { left: 50px; transform: rotate(25deg) scaleY(0.8); }
+        .mist-effect { position: absolute; width: 20px; height: 20px; background: rgba(173, 216, 230, 0.7); border-radius: 50%; animation: mist-pulse 2s infinite ease-in-out; }
+        @keyframes mist-pulse { 0%, 100% { transform: scale(0); opacity: 0; } 50% { transform: scale(1); opacity: 1; } }
+
+        .corpse-flower .plant { width: 40px; height: 60px; margin-left: -20px; }
+        .corpse-flower .plant-bulb { position: absolute; bottom: 0; left: 5px; width: 30px; height: 40px; background: var(--corpse-flower-bulb); border-radius: 50% 50% 10px 10px; }
+        .corpse-flower .plant-lip { position: absolute; top: 0; left: 0px; width: 40px; height: 15px; background: #c061ff; border-radius: 50% / 100% 100% 0 0; }
+        .stink-puff { position: absolute; width: 25px; height: 25px; background: rgba(126, 150, 10, 0.6); border-radius: 50%; animation: stink-fade 1.5s forwards; }
+        @keyframes stink-fade { from { transform: scale(0.2); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
+
+        .venus-flytrap .plant { width: 60px; height: 50px; margin-left: -30px; }
+        .venus-flytrap .plant-stem { position: absolute; bottom: 0; left: 27px; width: 6px; height: 30px; background: var(--plant-stem); }
+        .venus-flytrap .trap-head { position: absolute; bottom: 30px; left: 15px; width: 30px; height: 20px; }
+        .venus-flytrap .trap-jaw { position: absolute; width: 30px; height: 10px; background: var(--flytrap-head); border: 2px solid #800020; transition: transform 0.1s ease-in-out; }
+        .venus-flytrap .trap-jaw.bottom { bottom: 0; border-radius: 0 0 15px 15px; }
+        .venus-flytrap .trap-jaw.top { top: 0; border-radius: 15px 15px 0 0; transform-origin: bottom center; }
+
+        /* UI */
+        #top-ui-bar {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: none;
+            color: var(--text-color);
+            text-shadow: 0 2px 4px var(--text-stroke);
+            font-size: 2.5vh;
+            font-weight: 700;
+        }
+
+        #top-right-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            pointer-events: auto;
+        }
+
+        #garden-health-container {
+            position: relative;
+            width: 40%;
+            height: 3vh;
+            background-color: var(--health-bar-bg);
+            border: 3px solid white;
+            border-radius: 10px;
+            padding: 3px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            pointer-events: auto;
+        }
+
+        #garden-health-bar {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--health-bar-fg), #28a728);
+            border-radius: 5px;
+            transition: width 0.5s ease, background 0.5s ease;
+        }
+
+        #score-display, #golden-seeds-display {
+            background: rgba(0,0,0,0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+
+        #combo-display {
+            position: absolute;
+            top: 5vh;
+            right: 10px;
+            font-size: 5vh;
+            font-weight: 900;
+            color: #ffc400;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+            transform: scale(0);
+            opacity: 0;
+            text-shadow: 0 3px 6px var(--text-stroke);
+        }
+        #combo-display.visible {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        #event-preview {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0,0,0,0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 2px solid rgba(255,255,255,0.5);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: auto;
+        }
+        #event-preview.visible {
+            opacity: 1;
+        }
+        #event-icon {
+            font-size: 3vh;
+        }
+        #event-timer {
+            font-size: 2.5vh;
+            width: 2ch;
+            text-align: center;
+        }
+
+        #event-announcement {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-color);
+            font-size: 6vh;
+            font-weight: 900;
+            text-shadow: 0 4px 8px var(--text-stroke);
+            z-index: 50;
+            pointer-events: none;
+            opacity: 0;
+            text-align: center;
+        }
+        #event-announcement.show {
+            animation: event-announce-anim 3s forwards ease-out;
+        }
+        @keyframes event-announce-anim {
+            0% { transform: translate(-50%, 20px) scale(0.8); opacity: 0; }
+            20% { transform: translate(-50%, 0) scale(1.1); opacity: 1; }
+            80% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -20px) scale(0.9); opacity: 0; }
+        }
+        
+        /* Overlays and Popups */
+        .overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: flex;
+            justify-content: center; align-items: center; flex-direction: column;
+            text-align: center; color: white; z-index: 100; animation: fade-in 0.5s;
+        }
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+        .popup {
+            background: var(--floor-color) url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIQSURBVHhe7dJBDQAgDAAxAAS/dvyx+8kYJ3pLzWZvVlssVliwYMGCCAsWLFgQYcGCBQtCFCxYsCDChAUDFgQhChYsWBBhwYIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFC0ILFiyIsGDBggUJYxYsWJAgwoIFCyIUWLBgwYIEERZ+A02oAg0Zg0jLAAAAAElFTkSuQmCC') repeat;
+            padding: 30px; border-radius: 20px; border: 8px solid var(--barrel-color);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(0,0,0,0.3);
+            max-width: 90%; width: 600px;
+        }
+        .popup h1 {
+            margin-top: 0; font-size: 5vh; font-weight: 900;
+            text-shadow: 0 3px 5px var(--text-stroke);
+        }
+        .popup p { font-size: 2.5vh; }
+        .popup button {
+            padding: 15px 30px; font-size: 3vh; font-weight: 700; font-family: var(--font-family);
+            color: white; background-color: #2a9d8f; border: none; border-bottom: 6px solid #264653;
+            border-radius: 15px; cursor: pointer; margin: 10px;
+            transition: all 0.1s ease-out; text-shadow: 0 2px 3px rgba(0,0,0,0.3);
+        }
+        .popup button:hover { background-color: #34c0af; }
+        .popup button:active { transform: translateY(4px); border-bottom-width: 2px; }
+
+        #game-over-stats { list-style: none; padding: 0; font-size: 2.2vh; }
+        #game-over-stats li { margin: 10px 0; }
+        
+        #nursery-upgrades {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 15px; margin-top: 20px;
+        }
+        .upgrade-item {
+            background: var(--floor-dark); padding: 15px; border-radius: 10px;
+            width: 150px; border: 3px solid var(--barrel-dark);
+        }
+        .upgrade-item button {
+            width: 100%; padding: 10px; font-size: 2vh;
+            background: #ffca3a; color: var(--barrel-color); border-color: #e9a200;
+        }
+        .upgrade-item button:disabled {
+            background: #999; color: #666;
+            border-color: #555; cursor: not-allowed;
+        }
+        .upgrade-item button:disabled:active { transform: none; border-bottom-width: 6px; }
+        .upgrade-cost { font-weight: bold; }
+        
+        /* Event Visuals */
+        .sunbeam {
+            position: absolute; width: 12%; height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--sunbeam-color), transparent);
+            pointer-events: none; clip-path: polygon(20% 0, 80% 0, 100% 100%, 0% 100%);
+            opacity: 0.7; filter: blur(5px); z-index: 15;
+        }
+        
+        #heatwave-overlay {
+            position: absolute; top:0; left:0; width: 100%; height: 100%;
+            background: var(--heatwave-overlay); pointer-events: none;
+            display: none; animation: heatwave-anim 2s linear infinite;
+        }
+        @keyframes heatwave-anim {
+            0% { transform: translateX(-10px) skewX(2deg); }
+            50% { transform: translateX(10px) skewX(-2deg); }
+            100% { transform: translateX(-10px) skewX(2deg); }
+        }
+        
+        .gopher {
+            position: absolute; width: 40%; height: 50%; background: #966F33;
+            border-radius: 50% 50% 0 0; bottom: 40%; left: 30%; cursor: pointer;
+            animation: gopher-pop 0.3s ease-out; border: 3px solid #634822; z-index: 2;
+        }
+        .gopher::before { /* eyes */
+            content: '• •'; font-size: 10px; color: #222; position: absolute;
+            top: 10px; width: 100%; text-align: center;
+        }
+        @keyframes gopher-pop { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        
+        .shade-cloth-icon {
+            position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
+            width: 40px; height: 40px; background: #3a5a40; border: 3px solid white;
+            border-radius: 8px; cursor: pointer; z-index: 20; display: flex;
+            justify-content: center; align-items: center; font-size: 24px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        }
+        .shade-cloth-icon::before { content: '☂️'; }
+        
+        .helper-text {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 1.8vh;
+            white-space: nowrap;
+            animation: fade-in 0.3s;
+        }
+
+        /* Mobile Controls */
+        #mobile-controls {
+            display: none; position: absolute; bottom: 5%; right: 5%; z-index: 50;
+        }
+        #mobile-water-btn {
+            width: 80px; height: 80px; background-color: rgba(42, 157, 143, 0.8);
+            border: 4px solid var(--text-color); border-radius: 50%; color: var(--text-color);
+            font-size: 18px; font-weight: bold; display: flex; justify-content: center;
+            align-items: center; text-shadow: 0 2px 3px var(--text-stroke);
+            user-select: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .floating-text.active { display: block; }
+        .floating-text {
+            color: white; font-size: 2.5vh; font-weight: 900;
+            text-shadow: 0 2px 4px var(--text-stroke);
+            animation: float-up 1.5s forwards ease-out; z-index: 50;
+        }
+        @keyframes float-up {
+            from { transform: translateY(0) scale(1); opacity: 1; }
+            to { transform: translateY(-80px) scale(0.8); opacity: 0; }
+        }
+        
+        @media (max-width: 768px), (max-height: 500px) {
+            #top-ui-bar { font-size: 2vw; }
+            #combo-display { font-size: 6vw; }
+            #garden-health-container { height: 2.5vh; }
+            #mobile-controls { display: block; }
+            .popup { width: auto; max-width: 90%; }
+            .popup h1 { font-size: 6vw; }
+            .popup p { font-size: 3vw; }
+            .popup button { padding: 10px 20px; font-size: 3.5vw; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        
+        <!-- UI -->
+        <div id="top-ui-bar">
+            <div id="event-preview">
+                <div id="event-icon"></div>
+                <div id="event-timer"></div>
+            </div>
+            <div id="garden-health-container">
+                <div id="garden-health-bar"></div>
+            </div>
+            <div id="top-right-info">
+                <div id="score-display">Score: 0</div>
+                <div id="golden-seeds-display">🌰 0</div>
+                <button id="shop-button" style="z-index:100; margin-left:10px; font-size:2.2vh; padding:6px 18px; border-radius:12px; border:2px solid #fff; background:#ffca3a; color:#654321; font-weight:bold; cursor:pointer;">Shop</button>
+            </div>
+        </div>
+        <div id="combo-display"></div>
+        <div id="event-announcement"></div>
+
+        <!-- Game Area & Floor -->
+        <div class="game-area">
+            <div id="water-barrel">
+                <div class="barrel-well-structure">
+                    <div class="barrel-post left"></div>
+                    <div class="barrel-post right"></div>
+                    <div class="barrel-roof"></div>
+                </div>
+            </div>
+            <!-- Shelves and plants will be generated here -->
+            <div id="player">
+                <div class="gnome-body-wrapper">
+                    <div class="gnome-body"></div>
+                    <div class="gnome-beard"></div>
+                    <div class="gnome-face"><div class="gnome-nose"></div></div>
+                    <div class="gnome-hat"></div>
+                    <div id="watering-can"></div>
+                </div>
+                <div id="player-water-meter"><div id="player-water-fill"></div></div>
+            </div>
+        </div>
+        <div class="floor-area"></div>
+
+        <!-- Effects Overlays -->
+        <div id="heatwave-overlay"></div>
+        <div id="effects-container"></div>
+
+        <!-- Mobile Controls -->
+        <div id="mobile-controls">
+            <div id="mobile-water-btn">Water</div>
+        </div>
+        
+        <!-- Popups / Overlays -->
+        <div id="start-screen" class="overlay">
+            <div class="popup">
+                <h1>Garden Guardian</h1>
+                <p>Welcome, Sprout! Your quirky plants are thirsty. Keep them happy!</p>
+                <p><b>Desktop:</b> A/D or Arrows to move. Space/Click to water (tap for burst, hold for stream).</p>
+                <p><b>Mobile:</b> Tap floor to move. Use the 'Water' button.</p>
+                <button id="start-button">Start Gardening</button>
+                <button id="nursery-button-from-start">Visit Shop</button>
+            </div>
+        </div>
+
+        <div id="game-over-screen" class="overlay" style="display: none;">
+            <div class="popup">
+                <h1>Game Over</h1>
+                <ul id="game-over-stats"></ul>
+                <button id="restart-button">Play Again</button>
+                <button id="nursery-button-from-gameover">Visit Shop</button>
+            </div>
+        </div>
+
+        <div id="nursery-screen" class="overlay" style="display: none;">
+            <div class="popup">
+                <h1>The Shop</h1>
+                <p>You have: <span id="nursery-seed-count">0</span> 🌰</p>
+                <div id="nursery-upgrades"></div>
+                <button id="nursery-back-button">Back</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- CONSTANTS & CONFIG ---
+        const CONSTANTS = {
+            GARDEN_HEALTH_DEPLETE_RATE: 40,
+            PLAYER_WATER_BURST_COST: 50,
+            PLAYER_WATER_STREAM_RATE: 85,
+            WATER_BURST_THIRST_AMOUNT: 18,
+            WATER_STREAM_THIRST_PER_SEC: 22,
+            COMBO_HEALTH_THRESHOLD: 20,
+            COMBO_WATER_THRESHOLD: 25,
+            NEAR_DEATH_THRESHOLD: 10,
+            CLOSE_CALL_THRESHOLD: 20,
+            SCORE_NEAR_DEATH: 500,
+            SCORE_CLOSE_CALL: 100,
+            SCORE_GOPHER_WHACK: 250,
+            SCORE_SHADE_CLOTH: 200,
+            POOL_SIZE_PARTICLES: 50,
+            POOL_SIZE_TEXT: 10,
+            WATERING_RANGE: 150,
+            INTERACTION_RANGE: 80,
+        };
+
+        // DOM Elements
+        const gameContainer = document.getElementById('game-container');
+        const player = document.getElementById('player');
+        const playerWaterFill = document.getElementById('player-water-fill');
+        const scoreDisplay = document.getElementById('score-display');
+        const comboDisplay = document.getElementById('combo-display');
+        const gardenHealthBar = document.getElementById('garden-health-bar');
+        const gameArea = document.querySelector('.game-area');
+        const floorArea = document.querySelector('.floor-area');
+        const waterBarrel = document.getElementById('water-barrel');
+        const effectsContainer = document.getElementById('effects-container');
+        const eventPreview = document.getElementById('event-preview');
+        const eventIcon = document.getElementById('event-icon');
+        const eventTimer = document.getElementById('event-timer');
+        const eventAnnouncement = document.getElementById('event-announcement');
+        const heatwaveOverlay = document.getElementById('heatwave-overlay');
+        const goldenSeedsDisplay = document.getElementById('golden-seeds-display');
+        
+        // Screens & Buttons
+        const startScreen = document.getElementById('start-screen');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const nurseryScreen = document.getElementById('nursery-screen');
+        const startButton = document.getElementById('start-button');
+        const restartButton = document.getElementById('restart-button');
+        const nurseryButtonFromStart = document.getElementById('nursery-button-from-start');
+        const nurseryButtonFromGameOver = document.getElementById('nursery-button-from-gameover');
+        const nurseryBackButton = document.getElementById('nursery-back-button');
+        const mobileWaterBtn = document.getElementById('mobile-water-btn');
+        const nurserySeedCount = document.getElementById('nursery-seed-count');
+        const nurseryUpgradesContainer = document.getElementById('nursery-upgrades');
+        const shopButton = document.getElementById('shop-button');
+
+        // Game State
+        let gameState = 'START';
+        let lastTime = 0;
+        let score = 0;
+        let combo = 0;
+        let gardenHealth = 100;
+        let plants = [];
+        let keys = {};
+        let activeEvent = null;
+        let eventTimeout = null;
+        let nextEventTimer = null;
+        let timeSurvived = 0;
+        let gophersWhacked = 0;
+        let isWateringHeld = false;
+        let isActionKeyDown = false;
+        let waterActionTimeout = null;
+        let currentWateringSession = { plantId: null, thirstAdded: 0 };
+        let lastGameStateBeforeNursery = 'START';
+        let playerTargetX = 50;
+        let playerTargetY = 80;
+        let oneTimeHelpers = { specialWater: false, gopher: false, sunbeam: false };
+
+        // --- OBJECT POOLS ---
+        const effectPools = { particles: [], texts: [] };
+        function initPools() {
+            effectsContainer.innerHTML = '';
+            ['particles', 'texts'].forEach(key => effectPools[key] = []);
+            for (let i = 0; i < CONSTANTS.POOL_SIZE_PARTICLES; i++) {
+                const p = document.createElement('div'); p.className = 'water-stream';
+                effectsContainer.appendChild(p); effectPools.particles.push({ el: p, active: false });
+            }
+            for (let i = 0; i < CONSTANTS.POOL_SIZE_TEXT; i++) {
+                const t = document.createElement('div'); t.className = 'floating-text';
+                effectsContainer.appendChild(t); effectPools.texts.push({ el: t, active: false });
+            }
+        }
+        function getFromPool(poolName) {
+            const pool = effectPools[poolName];
+            for (let i = 0; i < pool.length; i++) {
+                if (!pool[i].active) {
+                    pool[i].active = true; pool[i].el.classList.add('active'); return pool[i];
+                }
+            } return null;
+        }
+        function returnToPool(item) {
+            item.active = false; item.el.classList.remove('active'); item.el.style.animation = 'none';
+        }
+        
+        // --- UPGRADES & PERSISTENCE ---
+        let upgrades = {
+            waterCap: { name: "Water Can Capacity", level: 0, base: 100, inc: 20, costBase: 10, costFactor: 2 },
+            playerSpeed: { name: "Sprout's Speed", level: 0, base: 300, inc: 25, costBase: 15, costFactor: 2.2 },
+            refillSpeed: { name: "Refill Speed", level: 0, base: 50, inc: 10, costBase: 8, costFactor: 1.8 },
+            comboShield: { name: "Combo Shield", level: 0, base: 0, inc: 1, costBase: 50, costFactor: 3, maxLevel: 1 },
+            goldenWater: { name: "Special Water", level: 0, base: 0.05, inc: 0.02, costBase: 30, costFactor: 2.5 }
+        };
+        let goldenSeeds = 0;
+        function getUpgradeValue(key) { const u = upgrades[key]; return u.base + u.level * u.inc; }
+        function getUpgradeCost(key) {
+            const u = upgrades[key];
+            if (u.maxLevel && u.level >= u.maxLevel) return Infinity;
+            return Math.floor(u.costBase * Math.pow(u.costFactor, u.level));
+        }
+        function loadGameData() {
+            goldenSeeds = parseInt(localStorage.getItem('gardenGuardian_seeds') || '0', 10);
+            const savedUpgrades = localStorage.getItem('gardenGuardian_upgrades');
+            if (savedUpgrades) {
+                const loadedUpgrades = JSON.parse(savedUpgrades);
+                for (const key in upgrades) {
+                    if (loadedUpgrades[key] !== undefined) upgrades[key].level = loadedUpgrades[key];
+                }
+            }
+            updateGoldenSeedDisplays();
+        }
+        function saveGameData() {
+            localStorage.setItem('gardenGuardian_seeds', goldenSeeds);
+            const upgradeLevels = {};
+            for (const key in upgrades) { upgradeLevels[key] = upgrades[key].level; }
+            localStorage.setItem('gardenGuardian_upgrades', JSON.stringify(upgradeLevels));
+        }
+        function updateGoldenSeedDisplays() {
+            goldenSeedsDisplay.innerHTML = `🌰 ${goldenSeeds}`;
+            nurserySeedCount.innerText = goldenSeeds;
+        }
+
+        // Player State
+        let playerState = {
+            x: 50, y: 80, water: 100, maxWater: 100, isRefilling: false, specialWater: null,
+        };
+
+        const PLANT_TYPES = {
+            sunflower: { name: "Sunflower", thirstRate: 0.9, html: `<div class="plant-stem"></div><div class="plant-head"></div><div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div><div class="petal p4"></div><div class="petal p5"></div><div class="petal p6"></div><div class="petal p7"></div><div class="petal p8"></div>` },
+            mistyFern: { name: "Misty Fern", thirstRate: 0.65, html: `<div class="fern-frond ff1"></div><div class="fern-frond ff2"></div><div class="fern-frond ff3"></div>` },
+            corpseFlower: { name: "Corpse Flower", thirstRate: 0.75, html: `<div class="plant-bulb"></div><div class="plant-lip"></div>` },
+            venusFlytrap: { name: "Venus Flytrap", thirstRate: 1.1, html: `<div class="plant-stem"></div><div class="trap-head"><div class="trap-jaw top"></div><div class="trap-jaw bottom"></div></div>` }
+        };
+
+        // --- Game Setup ---
+        function initGame() {
+            score = combo = timeSurvived = gophersWhacked = 0;
+            gardenHealth = 100; activeEvent = null;
+            clearTimeout(eventTimeout); clearTimeout(nextEventTimer);
+            eventPreview.classList.remove('visible');
+            oneTimeHelpers = { specialWater: false, gopher: false, sunbeam: false };
+            
+            playerState.maxWater = getUpgradeValue('waterCap');
+            playerState.water = playerState.maxWater;
+            playerState.specialWater = null;
+            playerTargetX = 100;
+            playerTargetY = 350;
+            
+            updateUI();
+            
+            gameArea.querySelectorAll('.plant-container, .shelf').forEach(el => el.remove());
+            initPools();
+            plants = [];
+
+            const shelves = [ { y: '50%', plantPositions: [20, 50, 80] }, { y: '10%', plantPositions: [35, 65] } ];
+            shelves.forEach(shelfData => {
+                const shelf = document.createElement('div');
+                shelf.className = 'shelf'; shelf.style.bottom = shelfData.y; gameArea.appendChild(shelf);
+                shelfData.plantPositions.forEach(pos => createPlant(pos, parseFloat(shelfData.y) + 3.5));
+            });
+            
+            plants.forEach(p => {
+                const pRect = p.element.getBoundingClientRect();
+                const radius = pRect.width * 1.5;
+                p.neighbors = plants.filter(other => {
+                    if (other.id === p.id || p.y !== other.y) return false;
+                    const otherRect = other.element.getBoundingClientRect();
+                    return Math.abs((pRect.left + pRect.width/2) - (otherRect.left + otherRect.width/2)) < radius;
+                }).map(n => n.id);
+            });
+            
+            scheduleNextEvent();
+        }
+
+        // Add this helper function near the top of the script section
+        function toKebabCase(str) {
+            return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+        }
+
+        function createPlant(x, y) {
+            const typeKeys = Object.keys(PLANT_TYPES);
+            const typeKey = typeKeys[Math.floor(Math.random() * typeKeys.length)];
+            const type = PLANT_TYPES[typeKey];
+
+            const container = document.createElement('div');
+            // Use kebab-case for the type class
+            container.className = `plant-container ${toKebabCase(typeKey)}`;
+            container.style.left = `${x - 5}%`;
+            container.style.bottom = `${y}%`;
+            container.innerHTML = `<div class="plant-pot"></div><div class="plant">${type.html}</div><div class="thirst-meter"><div class="thirst-fill"></div></div>`;
+            gameArea.appendChild(container);
+            
+            plants.push({
+                id: `plant_${Date.now()}_${Math.random()}`, x, y, type: typeKey,
+                thirst: 100, maxThirst: 100, baseThirstRate: type.thirstRate, isWilted: false, hasBrokenCombo: false,
+                element: container, plantEl: container.querySelector('.plant'), thirstFillEl: container.querySelector('.thirst-fill'),
+                effects: {}, lastActionTime: 0, neighbors: []
+            });
+        }
+
+        // --- Game Loop ---
+        function gameLoop(timestamp) {
+            if (gameState !== 'PLAYING') return;
+            const deltaTime = Math.min(0.1, (timestamp - lastTime) / 1000);
+            lastTime = timestamp;
+
+            updatePlayer(deltaTime);
+            handleWatering(deltaTime);
+            updatePlants(deltaTime);
+            updateEffects(deltaTime);
+            updateUI();
+            
+            timeSurvived += deltaTime;
+
+            if (gardenHealth <= 0) setGameState('GAMEOVER');
+            else requestAnimationFrame(gameLoop);
+        }
+
+        // --- Update Functions ---
+        function updatePlayer(deltaTime) {
+            const speed = getUpgradeValue('playerSpeed');
+            if (keys['a'] || keys['arrowleft']) playerTargetX -= speed * deltaTime;
+            if (keys['d'] || keys['arrowright']) playerTargetX += speed * deltaTime;
+            if (keys['w'] || keys['arrowup']) playerTargetY -= speed * deltaTime;
+            if (keys['s'] || keys['arrowdown']) playerTargetY += speed * deltaTime;
+
+            const gameWidth = gameContainer.offsetWidth;
+            const gameHeight = gameContainer.offsetHeight;
+            const playerWidth = player.offsetWidth;
+            const playerHeight = player.offsetHeight;
+            playerTargetX = Math.max((playerWidth/2), Math.min(gameWidth - (playerWidth/2), playerTargetX));
+            // Clamp Y: 0 (top) to game area height - player height
+            playerTargetY = Math.max(0, Math.min(gameHeight - playerHeight, playerTargetY));
+
+            const currentX = player.offsetLeft;
+            const newX = currentX + (playerTargetX - currentX) * 0.2;
+            const currentY = player.offsetTop;
+            const newY = currentY + (playerTargetY - currentY) * 0.2;
+
+            const isMoving = Math.abs(newX - currentX) > 0.1 || Math.abs(newY - currentY) > 0.1;
+            player.classList.toggle('running', isMoving);
+            player.classList.toggle('idle', !isMoving);
+            if (isMoving) {
+                const direction = newX > currentX ? 1 : -1;
+                player.querySelector('.gnome-body-wrapper').style.transform = `scaleX(${direction})`;
+            }
+            player.style.left = `${newX}px`;
+            player.style.top = `${newY}px`;
+
+            playerState.x = newX;
+            playerState.y = newY;
+
+            const barrelRect = waterBarrel.getBoundingClientRect();
+            const playerRect = player.getBoundingClientRect();
+            playerState.isRefilling = playerRect.right > barrelRect.left && playerRect.left < barrelRect.right;
+
+            if (playerState.isRefilling && !isWateringHeld) {
+                const refillAmount = getUpgradeValue('refillSpeed') * deltaTime;
+                if (playerState.water < playerState.maxWater) {
+                    playerState.water = Math.min(playerState.maxWater, playerState.water + refillAmount);
+                    if (playerState.water >= playerState.maxWater && playerState.specialWater === null) {
+                        if (Math.random() < getUpgradeValue('goldenWater')) {
+                            playerState.specialWater = Math.random() < 0.5 ? 'fertilizer' : 'icy';
+                            const specialWaterName = playerState.specialWater.charAt(0).toUpperCase() + playerState.specialWater.slice(1);
+                            createFloatingText(`${specialWaterName} Water!`, player, playerState.specialWater === 'fertilizer' ? 'var(--water-special-fertilizer)' : 'var(--water-special-icy)');
+                            if (!oneTimeHelpers.specialWater) {
+                                createFloatingText(`Special water has unique effects!`, player, '#FFF', 100);
+                                oneTimeHelpers.specialWater = true;
+                            }
+                        }
+                    }
+                }
+                if (combo > 0 && getUpgradeValue('comboShield') < 1) resetCombo();
+            }
+        }
+        
+        function handleWatering(deltaTime) {
+            if (!isWateringHeld || playerState.water <= 0) return;
+            
+            const targetPlant = findClosestPlantInRange(CONSTANTS.WATERING_RANGE);
+            if (targetPlant) {
+                const waterCost = CONSTANTS.PLAYER_WATER_STREAM_RATE * deltaTime;
+                playerState.water -= waterCost;
+                
+                const thirstAmount = CONSTANTS.WATER_STREAM_THIRST_PER_SEC * deltaTime;
+                waterPlant(targetPlant, thirstAmount);
+
+                if (Math.random() < 0.7) {
+                    createWaterParticle(player.getBoundingClientRect(), targetPlant.element.getBoundingClientRect());
+                }
+            } else {
+                 if (Math.random() < 0.2) createWaterParticle(player.getBoundingClientRect(), null);
+            }
+        }
+
+        function updatePlants(deltaTime) {
+            let wiltedCount = 0;
+            plants.forEach(p => {
+                p.element.classList.toggle('happy', p.thirst > 80 && !p.isWilted);
+                if (p.isWilted) { wiltedCount++; return; }
+                
+                let currentThirstRate = p.baseThirstRate;
+                if (activeEvent) {
+                    if (activeEvent.type === 'heatwave') currentThirstRate *= 1.25;
+                    if (activeEvent.type === 'sunbeam' && activeEvent.targetPlantId === p.id && !p.effects.shadeCloth) {
+                        currentThirstRate *= 2;
+                        if(p.type === 'sunflower' && activeEvent.element) {
+                             const plantRect = p.plantEl.querySelector('.plant-head').getBoundingClientRect();
+                             const sunRect = activeEvent.element.getBoundingClientRect();
+                             const angle = Math.atan2(sunRect.top - plantRect.top, sunRect.left - plantRect.left);
+                             p.plantEl.querySelector('.plant-head').style.transform = `rotate(${angle * 180 / Math.PI + 90}deg)`;
+                        }
+                    }
+                } else if (p.type === 'sunflower') p.plantEl.querySelector('.plant-head').style.transform = '';
+                
+                const now = performance.now();
+                if (p.type === 'corpseFlower' && now - p.lastActionTime > 8000) {
+                    p.lastActionTime = now;
+                    p.neighbors.forEach(nid => { const n = plants.find(pl => pl.id === nid); if(n) { n.effects.stinky = { duration: 3000, startTime: now }; createEffectVisual('stink-puff', n.element, 1500); } });
+                }
+                if(p.type === 'mistyFern' && now - p.lastActionTime > 5000) {
+                    p.lastActionTime = now;
+                    p.neighbors.forEach(nid => { const n = plants.find(pl => pl.id === nid); if(n && !n.isWilted) { waterPlant(n, 0.5); } });
+                    createEffectVisual('mist-effect', p.element, 2000);
+                }
+                
+                if(p.effects.stinky) currentThirstRate *= 1.5;
+                if(p.effects.fertilizer) currentThirstRate *= 0.5;
+                Object.keys(p.effects).forEach(effect => { if(now - p.effects[effect].startTime > p.effects[effect].duration) delete p.effects[effect]; });
+
+                p.thirst -= currentThirstRate * deltaTime;
+                
+                if (p.thirst < CONSTANTS.COMBO_HEALTH_THRESHOLD && !p.hasBrokenCombo) { p.hasBrokenCombo = true; resetCombo(); } 
+                else if (p.thirst >= CONSTANTS.COMBO_HEALTH_THRESHOLD) { p.hasBrokenCombo = false; }
+
+                if (p.thirst <= 0) {
+                    p.thirst = 0; p.isWilted = true;
+                    p.plantEl.style.transform = 'rotate(-30deg) scale(0.8)'; p.plantEl.style.opacity = '0.5';
+                    resetCombo();
+                }
+
+                p.thirstFillEl.style.width = `${p.thirst}%`;
+                p.thirstFillEl.style.backgroundColor = p.thirst < CONSTANTS.CLOSE_CALL_THRESHOLD ? 'var(--health-bar-danger)' : p.thirst < 50 ? 'var(--health-bar-warn)' : 'var(--thirst-bar-fg)';
+            });
+            if (wiltedCount > 0) gardenHealth -= wiltedCount * CONSTANTS.GARDEN_HEALTH_DEPLETE_RATE * deltaTime;
+        }
+        
+        function updateEffects(deltaTime) {
+            effectPools.particles.forEach(p => {
+                if (!p.active) return;
+                p.x += p.vx * deltaTime; p.y += p.vy * deltaTime; p.vy += 400 * deltaTime; // gravity
+                p.life -= deltaTime;
+                p.el.style.transform = `translate(${p.x}px, ${p.y}px)`;
+                if (p.life <= 0) {
+                    createEffectVisual('splash-effect', null, 300, p.el.style.backgroundColor, {x: p.x, y: p.y});
+                    returnToPool(p);
+                }
+            });
+        }
+        
+        function waterPlant(plant, amount) {
+            const prevThirst = plant.thirst;
+            plant.thirst = Math.min(plant.maxThirst, plant.thirst + amount);
+            score += Math.ceil(amount);
+            
+            if (currentWateringSession.plantId === plant.id) {
+                currentWateringSession.thirstAdded += amount;
+            }
+
+            plant.element.classList.add('watered');
+            setTimeout(() => plant.element.classList.remove('watered'), 400);
+
+            if (plant.isWilted && plant.thirst > 0) {
+                plant.isWilted = false;
+                plant.plantEl.style.transform = 'rotate(0deg) scale(1)';
+                plant.plantEl.style.opacity = '1';
+            }
+            
+            if (prevThirst < CONSTANTS.NEAR_DEATH_THRESHOLD && plant.thirst >= CONSTANTS.NEAR_DEATH_THRESHOLD) {
+                score += CONSTANTS.SCORE_NEAR_DEATH;
+                createFloatingText(`Near Death! +${CONSTANTS.SCORE_NEAR_DEATH}`, plant.element, '#ffc400');
+                screenShake();
+            } else if (prevThirst < CONSTANTS.CLOSE_CALL_THRESHOLD && plant.thirst >= CONSTANTS.CLOSE_CALL_THRESHOLD) {
+                score += CONSTANTS.SCORE_CLOSE_CALL;
+                createFloatingText(`Close Call! +${CONSTANTS.SCORE_CLOSE_CALL}`, plant.element, '#FFD700');
+            }
+            
+            if(playerState.water <=0) playerState.specialWater = null;
+        }
+
+
+        // --- UI, Scoring & Juice ---
+        function updateUI() {
+            scoreDisplay.textContent = `Score: ${Math.floor(score)}`;
+            playerWaterFill.style.width = `${(playerState.water / playerState.maxWater) * 100}%`;
+            const waterFill = document.getElementById('player-water-fill');
+            if (playerState.specialWater === 'fertilizer') waterFill.style.backgroundColor = 'var(--water-special-fertilizer)';
+            else if (playerState.specialWater === 'icy') waterFill.style.backgroundColor = 'var(--water-special-icy)';
+            else waterFill.style.backgroundColor = 'var(--thirst-bar-fg)';
+
+            gardenHealthBar.style.width = `${gardenHealth}%`;
+            gardenHealthBar.style.background = gardenHealth < 20 ? 'var(--health-bar-danger)' : gardenHealth < 50 ? 'var(--health-bar-warn)' : 'var(--health-bar-fg)';
+        }
+
+        function checkAndApplyCombo() {
+            if (currentWateringSession.thirstAdded >= CONSTANTS.COMBO_WATER_THRESHOLD) {
+                const allHealthy = plants.every(p => p.thirst >= CONSTANTS.COMBO_HEALTH_THRESHOLD || p.isWilted);
+                if(allHealthy) {
+                    combo++; score += combo * 10;
+                    comboDisplay.textContent = `x${combo}`;
+                    comboDisplay.classList.add('visible'); comboDisplay.style.transform = 'scale(1.3)';
+                    setTimeout(() => comboDisplay.style.transform = 'scale(1)', 200);
+                }
+            }
+        }
+
+        function resetCombo() { if(combo > 0) { combo = 0; comboDisplay.classList.remove('visible'); } }
+        
+        function createFloatingText(text, element, color, yOffset = 0) {
+            const item = getFromPool('texts'); if (!item) return;
+            const rect = element.getBoundingClientRect(); const gameRect = gameContainer.getBoundingClientRect();
+            item.el.innerHTML = text;
+            item.el.style.color = color.startsWith('var(') ? `var(${color.slice(4,-1)})` : color;
+            item.el.style.left = `${rect.left - gameRect.left + rect.width / 2}px`;
+            item.el.style.top = `${rect.top - gameRect.top + yOffset}px`;
+            item.el.style.transform = 'translateX(-50%)';
+            item.el.style.animation = 'float-up 1.5s forwards ease-out';
+            setTimeout(() => returnToPool(item), 1500);
+        }
+
+        function screenShake() {
+            gameContainer.classList.add('shake'); setTimeout(() => gameContainer.classList.remove('shake'), 200);
+        }
+
+        // --- Events ---
+        function scheduleNextEvent() { eventTimeout = setTimeout(triggerEvent, 12000 + Math.random() * 8000); }
+        function triggerEvent() {
+            if (gameState !== 'PLAYING') return;
+            const eventType = ['sunbeam', 'gopher', 'heatwave'][Math.floor(Math.random() * 3)];
+            let icon = {'sunbeam': '☀️', 'gopher': '🐹', 'heatwave': '🔥'}[eventType];
+            
+            eventPreview.classList.add('visible'); eventIcon.textContent = icon;
+            let countdown = 3; eventTimer.textContent = countdown;
+            
+            nextEventTimer = setInterval(() => {
+                countdown--; eventTimer.textContent = countdown;
+                if (countdown <= 0) { clearInterval(nextEventTimer); eventPreview.classList.remove('visible'); startEvent(eventType); }
+            }, 1000);
+        }
+        function startEvent(type) {
+            endCurrentEvent();
+            activeEvent = { type: type, startTime: performance.now() };
+
+            const announcementText = { sunbeam: "Sunbeam!", gopher: "Gopher Attack!", heatwave: "Heatwave!" }[type];
+            eventAnnouncement.textContent = announcementText;
+            eventAnnouncement.classList.remove('show');
+            void eventAnnouncement.offsetWidth;
+            eventAnnouncement.classList.add('show');
+
+            switch (type) {
+                case 'sunbeam': {
+                    const targetPlant = plants[Math.floor(Math.random() * plants.length)];
+                    activeEvent.targetPlantId = targetPlant.id;
+                    const sunbeamEl = document.createElement('div');
+                    sunbeamEl.className = 'sunbeam'; sunbeamEl.style.left = `${targetPlant.x - 6}%`;
+                    effectsContainer.appendChild(sunbeamEl); activeEvent.element = sunbeamEl;
+                    
+                    const shadeIcon = document.createElement('div'); shadeIcon.className = 'shade-cloth-icon';
+                    const handleShadeClick = (e) => {
+                        e.stopPropagation();
+                        if (getDistance(player, shadeIcon) > CONSTANTS.INTERACTION_RANGE) {
+                            createFloatingText("Get closer!", shadeIcon, 'var(--health-bar-danger)');
+                            return;
+                        }
+                        targetPlant.effects.shadeCloth = { duration: 10000, startTime: performance.now() };
+                        score += CONSTANTS.SCORE_SHADE_CLOTH;
+                        createFloatingText(`Shaded! +${CONSTANTS.SCORE_SHADE_CLOTH}`, targetPlant.element, '#32CD32');
+                        sunbeamEl.style.display = 'none'; shadeIcon.remove();
+                    };
+                    shadeIcon.addEventListener('click', handleShadeClick); shadeIcon.addEventListener('touchstart', handleShadeClick);
+                    targetPlant.element.appendChild(shadeIcon); activeEvent.interactiveElement = shadeIcon;
+                    if (!oneTimeHelpers.sunbeam) {
+                        const helper = document.createElement('div'); helper.className = 'helper-text';
+                        helper.innerText = "Get close & tap to use!";
+                        shadeIcon.appendChild(helper);
+                        setTimeout(() => helper.remove(), 4000);
+                        oneTimeHelpers.sunbeam = true;
+                    }
+                    activeEvent.timeout = setTimeout(endCurrentEvent, 10000);
+                    break;
+                }
+                case 'gopher': {
+                    const gopherPlant = plants[Math.floor(Math.random() * plants.length)];
+                    activeEvent.targetPlantId = gopherPlant.id;
+                    const gopherEl = document.createElement('div'); gopherEl.className = 'gopher';
+                    gopherPlant.element.querySelector('.plant-pot').appendChild(gopherEl);
+                    const handleGopherClick = (e) => { e.stopPropagation(); whackGopher(gopherPlant, gopherEl); };
+                    gopherEl.addEventListener('click', handleGopherClick); gopherEl.addEventListener('touchstart', handleGopherClick);
+                    activeEvent.element = gopherEl;
+                    activeEvent.interval = setInterval(() => { gopherPlant.thirst = Math.max(0, gopherPlant.thirst - 5); }, 1000);
+                     if (!oneTimeHelpers.gopher) {
+                        const helper = document.createElement('div'); helper.className = 'helper-text';
+                        helper.innerText = "Get close & tap to whack!";
+                        gopherEl.appendChild(helper);
+                        setTimeout(() => helper.remove(), 4000);
+                        oneTimeHelpers.gopher = true;
+                    }
+                    activeEvent.timeout = setTimeout(endCurrentEvent, 8000);
+                    break;
+                }
+                case 'heatwave':
+                    heatwaveOverlay.style.display = 'block'; activeEvent.timeout = setTimeout(endCurrentEvent, 10000);
+                    break;
+            }
+            scheduleNextEvent();
+        }
+        function whackGopher(plant, gopherEl) {
+            if (!activeEvent || activeEvent.type !== 'gopher' || activeEvent.targetPlantId !== plant.id) return;
+            if (getDistance(player, gopherEl) > CONSTANTS.INTERACTION_RANGE) {
+                createFloatingText("Get closer!", gopherEl, 'var(--health-bar-danger)');
+                return;
+            }
+            score += CONSTANTS.SCORE_GOPHER_WHACK; gophersWhacked++;
+            createFloatingText(`Whacked! +${CONSTANTS.SCORE_GOPHER_WHACK}`, plant.element, '#32CD32');
+            endCurrentEvent();
+        }
+        function endCurrentEvent() {
+            if (!activeEvent) return;
+            clearTimeout(activeEvent.timeout); clearInterval(activeEvent.interval);
+            if (activeEvent.element) activeEvent.element.remove();
+            if (activeEvent.interactiveElement) activeEvent.interactiveElement.remove();
+            if (activeEvent.type === 'heatwave') heatwaveOverlay.style.display = 'none';
+            activeEvent = null;
+        }
+        function createEffectVisual(className, parentEl, duration, color, coords) {
+            const effectEl = document.createElement('div'); effectEl.className = className;
+            if (color) effectEl.style.background = color;
+            if (coords) {
+                effectEl.style.left = `${coords.x}px`; effectEl.style.top = `${coords.y}px`;
+                effectEl.style.transform = 'translate(-50%, -50%)';
+            } else {
+                const parentRect = parentEl.getBoundingClientRect(); const gameRect = gameContainer.getBoundingClientRect();
+                effectEl.style.left = `${parentRect.left - gameRect.left + parentRect.width / 2}px`;
+                effectEl.style.top = `${parentRect.top - gameRect.top + parentRect.height / 2}px`;
+            }
+            effectsContainer.appendChild(effectEl);
+            setTimeout(() => effectEl.remove(), duration);
+        }
+
+        // --- Plant Personalities & Helpers ---
+        function createWaterParticle(startRect, endRect) {
+            const p = getFromPool('particles'); if (!p) return;
+            const gameRect = gameContainer.getBoundingClientRect();
+            const startX = startRect.left - gameRect.left + startRect.width * 0.2;
+            const startY = startRect.top - gameRect.top + startRect.height * 0.5;
+            
+            let endX, endY;
+            if(endRect) {
+                endX = endRect.left - gameRect.left + endRect.width / 2;
+                endY = endRect.top - gameRect.top + endRect.height * 0.8;
+            } else {
+                endX = startX + (Math.random() - 0.5) * 50;
+                endY = startY + 50;
+            }
+
+            let dx = endX - startX, dy = endY - startY;
+            const dist = Math.hypot(dx, dy);
+            if(dist === 0) { returnToPool(p); return; }
+            const speed = 400 + Math.random() * 100;
+
+            Object.assign(p, { x: startX, y: startY, vx: (dx/dist) * speed, vy: (dy/dist) * speed, life: dist / speed });
+            p.el.style.backgroundColor = playerState.specialWater === 'fertilizer' ? 'var(--water-special-fertilizer)' : playerState.specialWater === 'icy' ? 'var(--water-special-icy)' : 'var(--water-color)';
+        }
+        
+        // --- State Management & Controls ---
+        function setGameState(newState) {
+            gameState = newState;
+            [startScreen, gameOverScreen, nurseryScreen].forEach(o => o.style.display = 'none');
+            switch(newState) {
+                case 'PLAYING':
+                    if (lastGameStateBeforeNursery === 'PLAYING') {
+                        lastTime = performance.now();
+                        requestAnimationFrame(gameLoop);
+                    } else {
+                        initGame();
+                        lastTime = performance.now();
+                        requestAnimationFrame(gameLoop);
+                    }
+                    break;
+                case 'GAMEOVER':
+                    endCurrentEvent();
+                    const earnedSeeds = Math.floor(score / 500); goldenSeeds += earnedSeeds; saveGameData(); updateGoldenSeedDisplays();
+                    document.getElementById('game-over-stats').innerHTML = `<li>Final Score: ${Math.floor(score)}</li><li>Golden Seeds Earned: ${earnedSeeds} 🌰</li><li>Time Survived: ${Math.floor(timeSurvived)}s</li><li>Gophers Whacked: ${gophersWhacked}</li>`;
+                    gameOverScreen.style.display = 'flex'; break;
+                case 'START': startScreen.style.display = 'flex'; break;
+                case 'NURSERY': updateNursery(); nurseryScreen.style.display = 'flex'; break;
+            }
+        }
+        function updateNursery() {
+            nurseryUpgradesContainer.innerHTML = ''; updateGoldenSeedDisplays();
+            for (const key in upgrades) {
+                const u = upgrades[key]; const cost = getUpgradeCost(key);
+                const item = document.createElement('div'); item.className = 'upgrade-item';
+                const canAfford = goldenSeeds >= cost, isMaxed = (u.maxLevel && u.level >= u.maxLevel);
+                item.innerHTML = `<h4>${u.name}</h4><p>Level: ${u.level}</p><button data-upgrade-key="${key}" ${!canAfford || isMaxed ? 'disabled' : ''}>${isMaxed ? 'MAXED' : `Upgrade (<span class="upgrade-cost">${cost} 🌰</span>)`}</button>`;
+                nurseryUpgradesContainer.appendChild(item);
+            }
+        }
+        nurseryUpgradesContainer.addEventListener('click', e => {
+            const button = e.target.closest('button');
+            if(button && button.dataset.upgradeKey) {
+                const key = button.dataset.upgradeKey; const cost = getUpgradeCost(key);
+                if (goldenSeeds >= cost) { goldenSeeds -= cost; upgrades[key].level++; saveGameData(); updateNursery(); }
+            }
+        });
+
+        // --- Event Listeners ---
+        startButton.addEventListener('click', () => setGameState('PLAYING'));
+        restartButton.addEventListener('click', () => setGameState('PLAYING'));
+        nurseryButtonFromStart.addEventListener('click', () => { lastGameStateBeforeNursery = 'START'; setGameState('NURSERY'); });
+        nurseryButtonFromGameOver.addEventListener('click', () => { lastGameStateBeforeNursery = 'GAMEOVER'; setGameState('NURSERY'); });
+        nurseryBackButton.addEventListener('click', () => setGameState(lastGameStateBeforeNursery === 'GAMEOVER' ? 'START' : lastGameStateBeforeNursery));
+
+        window.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; if ((e.key === ' ' || e.key === 'Spacebar') && !isActionKeyDown) { isActionKeyDown = true; handleWaterStart(); } });
+        window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; if (e.key === ' ' || e.key === 'Spacebar') { isActionKeyDown = false; handleWaterEnd(); } });
+        gameContainer.addEventListener('mousedown', e => { if (e.button !== 0 || e.target.closest('.popup')) return; isActionKeyDown = true; handleWaterStart(); });
+        window.addEventListener('mouseup', e => { if (e.button !== 0) return; isActionKeyDown = false; handleWaterEnd(); });
+        
+        floorArea.addEventListener('pointerdown', e => {
+            if (gameState !== 'PLAYING') return;
+            e.preventDefault();
+            playerTargetX = e.clientX - gameContainer.getBoundingClientRect().left;
+        }, { passive: false });
+        
+        mobileWaterBtn.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); isActionKeyDown = true; handleWaterStart(); }, { passive: false });
+        mobileWaterBtn.addEventListener('pointerup', e => { e.preventDefault(); isActionKeyDown = false; handleWaterEnd(); });
+
+        function handleWaterStart() {
+            if (gameState !== 'PLAYING') return;
+            // Gopher and Shade Cloth are handled by their own tap listeners, checking proximity.
+            // This simplifies the logic here.
+            
+            const targetPlant = findClosestPlantInRange(CONSTANTS.WATERING_RANGE);
+            currentWateringSession = { plantId: targetPlant ? targetPlant.id : null, thirstAdded: 0 };
+            
+            isWateringHeld = false; clearTimeout(waterActionTimeout);
+            waterActionTimeout = setTimeout(() => { isWateringHeld = true; }, 150);
+        }
+        function handleWaterEnd() {
+            clearTimeout(waterActionTimeout);
+            if (gameState !== 'PLAYING' || !isActionKeyDown) { isWateringHeld = false; return; }
+            
+            // If it was a hold, the stream logic already ran. Just reset.
+            if(isWateringHeld) {
+                isWateringHeld = false;
+                checkAndApplyCombo();
+                if (playerState.specialWater) playerState.specialWater = null; // Use special water for one full can
+                return;
+            }
+
+            // This was a tap/burst
+            const targetPlant = findClosestPlantInRange(CONSTANTS.WATERING_RANGE);
+            if (targetPlant && playerState.water > CONSTANTS.PLAYER_WATER_BURST_COST) {
+                playerState.water -= CONSTANTS.PLAYER_WATER_BURST_COST;
+                waterPlant(targetPlant, CONSTANTS.WATER_BURST_THIRST_AMOUNT);
+                
+                const pRect = player.getBoundingClientRect(), tRect = targetPlant.element.getBoundingClientRect();
+                for (let i = 0; i < 5; i++) createWaterParticle(pRect, tRect);
+                if (playerState.specialWater === 'fertilizer') {
+                     targetPlant.effects.fertilizer = { duration: 30000, startTime: performance.now() };
+                     createFloatingText("Fertilized!", targetPlant.element, 'var(--water-special-fertilizer)');
+                }
+                if (playerState.specialWater === 'icy') {
+                     waterPlant(targetPlant, 25);
+                     if(activeEvent && activeEvent.type === 'heatwave') endCurrentEvent();
+                     createFloatingText("Icy! +25", targetPlant.element, 'var(--water-special-icy)');
+                }
+            }
+            checkAndApplyCombo();
+        }
+        
+        function findClosestPlantInRange(range) {
+            let closestPlant = null, minDistance = Infinity;
+            const playerRect = player.getBoundingClientRect();
+            for (const plant of plants) {
+                const plantRect = plant.element.getBoundingClientRect();
+                // Check if player is below the plant
+                if (playerRect.bottom > plantRect.top) {
+                    const dist = getDistanceBetweenRects(playerRect, plantRect);
+                    if (dist < minDistance) { minDistance = dist; closestPlant = plant; }
+                }
+            }
+            return minDistance < range ? closestPlant : null;
+        }
+        function getDistance(el1, el2) { return getDistanceBetweenRects(el1.getBoundingClientRect(), el2.getBoundingClientRect()); }
+        function getDistanceBetweenRects(rect1, rect2) {
+            const c1x = rect1.left + rect1.width / 2, c1y = rect1.top + rect1.height / 2;
+            const c2x = rect2.left + rect2.width / 2, c2y = rect2.top + rect2.height / 2;
+            return Math.hypot(c1x - c2x, c1y - c2y);
+        }
+        
+        initPools(); loadGameData(); setGameState('START');
+
+        shopButton.addEventListener('click', () => {
+            lastGameStateBeforeNursery = gameState;
+            setGameState('NURSERY');
+        });
+    });
+    </script>
+</body>
+</html>
