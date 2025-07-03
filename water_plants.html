@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #87CEEB;
@@ -330,26 +331,7 @@
             align-items: center;
             gap: 15px;
             pointer-events: auto;
-        }
-
-        #garden-health-container {
-            position: relative;
-            width: 40%;
-            height: 3vh;
-            background-color: var(--health-bar-bg);
-            border: 3px solid white;
-            border-radius: 10px;
-            padding: 3px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            pointer-events: auto;
-        }
-
-        #garden-health-bar {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--health-bar-fg), #28a728);
-            border-radius: 5px;
-            transition: width 0.5s ease, background 0.5s ease;
+            flex-wrap: nowrap;
         }
 
         #score-display, #golden-seeds-display {
@@ -357,6 +339,25 @@
             padding: 5px 15px;
             border-radius: 20px;
             border: 2px solid rgba(255,255,255,0.5);
+            white-space: nowrap;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #score-display {
+            flex-grow: 2;
+            flex-shrink: 1;
+            justify-content: flex-start;
+        }
+
+        #golden-seeds-display {
+            flex-grow: 1;
+            flex-shrink: 1;
+            justify-content: flex-end;
         }
 
         #combo-display {
@@ -422,6 +423,17 @@
             20% { transform: translate(-50%, 0) scale(1.1); opacity: 1; }
             80% { transform: translate(-50%, 0) scale(1); opacity: 1; }
             100% { transform: translate(-50%, -20px) scale(0.9); opacity: 0; }
+        }
+
+        @keyframes arcade-title-glow {
+            0%, 100% {
+                color: #ffff8f;
+                text-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00, 0 0 20px #ff0000, 0 0 30px #ff0000, 3px 3px 2px rgba(20,0,0,0.8);
+            }
+            50% {
+                color: #feea3a;
+                text-shadow: 0 0 7px #ffcc00, 0 0 15px #ffcc00, 0 0 25px #ff0000, 0 0 40px #ff0000, 3px 3px 2px rgba(20,0,0,0.8);
+            }
         }
         
         /* Overlays and Popups */
@@ -555,6 +567,15 @@
             #top-ui-bar { font-size: 2vw; }
             #combo-display { font-size: 6vw; }
             #garden-health-container { height: 2.5vh; }
+            #score-display {
+                font-size: 4vw;
+            }
+            #golden-seeds-display {
+                font-size: 4vw;
+            }
+            #top-right-info {
+                gap: 2vw;
+            }
             .popup {
                 width: auto;
                 max-width: 98vw;
@@ -636,6 +657,77 @@
                 bottom: calc(100% + 40px);
                 border-radius: 40px 40px 0 0;
             }
+            #score-display {
+                white-space: nowrap;
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                flex-shrink: 1;
+                font-size: 1em;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            @media (max-width: 768px), (max-height: 500px) {
+                #score-display {
+                    font-size: 4.5vw;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: none;
+                    min-width: 0;
+                    padding-left: 0;
+                    padding-right: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                #top-right-info {
+                    flex-wrap: nowrap;
+                }
+            }
+        }
+        /* Remove garden health bar styles */
+        #garden-health-container, #garden-health-bar { display: none !important; }
+        /* Retro preview styles */
+        #retro-preview {
+            display: none;
+            width: 500px;
+            height: 60px;
+            margin: 0 16px;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Press Start 2P', 'VT323', monospace;
+            font-size: 1.6em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: arcade-title-glow 2s ease-in-out infinite;
+            }
+        @media (min-width: 769px) {
+            #retro-preview { display: flex; }
+        }
+        @media (max-width: 768px), (max-height: 500px) {
+            #retro-preview { display: none !important; }
+            #top-ui-bar {
+                font-size: 2vw;
+                flex-wrap: wrap;
+                gap: 2vw;
+            }
+            #event-preview, #score-display, #golden-seeds-display {
+                flex: 1 1 30vw;
+                font-size: 5vw;
+                padding: 2vw 2vw;
+                min-width: 0;
+                min-height: 7vw;
+                justify-content: center;
+                align-items: center;
+            }
+            #score-display {
+                padding: 2vw 5vw !important;
+            }
+            #top-right-info {
+                gap: 3vw;
+            }
         }
     </style>
 </head>
@@ -649,13 +741,11 @@
                 <div id="event-icon"></div>
                 <div id="event-timer"></div>
             </div>
-            <div id="garden-health-container">
-                <div id="garden-health-bar"></div>
-            </div>
+            <!-- Retro preview for desktop, hidden on mobile -->
+            <div id="retro-preview">GARDEN GUARDIAN</div>
             <div id="top-right-info">
                 <div id="score-display">Score: 0</div>
                 <div id="golden-seeds-display">🌰 0</div>
-                <!-- <button id="shop-button" style="z-index:100; margin-left:10px; font-size:2.2vh; padding:6px 18px; border-radius:12px; border:2px solid #fff; background:#ffca3a; color:#654321; font-weight:bold; cursor:pointer;">Shop</button> -->
             </div>
         </div>
         <div id="combo-display"></div>
@@ -664,6 +754,7 @@
         <div id="level-popup" class="overlay" style="display:none;">
           <div class="popup">
             <h1 id="level-popup-title">Level 2!</h1>
+            <button id="level-continue-btn">Continue</button>
             <button id="level-shop-btn">Garden Shop</button>
           </div>
         </div>
@@ -700,8 +791,8 @@
             <div class="popup">
                 <h1>Garden Guardian</h1>
                 <p>Welcome! Your quirky plants are thirsty. Keep them happy!</p>
-                <p><b>Desktop:</b> A/D or Arrows to move. Space/Click to water (tap for burst, hold for stream).</p>
-                <p><b>Mobile:</b> Tap floor to move.</p>
+                <p><b>Desktop:</b>Arrow keys to move. Space to water.</p>
+                <p><b>Mobile:</b> Drag gnome to move. Get close to the plants to water.</p>
                 <button id="start-button">Start Gardening</button>
             </div>
         </div>
@@ -711,7 +802,7 @@
                 <h1>Game Over</h1>
                 <ul id="game-over-stats"></ul>
                 <button id="restart-button">Play Again</button>
-                <button id="nursery-button-from-gameover">Visit Shop</button>
+                <button id="nursery-button-from-gameover">Garden Shop</button>
             </div>
         </div>
 
@@ -739,8 +830,8 @@
             COMBO_WATER_THRESHOLD: 25,
             NEAR_DEATH_THRESHOLD: 10,
             CLOSE_CALL_THRESHOLD: 20,
-            SCORE_NEAR_DEATH: 500,
-            SCORE_CLOSE_CALL: 100,
+            SCORE_NEAR_DEATH: 100,
+            SCORE_CLOSE_CALL: 50,
             SCORE_GOPHER_WHACK: 250,
             SCORE_SHADE_CLOTH: 200,
             POOL_SIZE_PARTICLES: 50,
@@ -842,13 +933,14 @@
         
         // --- UPGRADES & PERSISTENCE ---
         let upgrades = {
-            waterCap: { name: "Water Can Capacity", level: 0, base: 100, inc: 20, costBase: 2, costFactor: 2 },
-            refillSpeed: { name: "Refill Speed", level: 0, base: 50, inc: 10, costBase: 6, costFactor: 1.8 },
-            playerSpeed: { name: "Sprout's Speed", level: 0, base: 300, inc: 25, costBase: 10, costFactor: 2.2 },
-            goldenWater: { name: "Special Water", level: 0, base: 0.05, inc: 0.02, costBase: 15, costFactor: 2.5 },
-            comboShield: { name: "Combo Shield", level: 0, base: 0, inc: 1, costBase: 25, costFactor: 3, maxLevel: 1 }
+            waterCap: { name: "Water Can Capacity", level: 0, base: 100, inc: 20, costBase: 4, costFactor: 2 },
+            refillSpeed: { name: "Refill Speed", level: 0, base: 50, inc: 10, costBase: 10, costFactor: 1.8 },
+            playerSpeed: { name: "Sprout's Speed", level: 0, base: 300, inc: 25, costBase: 15, costFactor: 2.2 },
+            goldenWater: { name: "Special Water", level: 0, base: 0.05, inc: 0.02, costBase: 25, costFactor: 2.5 },
+            comboShield: { name: "Combo Shield", level: 0, base: 0, inc: 1, costBase: 40, costFactor: 3, maxLevel: 1 }
         };
         let goldenSeeds = 0;
+        let lastSeedScore = 0; // Track last score at which a seed was awarded
         function getUpgradeValue(key) { const u = upgrades[key]; return u.base + u.level * u.inc; }
         function getUpgradeCost(key) {
             const u = upgrades[key];
@@ -1072,9 +1164,10 @@
 
         function updatePlants(deltaTime) {
             let wiltedCount = 0;
+            let anyWilted = false;
             plants.forEach(p => {
                 p.element.classList.toggle('happy', p.thirst > 80 && !p.isWilted);
-                if (p.isWilted) { wiltedCount++; return; }
+                if (p.isWilted) { wiltedCount++; anyWilted = true; return; }
                 
                 let currentThirstRate = p.baseThirstRate;
                 if (activeEvent) {
@@ -1120,6 +1213,7 @@
                 p.thirstFillEl.style.backgroundColor = p.thirst < CONSTANTS.CLOSE_CALL_THRESHOLD ? 'var(--health-bar-danger)' : p.thirst < 50 ? 'var(--health-bar-warn)' : 'var(--thirst-bar-fg)';
             });
             if (wiltedCount > 0) gardenHealth -= wiltedCount * CONSTANTS.GARDEN_HEALTH_DEPLETE_RATE * deltaTime;
+            if (anyWilted) setGameState('GAMEOVER');
         }
         
         function updateEffects(deltaTime) {
@@ -1175,8 +1269,17 @@
             else if (playerState.specialWater === 'icy') waterFill.style.backgroundColor = 'var(--water-special-icy)';
             else waterFill.style.backgroundColor = 'var(--thirst-bar-fg)';
 
-            gardenHealthBar.style.width = `${gardenHealth}%`;
-            gardenHealthBar.style.background = gardenHealth < 20 ? 'var(--health-bar-danger)' : gardenHealth < 50 ? 'var(--health-bar-warn)' : 'var(--health-bar-fg)';
+            // Award golden seeds for every 500 points during play
+            if (gameState === 'PLAYING') {
+                const seedsNow = Math.floor(score / 500);
+                const seedsPrev = Math.floor(lastSeedScore / 500);
+                if (seedsNow > seedsPrev) {
+                    goldenSeeds += (seedsNow - seedsPrev);
+                    lastSeedScore = score;
+                    saveGameData();
+                    updateGoldenSeedDisplays();
+                }
+            }
         }
         /* Call this inside updateUI() (or wherever you tally score) */
         function maybeLevelUp() {
@@ -1184,6 +1287,10 @@
             nextLevelScore += LEVELS.scoreStep;
             currentLevel++;
             applyLevelDifficulty();
+            // Award an extra golden seed for passing a level
+            goldenSeeds += 1;
+            saveGameData();
+            updateGoldenSeedDisplays();
             showLevelPopup();
           }
         }
@@ -1396,6 +1503,7 @@
             [startScreen, gameOverScreen, nurseryScreen].forEach(o => o.style.display = 'none');
             switch(newState) {
                 case 'PLAYING':
+                    lastSeedScore = 0; // Reset for new game
                     if (lastGameStateBeforeNursery === 'PLAYING') {
                         lastTime = performance.now();
                         requestAnimationFrame(gameLoop);
@@ -1407,8 +1515,14 @@
                     break;
                 case 'GAMEOVER':
                     endCurrentEvent();
-                    const earnedSeeds = Math.floor(score / 500); goldenSeeds += earnedSeeds; saveGameData(); updateGoldenSeedDisplays();
-                    document.getElementById('game-over-stats').innerHTML = `<li>Final Score: ${Math.floor(score)}</li><li>Golden Seeds Earned: ${earnedSeeds} 🌰</li><li>Time Survived: ${Math.floor(timeSurvived)}s</li><li>Gophers Whacked: ${gophersWhacked}</li>`;
+                    // Only award leftover seeds for points not already awarded
+                    const earnedSeeds = Math.floor(score / 500) - Math.floor(lastSeedScore / 500);
+                    if (earnedSeeds > 0) {
+                        goldenSeeds += earnedSeeds;
+                        saveGameData();
+                        updateGoldenSeedDisplays();
+                    }
+                    document.getElementById('game-over-stats').innerHTML = `<li>Final Score: ${Math.floor(score)}</li><li>Golden Seeds Earned: ${Math.floor(score / 500)} 🌰</li><li>Time Survived: ${Math.floor(timeSurvived)}s</li><li>Gophers Whacked: ${gophersWhacked}</li>`;
                     gameOverScreen.style.display = 'flex'; break;
                 case 'START': startScreen.style.display = 'flex'; break;
                 case 'NURSERY': updateNursery(); nurseryScreen.style.display = 'flex'; break;
@@ -1549,6 +1663,12 @@
         }
         
         initPools(); loadGameData(); setGameState('START');
+
+        document.getElementById('level-continue-btn').addEventListener('click', () => {
+          const pop = document.getElementById('level-popup');
+          pop.style.display = 'none';
+          resumePlay();
+        });
     });
     </script>
 </body>
