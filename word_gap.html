@@ -1,0 +1,1209 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Word Gap</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --player-color-primary: #0d6efd;
+            --player-color-secondary: #ffc107;
+            --opponent-color-primary: #dc3545;
+            --opponent-color-secondary: #343a40;
+            
+            --background-dark: #100f1c;
+            --background-light: #1f1d36;
+            --ring-floor: #3f3351;
+            --ropes-color: #e94560;
+            --ropes-posts: #8675a9;
+
+            --text-light: #f0f0f0;
+            --text-dark: #1e1e1e;
+            --accent-gold: #ffd700;
+            --accent-cyan: #00bcd4;
+            
+            --stamina-bar-color: #20c997;
+            --stamina-bar-bg: #444;
+            --stamina-bar-damage: #ff4757;
+
+            --special-bar-color: var(--accent-gold);
+            --special-bar-bg: #444;
+            
+            --timer-bar-color: var(--accent-cyan);
+            --timer-bar-bg: #444;
+
+            --btn-bg: #4a47a3;
+            --btn-hover-bg: #615dcf;
+            --btn-border: #c0c0c0;
+            --btn-correct-bg: #28a745;
+            --btn-incorrect-bg: #dc3545;
+
+            --font-display: 'Bangers', cursive;
+            --font-body: 'Montserrat', sans-serif;
+        }
+
+        /* --- KEYFRAMES --- */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes popIn {
+          0%   { transform: scale(0.5); opacity: 0; }
+          70%  { transform: scale(1.2); opacity: 1; }
+          100% { transform: scale(1);   opacity: 1; }
+        }
+        @keyframes popInCentered {
+          0%   { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+          70%  { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+          100% { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
+        }
+        @keyframes screenShake {
+            0%, 100% { transform: translate(0, 0); }
+            10%, 50%, 90% { transform: translate(-4px, 2px); }
+            30%, 70% { transform: translate(4px, -2px); }
+        }
+        @keyframes takeDamage {
+            0%, 100% { filter: brightness(1); transform: scale(1); }
+            50% { filter: brightness(2.5) contrast(2); transform: scale(1.05); }
+        }
+        @keyframes attackLunge {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(120px, -30px) scale(1.2) rotate(15deg); z-index: 10; }
+            100% { transform: translate(0, 0) scale(1) rotate(0deg); z-index: 1; }
+        }
+        @keyframes opponentAttackLunge {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(-120px, -30px) scale(1.2) rotate(-15deg); z-index: 10; }
+            100% { transform: translate(0, 0) scale(1) rotate(0deg); z-index: 1; }
+        }
+        @keyframes qteShrink {
+            from { transform: translate(-50%, -50%) scale(2.5); opacity: 0.9; }
+            to { transform: translate(-50%, -50%) scale(0.2); opacity: 1; }
+        }
+        @keyframes specialGlow {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+        @keyframes piñataFly {
+            from { transform: translateX(-150px) rotate(0deg); }
+            to { transform: translateX(110vw) rotate(720deg); }
+        }
+        @keyframes textFadeOut { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes comboPop {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.5); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes smokeDrift {
+            0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% { opacity: 0; transform: scale(2) rotate(45deg); }
+        }
+        @keyframes piñataBurst {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+        @keyframes incorrectoPop {
+            0% { transform: translate(-50%, 100%); opacity: 0; }
+            20% { transform: translate(-50%, -50%); opacity: 1; }
+            80% { transform: translate(-50%, -50%); opacity: 1; }
+            100% { transform: translate(-50%, -150%); opacity: 0; }
+        }
+
+        /* --- GENERAL STYLES --- */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: var(--font-body);
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .game-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: radial-gradient(ellipse at 50% 70%, var(--background-light) 30%, var(--background-dark) 80%);
+            isolation: isolate;
+        }
+        
+        .arena-background { position: absolute; inset: 0; overflow: hidden; }
+        .arena-background::before { content: ''; position: absolute; inset: 0; background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cg fill="%23000" fill-opacity="0.1"%3E%3Crect x="50" width="50" height="50"/%3E%3Crect y="50" width="50" height="50"/%3E%3C/g%3E%3C/svg%3E'); opacity: 0.3; transform: scale(1.5); }
+        .arena-background::after { content: ''; position: absolute; bottom: 0; left: -20%; width: 140%; height: 50%; background-color: var(--ring-floor); border-top: 10px solid var(--ropes-posts); border-radius: 50% / 20px; }
+        .ring-ropes { position: absolute; bottom: 25%; left: 0; width: 100%; height: 2px; background: var(--ropes-color); opacity: 0.7; box-shadow: 0 -15px 0 var(--ropes-color); }
+
+        .screen { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; text-align: center; transition: opacity 0.4s ease-in-out, z-index 0.4s; z-index: 10; background: rgba(0,0,0,0.1); }
+        .hidden { opacity: 0; pointer-events: none; z-index: -1; }
+
+        h1, h2, h3 { font-family: var(--font-display); letter-spacing: 2px; text-transform: uppercase; }
+        h1 { font-size: clamp(3rem, 10vw, 6rem); color: var(--accent-gold); text-shadow: 5px 5px 0px var(--ropes-color), -2px -2px 0px #000; margin-bottom: 25px; line-height: 1; }
+        h2 { font-size: clamp(1.8rem, 5vw, 2.5rem); color: var(--accent-cyan); text-shadow: 3px 3px 0px #000; }
+
+        .button { font-family: var(--font-display); background-color: var(--btn-bg); color: var(--text-light); border: 2px solid var(--btn-border); border-bottom: 6px solid #2c2a64; padding: 15px 30px; font-size: clamp(1.2rem, 4vw, 1.8rem); letter-spacing: 1px; cursor: pointer; border-radius: 12px; transition: all 0.1s ease-out; margin: 10px; text-shadow: 2px 2px 2px #000; text-transform: uppercase; }
+        .button:hover, .button:focus { background-color: var(--btn-hover-bg); transform: translateY(-2px); border-bottom-width: 8px; outline: 2px solid var(--accent-gold); }
+        .button:active { transform: translateY(2px); border-bottom-width: 4px; }
+
+        /* --- LOCKER ROOM --- */
+        #locker-room-screen {
+            overflow-y: auto;
+            justify-content: flex-start;
+            padding-top: 10px;
+            padding-bottom: 20px;
+            gap: 10px;
+        }
+        #locker-room-screen h1 { margin-bottom: 15px; }
+        #locker-room-screen .content-box { background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); padding: 15px; border-radius: 15px; margin-bottom: 0; width: 90%; max-width: 700px; border: 2px solid var(--ropes-posts); }
+        .swatches-container { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .swatch-group { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .swatch { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 3px solid #fff; transition: transform 0.2s; background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; font-family: sans-serif; font-size: 24px; }
+        .swatch:hover, .swatch:focus { transform: scale(1.1); outline: 2px solid var(--accent-gold); }
+        .swatch.selected { border-color: var(--accent-gold); transform: scale(1.2); }
+        .locker-room-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 0;
+        }
+
+        /* --- GAME SCREEN --- */
+        #game-screen { background: transparent; justify-content: space-between; padding: 10px; gap: 10px; }
+        .top-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 10px; box-sizing: border-box; gap: 10px; }
+        .player-info, .opponent-info { display: flex; align-items: center; width: 40%; background: rgba(0,0,0,0.5); padding: 8px; border-radius: 15px; border: 2px solid var(--ropes-posts); }
+        .opponent-info { flex-direction: row-reverse; }
+        .luchador-portrait { width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--text-light); margin: 0 10px; font-family: sans-serif; font-size: 30px; display: flex; justify-content: center; align-items: center; background-color: #333; }
+        #player-portrait { background-color: var(--player-color-primary); }
+        #opponent-portrait { background-color: var(--opponent-color-primary); }
+        .info-details { flex-grow: 1; text-align: left; }
+        .opponent-info .info-details { text-align: right; }
+        .info-details h3 { margin: 0 0 5px 0; font-size: 1rem; color: var(--text-light); text-shadow: 2px 2px 2px #000; }
+        .stamina-bar-container { width: 100%; height: 20px; background-color: var(--stamina-bar-bg); border-radius: 10px; overflow: hidden; border: 2px solid #222; padding: 2px; }
+        .stamina-bar { width: 100%; height: 100%; background: linear-gradient(to right, var(--stamina-bar-color), #66ffc2); border-radius: 6px; transition: width 0.3s ease-out; }
+        .stamina-bar.damaged { background-color: var(--stamina-bar-damage); transition: background-color 0.1s, width 0.3s; }
+        .center-hud { text-align: center; background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 15px; border: 2px solid var(--ropes-posts); }
+        #score { font-size: 2rem; font-weight: 700; color: var(--accent-gold); }
+        #combo-meter { font-size: 1.5rem; color: var(--accent-cyan); font-family: var(--font-display); transition: transform 0.1s ease-out; height: 25px;}
+        .timer-container { width: 120px; height: 10px; background-color: var(--timer-bar-bg); border-radius: 5px; margin: 5px auto 0; overflow: hidden; border: 1px solid #000; }
+        .timer-bar { width: 100%; height: 100%; background-color: var(--timer-bar-color); border-radius: 5px; }
+
+        .center-stage { width: 100%; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
+        .ring-area { display: flex; justify-content: space-around; align-items: flex-end; width: 100%; max-width: 600px; height: 180px; position: relative; }
+        .luchador { width: 120px; height: 150px; position: relative; transition: transform 0.3s ease; }
+        .luchador-body { width: 70px; height: 90px; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); border-radius: 35px 35px 10px 10px; }
+        .luchador-mask { width: 80px; height: 80px; border-radius: 50%; position: absolute; top: 0; left: 50%; transform: translateX(-50%); display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .luchador-mask .mask-icon { font-family: sans-serif; font-size: 40px; transform: translateY(2px); }
+        #player-luchador .luchador-mask { background-color: var(--player-color-primary); }
+        #player-luchador .luchador-body { background-color: var(--player-color-secondary); }
+        
+        #question-box { background: rgba(0,0,0,0.7); padding: 20px; border-radius: 15px; font-size: clamp(1.3rem, 4vw, 2rem); font-weight: 600; margin-top: 20px; border: 3px solid var(--accent-cyan); box-shadow: 0 0 15px rgba(0, 188, 212, 0.5); min-height: 80px; display: flex; justify-content: center; align-items: center; width: 95%; max-width: 900px; transition: opacity 0.5s, filter 0.5s; }
+        .bottom-bar { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        #answer-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; }
+        .answer-button { min-width: 220px; padding: 20px; font-size: 1.5rem; }
+        .answer-button.correct { background-color: var(--btn-correct-bg); border-color: #fff; animation: popIn 0.3s; }
+        .answer-button.incorrect { background-color: var(--btn-incorrect-bg); border-color: #555; opacity: 0.6; }
+
+        .special-container { display: flex; align-items: center; gap: 10px; position: relative; }
+        #special-button { position: relative; padding: 10px 20px; font-size: 1.2rem; background-color: #6c757d; border-color: #5a6268; opacity: 0.6; cursor: default; border-bottom-width: 6px; z-index: 1; }
+        #special-button.ready { opacity: 1; cursor: pointer; background-color: var(--special-bar-color); color: var(--text-dark); }
+        #special-button.ready::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--special-bar-color); border-radius: 12px; z-index: -1; animation: specialGlow 1.5s infinite ease-in-out; filter: blur(15px); }
+        .special-meter-container { width: 200px; height: 15px; background-color: var(--special-bar-bg); border-radius: 10px; overflow: hidden; border: 2px solid #222; padding: 2px; }
+        .special-meter { width: 0%; height: 100%; background: linear-gradient(to right, var(--special-bar-color), #fff700); border-radius: 5px; transition: width 0.3s ease-out; }
+        
+        /* --- EFFECTS & FEEDBACK --- */
+        #qte-container { position: absolute; z-index: 100; }
+        #qte-target { width: 120px; height: 120px; border: 5px dashed var(--ropes-color); border-radius: 50%; cursor: pointer; animation: popIn 0.3s; }
+        #qte-circle { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; background-color: rgba(255, 215, 0, 0.7); border-radius: 50%; animation: qteShrink 0.6s linear forwards; }
+        .feedback-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* QA FEEDBACK FIX: Proper centering to prevent jitter */
+            font-family: var(--font-display);
+            text-shadow: 3px 3px 0px #000;
+            z-index: 101;
+            pointer-events: none;
+        }
+        #qte-result {
+          font-size: 3rem;
+          animation: popInCentered 0.5s, textFadeOut 0.5s 0.5s forwards;
+        }
+        #incorrecto-feedback { font-size: 2.5rem; color: var(--ropes-color); animation: incorrectoPop 1.5s ease-out forwards; }
+
+        .smoke-overlay { position: absolute; width: 150px; height: 150px; background: radial-gradient(circle, rgba(200,200,200,0.6) 0%, rgba(200,200,200,0) 70%); border-radius: 50%; pointer-events: none; z-index: 50; animation: smokeDrift 3s ease-out forwards; }
+        .piñata-burst { position: absolute; width: 20px; height: 20px; background-color: var(--accent-gold); border-radius: 50%; pointer-events: none; z-index: 100; animation: piñataBurst 0.5s ease-out forwards; }
+
+        /* --- PIÑATA FIESTA --- */
+        #piñata-fiesta-screen { overflow: hidden; }
+        #piñata-timer { position: absolute; top: 20px; font-family: var(--font-display); font-size: 4rem; color: var(--accent-gold); text-shadow: 4px 4px 0 #000; }
+        .piñata-word { position: absolute; padding: 10px 20px; background: linear-gradient(45deg, #f3ec78, #af4261); color: #000; border-radius: 30px; cursor: pointer; font-weight: 700; animation-name: piñataFly; animation-timing-function: linear; box-shadow: 3px 3px 5px rgba(0,0,0,0.5); transition: transform 0.1s; left: 0; }
+        .piñata-word:hover { transform: scale(1.1); }
+
+        /* --- MODALS --- */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out; }
+        .modal.active { opacity: 1; pointer-events: auto; }
+        .modal-content { background: var(--background-light); padding: 30px; border-radius: 20px; border: 4px solid var(--ropes-color); width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; transform: scale(0.8); transition: transform 0.3s ease-in-out; }
+        .modal.active .modal-content { transform: scale(1); }
+        .modal-content h2 { margin-top: 0; }
+        .modal-content ul { list-style: none; padding: 0; }
+        .modal-content li { background: rgba(0,0,0,0.2); padding: 10px; margin-bottom: 10px; border-radius: 5px; font-weight: 600; border-left: 5px solid var(--accent-cyan); }
+        #special-choice-modal .button { display: block; width: 80%; margin: 15px auto; }
+        .achievement-list li { border-left-color: var(--accent-gold); }
+        .bracket-item { font-size: 1.2rem; display: flex; justify-content: space-between; align-items: center; }
+        .bracket-item.defeated { text-decoration: line-through; color: #888; }
+        .bracket-item.current::before { content: '▶'; color: var(--accent-gold); margin-right: 10px; }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 768px) {
+            .player-info, .opponent-info { width: 48%; }
+            .center-hud { order: 0; }
+            .top-bar { flex-wrap: wrap; justify-content: center; }
+            #question-box { font-size: 1.2rem; }
+            .answer-button { min-width: 180px; font-size: 1.2rem; padding: 15px; }
+            .ring-area { height: 150px; }
+            .luchador { width: 100px; height: 120px; }
+            @keyframes attackLunge { 50% { transform: translate(80px, -20px) scale(1.15) rotate(15deg); z-index: 10; } }
+            @keyframes opponentAttackLunge { 50% { transform: translate(-80px, -20px) scale(1.15) rotate(-15deg); z-index: 10; } }
+        }
+        
+        /* --- HUMAN/QA FEEDBACK IMPLEMENTATION for MOBILE --- */
+        @media (max-width: 480px) {
+            .top-bar { 
+                flex-direction: column; 
+                gap: 8px; 
+                padding-top: 60px; /* HUMAN FEEDBACK FIX: Make space for shorter absolute positioned scoreboard */
+                position: relative;
+            }
+            .player-info, .opponent-info { width: 100%; }
+            .center-hud { 
+                position: absolute; 
+                top: 10px; 
+                left: 50%; 
+                transform: translateX(-50%); 
+                width: 95%; /* HUMAN FEEDBACK FIX: Wider scoreboard */
+                z-index: 20;
+                 /* HUMAN FEEDBACK FIX: Horizontal layout for score and timer */
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 5px 10px;
+            }
+            #score {
+                font-size: 1.6rem;
+            }
+            #combo-meter {
+                font-size: 1rem;
+                height: auto;
+                flex-grow: 1;
+                text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            .timer-container {
+                width: 100px;
+                margin: 0;
+            }
+            #question-box { 
+                padding: 12px;
+                min-height: 70px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+            #answer-buttons { 
+                flex-direction: column; 
+                align-items: center; 
+                width: 100%;
+                gap: 8px;
+            }
+            .answer-button { 
+                width: 90%; 
+                padding: 12px;
+                margin: 0;
+            }
+            .special-container { 
+                flex-direction: column; 
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <div class="arena-background">
+            <div class="ring-ropes"></div>
+        </div>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen">
+            <h1>Word Gap</h1>
+            <p style="font-size: 1.2rem; margin-top: 0; margin-bottom: 30px; font-weight: 600;">The Ultimate Grammar Smackdown!</p>
+            <div id="start-button" class="button" tabindex="0">Start Tournament</div>
+        </div>
+
+        <!-- Locker Room Screen -->
+        <div id="locker-room-screen" class="screen hidden">
+            <h1>Locker Room</h1>
+            <div class="content-box">
+                <h2>Customize Your Luchador</h2>
+                <div class="swatches-container">
+                    <div class="swatch-group"><span style="margin-right: 10px;">Mask:</span><div id="mask-swatches" class="swatch-group"></div></div>
+                    <div class="swatch-group"><span style="margin-right: 10px;">Color 1:</span><div id="primary-swatches" class="swatch-group"></div></div>
+                    <div class="swatch-group"><span style="margin-right: 10px;">Color 2:</span><div id="secondary-swatches" class="swatch-group"></div></div>
+                </div>
+            </div>
+            <div class="content-box">
+                <h2>Next Opponent: <span id="next-opponent-name" style="color: var(--ropes-color);"></span></h2>
+                <p style="font-weight: 600;">Specialty: <span id="next-opponent-specialty" style="color: #fff;"></span></p>
+            </div>
+            <div class="locker-room-actions">
+                <div id="continue-to-match-button" class="button" tabindex="0">Fight!</div>
+                <div id="bracket-button" class="button" tabindex="0">Tournament Bracket</div>
+                <div id="libro-button" class="button" tabindex="0">Libro de Gramática</div>
+                <div id="stats-button" class="button" tabindex="0">Career Stats</div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen hidden">
+            <div class="top-bar">
+                <div class="player-info">
+                    <div id="player-portrait" class="luchador-portrait"></div>
+                    <div class="info-details">
+                        <h3>El Jugador</h3>
+                        <div class="stamina-bar-container"><div id="player-stamina" class="stamina-bar"></div></div>
+                    </div>
+                </div>
+                <div class="center-hud">
+                    <div id="score">0</div>
+                    <div id="combo-meter"></div>
+                    <div class="timer-container"><div id="timer-bar" class="timer-bar"></div></div>
+                </div>
+                <div class="opponent-info">
+                    <div id="opponent-portrait" class="luchador-portrait"></div>
+                    <div class="info-details">
+                        <h3 id="opponent-name">Señor Presente</h3>
+                        <div class="stamina-bar-container"><div id="opponent-stamina" class="stamina-bar"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="center-stage">
+                <div class="ring-area">
+                    <div id="player-luchador" class="luchador"><div class="luchador-body"></div><div class="luchador-mask"><span class="mask-icon"></span></div></div>
+                    <div id="opponent-luchador" class="luchador"><div class="luchador-body"></div><div class="luchador-mask"><span class="mask-icon"></span></div></div>
+                </div>
+                <div id="question-box">Loading question...</div>
+            </div>
+
+            <div class="bottom-bar">
+                <div id="answer-buttons"></div>
+                <div class="special-container">
+                    <div id="special-button" class="button" tabindex="0">SPECIAL</div>
+                    <div class="special-meter-container"><div id="special-meter" class="special-meter"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Piñata Fiesta Screen -->
+        <div id="piñata-fiesta-screen" class="screen hidden">
+            <h1>Piñata Fiesta!</h1>
+            <div id="piñata-timer">15</div>
+            <p>Click the correctly conjugated verbs!</p>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over-screen" class="screen hidden">
+            <h1 id="game-over-title"></h1>
+            <p id="game-over-message" style="font-size: 1.5rem; font-weight: 600;"></p>
+            <div id="rematch-button" class="button" tabindex="0">Rematch</div>
+            <div id="next-match-button" class="button" tabindex="0">Next Opponent</div>
+            <div id="endless-rumble-button" class="button" tabindex="0">Endless Rumble</div>
+            <div id="main-menu-button" class="button" tabindex="0">Main Menu</div>
+        </div>
+        
+        <!-- Effects Containers -->
+        <div id="qte-container" class="hidden"><div id="qte-target"><div id="qte-circle"></div></div></div>
+        <div id="effects-container"></div> <!-- For smoke, bursts, feedback text etc. -->
+
+        <!-- Modals -->
+        <div id="bracket-modal" class="modal"><div class="modal-content"><h2>Tournament Bracket</h2><ul id="bracket-list"></ul><div id="close-bracket-button" class="button" tabindex="0">Close</div></div></div>
+        <div id="libro-modal" class="modal"><div class="modal-content"><h2>Libro de Gramática</h2><ul id="libro-list"><li>No tips collected yet.</li></ul><div id="close-libro-button" class="button" tabindex="0">Close</div></div></div>
+        <div id="stats-modal" class="modal"><div class="modal-content"><h2>Career Stats</h2><p>Wins: <span id="stats-wins">0</span></p><p>Perfect Rounds: <span id="stats-perfect">0</span></p><p>Highest Combo: <span id="stats-combo">0</span></p><h3>Campeón Titles</h3><ul id="achievement-list" class="achievement-list"><li>None yet!</li></ul><div id="close-stats-button" class="button" tabindex="0">Close</div></div></div>
+        <div id="special-choice-modal" class="modal"><div class="modal-content"><h2>Choose Your Special!</h2><div id="grammar-slam-button" class="button" tabindex="0">Grammar Slam (Offensive)</div><div id="clarity-kick-button" class="button" tabindex="0">Clarity Kick (Defensive)</div><div id="cancel-special-button" class="button" style="background-color: #6c757d; border-bottom-color: #494f54;" tabindex="0">Cancel</div></div></div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM ELEMENTS ---
+            const gameContainer = document.querySelector('.game-container');
+            const screens = {
+                start: document.getElementById('start-screen'),
+                lockerRoom: document.getElementById('locker-room-screen'),
+                game: document.getElementById('game-screen'),
+                piñata: document.getElementById('piñata-fiesta-screen'),
+                gameOver: document.getElementById('game-over-screen'),
+            };
+
+            const ui = {
+                score: document.getElementById('score'),
+                comboMeter: document.getElementById('combo-meter'),
+                playerStamina: document.getElementById('player-stamina'),
+                opponentStamina: document.getElementById('opponent-stamina'),
+                questionBox: document.getElementById('question-box'),
+                answerButtons: document.getElementById('answer-buttons'),
+                timerBar: document.getElementById('timer-bar'),
+                specialMeter: document.getElementById('special-meter'),
+                specialButton: document.getElementById('special-button'),
+                playerLuchador: document.getElementById('player-luchador'),
+                opponentLuchador: document.getElementById('opponent-luchador'),
+                playerPortrait: document.getElementById('player-portrait'),
+                opponentPortrait: document.getElementById('opponent-portrait'),
+                opponentName: document.getElementById('opponent-name'),
+                qteContainer: document.getElementById('qte-container'),
+                qteTarget: document.getElementById('qte-target'),
+                effectsContainer: document.getElementById('effects-container'),
+                gameOverTitle: document.getElementById('game-over-title'),
+                gameOverMessage: document.getElementById('game-over-message'),
+                rematchButton: document.getElementById('rematch-button'),
+                nextMatchButton: document.getElementById('next-match-button'),
+                endlessRumbleButton: document.getElementById('endless-rumble-button'),
+                mainMenuButton: document.getElementById('main-menu-button'),
+            };
+            
+            const modals = {
+                bracket: document.getElementById('bracket-modal'),
+                libro: document.getElementById('libro-modal'),
+                stats: document.getElementById('stats-modal'),
+                special: document.getElementById('special-choice-modal'),
+            };
+
+            // --- GAME DATA ---
+            const opponents = [
+                { id: 0, name: "Señor Presente", health: 100, specialty: "Basic present tense", mechanic: null, mask: '😾', color1: '#c0392b', color2: '#f1c40f' },
+                { id: 1, name: "El Irregular", health: 120, specialty: "Irregular verbs", mechanic: 'shuffle', mask: '🤡', color1: '#8e44ad', color2: '#2ecc71' },
+                { id: 2, name: "Los Gemelos del Pasado", health: 150, specialty: "Preterite vs. Imperfect", mechanic: 'fade', mask: '👽', color1: '#d35400', color2: '#bdc3c7' },
+                { id: 3, name: "La Reina del Subjuntivo", health: 200, specialty: "The Subjunctive Mood", mechanic: 'smokescreen', mask: '💀', color1: '#e83e8c', color2: '#ffffff' },
+            ];
+
+            const questionsByLevel = {
+              0: [  // Regular-present
+                { id: '0a', sentence: "Yo ______ café por la mañana.",      options: ["tomo","tomas","toma"],              correct: 0, tip: "-er verb, yo → -o" },
+                { id: '0b', sentence: "Tú ______ muy rápido.",             options: ["corres","corro","corre"],           correct: 0, tip: "-er verb, tú → -es" },
+                { id: '0c', sentence: "Él ______ la guitarra.",            options: ["toca","toco","tocas"],              correct: 0, tip: "-ar verb, él → -a" },
+                { id: '0d', sentence: "Nosotros ______ en el parque.",     options: ["paseamos","pasea","paseas"],        correct: 0, tip: "-ar verb, nosotros → -amos" },
+                { id: '0e', sentence: "Ellos ______ temprano.",            options: ["llegan","llego","llegas"],          correct: 0, tip: "-ar verb, ellos → -an" },
+                { id: '0f', sentence: "Yo ______ cartas cada semana.",     options: ["escribo","escribe","escribes"],     correct: 0, tip: "-ir verb, yo → -o" },
+                { id: '0g', sentence: "Tú ______ la televisión.",          options: ["ves","veo","ve"],              correct: 0, tip: "-ar verb, tú → -as" },
+                { id: '0h', sentence: "Ella ______ flores bonitas.",       options: ["pinta","pinto","pintas"],           correct: 0, tip: "-ar verb, ella → -a" },
+                { id: '0i', sentence: "Nosotros ______ la comida.",        options: ["cocinamos","cocina","cocinas"],     correct: 0, tip: "-ar verb, nosotros → -amos" },
+                { id: '0j', sentence: "Ellos ______ muy alto.",            options: ["cantan","canto","cantas"],          correct: 0, tip: "-ar verb, ellos → -an" },
+                { id: '0k', sentence: "Yo ______ la puerta.",              options: ["abro","abre","abres"],              correct: 0, tip: "-ir verb, yo → -o" },
+                { id: '0l', sentence: "Tú ______ la mesa.",                options: ["arreglas","arreglo","arregla"],     correct: 0, tip: "-ar verb, tú → -as" },
+                { id: '0m', sentence: "Él ______ su cuarto.",              options: ["limpia","limpio","limpias"],        correct: 0, tip: "-ar verb, él → -a" },
+                { id: '0n', sentence: "Nosotros ______ español.",          options: ["estudiamos","estudia","estudias"],  correct: 0, tip: "-ar verb, nosotros → -amos" },
+                { id: '0o', sentence: "Ellos ______ agua fría.",           options: ["beben","bebo","bebes"],             correct: 0, tip: "-er verb, ellos → -en" },
+                { id: '0p', sentence: "Yo ______ la música.",              options: ["escucho","escucha","escuchas"],     correct: 0, tip: "-ar verb, yo → -o" },
+                { id: '0q', sentence: "Ella ______ nuevos libros.",        options: ["lee","leo","lees"],                 correct: 0, tip: "-er verb, ella → -e" },
+                { id: '0r', sentence: "Nosotros ______ a la maestra.",     options: ["preguntamos","pregunta","preguntas"],correct:0, tip:"-ar verb, nosotros → -amos"},
+                { id: '0s', sentence: "Ellos ______ en el río.",           options: ["pescan","pesco","pescas"],          correct: 0, tip: "-ar verb, ellos → -an" },
+                { id: '0t', sentence: "Yo ______ en bicicleta al trabajo.",options: ["voy","vas","van"],           correct: 0, tip: "-ar verb, yo → -o" }
+              ],
+
+              1: [  // Irregular-present
+                { id: '1a', sentence: "Yo ______ a casa tarde.",           options: ["vengo","viene","vienes"],           correct: 0, tip: "'Venir' – yo form 'vengo'" },
+                { id: '1b', sentence: "Tú ______ la verdad.",              options: ["dices","digo","dice"],              correct: 0, tip: "'Decir' – tú form 'dices'" },
+                { id: '1c', sentence: "Él ______ su tarea.",               options: ["hace","hago","haces"],              correct: 0, tip: "'Hacer' – él/ella form 'hace'" },
+                { id: '1d', sentence: "Nosotros ______ poder ir.",         options: ["podemos","puedo","puede"],          correct: 0, tip: "'Poder' – nosotros keeps the stem" },
+                { id: '1e', sentence: "Ellos ______ salir temprano.",      options: ["quieren","quiero","quieres"],       correct: 0, tip: "'Querer' – ellos 'quieren'" },
+                { id: '1f', sentence: "Yo ______ mucho dinero.",           options: ["tengo","tienes","tiene"],           correct: 0, tip: "'Tener' – yo 'tengo'" },
+                { id: '1g', sentence: "Tú ______ español e inglés.",       options: ["sabes","sé","sabe"],                correct: 0, tip: "'Saber' – tú 'sabes'" },
+                { id: '1h', sentence: "Ella ______ el autobús.",           options: ["pierde","pierdo","pierdes"],        correct: 0, tip: "'Perder' – e→ie except nosotros" },
+                { id: '1i', sentence: "Nosotros ______ las luces.",        options: ["encendemos","enciendo","enciende"], correct: 0, tip: "'Encender' – nosotros regular" },
+                { id: '1j', sentence: "Ellos ______ del trabajo a las seis.",options:["vuelven","vuelvo","vuelve"],        correct: 0, tip: "'Volver' – o→ue except nosotros" },
+                { id: '1k', sentence: "Yo ______ la información.",         options: ["obtengo","obtiene","obtienes"],      correct: 0, tip: "'Obtener' – yo 'obtengo'" },
+                { id: '1l', sentence: "Tú ______ las instrucciones.",      options: ["sigues","sigo","sigue"],            correct: 0, tip: "'Seguir' – e→i, tú 'sigues'" },
+                { id: '1m', sentence: "Él ______ dormir tarde.",           options: ["puede","puedo","puedes"],           correct: 0, tip: "'Poder' – él 'puede'" },
+                { id: '1n', sentence: "Nosotros ______ el menú.",          options: ["pedimos","pido","pide"],            correct: 0, tip: "'Pedir' – nosotros regular" },
+                { id: '1o', sentence: "Ellos ______ siempre.",             options: ["mienten","miento","miente"],        correct: 0, tip: "'Mentir' – e→ie" },
+                { id: '1p', sentence: "Yo ______ el regalo en la mesa.",   options: ["pongo","pone","pones"],             correct: 0, tip: "'Poner' – yo 'pongo'" },
+                { id: '1q', sentence: "Tú ______ a las ocho.",             options: ["vienes","vengo","viene"],           correct: 0, tip: "'Venir' – tú 'vienes'" },
+                { id: '1r', sentence: "Ella ______ muy temprano.",         options: ["se despierta","me despierto","te despiertas"], correct:0, tip:"Reflexive 'despertarse'" },
+                { id: '1s', sentence: "Nosotros ______ esa ciudad.",       options: ["conocemos","conozco","conoce"],     correct: 0, tip: "'Conocer' irregular only in yo" },
+                { id: '1t', sentence: "Ellos ______ la verdad.",           options: ["dicen","digo","dices"],             correct: 0, tip: "'Decir' – ellos 'dicen'" }
+              ],
+
+              2: [  // Preterite vs Imperfect
+                { id: '2a', sentence: "Ayer, yo ______ a la playa.",       options: ["fui","iba","voy"],                  correct: 0, tip: "Specific completed action → pretérito" },
+                { id: '2b', sentence: "Cuando era niño, ______ mucho.",    options: ["jugaba","jugué","juego"],           correct: 0, tip: "Habitual past → imperfecto" },
+                { id: '2c', sentence: "Anoche, la película ______ a las 9.",options:["empezó","empezaba","empieza"],        correct: 0, tip: "Start of event → pretérito" },
+                { id: '2d', sentence: "Mientras él estudiaba, ella ______ música.",options:["escuchaba","escuchó","escucha"],correct:0, tip:"Background action → imperfecto"},
+                { id: '2e', sentence: "El domingo pasado, nosotros ______ pizza.",options:["comimos","comíamos","comemos"], correct:0, tip:"Completed past meal → pretérito"},
+                { id: '2f', sentence: "De pequeños, mis hermanos ______ en el jardín cada día.",options:["jugaban","jugaron","juegan"],correct:0, tip:"Routine childhood → imperfecto"},
+                { id: '2g', sentence: "Hace un mes, ella ______ una carta.",options:["escribió","escribía","escribe"],     correct:0, tip:"One-time finished action → pretérito"},
+                { id: '2h', sentence: "Siempre ______ juntos los sábados.",options:["cenábamos","cenamos","cenan"],        correct:0, tip:"Siempre → imperfecto"},
+                { id: '2i', sentence: "Esta mañana, yo ______ temprano.",  options: ["me levanté","me levantaba","me levanto"], correct:0, tip:"Time-stamped → pretérito"},
+                { id: '2j', sentence: "Cuando vivíamos en Madrid, ______ al metro diario.",options:["tomábamos","tomamos","toman"],correct:0, tip:"Ongoing past → imperfecto"},
+                { id: '2k', sentence: "El año pasado, ellos ______ un coche nuevo.",options:["compraron","compraban","compran"],correct:0, tip:"Completed purchase → pretérito"},
+                { id: '2l', sentence: "Todos los veranos, nosotros ______ al campo.",options:["íbamos","fuimos","vamos"],   correct:0, tip:"Repeated summers → imperfecto"},
+                { id: '2m', sentence: "Anteayer, tú ______ la verdad.",    options: ["dijiste","decías","dices"],         correct: 0, tip: "Anteayer → pretérito" },
+                { id: '2n', sentence: "Ella siempre ______ café por la tarde.",options:["bebía","bebió","bebe"],           correct:0, tip:"Siempre → imperfecto"},
+                { id: '2o', sentence: "El lunes, la clase ______ tarde.",  options: ["terminó","terminaba","termina"],     correct: 0, tip: "Finished that day → pretérito"},
+                { id: '2p', sentence: "Cada noche, mi abuela me ______ historias.",options:["contaba","contó","cuenta"],   correct:0, tip:"Cada noche → imperfecto"},
+                { id: '2q', sentence: "A las cuatro, yo todavía ______.",  options: ["trabajaba","trabajé","trabajo"],     correct: 0, tip: "Past in-progress → imperfecto" },
+                { id: '2r', sentence: "Hace dos semanas, ellos ______ a París.",options:["viajaron","viajaban","viajan"],   correct:0, tip:"Hace + period → pretérito"},
+                { id: '2s', sentence: "Cuando era pequeño, yo ______ miedo a la oscuridad.",options:["tenía","tuve","tengo"],correct:0, tip:"Childhood state → imperfecto"},
+                { id: '2t', sentence: "Anoche, tú ______ la ventana.",     options: ["abriste","abrías","abres"],          correct: 0, tip: "Completed action → pretérito" }
+              ],
+
+              3: [  // Present Subjunctive
+                { id: '3a', sentence: "Espero que tú ______ un buen día.", options: ["tengas","tienes","tener"],           correct: 0, tip: "'Espero que' → subjuntivo" },
+                { id: '3b', sentence: "Es importante que nosotros ______.",options:["hablemos","hablamos","hablar"],       correct: 0, tip: "Impersonal expression → subjuntivo" },
+                { id: '3c', sentence: "Dudo que él ______ la verdad.",     options: ["diga","dice","dices"],               correct: 0, tip: "Doubt → subjuntivo" },
+                { id: '3d', sentence: "Quiero que ella me ______.",        options: ["ayude","ayuda","ayudas"],            correct: 0, tip: "Want → subjuntivo" },
+                { id: '3e', sentence: "Ojalá que ellos ______ pronto.",    options: ["lleguen","llegan","llegar"],         correct: 0, tip: "Ojalá → subjuntivo" },
+                { id: '3f', sentence: "Me alegra que tú ______ aquí.",     options: ["estés","estás","estar"],             correct: 0, tip: "Emotion → subjuntivo" },
+                { id: '3g', sentence: "Es posible que nosotros ______ tarde.",options:["lleguemos","llegamos","llegar"],   correct: 0, tip: "Possibility → subjuntivo" },
+                { id: '3h', sentence: "Temo que él no lo ______.",         options: ["entienda","entiende","entiendes"],   correct: 0, tip: "Fear → subjuntivo" },
+                { id: '3i', sentence: "Busco un libro que me ______.",     options: ["guste","gusta","gustar"],            correct: 0, tip: "Indefinite antecedent → subjuntivo" },
+                { id: '3j', sentence: "Antes de que tú ______, llámame.",  options: ["salgas","sales","salir"],            correct: 0, tip: "Antes de que → subjuntivo" },
+                { id: '3k', sentence: "No creo que ella ______ venir.",    options: ["pueda","puede","poder"],             correct: 0, tip: "Negation of belief → subjuntivo" },
+                { id: '3l', sentence: "Es bueno que ellos ______ ejercicio.",options:["hagan","hacen","hacer"],            correct: 0, tip: "Opinion → subjuntivo" },
+                { id: '3m', sentence: "Quiero un coche que ______ rápido.",options:["sea","es","ser"],                     correct: 0, tip: "Unknown characteristic → subjuntivo" },
+                { id: '3n', sentence: "Aunque ______ tarde, iremos.",      options: ["sea","es","ser"],                     correct: 0, tip: "Hypothetical aunque → subjuntivo" },
+                { id: '3o', sentence: "Para que lo ______, estudiarás.",   options: ["entiendas","entiendes","entender"],   correct: 0, tip: "Para que → subjuntivo" },
+                { id: '3p', sentence: "Ellos necesitan que tú les ______ ayuda.",options:["des","das","dar"],              correct: 0, tip: "Necessity → subjuntivo" },
+                { id: '3q', sentence: "Es malo que nosotros no ______ tiempo.",options:["tengamos","tenemos","tener"],     correct: 0, tip: "Value judgment → subjuntivo" },
+                { id: '3r', sentence: "Niego que él lo ______.",           options: ["sepa","sabe","saber"],               correct: 0, tip: "Denial → subjuntivo" },
+                { id: '3s', sentence: "A menos que tú ______, no iremos.", options: ["vengas","vienes","venir"],           correct: 0, tip: "A menos que → subjuntivo" },
+                { id: '3t', sentence: "Prefiero que ustedes me ______ mañana.",options:["llamen","llaman","llamar"],       correct: 0, tip: "Preference → subjuntivo" }
+              ]
+            };
+
+            
+            const piñataWords = {
+                correct: ['canto', 'bebes', 'vive', 'somos', 'están', 'hice', 'veía', 'compraste', 'sea', 'vayas'],
+                incorrect: ['habloyo', 'comesel', 'vivin', 'sernosotros', 'estoyellos', 'hico', 'veí', 'comprastes', 'seya', 'vayes']
+            };
+
+            const achievements = {
+                "PERFECTO_PRESENTE": { name: "Perfecto Presente", description: "Beat Señor Presente without taking damage." },
+                "COMBO_KING": { name: "Combo King", description: "Achieve a 20x combo." },
+                "LEGENDARIO": { name: "Legendario", description: "Complete the Tournament." },
+            };
+
+            function clearMechanicTimers() {
+              state.mechanicTimers.forEach(id => clearTimeout(id));
+              state.mechanicTimers = [];
+            }
+
+            // --- GAME STATE ---
+            const getInitialState = () => ({
+                currentScreen: 'start', score: 0, combo: 0, maxCombo: 0, playerHealth: 100, opponentHealth: 100, specialMeter: 0,
+                currentOpponentIndex: 0, currentQuestion: null, timerInterval: null, timeLeft: 10, canAnswer: true,
+                isGrammarSlamActive: false, libroDeGramatica: new Set(), wins: 0, perfectWins: 0,
+                matchQuestions: [], isEndlessMode: false,
+                unlockedMasks: new Set(['👹', '😈']), earnedAchievements: new Set(),
+                playerMask: '👹',
+                usedQuestionIds: new Set(),
+                mechanicTimers: [],  
+            });
+            let state = getInitialState();
+
+            // --- GAME LOGIC ---
+
+            function showScreen(screenName) {
+                Object.values(screens).forEach(screen => {
+                    if (screen) screen.classList.add('hidden');
+                });
+
+                const nextScreen = screens[screenName];
+                if (nextScreen) {
+                    nextScreen.classList.remove('hidden');
+                    state.currentScreen = screenName;
+                } else {
+                    console.error(`Screen "${screenName}" not found.`);
+                    return;
+                }
+
+                if (screenName === 'start') {
+                    document.getElementById('start-button').focus();
+                }
+            }
+
+            function updateUI() {
+                ui.score.textContent = state.score;
+                if (state.combo > 1) {
+                    ui.comboMeter.textContent = `x${state.combo} COMBO!`;
+                    if (ui.comboMeter.style.animationName !== 'comboPop') {
+                        ui.comboMeter.style.animation = 'comboPop 0.2s forwards';
+                        ui.comboMeter.addEventListener('animationend', () => ui.comboMeter.style.animation = '', { once: true });
+                    }
+                } else {
+                    ui.comboMeter.textContent = '';
+                }
+
+                ui.playerStamina.style.width = `${state.playerHealth}%`;
+                ui.opponentStamina.style.width = `${state.opponentHealth}%`;
+                
+                ui.specialMeter.style.width = `${state.specialMeter}%`;
+                ui.specialButton.classList.toggle('ready', state.specialMeter >= 100);
+            }
+
+            function startMatch(opponentIndex) {
+                clearMechanicTimers();
+                state.currentOpponentIndex = opponentIndex;
+                const opponent = opponents[opponentIndex];
+                
+                const healthMultiplier = state.isEndlessMode ? 1 + (state.wins - opponents.length) * 0.1 : 1;
+
+                state.playerHealth = 100;
+                state.opponentHealth = opponent.health * healthMultiplier;
+                if (!state.isEndlessMode) {
+                    state.score = 0;
+                }
+                state.combo = 0;
+                state.specialMeter = 0;
+                state.isGrammarSlamActive = false;
+                state.matchQuestions  = [...questionsByLevel[opponent.id]].sort(() => Math.random() - 0.5);
+                state.usedQuestionIds = new Set();
+                ui.opponentName.textContent = opponent.name;
+                ui.opponentPortrait.style.backgroundColor = opponent.color1;
+                ui.opponentPortrait.textContent = opponent.mask;
+                ui.opponentLuchador.querySelector('.luchador-mask').style.backgroundColor = opponent.color1;
+                ui.opponentLuchador.querySelector('.luchador-body').style.backgroundColor = opponent.color2;
+                ui.opponentLuchador.querySelector('.mask-icon').textContent = opponent.mask;
+
+                updatePlayerAppearance();
+                updateUI();
+                showScreen('game');
+                nextQuestion();
+            }
+
+            function nextQuestion() {
+                clearMechanicTimers();
+                if (state.playerHealth <= 0 || state.opponentHealth <= 0) return;
+                if (state.matchQuestions.length === 0) {
+                  const pool  = questionsByLevel[opponents[state.currentOpponentIndex].id];
+                  const fresh = pool.filter(q => !state.usedQuestionIds.has(q.id));
+
+                  /* all 20 asked?  reset the set and start over */
+                  if (fresh.length === 0) {
+                    state.usedQuestionIds.clear();
+                    state.matchQuestions = [...pool];
+                  } else {
+                    state.matchQuestions = fresh;
+                  }
+                  state.matchQuestions.sort(() => Math.random() - 0.5);
+                }
+
+                /* Pull the card and mark it as used */
+                state.currentQuestion = state.matchQuestions.pop();
+                state.usedQuestionIds.add(state.currentQuestion.id);
+
+                state.canAnswer = true;
+                ui.questionBox.style.opacity = 1;
+                ui.questionBox.style.filter = 'none';
+                ui.questionBox.innerHTML = state.currentQuestion.sentence.replace('______', `<span style="color: var(--accent-gold);">______</span>`);
+                
+                ui.answerButtons.innerHTML = '';
+                const shuffledOptions = [...state.currentQuestion.options].sort(() => Math.random() - 0.5);
+                
+                shuffledOptions.forEach(text => {
+                    const button = document.createElement('div');
+                    button.classList.add('button', 'answer-button');
+                    button.textContent = text;
+                    button.tabIndex = 0;
+                    button.onclick = () => handleAnswer(text, button);
+                    ui.answerButtons.appendChild(button);
+                });
+                
+                const mechanic = opponents[state.currentOpponentIndex].mechanic;
+                if (mechanic === 'shuffle' && Math.random() > 0.3) {
+                    const opponentSnapshot = state.currentOpponentIndex;           // 👈 freeze the match we’re in
+
+                    const timerId = setTimeout(() => {
+                      if (
+                           state.currentOpponentIndex !== opponentSnapshot ||
+                           !state.canAnswer ||
+                           opponents[state.currentOpponentIndex].mechanic !== 'shuffle'
+                         ) return;
+
+                        /* Shuffle the visible buttons (Fisher-Yates on the DOM) */
+                        const parent = ui.answerButtons;
+                        for (let i = parent.children.length - 1; i > 0; i--) {
+                            parent.insertBefore(parent.children[i], parent.children[Math.floor(Math.random() * (i + 1))]);
+                        }
+                    }, 500);
+                    state.mechanicTimers.push(timerId);
+                }
+                if (mechanic === 'fade') {
+                    setTimeout(() => ui.questionBox.style.opacity = 0.3, 3000);
+                }
+                if (mechanic === 'smokescreen' && Math.random() > 0.4) {
+                    const smoke = document.createElement('div');
+                    smoke.className = 'smoke-overlay';
+                    const targetEl = Math.random() > 0.5 ? document.querySelector('.timer-container') : Array.from(ui.answerButtons.querySelectorAll('.answer-button')).filter(b => b.textContent !== state.currentQuestion.options[state.currentQuestion.correct])[0];
+                    if(targetEl) {
+                        const rect = targetEl.getBoundingClientRect();
+                        smoke.style.top = `${rect.top + rect.height / 2 - 75}px`;
+                        smoke.style.left = `${rect.left + rect.width / 2 - 75}px`;
+                        ui.effectsContainer.appendChild(smoke);
+                        setTimeout(() => smoke.remove(), 3000);
+                    }
+                }
+                
+                startTimer();
+            }
+
+            function startTimer() {
+                clearInterval(state.timerInterval);
+                state.timeLeft = 10;
+                ui.timerBar.style.transition = 'none';
+                ui.timerBar.style.width = '100%';
+
+                setTimeout(() => {
+                    ui.timerBar.style.transition = `width ${state.timeLeft}s linear`;
+                    ui.timerBar.style.width = '0%';
+                }, 100);
+
+                state.timerInterval = setInterval(() => {
+                    state.timeLeft--;
+                    if (state.timeLeft < 0) handleAnswer(null, null);
+                }, 1000);
+            }
+
+            function handleAnswer(selectedOption, buttonEl) {
+                clearMechanicTimers();
+                if (!state.canAnswer) return;
+                state.canAnswer = false;
+                clearInterval(state.timerInterval);
+
+                const correctOption = state.currentQuestion.options[state.currentQuestion.correct];
+                const isCorrect = selectedOption === correctOption;
+
+                Array.from(ui.answerButtons.children).forEach(btn => {
+                    btn.onclick = null;
+                    if (btn.textContent === correctOption) btn.classList.add('correct');
+                    else if (btn === buttonEl) btn.classList.add('incorrect');
+                    else btn.style.opacity = '0.5';
+                });
+
+                if (isCorrect) {
+                    const basePoints = 100;
+                    const timeBonus = Math.max(0, state.timeLeft * 5);
+                    setTimeout(() => handleCorrectAnswer(basePoints, timeBonus), 500);
+                } else {
+                    setTimeout(handleIncorrectAnswer, 500);
+                }
+            }
+
+            function handleCorrectAnswer(basePoints, timeBonus) {
+                state.combo++;
+                if (state.combo > state.maxCombo) state.maxCombo = state.combo;
+                state.specialMeter = Math.min(100, state.specialMeter + 15 + state.combo);
+                
+                ui.playerLuchador.style.animation = 'attackLunge 0.2s ease-out forwards';
+                ui.playerLuchador.addEventListener('animationend', () => ui.playerLuchador.style.animation = '', { once: true });
+
+                setTimeout(() => startQTE(basePoints, timeBonus), 150);
+            }
+
+            function handleIncorrectAnswer() {
+                state.combo = 0;
+                state.playerHealth = Math.max(0, state.playerHealth - 15);
+                state.isGrammarSlamActive = false;
+                
+                state.libroDeGramatica.add(state.currentQuestion.tip);
+                
+                const feedbackEl = document.createElement('div');
+                feedbackEl.id = 'incorrecto-feedback';
+                feedbackEl.className = 'feedback-text';
+                feedbackEl.innerHTML = `¡Incorrecto!<br><p style="font-size: 0.5em; font-family: var(--font-body); margin: 0;">Tip added to Libro de Gramática</p>`;
+                ui.effectsContainer.appendChild(feedbackEl);
+                setTimeout(() => feedbackEl.remove(), 1500);
+
+                ui.opponentLuchador.style.animation = 'opponentAttackLunge 0.2s ease-out forwards';
+                ui.opponentLuchador.addEventListener('animationend', () => ui.opponentLuchador.style.animation = '', { once: true });
+                
+                setTimeout(() => {
+                    gameContainer.style.animation = 'screenShake 0.4s';
+                    gameContainer.addEventListener('animationend', () => gameContainer.style.animation = '', { once: true });
+                    ui.playerStamina.classList.add('damaged');
+                    setTimeout(() => ui.playerStamina.classList.remove('damaged'), 200);
+                }, 150);
+
+                updateUI();
+                
+                setTimeout(() => {
+                    checkGameOver();
+                    if (state.playerHealth > 0) nextQuestion();
+                }, 1500);
+            }
+
+            function startQTE(basePoints, timeBonus) {
+                ui.qteContainer.classList.remove('hidden');
+                const opponentRect = ui.opponentLuchador.getBoundingClientRect();
+                ui.qteContainer.style.left = `${opponentRect.left + opponentRect.width / 2}px`;
+                ui.qteContainer.style.top = `${opponentRect.top + opponentRect.height / 2}px`;
+                
+                const qteCircle = ui.qteTarget.querySelector('#qte-circle');
+                qteCircle.style.animation = 'none';
+                void qteCircle.offsetWidth;
+                qteCircle.style.animation = 'qteShrink 0.6s linear forwards';
+
+                const qteClickHandler = () => {
+                    ui.qteTarget.removeEventListener('click', qteClickHandler);
+                    handleQTEClick(basePoints, timeBonus);
+                };
+                ui.qteTarget.addEventListener('click', qteClickHandler);
+                
+                setTimeout(() => {
+                    if (!ui.qteContainer.classList.contains('hidden')) {
+                        ui.qteTarget.removeEventListener('click', qteClickHandler);
+                        handleQTEClick(basePoints, timeBonus, true);
+                    }
+                }, 600);
+            }
+
+            function handleQTEClick(basePoints, timeBonus, missed = false) {
+                const circle = ui.qteTarget.querySelector('#qte-circle');
+                const currentScale = circle.getBoundingClientRect().width / ui.qteTarget.getBoundingClientRect().width;
+                ui.qteContainer.classList.add('hidden');
+                circle.style.animation = 'none';
+
+                let qteBonus = 0;
+                let damage = 10;
+                let resultText = "Ouch!";
+                
+                const qteResultEl = document.createElement('div');
+                qteResultEl.id = 'qte-result';
+                qteResultEl.className = 'feedback-text';
+                qteResultEl.style.color = '#cccccc';
+                
+                if (!missed) {
+                    if (currentScale < 0.35) { qteBonus = 50; damage = 25; resultText = "Perfecto!"; qteResultEl.style.color = 'gold'; } 
+                    else if (currentScale < 0.7) { qteBonus = 25; damage = 15; resultText = "Bueno!"; qteResultEl.style.color = 'lightgreen'; }
+                }
+
+                if (state.isGrammarSlamActive) {
+                    damage *= 3; basePoints += 1000; state.isGrammarSlamActive = false; resultText = "GRAMMAR SLAM!";
+                }
+                
+                const totalPoints = basePoints + timeBonus + qteBonus;
+                const comboMultiplier = state.combo > 1 ? state.combo : 1;
+                state.score += totalPoints * comboMultiplier;
+
+                state.opponentHealth = Math.max(0, state.opponentHealth - damage);
+                
+                qteResultEl.textContent = resultText;
+                ui.effectsContainer.appendChild(qteResultEl);
+                setTimeout(() => qteResultEl.remove(), 1000);
+                
+                ui.opponentLuchador.style.animation = 'takeDamage 0.5s';
+                ui.opponentLuchador.addEventListener('animationend', () => ui.opponentLuchador.style.animation = '', { once: true });
+                if(damage > 10) {
+                    gameContainer.style.animation = 'screenShake 0.4s';
+                    gameContainer.addEventListener('animationend', () => gameContainer.style.animation = '', { once: true });
+                }
+                
+                updateUI();
+                
+                setTimeout(() => {
+                    checkGameOver();
+                    if (state.opponentHealth > 0) nextQuestion();
+                }, 1000);
+            }
+
+            function checkGameOver() {
+                if (state.playerHealth <= 0) endGame(false);
+                else if (state.opponentHealth <= 0) endGame(true);
+            }
+
+            function endGame(playerWon) {
+                clearInterval(state.timerInterval);
+                ui.rematchButton.style.display = 'none';
+                ui.nextMatchButton.style.display = 'none';
+                ui.endlessRumbleButton.style.display = 'none';
+                
+                if (playerWon) {
+                    if (state.playerHealth === 100 && !state.isEndlessMode && state.currentOpponentIndex === 0) {
+                        state.earnedAchievements.add("PERFECTO_PRESENTE");
+                        state.perfectWins++;
+                    }
+                    if (!state.isEndlessMode) {
+                        const defeatedOpponent = opponents[state.currentOpponentIndex];
+                        state.unlockedMasks.add(defeatedOpponent.mask);
+                    }
+                    state.wins++;
+                    ui.gameOverTitle.textContent = "¡VICTORIA!";
+                    ui.gameOverMessage.textContent = `You defeated ${opponents[state.currentOpponentIndex].name}!`;
+                    setTimeout(() => {
+                        startPiñataFiesta();
+                    }, 2000);
+                } else {
+                    ui.gameOverTitle.textContent = "¡DERROTA!";
+                    ui.gameOverMessage.textContent = `You were pinned by ${opponents[state.currentOpponentIndex].name}.`;
+                    ui.rematchButton.style.display = 'inline-block';
+                    showScreen('gameOver');
+                }
+                checkAchievements();
+            }
+
+            function checkAchievements() {
+                if (state.maxCombo >= 20) state.earnedAchievements.add("COMBO_KING");
+                if (state.currentOpponentIndex >= opponents.length - 1 && state.opponentHealth <= 0 && !state.isEndlessMode) {
+                    state.earnedAchievements.add("LEGENDARIO");
+                }
+            }
+
+            function startPiñataFiesta() {
+                showScreen('piñata');
+                clearMechanicTimers();
+                let piñataTime = 15;
+                const piñataTimerUI = document.getElementById('piñata-timer');
+                piñataTimerUI.textContent = piñataTime;
+
+                const timerInterval = setInterval(() => {
+                    piñataTime--;
+                    piñataTimerUI.textContent = piñataTime;
+                    if (piñataTime <= 0) {
+                        clearInterval(timerInterval);
+                        endPiñataFiesta();
+                    }
+                }, 1000);
+                
+                const spawnInterval = setInterval(() => {
+                    if (piñataTime <= 0) {
+                        clearInterval(spawnInterval);
+                        document.querySelectorAll('.piñata-word').forEach(el => el.remove());
+                    } else { createPiñataWord(); }
+                }, 350);
+            }
+
+            function createPiñataWord() {
+                const wordEl = document.createElement('div');
+                wordEl.classList.add('piñata-word');
+                const isCorrect = Math.random() > 0.4;
+                wordEl.textContent = isCorrect ? piñataWords.correct[Math.floor(Math.random() * piñataWords.correct.length)] : piñataWords.incorrect[Math.floor(Math.random() * piñataWords.incorrect.length)];
+                
+                wordEl.style.top = `${Math.random() * 80 + 10}%`;
+                const duration = Math.random() * 7.2 + 10.8;
+                wordEl.style.animationDuration = `${duration}s`;
+                
+                wordEl.onclick = (e) => {
+                    const burst = document.createElement('div');
+                    burst.className = 'piñata-burst';
+                    burst.style.top = `${e.clientY}px`;
+                    burst.style.left = `${e.clientX}px`;
+                    ui.effectsContainer.appendChild(burst);
+                    setTimeout(() => burst.remove(), 500);
+
+                    if (isCorrect) {
+                        state.score += 10 * Math.max(1, state.combo);
+                        updateUI();
+                    } else {
+                        gameContainer.style.animation = 'screenShake 0.2s';
+                        gameContainer.addEventListener('animationend', () => gameContainer.style.animation = '', { once: true });
+                    }
+                    wordEl.remove();
+                };
+                
+                screens.piñata.appendChild(wordEl);
+                setTimeout(() => wordEl.remove(), duration * 1000);
+            }
+
+            function endPiñataFiesta() {
+                showScreen('gameOver');
+                clearMechanicTimers();
+                if (state.isEndlessMode) {
+                    ui.nextMatchButton.style.display = 'inline-block';
+                    ui.nextMatchButton.textContent = 'Next Rumble!';
+                } else if (state.currentOpponentIndex < opponents.length - 1) {
+                    ui.nextMatchButton.style.display = 'inline-block';
+                    ui.nextMatchButton.textContent = 'Next Opponent';
+                } else {
+                    ui.gameOverTitle.textContent = "¡CAMPEÓN!";
+                    ui.gameOverMessage.textContent = "You've won the tournament!";
+                    ui.endlessRumbleButton.style.display = 'inline-block';
+                }
+            }
+            
+            function setupLockerRoom() {
+                const nextOpponent = opponents[state.currentOpponentIndex];
+                if(nextOpponent) {
+                    document.getElementById('next-opponent-name').textContent = nextOpponent.name;
+                    document.getElementById('next-opponent-specialty').textContent = nextOpponent.specialty;
+                }
+                setupCustomization();
+                showScreen('lockerRoom');
+            }
+
+            // --- EVENT LISTENERS ---
+            document.getElementById('start-button').addEventListener('click', () => { state = getInitialState(); setupLockerRoom(); });
+            document.getElementById('continue-to-match-button').addEventListener('click', () => startMatch(state.currentOpponentIndex));
+            ui.rematchButton.addEventListener('click', () => startMatch(state.currentOpponentIndex));
+            ui.nextMatchButton.addEventListener('click', () => { 
+                if (state.isEndlessMode) {
+                    startMatch(Math.floor(Math.random() * opponents.length));
+                } else {
+                    state.currentOpponentIndex++; 
+                    setupLockerRoom(); 
+                }
+            });
+            ui.endlessRumbleButton.addEventListener('click', () => {
+                state.isEndlessMode = true;
+                ui.gameOverTitle.textContent = "Endless Rumble";
+                ui.gameOverMessage.textContent = `Score: ${state.score}`;
+                startMatch(Math.floor(Math.random() * opponents.length));
+            });
+            ui.mainMenuButton.addEventListener('click', () => { state = getInitialState(); showScreen('start'); });
+            
+            // Modals
+            const openModal = (modal) => { modal.classList.add('active'); modal.querySelector('.button, .swatch')?.focus(); };
+            const closeModal = (modal) => modal.classList.remove('active');
+            
+            document.getElementById('bracket-button').addEventListener('click', () => {
+                const list = document.getElementById('bracket-list');
+                list.innerHTML = '';
+                opponents.forEach((opp, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'bracket-item';
+                    if(index < state.currentOpponentIndex) li.classList.add('defeated');
+                    if(index === state.currentOpponentIndex && !state.isEndlessMode) li.classList.add('current');
+                    li.innerHTML = `<span>${opp.name}</span> <span>${index < state.currentOpponentIndex ? 'DEFEATED' : 'UPCOMING'}</span>`;
+                    list.appendChild(li);
+                });
+                openModal(modals.bracket);
+            });
+            document.getElementById('close-bracket-button').addEventListener('click', () => closeModal(modals.bracket));
+
+            document.getElementById('libro-button').addEventListener('click', () => {
+                const list = document.getElementById('libro-list');
+                list.innerHTML = '';
+                if (state.libroDeGramatica.size === 0) list.innerHTML = '<li>No tips collected yet. Answer a question incorrectly to add one!</li>';
+                else state.libroDeGramatica.forEach(tip => list.insertAdjacentHTML('beforeend', `<li>${tip}</li>`));
+                openModal(modals.libro);
+            });
+            document.getElementById('close-libro-button').addEventListener('click', () => closeModal(modals.libro));
+            
+            document.getElementById('stats-button').addEventListener('click', () => {
+                document.getElementById('stats-wins').textContent = state.wins;
+                document.getElementById('stats-perfect').textContent = state.perfectWins;
+                document.getElementById('stats-combo').textContent = state.maxCombo;
+                const achList = document.getElementById('achievement-list');
+                achList.innerHTML = '';
+                if(state.earnedAchievements.size === 0) achList.innerHTML = '<li>None yet!</li>';
+                else state.earnedAchievements.forEach(achId => achList.insertAdjacentHTML('beforeend', `<li>${achievements[achId].name}: ${achievements[achId].description}</li>`));
+                openModal(modals.stats);
+            });
+            document.getElementById('close-stats-button').addEventListener('click', () => closeModal(modals.stats));
+
+            // Special Move Logic
+            ui.specialButton.addEventListener('click', () => { if (state.specialMeter >= 100) openModal(modals.special); });
+            document.getElementById('cancel-special-button').addEventListener('click', () => closeModal(modals.special));
+            document.getElementById('grammar-slam-button').addEventListener('click', () => {
+                state.isGrammarSlamActive = true; state.specialMeter = 0; updateUI(); closeModal(modals.special);
+                ui.questionBox.style.boxShadow = '0 0 30px gold';
+                setTimeout(() => ui.questionBox.style.boxShadow = '0 0 15px rgba(0, 188, 212, 0.5)', 3000);
+            });
+            document.getElementById('clarity-kick-button').addEventListener('click', () => {
+                state.specialMeter = 0; updateUI();
+                const wrongButtons = Array.from(ui.answerButtons.querySelectorAll('.answer-button')).filter(b => b.textContent !== state.currentQuestion.options[state.currentQuestion.correct]);
+                if (wrongButtons.length > 0) wrongButtons[0].style.display = 'none';
+                closeModal(modals.special);
+            });
+
+            // Customization
+            function updatePlayerAppearance() {
+                const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--player-color-primary');
+                const secondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--player-color-secondary');
+                ui.playerPortrait.style.backgroundColor = primaryColor;
+                ui.playerPortrait.textContent = state.playerMask;
+                ui.playerLuchador.querySelector('.luchador-mask').style.backgroundColor = primaryColor;
+                ui.playerLuchador.querySelector('.mask-icon').textContent = state.playerMask;
+                ui.playerLuchador.querySelector('.luchador-body').style.backgroundColor = secondaryColor;
+            }
+
+            function setupCustomization() {
+                const colors = {
+                    primary: { "Lucha Blue":'#0d6efd', "Danger Red":'#dc3545', "Verde Victorioso":'#198754', "Purple Pain":'#6f42c1', "Orange Fury":'#fd7e14', "Shadow Black":'#000000', "Minty Fresh":'#20c997' },
+                    secondary: { "Gold Standard":'#ffc107', "Steel Gray":'#6c757d', "Cyber Cyan":'#0dcaf0', "Power Pink":'#d63384', "Ghost White":'#ffffff', "Cloudy Day":'#f8f9fa', "Metal Silver":'#adb5bd' }
+                };
+                
+                const createSwatches = (containerId, items, isColor, property) => {
+                    const container = document.getElementById(containerId);
+                    container.innerHTML = '';
+                    Object.entries(items).forEach(([name, value]) => {
+                        const swatch = document.createElement('div');
+                        swatch.className = 'swatch';
+                        swatch.tabIndex = 0;
+                        swatch.title = name;
+                        if(isColor) swatch.style.backgroundColor = value;
+                        else swatch.textContent = value;
+                        
+                        swatch.addEventListener('click', () => {
+                            if (isColor) document.documentElement.style.setProperty(property, value);
+                            else state.playerMask = value;
+                            container.querySelector('.selected')?.classList.remove('selected');
+                            swatch.classList.add('selected');
+                            updatePlayerAppearance();
+                        });
+                        container.appendChild(swatch);
+                    });
+                };
+
+                createSwatches('primary-swatches', colors.primary, true, '--player-color-primary');
+                createSwatches('secondary-swatches', colors.secondary, true, '--player-color-secondary');
+                createSwatches('mask-swatches', Object.fromEntries(Array.from(state.unlockedMasks).map(m => [m, m])), false);
+                
+                document.querySelector('#primary-swatches .swatch').classList.add('selected');
+                document.querySelector('#secondary-swatches .swatch').classList.add('selected');
+                const selectedMask = Array.from(document.querySelectorAll('#mask-swatches .swatch')).find(s => s.textContent === state.playerMask);
+                if (selectedMask) selectedMask.classList.add('selected'); else document.querySelector('#mask-swatches .swatch').classList.add('selected');
+
+                updatePlayerAppearance();
+            }
+            
+            // Keyboard controls
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    if (document.activeElement && typeof document.activeElement.click === 'function') {
+                        e.preventDefault();
+                        document.activeElement.click();
+                    }
+                }
+
+                if (state.currentScreen === 'game') {
+                    if (e.code === 'Space' && !ui.qteContainer.classList.contains('hidden')) {
+                        ui.qteTarget.click();
+                    }
+                    if (!state.canAnswer) return;
+                    const answerButtons = Array.from(ui.answerButtons.querySelectorAll('.answer-button'));
+                    if (e.key >= '1' && e.key <= '3') {
+                        const button = answerButtons[parseInt(e.key) - 1];
+                        if (button && button.style.display !== 'none') button.click();
+                    }
+                }
+            });
+
+            // --- INITIALIZATION ---
+            function init() {
+                showScreen('start');
+            }
+
+            init();
+        });
+    </script>
+</body>
+</html>
