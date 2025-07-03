@@ -97,8 +97,8 @@
 
         #water-barrel {
             position: absolute;
-            left: 46%;
-            bottom: 20%;
+            left: 2%;
+            bottom: -22%;
             width: 8%;
             height: 12%;
             background: linear-gradient(90deg, var(--barrel-color) 0%, var(--barrel-dark) 20%, var(--barrel-color) 50%, var(--barrel-dark) 80%, var(--barrel-color) 100%);
@@ -106,7 +106,7 @@
             box-sizing: border-box;
             border-left: 4px solid var(--barrel-dark);
             border-right: 4px solid var(--barrel-dark);
-            z-index: 0;
+            z-index: 10;
         }
         #water-barrel::before, #water-barrel::after {
             content: '';
@@ -555,7 +555,6 @@
             #top-ui-bar { font-size: 2vw; }
             #combo-display { font-size: 6vw; }
             #garden-health-container { height: 2.5vh; }
-            #mobile-controls { display: none; }
             .popup {
                 width: auto;
                 max-width: 98vw;
@@ -611,8 +610,6 @@
                 min-width: 70px;
                 height: 18vw;
                 min-height: 70px;
-                left: 41%;
-                bottom: 22%;
                 border-left-width: 6px;
                 border-right-width: 6px;
             }
@@ -639,8 +636,6 @@
                 bottom: calc(100% + 40px);
                 border-radius: 40px 40px 0 0;
             }
-            .shelf:nth-of-type(1) { bottom: 60% !important; }
-            .shelf:nth-of-type(2) { bottom: 15% !important; }
         }
     </style>
 </head>
@@ -660,11 +655,18 @@
             <div id="top-right-info">
                 <div id="score-display">Score: 0</div>
                 <div id="golden-seeds-display">🌰 0</div>
-                <button id="shop-button" style="z-index:100; margin-left:10px; font-size:2.2vh; padding:6px 18px; border-radius:12px; border:2px solid #fff; background:#ffca3a; color:#654321; font-weight:bold; cursor:pointer;">Shop</button>
+                <!-- <button id="shop-button" style="z-index:100; margin-left:10px; font-size:2.2vh; padding:6px 18px; border-radius:12px; border:2px solid #fff; background:#ffca3a; color:#654321; font-weight:bold; cursor:pointer;">Shop</button> -->
             </div>
         </div>
         <div id="combo-display"></div>
         <div id="event-announcement"></div>
+        <!-- Level Up Popup -->
+        <div id="level-popup" class="overlay" style="display:none;">
+          <div class="popup">
+            <h1 id="level-popup-title">Level 2!</h1>
+            <button id="level-shop-btn">Garden Shop</button>
+          </div>
+        </div>
 
         <!-- Game Area & Floor -->
         <div class="game-area">
@@ -693,18 +695,13 @@
         <div id="heatwave-overlay"></div>
         <div id="effects-container"></div>
 
-        <!-- Mobile Controls -->
-        <div id="mobile-controls">
-            <div id="mobile-water-btn">Water</div>
-        </div>
-        
         <!-- Popups / Overlays -->
         <div id="start-screen" class="overlay">
             <div class="popup">
                 <h1>Garden Guardian</h1>
-                <p>Welcome, Sprout! Your quirky plants are thirsty. Keep them happy!</p>
+                <p>Welcome! Your quirky plants are thirsty. Keep them happy!</p>
                 <p><b>Desktop:</b> A/D or Arrows to move. Space/Click to water (tap for burst, hold for stream).</p>
-                <p><b>Mobile:</b> Tap floor to move. Use the 'Water' button.</p>
+                <p><b>Mobile:</b> Tap floor to move.</p>
                 <button id="start-button">Start Gardening</button>
             </div>
         </div>
@@ -751,6 +748,19 @@
             WATERING_RANGE: 150,
             INTERACTION_RANGE: 80,
         };
+        /* -------------------------------------------
+           📈  Level system – put near other constants
+        -------------------------------------------- */
+        const LEVELS = {
+          start: 1,
+          scoreStep: 1200,          // +1 level every 1 200 pts
+          thirstStep: 0.06,         // +6 % plant-thirst / lvl
+          eventStep: 0.05           // −5 % event cooldown / lvl
+        };
+        let currentLevel   = LEVELS.start;
+        let nextLevelScore = LEVELS.scoreStep;
+        let EVENT_BASE_COOLDOWN = 12000; // ms, used for event scheduling
+        let loopId = null; // for requestAnimationFrame
 
         // DOM Elements
         const gameContainer = document.getElementById('game-container');
@@ -776,10 +786,8 @@
         const nurseryScreen = document.getElementById('nursery-screen');
         const startButton = document.getElementById('start-button');
         const restartButton = document.getElementById('restart-button');
-        const nurseryButtonFromStart = document.getElementById('nursery-button-from-start');
         const nurseryButtonFromGameOver = document.getElementById('nursery-button-from-gameover');
         const nurseryBackButton = document.getElementById('nursery-back-button');
-        const mobileWaterBtn = document.getElementById('mobile-water-btn');
         const nurserySeedCount = document.getElementById('nursery-seed-count');
         const nurseryUpgradesContainer = document.getElementById('nursery-upgrades');
         const shopButton = document.getElementById('shop-button');
@@ -834,11 +842,11 @@
         
         // --- UPGRADES & PERSISTENCE ---
         let upgrades = {
-            waterCap: { name: "Water Can Capacity", level: 0, base: 100, inc: 20, costBase: 10, costFactor: 2 },
-            playerSpeed: { name: "Sprout's Speed", level: 0, base: 300, inc: 25, costBase: 15, costFactor: 2.2 },
-            refillSpeed: { name: "Refill Speed", level: 0, base: 50, inc: 10, costBase: 8, costFactor: 1.8 },
-            comboShield: { name: "Combo Shield", level: 0, base: 0, inc: 1, costBase: 50, costFactor: 3, maxLevel: 1 },
-            goldenWater: { name: "Special Water", level: 0, base: 0.05, inc: 0.02, costBase: 30, costFactor: 2.5 }
+            waterCap: { name: "Water Can Capacity", level: 0, base: 100, inc: 20, costBase: 2, costFactor: 2 },
+            refillSpeed: { name: "Refill Speed", level: 0, base: 50, inc: 10, costBase: 6, costFactor: 1.8 },
+            playerSpeed: { name: "Sprout's Speed", level: 0, base: 300, inc: 25, costBase: 10, costFactor: 2.2 },
+            goldenWater: { name: "Special Water", level: 0, base: 0.05, inc: 0.02, costBase: 15, costFactor: 2.5 },
+            comboShield: { name: "Combo Shield", level: 0, base: 0, inc: 1, costBase: 25, costFactor: 3, maxLevel: 1 }
         };
         let goldenSeeds = 0;
         function getUpgradeValue(key) { const u = upgrades[key]; return u.base + u.level * u.inc; }
@@ -954,30 +962,16 @@
             lastTime = timestamp;
 
             updatePlayer(deltaTime);
-            // On mobile, auto-water if close to a plant
-            if (isMobile()) {
-                const targetPlant = findClosestPlantInRange(CONSTANTS.WATERING_RANGE);
-                if (targetPlant && playerState.water > 0) {
-                    // Simulate watering stream
-                    const waterCost = CONSTANTS.PLAYER_WATER_STREAM_RATE * deltaTime;
-                    playerState.water -= waterCost;
-                    const thirstAmount = CONSTANTS.WATER_STREAM_THIRST_PER_SEC * deltaTime;
-                    waterPlant(targetPlant, thirstAmount);
-                    if (Math.random() < 0.7) {
-                        createWaterParticle(player.getBoundingClientRect(), targetPlant.element.getBoundingClientRect());
-                    }
-                }
-            } else {
-                handleWatering(deltaTime);
-            }
+            handleWatering(deltaTime);
             updatePlants(deltaTime);
             updateEffects(deltaTime);
             updateUI();
+            maybeLevelUp(); // <-- Level up check after score update
             
             timeSurvived += deltaTime;
 
             if (gardenHealth <= 0) setGameState('GAMEOVER');
-            else requestAnimationFrame(gameLoop);
+            else loopId = requestAnimationFrame(gameLoop);
         }
 
         // --- Update Functions ---
@@ -1016,7 +1010,13 @@
 
             const barrelRect = waterBarrel.getBoundingClientRect();
             const playerRect = player.getBoundingClientRect();
-            playerState.isRefilling = playerRect.right > barrelRect.left && playerRect.left < barrelRect.right;
+            // Use center-to-center distance for proximity
+            const barrelCenterX = barrelRect.left + barrelRect.width / 2;
+            const barrelCenterY = barrelRect.top + barrelRect.height / 2;
+            const playerCenterX = playerRect.left + playerRect.width / 2;
+            const playerCenterY = playerRect.top + playerRect.height / 2;
+            const distToBarrel = Math.hypot(barrelCenterX - playerCenterX, barrelCenterY - playerCenterY);
+            playerState.isRefilling = distToBarrel < CONSTANTS.INTERACTION_RANGE;
 
             if (playerState.isRefilling && !isWateringHeld) {
                 const refillAmount = getUpgradeValue('refillSpeed') * deltaTime;
@@ -1039,21 +1039,34 @@
         }
         
         function handleWatering(deltaTime) {
+            // Mobile auto-watering: if on mobile, not refilling, and not already watering, auto-water if super close to a plant
+            if (isMobile() && gameState === 'PLAYING' && !playerState.isRefilling && !isActionKeyDown) {
+                const autoWaterRange = 60; // px, super close
+                const targetPlant = findClosestPlantInRange(autoWaterRange);
+                if (targetPlant && playerState.water > 0) {
+                    // Simulate holding watering
+                    const waterCost = CONSTANTS.PLAYER_WATER_STREAM_RATE * deltaTime;
+                    playerState.water -= waterCost;
+                    const thirstAmount = CONSTANTS.WATER_STREAM_THIRST_PER_SEC * deltaTime;
+                    waterPlant(targetPlant, thirstAmount);
+                    if (Math.random() < 0.7) {
+                        createWaterParticle(player.getBoundingClientRect(), targetPlant.element.getBoundingClientRect());
+                    }
+                }
+            }
+            // Existing manual watering logic
             if (!isWateringHeld || playerState.water <= 0) return;
-            
             const targetPlant = findClosestPlantInRange(CONSTANTS.WATERING_RANGE);
             if (targetPlant) {
                 const waterCost = CONSTANTS.PLAYER_WATER_STREAM_RATE * deltaTime;
                 playerState.water -= waterCost;
-                
                 const thirstAmount = CONSTANTS.WATER_STREAM_THIRST_PER_SEC * deltaTime;
                 waterPlant(targetPlant, thirstAmount);
-
                 if (Math.random() < 0.7) {
                     createWaterParticle(player.getBoundingClientRect(), targetPlant.element.getBoundingClientRect());
                 }
             } else {
-                 if (Math.random() < 0.2) createWaterParticle(player.getBoundingClientRect(), null);
+                if (Math.random() < 0.2) createWaterParticle(player.getBoundingClientRect(), null);
             }
         }
 
@@ -1165,6 +1178,47 @@
             gardenHealthBar.style.width = `${gardenHealth}%`;
             gardenHealthBar.style.background = gardenHealth < 20 ? 'var(--health-bar-danger)' : gardenHealth < 50 ? 'var(--health-bar-warn)' : 'var(--health-bar-fg)';
         }
+        /* Call this inside updateUI() (or wherever you tally score) */
+        function maybeLevelUp() {
+          if (score >= nextLevelScore) {
+            nextLevelScore += LEVELS.scoreStep;
+            currentLevel++;
+            applyLevelDifficulty();
+            showLevelPopup();
+          }
+        }
+        function applyLevelDifficulty() {
+          // bleed garden health faster & make plants thirstier
+          CONSTANTS.GARDEN_HEALTH_DEPLETE_RATE *= 1 + LEVELS.thirstStep;
+          plants.forEach(p => p.baseThirstRate *= 1 + LEVELS.thirstStep);
+          // events fire a bit sooner
+          EVENT_BASE_COOLDOWN *= 1 - LEVELS.eventStep;
+        }
+        // --- Level Up Popup and Pause/Resume Logic ---
+        function showLevelPopup() {
+          gameState = 'LEVELUP';
+          cancelAnimationFrame(loopId);  // freeze gameplay
+          const pop = document.getElementById('level-popup');
+          document.getElementById('level-popup-title').textContent =
+              `Level ${currentLevel}!`;
+          pop.style.display = 'flex';
+          // auto-resume after 5 s
+          setTimeout(() => {
+            pop.style.display = 'none';
+            if (gameState === 'LEVELUP') resumePlay();
+          }, 5000);
+        }
+        function resumePlay() {
+          gameState = 'PLAYING';
+          lastTime = performance.now();
+          loopId = requestAnimationFrame(gameLoop);
+        }
+        document.getElementById('level-shop-btn').addEventListener('click', () => {
+          const pop = document.getElementById('level-popup');
+          pop.style.display = 'none';
+          lastGameStateBeforeNursery = 'PLAYING';
+          setGameState('NURSERY');
+        });
 
         function checkAndApplyCombo() {
             if (currentWateringSession.thirstAdded >= CONSTANTS.COMBO_WATER_THRESHOLD) {
@@ -1381,7 +1435,6 @@
         // --- Event Listeners ---
         startButton.addEventListener('click', () => setGameState('PLAYING'));
         restartButton.addEventListener('click', () => setGameState('PLAYING'));
-        nurseryButtonFromStart.addEventListener('click', () => { lastGameStateBeforeNursery = 'START'; setGameState('NURSERY'); });
         nurseryButtonFromGameOver.addEventListener('click', () => { lastGameStateBeforeNursery = 'GAMEOVER'; setGameState('NURSERY'); });
         nurseryBackButton.addEventListener('click', () => setGameState(lastGameStateBeforeNursery === 'GAMEOVER' ? 'START' : lastGameStateBeforeNursery));
 
@@ -1390,27 +1443,46 @@
         gameContainer.addEventListener('mousedown', e => { if (e.button !== 0 || e.target.closest('.popup')) return; isActionKeyDown = true; handleWaterStart(); });
         window.addEventListener('mouseup', e => { if (e.button !== 0) return; isActionKeyDown = false; handleWaterEnd(); });
         
+        // --- Mobile Drag-to-Move for Gnome ---
+        let isDraggingGnome = false;
+        let dragOffsetX = 0, dragOffsetY = 0;
+        player.addEventListener('touchstart', function(e) {
+            if (!isMobile() || gameState !== 'PLAYING') return;
+            if (e.target.closest('.popup') || e.target.closest('.overlay') || e.target.closest('#top-ui-bar')) return;
+            if (e.touches.length !== 1) return;
+            isDraggingGnome = true;
+            const touch = e.touches[0];
+            const playerRect = player.getBoundingClientRect();
+            dragOffsetX = touch.clientX - (playerRect.left + playerRect.width / 2);
+            dragOffsetY = touch.clientY - (playerRect.top + playerRect.height / 2);
+            e.preventDefault();
+            e.stopPropagation();
+        }, { passive: false });
+        window.addEventListener('touchmove', function(e) {
+            if (!isDraggingGnome || !isMobile() || gameState !== 'PLAYING') return;
+            if (e.touches.length !== 1) return;
+            const touch = e.touches[0];
+            const gameRect = gameContainer.getBoundingClientRect();
+            let x = touch.clientX - gameRect.left - dragOffsetX;
+            let y = touch.clientY - gameRect.top - dragOffsetY;
+            // Clamp to game area
+            const playerWidth = player.offsetWidth;
+            const playerHeight = player.offsetHeight;
+            x = Math.max(playerWidth/2, Math.min(gameContainer.offsetWidth - playerWidth/2, x));
+            y = Math.max(0, Math.min(gameContainer.offsetHeight - playerHeight, y));
+            playerTargetX = x;
+            playerTargetY = y;
+            e.preventDefault();
+        }, { passive: false });
+        window.addEventListener('touchend', function(e) {
+            if (!isDraggingGnome) return;
+            isDraggingGnome = false;
+        });
+        
         // Helper to detect mobile
         function isMobile() {
             return window.innerWidth <= 768 || window.innerHeight <= 500;
         }
-        // Mobile: allow movement by tapping anywhere on the game area (not overlays/popups)
-        gameArea.addEventListener('pointerdown', e => {
-            if (!isMobile() || gameState !== 'PLAYING') return;
-            // Ignore if tapping on overlays, popups, or UI
-            if (e.target.closest('.popup') || e.target.closest('.overlay') || e.target.closest('#top-ui-bar')) return;
-            e.preventDefault();
-            playerTargetX = e.clientX - gameContainer.getBoundingClientRect().left;
-        }, { passive: false });
-        
-        floorArea.addEventListener('pointerdown', e => {
-            if (gameState !== 'PLAYING') return;
-            e.preventDefault();
-            playerTargetX = e.clientX - gameContainer.getBoundingClientRect().left;
-        }, { passive: false });
-        
-        mobileWaterBtn.addEventListener('pointerdown', e => { e.preventDefault(); e.stopPropagation(); isActionKeyDown = true; handleWaterStart(); }, { passive: false });
-        mobileWaterBtn.addEventListener('pointerup', e => { e.preventDefault(); isActionKeyDown = false; handleWaterEnd(); });
 
         function handleWaterStart() {
             if (gameState !== 'PLAYING') return;
@@ -1477,11 +1549,6 @@
         }
         
         initPools(); loadGameData(); setGameState('START');
-
-        shopButton.addEventListener('click', () => {
-            lastGameStateBeforeNursery = gameState;
-            setGameState('NURSERY');
-        });
     });
     </script>
 </body>
