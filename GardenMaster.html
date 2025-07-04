@@ -428,6 +428,19 @@
             justify-content: center; align-items: center; flex-direction: column;
             text-align: center; color: white; z-index: 100; animation: fade-in 0.5s;
         }
+
+        .overlay .popup{
+            touch-action:auto;
+            -webkit-overflow-scrolling:touch;
+        }
+
+        .overlay, .overlay *{
+            touch-action:auto !important;
+        }
+        .overlay{
+            overflow-y:auto;
+            -webkit-overflow-scrolling:touch;
+        }
         @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
         .popup {
@@ -452,6 +465,21 @@
         }
         .popup button:hover { background-color: #34c0af; }
         .popup button:active { transform: translateY(4px); border-bottom-width: 2px; }
+
+        .popup .popup-close{
+            position:absolute; top:10px; right:10px;
+            width:36px; height:36px;
+            display:flex; align-items:center; justify-content:center;
+            font-size:20px; line-height:1;
+            font-weight:900; color:#fff;
+            background:none;
+            border:2px solid rgba(255,255,255,.6);
+            border-radius:50%;
+            cursor:pointer;
+            transition:background .15s,color .15s;
+            user-select:none;
+            text-shadow:0 2px 4px rgba(0,0,0,.6);
+        }
 
         #game-over-stats { list-style: none; padding: 0; font-size: 2.2vh; }
         #game-over-stats li { margin: 10px 0; }
@@ -796,6 +824,7 @@
 
         <div id="nursery-screen" class="overlay" style="display: none;">
             <div class="popup">
+                <button class="popup-close" title="Close">&#x2715;</button>
                 <h1>The Shop</h1>
                 <p>You have: <span id="nursery-seed-count">0</span> 🌰</p>
                 <div id="nursery-upgrades"></div>
@@ -918,6 +947,19 @@
         function returnToPool(item) {
             item.active = false; item.el.classList.remove('active'); item.el.style.animation = 'none';
         }
+
+        function hookPopupCloses() {
+            document.querySelectorAll('.popup-close').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const overlay = btn.closest('.overlay');
+                    if (!overlay) return;
+                    overlay.style.display = 'none';
+                    setGameState(lastGameStateBeforeNursery);
+                });
+            });
+        }
+
+        hookPopupCloses();
         
         // --- UPGRADES & PERSISTENCE ---
         let upgrades = {
@@ -1657,17 +1699,7 @@
           pop.style.display = 'none';
           resumePlay();
         });
-
-        /* Prevent unwanted page scrolling */
-        window.addEventListener("keydown", (event) => {
-            if (["ArrowUp", "ArrowDown", " "].includes(event.key)) {
-                event.preventDefault();
-            }
-            });
-            window.addEventListener("wheel", (event) => event.preventDefault(), {
-            passive: false,
-            });
-        });
+    });
     </script>
 </body>
 </html>
