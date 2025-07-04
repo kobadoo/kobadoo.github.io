@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.3a7babed.css",
+    "main.css": "/static/css/main.5615b407.css",
     "main.js": "/static/js/main.0dfd241d.js",
     "static/media/vegan_quest_banner.png": "/static/media/vegan_quest_banner.4904b6897f206eabe416.png",
     "static/media/garden_master_banner.png": "/static/media/garden_master_banner.77a3333c908282e4ac01.png",
@@ -423,11 +423,11 @@
     "static/media/egg.mp3": "/static/media/egg.31d11553881305a9d53b.mp3",
     "static/media/train.mp3": "/static/media/train.a2f813189d50aee0a98b.mp3",
     "index.html": "/index.html",
-    "main.3a7babed.css.map": "/static/css/main.3a7babed.css.map",
+    "main.5615b407.css.map": "/static/css/main.5615b407.css.map",
     "main.0dfd241d.js.map": "/static/js/main.0dfd241d.js.map"
   },
   "entrypoints": [
-    "static/css/main.3a7babed.css",
+    "static/css/main.5615b407.css",
     "static/js/main.0dfd241d.js"
   ]
 }
