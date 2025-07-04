@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Garden Guardian</title>
+    <title>Garden Master</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
@@ -431,7 +431,10 @@
         @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
         .popup {
-            background: var(--floor-color) url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIQSURBVHhe7dJBDQAgDAAxAAS/dvyx+8kYJ3pLzWZvVlssVliwYMGCCAsWLFgQYcGCBQtCFCxYsCDChAUDFgQhChYsWBBhwYIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFC0ILFiyIsGDBggUJYxYsWJAgwoIFCyIUWLBgwYIEERZ+A02oAg0Zg0jLAAAAAElFTkSuQmCC') repeat;
+            background: 
+                radial-gradient(circle at 60% 40%, #3a2412 0%, #6b4a2b 100%),
+                url('data:image/svg+xml;utf8,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="1.5" fill="%235c4322"/><circle cx="10" cy="30" r="1.5" fill="%235c4322"/><circle cx="30" cy="10" r="1.5" fill="%235c4322"/></svg>') repeat,
+                var(--floor-color) url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIQSURBVHhe7dJBDQAgDAAxAAS/dvyx+8kYJ3pLzWZvVlssVliwYMGCCAsWLFgQYcGCBQtCFCxYsCDChAUDFgQhChYsWBBhwYIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFCyIUWLBgwYIEERYsWBBhwoIFC0ILFiyIsGDBggUJYxYsWJAgwoIFCyIUWLBgwYIEERZ+A02oAg0Zg0jLAAAAAElFTkSuQmCC') repeat;
             padding: 30px; border-radius: 20px; border: 8px solid var(--barrel-color);
             box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(0,0,0,0.3);
             max-width: 90%; width: 600px;
@@ -565,18 +568,18 @@
                 width: auto;
                 max-width: 98vw;
                 max-height: 80vh;
-                padding: 10px 5px 60px 5px;
+                padding: 10px 5px 20px 5px;
                 border-radius: 10px;
                 font-size: 3vw;
                 overflow-y: auto;
                 box-sizing: border-box;
                 position: relative;
             }
-            .popup h1 { font-size: 5vw; margin-bottom: 10px; }
-            .popup p { font-size: 2.5vw; }
+            .popup h1 { font-size: 6vw; margin-bottom: 10px; }
+            .popup p { font-size: 4vw; }
             .popup button {
                 padding: 8px 10px;
-                font-size: 3vw;
+                font-size: 5vw;
                 border-radius: 10px;
             }
             #nursery-upgrades {
@@ -727,7 +730,7 @@
                 <div id="event-timer"></div>
             </div>
             <!-- Retro preview for desktop, hidden on mobile -->
-            <div id="retro-preview">GARDEN GUARDIAN</div>
+            <div id="retro-preview">GARDEN MASTER</div>
             <div id="top-right-info">
                 <div id="score-display">Score: 0</div>
                 <div id="golden-seeds-display">🌰 0</div>
@@ -774,7 +777,7 @@
         <!-- Popups / Overlays -->
         <div id="start-screen" class="overlay">
             <div class="popup">
-                <h1>Garden Guardian</h1>
+                <h1>Garden Master</h1>
                 <p>Welcome! Your quirky plants are thirsty. Keep them happy!</p>
                 <p><b>Desktop:</b>Arrow keys to move. Space to water.</p>
                 <p><b>Mobile:</b> Drag gnome to move. Get close to the plants to water.</p>
@@ -1216,7 +1219,7 @@
         function waterPlant(plant, amount) {
             const prevThirst = plant.thirst;
             plant.thirst = Math.min(plant.maxThirst, plant.thirst + amount);
-            score += Math.ceil(amount);
+            score += Math.ceil(amount * 0.5);
             
             if (currentWateringSession.plantId === plant.id) {
                 currentWateringSession.thirstAdded += amount;
@@ -1507,7 +1510,8 @@
                         updateGoldenSeedDisplays();
                     }
                     document.getElementById('game-over-stats').innerHTML = `<li>Final Score: ${Math.floor(score)}</li><li>Golden Seeds Earned: ${Math.floor(score / 500)} 🌰</li><li>Time Survived: ${Math.floor(timeSurvived)}s</li><li>Gophers Whacked: ${gophersWhacked}</li>`;
-                    gameOverScreen.style.display = 'flex'; break;
+                    setTimeout(() => { gameOverScreen.style.display = 'flex'; }, 500);
+                    break;
                 case 'START': startScreen.style.display = 'flex'; break;
                 case 'NURSERY': updateNursery(); nurseryScreen.style.display = 'flex'; break;
             }
@@ -1653,7 +1657,17 @@
           pop.style.display = 'none';
           resumePlay();
         });
-    });
+
+        /* Prevent unwanted page scrolling */
+        window.addEventListener("keydown", (event) => {
+            if (["ArrowUp", "ArrowDown", " "].includes(event.key)) {
+                event.preventDefault();
+            }
+            });
+            window.addEventListener("wheel", (event) => event.preventDefault(), {
+            passive: false,
+            });
+        });
     </script>
 </body>
 </html>
