@@ -7,6 +7,7 @@ import Footer from '../../Footer/Footer';
 import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
 import BulbImg from '../../../images/bulb.png';
+import GardenImg from '../../../images/garden_master_banner.png';
 import VeganImg from '../../../images/vegan_quest_banner.png';
 import FlagMatchImg from '../../../images/flag_match_banner.jpg';
 import GooglePlayImg from '../../../images/google-play-badge.png';
@@ -74,36 +75,47 @@ const StartScreen = (props) => {
             </div>
 
             <div className={classes.BenefitsText}>
+                <div role="img">
+                    <a href="/VeganQuest" target="_blank"><img className={classes.VeganImage} src={VeganImg} alt="" /></a>
+                </div>
+                <h3>Vegan Quest</h3>
+                <p>In this addictive game, you will help our vegan hero thrive in a world of falling food. Collect as many vegan food items as possible while avoiding non-vegan temptations.</p>
+                <button 
+                    className={classes.CrystalBallButton} 
+                    onClick={() => window.open('/VeganQuest', '_blank')}>Play Vegan Quest</button>
+            </div>
+
+            <div className={classes.BenefitsText}>
+                <div role="img">
+                    <a href="/GardenMaster" target="_blank"><img className={classes.VeganImage} src={GardenImg} alt="" /></a>
+                </div>
+                <h3>Garden Master</h3>
+                <p>You are a hard-working gnome who loves to garden! Move around, water your thirsty plants, and stop sneaky gophers from causing trouble. Collect golden seeds to unlock cool upgrades.</p>
+                <button 
+                    className={classes.CrystalBallButton} 
+                    onClick={() => window.open('/GardenMaster', '_blank')}>Play Garden Master</button>
+            </div>
+
+            <div className={classes.BenefitsText}>
+                <div role="img">
+                    <a href="/FlagMemoryMatch" target="_blank"><img className={classes.VeganImage} src={FlagMatchImg} alt="" /></a>
+                </div>
+                <h3>Flag Memory Match</h3>
+                <p>Test your memory and geography skills with this exciting game, where you match pairs of flags from 98 countries. With 6 increasingly challenging levels, each stage pushes your recall abilities further.</p>
+                <button 
+                    className={classes.CrystalBallButton} 
+                    onClick={() => window.open('/FlagMemoryMatch', '_blank')}>Play Flag Memory Match</button>
+            </div>
+
+            <div className={classes.BenefitsText}>
                 <div role="img" className={classes.Emoji}>
                     <a href="/#/crystalball" target="_blank"><span>{String.fromCodePoint(CRYSTAL_BALL_EMOJI)}</span></a>
                 </div>
-                <h3>Try Crystal Ball!</h3>
+                <h3>Crystal Ball</h3>
                 <p>Learn what the future awaits you with this fun game that uses playing cards and emojis to tell your fortune.</p>
                 <button 
                     className={classes.CrystalBallButton} 
                     onClick={() => window.open('/#/crystalball', '_blank')}>Play Crystal Ball</button>
-            </div>
-
-            <div className={classes.BenefitsText}>
-                <div role="img">
-                    <a href="/VeganQuest.html" target="_blank"><img className={classes.VeganImage} src={VeganImg} alt="" /></a>
-                </div>
-                <h3>Try Vegan Quest!</h3>
-                <p>In this addictive game, you will help our vegan hero thrive in a world of falling food. Collect as many vegan food items as possible while avoiding non-vegan temptations.</p>
-                <button 
-                    className={classes.VeganQuestButton} 
-                    onClick={() => window.open('/VeganQuest.html', '_blank')}>Play Vegan Quest</button>
-            </div>
-
-            <div className={classes.BenefitsText}>
-                <div role="img">
-                    <a href="/FlagMemoryMatch.html" target="_blank"><img className={classes.VeganImage} src={FlagMatchImg} alt="" /></a>
-                </div>
-                <h3>Try Flag Memory Match!</h3>
-                <p>Test your memory and geography skills with this exciting game, where you match pairs of flags from 98 countries. With 6 increasingly challenging levels, each stage pushes your recall abilities further.</p>
-                <button 
-                    className={classes.FlagMatchButton} 
-                    onClick={() => window.open('/FlagMemoryMatch.html', '_blank')}>Play Flag Memory Match</button>
             </div>
             
             <Footer />

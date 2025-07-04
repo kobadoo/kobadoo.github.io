@@ -1,0 +1,1612 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Siegebreaker: The King's Gambit</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0e14;
+            --primary-text: #e6edf3;
+            --secondary-text: #7d8590;
+            --border-color: #21262d;
+            --panel-bg: #161b22;
+            --panel-bg-translucent: rgba(22, 27, 34, 0.95);
+            --accent-color: #c98e22; /* A more regal gold */
+            --accent-hover: #e6a73e;
+            --red: #f85149;
+            --green: #238636;
+            --green-hover: #2ea043;
+            --gold: #f1e05a;
+            --stone: #aeb8c2;
+            --hp-bar-bg: #4d1c1c;
+            --hp-bar-fill: #da3633;
+            --font-family-header: 'Cinzel', serif;
+            --font-family-body: 'Roboto', sans-serif;
+            --shadow-light: 0 0 15px rgba(201, 142, 34, 0.3);
+            --shadow-dark: 0 8px 24px rgba(0,0,0,0.6);
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            font-family: var(--font-family-body);
+            width: 100%;
+            height: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.1s ease-out;
+        }
+
+        canvas {
+            background-color: #2a2a2a; /* This will be overlaid */
+            box-shadow: var(--shadow-dark);
+            border: 1px solid var(--border-color);
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+        
+        #background-overlay {
+            position: absolute;
+            top:0; left:0; right:0; bottom:0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .ui-panel {
+            position: absolute;
+            background-color: var(--panel-bg-translucent);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: var(--shadow-dark);
+            color: var(--primary-text);
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        #bottom-bar {
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .resource-display, .wave-display {
+            display: flex;
+            align-items: center;
+            font-size: 1.2em;
+            font-weight: 700;
+        }
+        .resource-display span, .wave-display span {
+            margin-left: 8px;
+        }
+        .resource-display .icon { font-size: 1.5em; }
+
+        #heartstone-hp-container {
+            width: 200px;
+            height: 25px;
+            background-color: var(--hp-bar-bg);
+            border: 1px solid #000;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+            position: relative;
+        }
+        #heartstone-hp-bar {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--hp-bar-fill), #a12825);
+            transition: width 0.3s ease-out;
+        }
+        #heartstone-hp-text {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            text-align: center;
+            line-height: 25px;
+            font-size: 0.9em;
+            color: white;
+            text-shadow: 1px 1px 2px black;
+            font-weight: 700;
+        }
+
+        .game-button {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            font-weight: 700;
+            font-family: var(--font-family-body);
+            color: white;
+            background: linear-gradient(to bottom, var(--green), #1c682b);
+            border: 1px solid #1a5c2a;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+        .game-button:hover:not(.disabled) {
+            background: linear-gradient(to bottom, var(--green-hover), var(--green));
+            border-color: #238636;
+            transform: translateY(-1px);
+        }
+        .game-button:active:not(.disabled) {
+            transform: translateY(1px) scale(0.98);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(0,0,0,0.1);
+        }
+        .game-button.disabled {
+            background: #555;
+            border-color: #444;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            opacity: 0.7;
+        }
+
+        #commander-ability {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            background-color: #222;
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            font-weight: 700;
+            box-shadow: var(--shadow-light);
+            transition: transform 0.2s ease;
+        }
+        #commander-ability:hover { transform: scale(1.1); }
+        #commander-ability-cooldown {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2em;
+            color: white;
+            pointer-events: none;
+            clip-path: inset(100% 0 0 0);
+            transition: clip-path 0.1s linear;
+        }
+        
+        #undo-btn {
+            width: 40px; height: 40px; font-size: 1.5em; padding: 0;
+            display: flex; justify-content: center; align-items: center;
+            background: #666; border-color: #555;
+        }
+        #undo-btn:hover:not(.disabled) { background: #777; border-color: #666; }
+        #undo-btn.disabled { background: #444; border-color: #333; }
+
+        #build-menu {
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .build-item {
+            width: 70px;
+            height: 70px;
+            background-color: var(--panel-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .build-item.selected, .build-item:hover {
+            background-color: #30363d;
+            border-color: var(--accent-color);
+            transform: scale(1.05);
+        }
+        .build-item-icon { font-size: 28px; }
+        .build-item-name { font-size: 10px; text-transform: uppercase; font-weight: 700; margin-top: 2px;}
+        .build-item-cost {
+            font-size: 12px;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 700;
+        }
+        .build-item-hotkey {
+            position: absolute;
+            top: 2px;
+            left: 4px;
+            font-size: 10px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 3px;
+            padding: 1px 3px;
+            color: var(--secondary-text);
+        }
+
+        .modal-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .modal-content {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px 40px;
+            max-width: 90%;
+            width: 550px;
+            text-align: center;
+            box-shadow: var(--shadow-dark);
+            animation: modal-pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .modal-content h2 {
+            margin-top: 0;
+            color: var(--accent-color);
+            font-family: var(--font-family-header);
+            font-size: 2.5em;
+            text-shadow: var(--shadow-light);
+        }
+
+        .gambit-option {
+            background-color: #21262d;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+        .gambit-option:hover {
+            border-color: var(--accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .gambit-option h3 { margin: 0 0 8px 0; color: var(--primary-text); font-family: var(--font-family-header); font-size: 1.5em;}
+        .gambit-option p { margin: 0; font-size: 1em; color: var(--secondary-text); }
+        .gambit-reward { color: var(--gold); font-weight: 700; }
+        .gambit-risk { color: var(--red); font-weight: 700; }
+
+        #upgrade-sell-panel {
+            position: absolute;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            padding: 8px;
+            z-index: 20;
+            background: var(--panel-bg-translucent);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            animation: fadeIn 0.2s;
+        }
+        .upgrade-sell-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #30363d;
+            color: var(--primary-text);
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s;
+        }
+        .upgrade-sell-button:hover:not(.disabled) { background: #444c56; }
+        .upgrade-sell-button.disabled { opacity: 0.5; cursor: not-allowed; background: #30363d; }
+        .upgrade-sell-button .hotkey { font-weight:700; color: var(--accent-color); }
+
+        #game-message {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            font-size: 2em;
+            font-weight: 700;
+            font-family: var(--font-family-header);
+            z-index: 50;
+            animation: message-fade 3s forwards;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0));
+            border-radius: 10px;
+        }
+
+        .top-ui-element {
+            font-size: 1.2em;
+            font-weight: 700;
+            z-index: 5;
+            padding: 8px 15px;
+        }
+        #score-display { position: absolute; top: 10px; right: 10px; }
+        #royal-seals-display { position: absolute; top: 10px; left: 10px; display: flex; align-items: center; gap: 8px; }
+
+        .armory-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background-color: #21262d;
+            border: 1px solid var(--border-color);
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .armory-item.unlocked { opacity: 0.6; }
+        .armory-item button {
+            background: linear-gradient(to bottom, var(--accent-color), #a8761c);
+            color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;
+            font-weight: 700; transition: all 0.2s;
+        }
+        .armory-item button:hover:not(:disabled) { background: linear-gradient(to bottom, var(--accent-hover), var(--accent-color)); }
+        .armory-item button:disabled { background: #555; cursor: not-allowed; }
+
+        #tooltip {
+            position: absolute;
+            display: none;
+            background: var(--panel-bg-translucent);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 0.9em;
+            max-width: 250px;
+            z-index: 200;
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes modal-pop-in {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes message-fade {
+            0%, 80% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, -20px); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .shake-hard { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+
+        /* Responsive CSS */
+        @media (max-width: 1200px) {
+            #bottom-bar { flex-wrap: wrap; justify-content: center; gap: 10px; width: 90%; }
+            #heartstone-hp-container { width: 150px; }
+        }
+        
+        @media (max-width: 768px), (max-height: 600px) {
+            #game-container { flex-direction: column; }
+            #bottom-bar {
+                position: relative;
+                width: 100%;
+                bottom: auto; left: auto; transform: none;
+                flex-wrap: wrap;
+                order: 3;
+                border-radius: 0;
+                padding: 5px; gap: 5px;
+                box-sizing: border-box;
+            }
+            .resource-display, .wave-display { font-size: 1em; }
+            .game-button { padding: 10px 18px; font-size: 1em; }
+            #build-menu {
+                position: relative;
+                top: auto; bottom: auto; left: auto; right: auto;
+                transform: none;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+                order: 2;
+                padding: 5px;
+                box-sizing: border-box;
+            }
+            .build-item { width: 60px; height: 60px; }
+            .modal-content { width: 95%; padding: 20px; }
+            #game-message { font-size: 1.5em; width: 90%; }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="background-overlay"></div>
+        <canvas id="gameCanvas"></canvas>
+        
+        <div id="score-display" class="ui-panel top-ui-element">Score: 0</div>
+        <div id="royal-seals-display" class="ui-panel top-ui-element"></div>
+
+        <div id="bottom-bar" class="ui-panel">
+            <div class="resource-display">
+                <span class="icon" style="color: var(--gold);">💰</span>
+                <span id="gold-display">100</span>
+            </div>
+            <div class="resource-display">
+                <span class="icon" style="color: var(--stone);">💎</span>
+                <span id="stone-display">50</span>
+            </div>
+            <div id="heartstone-hp-container">
+                <div id="heartstone-hp-bar"></div>
+                <div id="heartstone-hp-text"></div>
+            </div>
+            <div class="wave-display">
+                <span>Wave:</span>
+                <span id="wave-display">1</span>
+            </div>
+            <div id="commander-ability" data-tooltip="Rallying Cry (Q)<br>Boosts attack speed of nearby towers.">
+                <span>Q</span>
+                <div id="commander-ability-cooldown" style="display: none;"></div>
+            </div>
+            <button id="undo-btn" class="game-button disabled" data-tooltip="Undo Last Build Action">↶</button>
+            <button id="start-wave-btn" class="game-button">Start Wave (Space)</button>
+        </div>
+
+        <div id="build-menu" class="ui-panel">
+            <!-- Build items will be dynamically generated -->
+        </div>
+
+        <div id="upgrade-sell-panel" class="ui-panel">
+            <div id="upgrade-btn" class="upgrade-sell-button"></div>
+            <div id="sell-btn" class="upgrade-sell-button"></div>
+            <div id="target-priority-btn" class="upgrade-sell-button">🎯 Set Target</div>
+        </div>
+
+        <div id="game-message-container"></div>
+        <div id="tooltip"></div>
+    </div>
+
+    <!-- Modals -->
+    <div id="gambit-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2>The King's Gambit</h2>
+            <p style="color: var(--secondary-text);">Choose a challenge for the upcoming wave for a greater reward.</p>
+            <div id="gambit-options-container" style="margin-top: 20px;"></div>
+            <button id="skip-gambit-btn" class="game-button" style="margin-top: 15px; background: #666; border-color: #555;">No Gambit, Play It Safe</button>
+        </div>
+    </div>
+
+    <div id="game-over-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2 id="game-over-title">DEFEAT</h2>
+            <p>The Heartstone has fallen.</p>
+            <p>You survived <span id="final-wave">0</span> waves.</p>
+            <p>Final Score: <span id="final-score">0</span></p>
+            <p>Royal Seals Earned: <span id="royal-seals-earned">0</span></p>
+            <button id="armory-btn" class="game-button" style="background: linear-gradient(to bottom, var(--accent-color), #a8761c);">Royal Armory</button>
+            <button id="restart-btn" class="game-button" style="margin-left: 10px;">Play Again</button>
+        </div>
+    </div>
+    
+    <div id="main-menu-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Siegebreaker</h2>
+            <h3 style="font-family: var(--font-family-header); margin-top:-20px; margin-bottom: 20px; color: var(--accent-color);">The King's Gambit</h3>
+            <p style="color: var(--secondary-text);">Protect the Heartstone from waves of enemies. Build defenses, choose your gambits, and survive as long as you can.</p>
+            <button id="start-game-btn" class="game-button" style="margin-top: 20px;">Begin Siege</button>
+            <button id="main-menu-armory-btn" class="game-button" style="margin-left: 10px; background: linear-gradient(to bottom, var(--accent-color), #a8761c);">Royal Armory</button>
+        </div>
+    </div>
+
+    <div id="armory-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2>The Royal Armory</h2>
+            <p style="color: var(--secondary-text);">Spend Royal Seals on permanent upgrades.</p>
+            <p style="font-size: 1.2em;">Current Seals: <span id="armory-seals-display" style="color: var(--accent-color); font-weight:700;">0 👑</span></p>
+            <div id="armory-upgrades-container" style="max-height: 300px; overflow-y: auto; text-align: left; padding-right: 10px;"></div>
+            <button id="close-armory-btn" class="game-button" style="margin-top: 20px; background: #666; border-color: #555;">Close</button>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- CORE GAME SETUP ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const gameContainer = document.getElementById('game-container');
+        const backgroundOverlay = document.getElementById('background-overlay');
+
+        const GRID_COLS = 24;
+        const GRID_ROWS = 16;
+        const CASTLE_COLS = 3;
+        let TILE_SIZE = 40;
+
+        const GAME_STATE = {
+            MAIN_MENU: 'MAIN_MENU', BUILD: 'BUILD', GAMBIT: 'GAMBIT', ATTACK: 'ATTACK',
+            WAVE_END: 'WAVE_END', GAME_OVER: 'GAME_OVER', ARMORY: 'ARMORY', TARGETING: 'TARGETING'
+        };
+
+        let gameState = GAME_STATE.MAIN_MENU;
+        let grid = [], pathfindingGrid = [], entities = [], projectiles = [], particles = [];
+        let gold = 0, stone = 0, heartstoneHp = 0;
+        const HEARTSTONE_MAX_HP = 1000;
+        let wave = 1, score = 0;
+
+        let selectedBuild = null, hoveredTower = null, towerToSetTarget = null;
+        let mouse = { x: 0, y: 0, gridX: -1, gridY: -1 };
+        let commander, activeGambit = null, lastBuildUndo = null;
+        let waveFlags = {}; // For temporary wave effects like "Sudden Death"
+        let currentWaveEffects = { weather: 'none' };
+        
+        let audioCtx, sounds = {};
+
+        // --- META PROGRESSION (with anti-tamper checksum) ---
+        let royalSeals = 0, unlockedItems = {};
+        const META_STORAGE_KEY = 'siegebreaker_data';
+
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = (hash << 5) - hash + char;
+                hash |= 0; // Convert to 32bit integer
+            }
+            return hash;
+        }
+
+        function loadMetaProgress() {
+            try {
+                const raw = localStorage.getItem(META_STORAGE_KEY);
+                if (!raw) throw new Error("No saved data.");
+                
+                const payload = JSON.parse(atob(raw));
+                const dataStr = JSON.stringify(payload.data);
+                
+                if (simpleHash(dataStr) !== payload.checksum) {
+                    console.warn("Save data tampered! Resetting.");
+                    throw new Error("Checksum mismatch.");
+                }
+                
+                royalSeals = payload.data.seals || 0;
+                unlockedItems = payload.data.unlocks || {};
+
+            } catch (e) {
+                royalSeals = 0;
+                unlockedItems = {};
+            }
+            // Ensure passive unlocks have a level
+            Object.keys(ARMORY_DATA).forEach(key => {
+                if (ARMORY_DATA[key].type === 'passive' && !unlockedItems[key]) {
+                    unlockedItems[key] = { level: 0 };
+                }
+            });
+        }
+        
+        function saveMetaProgress() {
+            const data = { seals: royalSeals, unlocks: unlockedItems };
+            const dataStr = JSON.stringify(data);
+            const checksum = simpleHash(dataStr);
+            const payload = { data, checksum };
+            localStorage.setItem(META_STORAGE_KEY, btoa(JSON.stringify(payload)));
+        }
+        
+        function getPassiveBonus(key) {
+            const item = ARMORY_DATA[key];
+            const unlock = unlockedItems[key];
+            return (item && item.type === 'passive' && unlock) ? item.effect * unlock.level : 0;
+        }
+
+        // --- UI ELEMENTS ---
+        const goldDisplay = document.getElementById('gold-display'), stoneDisplay = document.getElementById('stone-display');
+        const hpBar = document.getElementById('heartstone-hp-bar'), hpText = document.getElementById('heartstone-hp-text');
+        const waveDisplay = document.getElementById('wave-display'), startWaveBtn = document.getElementById('start-wave-btn');
+        const buildMenu = document.getElementById('build-menu'), upgradeSellPanel = document.getElementById('upgrade-sell-panel');
+        const upgradeBtn = document.getElementById('upgrade-btn'), sellBtn = document.getElementById('sell-btn');
+        const targetPriorityBtn = document.getElementById('target-priority-btn'), scoreDisplay = document.getElementById('score-display');
+        const royalSealsDisplay = document.getElementById('royal-seals-display'), tooltip = document.getElementById('tooltip');
+        const undoBtn = document.getElementById('undo-btn');
+        
+        // --- GAME LOGIC ---
+        function resizeCanvas() {
+            const bottomBarHeight = document.getElementById('bottom-bar').offsetHeight;
+            const buildMenuHeight = document.getElementById('build-menu').offsetHeight;
+            const availableHeight = window.innerHeight - bottomBarHeight - buildMenuHeight - 20; // 20 for margins
+            const availableWidth = window.innerWidth - 20;
+
+            const containerRatio = availableWidth / availableHeight;
+            const gameRatio = GRID_COLS / GRID_ROWS;
+
+            if (containerRatio > gameRatio) {
+                canvas.height = availableHeight;
+                canvas.width = canvas.height * gameRatio;
+            } else {
+                canvas.width = availableWidth;
+                canvas.height = canvas.width / gameRatio;
+            }
+
+            TILE_SIZE = canvas.width / GRID_COLS;
+            document.body.style.fontSize = `${Math.max(10, TILE_SIZE / 2.5)}px`;
+            backgroundOverlay.style.width = canvas.style.width = `${canvas.width}px`;
+            backgroundOverlay.style.height = canvas.style.height = `${canvas.height}px`;
+        }
+
+        function init() {
+            loadMetaProgress();
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            canvas.addEventListener('mousemove', onMouseMove);
+            canvas.addEventListener('click', onMouseClick);
+            canvas.addEventListener('contextmenu', onRightClick);
+            document.addEventListener('keydown', onKeyDown);
+            setupUIButtons();
+            updateRoyalSealsDisplay();
+            showMainMenu();
+        }
+        
+        function startGame() {
+            if (!audioCtx) initAudio();
+            gameState = GAME_STATE.BUILD;
+            grid = []; entities = []; projectiles = []; particles = [];
+            gold = DEFENSE_DATA.STARTING_GOLD + Math.floor(DEFENSE_DATA.STARTING_GOLD * getPassiveBonus('STARTING_GOLD'));
+            stone = DEFENSE_DATA.STARTING_STONE; heartstoneHp = HEARTSTONE_MAX_HP;
+            wave = 1; score = 0;
+            selectedBuild = null; hoveredTower = null; activeGambit = null; lastBuildUndo = null;
+
+            for (let y = 0; y < GRID_ROWS; y++) {
+                grid[y] = [];
+                for (let x = 0; x < GRID_COLS; x++) {
+                    grid[y][x] = { type: 'ground', entity: null };
+                }
+            }
+            commander = new Commander(CASTLE_COLS + 1, Math.floor(GRID_ROWS / 2));
+            entities.push(commander);
+            setupSpecialNodes();
+            calculatePathfindingGrid();
+            updateUI();
+            updateBuildMenu();
+            gameLoop();
+        }
+        
+        function setupSpecialNodes() {
+            grid[2][5].type = 'quarry';
+            grid[GRID_ROWS - 3][5].type = 'quarry';
+            grid[Math.floor(GRID_ROWS/2)][18].type = 'goldvein';
+        }
+
+        let lastTime = 0;
+        function gameLoop(timestamp) {
+            if (gameState === GAME_STATE.MAIN_MENU || gameState === GAME_STATE.ARMORY) return;
+            const deltaTime = Math.min(0.05, (timestamp - lastTime) / 1000); // Delta time with cap
+            lastTime = timestamp;
+            update(deltaTime);
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function update(deltaTime) {
+            if (gameState === GAME_STATE.ATTACK) {
+                [...entities, ...projectiles].forEach(e => e.update(deltaTime));
+                entities = entities.filter(e => e.isAlive);
+                projectiles = projectiles.filter(p => p.isAlive);
+                if (!entities.some(e => e instanceof Enemy)) {
+                    endWave();
+                }
+            } else {
+                commander.update(deltaTime);
+            }
+            particles.forEach(p => p.update(deltaTime));
+            particles = particles.filter(p => p.isAlive);
+
+            if (currentWaveEffects.weather === 'rain') {
+                if (Math.random() < 0.5) particles.push(new RainDrop());
+            }
+        }
+        
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Dynamic background
+            const cycleDuration = 600;
+            const timeOfDay = (performance.now() / 1000) % cycleDuration;
+            const dayRatio = Math.sin((timeOfDay / cycleDuration) * Math.PI * 2 - Math.PI/2) * 0.5 + 0.5;
+            const dayBg = [120, 167, 209], nightBg = [22, 27, 34];
+            const r = Math.floor(dayBg[0] * dayRatio + nightBg[0] * (1 - dayRatio));
+            const g = Math.floor(dayBg[1] * dayRatio + nightBg[1] * (1 - dayRatio));
+            const b = Math.floor(dayBg[2] * dayRatio + nightBg[2] * (1 - dayRatio));
+            ctx.fillStyle = `rgb(${r},${g},${b})`;
+            ctx.fillRect(0,0,canvas.width, canvas.height);
+            if(dayRatio < 0.3) { // Night
+                ctx.fillStyle = `rgba(0,0,0,${(1 - dayRatio / 0.3) * 0.3})`;
+                ctx.fillRect(0,0,canvas.width, canvas.height);
+            }
+            
+            drawGrid();
+            entities.forEach(e => e.draw());
+            projectiles.forEach(p => p.draw());
+            particles.forEach(p => p.draw());
+            
+            if (gameState === GAME_STATE.BUILD && selectedBuild && mouse.gridX !== -1) drawGhostPlacement();
+            if (hoveredTower) {
+                drawSelection(hoveredTower);
+                if (typeof hoveredTower.range !== 'undefined') drawRange(hoveredTower);
+            }
+
+            if (currentWaveEffects.weather === 'fog') {
+                const fogGradient = ctx.createRadialGradient(commander.pixelX, commander.pixelY, TILE_SIZE * 3, commander.pixelX, commander.pixelY, TILE_SIZE * 8);
+                fogGradient.addColorStop(0, 'rgba(120, 130, 140, 0)');
+                fogGradient.addColorStop(1, 'rgba(120, 130, 140, 0.7)');
+                ctx.fillStyle = fogGradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+            if (gameState === GAME_STATE.TARGETING) {
+                canvas.style.cursor = 'crosshair';
+            } else {
+                canvas.style.cursor = 'default';
+            }
+        }
+
+        function drawGrid() {
+            ctx.fillStyle = 'rgba(50, 50, 70, 0.3)';
+            ctx.fillRect(0, 0, CASTLE_COLS * TILE_SIZE, canvas.height);
+            
+            const heartX = 1.5 * TILE_SIZE;
+            const heartY = (Math.floor(GRID_ROWS/2-1) + 1) * TILE_SIZE;
+            const pulse = 0.5 + Math.sin(performance.now() / 400) * 0.15;
+            const grd = ctx.createRadialGradient(heartX, heartY, TILE_SIZE * 0.5, heartX, heartY, TILE_SIZE * 1.5 * pulse);
+            grd.addColorStop(0, 'rgba(255, 77, 77, 0.8)');
+            grd.addColorStop(1, 'rgba(255, 77, 77, 0)');
+            ctx.fillStyle = grd;
+            ctx.fillRect(TILE_SIZE, Math.floor(GRID_ROWS/2-1)*TILE_SIZE, TILE_SIZE, 2*TILE_SIZE);
+            
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < GRID_COLS; x++) {
+                ctx.beginPath(); ctx.moveTo(x * TILE_SIZE, 0); ctx.lineTo(x * TILE_SIZE, canvas.height); ctx.stroke();
+            }
+            for (let y = 0; y < GRID_ROWS; y++) {
+                ctx.beginPath(); ctx.moveTo(0, y * TILE_SIZE); ctx.lineTo(canvas.width, y * TILE_SIZE); ctx.stroke();
+            }
+            
+            for (let y = 0; y < GRID_ROWS; y++) {
+                for (let x = 0; x < GRID_COLS; x++) {
+                    const tile = grid[y][x];
+                    if (!tile.entity) {
+                        if (tile.type === 'quarry') drawSpecialNode(x, y, 'rgba(139, 148, 158, 0.5)', '💎');
+                        if (tile.type === 'goldvein') drawSpecialNode(x, y, 'rgba(241, 224, 90, 0.4)', '💰');
+                    }
+                }
+            }
+        }
+        
+        function drawSpecialNode(x, y, color, icon) {
+            ctx.fillStyle = color;
+            ctx.fillRect(x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            ctx.font = `${TILE_SIZE * 0.6}px sans-serif`;
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillStyle = 'white';
+            ctx.fillText(icon, (x+0.5)*TILE_SIZE, (y+0.5)*TILE_SIZE);
+        }
+        
+        function drawGhostPlacement() {
+            const { gridX, gridY } = mouse;
+            const definition = DEFENSE_DATA[selectedBuild];
+            const canPlace = checkPlacement(gridX, gridY, definition);
+            ctx.globalAlpha = 0.5;
+            ctx.fillStyle = canPlace ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.5)';
+            ctx.fillRect(gridX * TILE_SIZE, gridY * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            if (definition.range) {
+                ctx.beginPath();
+                ctx.arc((gridX + 0.5) * TILE_SIZE, (gridY + 0.5) * TILE_SIZE, definition.range[0] * TILE_SIZE, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+        }
+
+        function drawSelection(entity) {
+            ctx.strokeStyle = 'var(--accent-color)';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(entity.x * TILE_SIZE, entity.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        }
+        
+        function drawRange(entity) {
+            ctx.beginPath();
+            ctx.arc((entity.pixelX || (entity.x + 0.5) * TILE_SIZE), (entity.pixelY || (entity.y + 0.5) * TILE_SIZE), entity.getRange() * TILE_SIZE, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.stroke();
+        }
+
+        // --- UI & INPUT ---
+        function onMouseMove(event) {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = event.clientX - rect.left;
+            mouse.y = event.clientY - rect.top;
+            mouse.gridX = Math.floor(mouse.x / TILE_SIZE);
+            mouse.gridY = Math.floor(mouse.y / TILE_SIZE);
+
+            updateTooltip(event);
+            
+            if (gameState === GAME_STATE.BUILD) {
+                 if (mouse.gridX >= 0 && mouse.gridX < GRID_COLS && mouse.gridY >= 0 && mouse.gridY < GRID_ROWS) {
+                    const entity = grid[mouse.gridY][mouse.gridX]?.entity;
+                    if (entity && entity instanceof Tower) {
+                        if (hoveredTower !== entity) {
+                            hoveredTower = entity;
+                            showUpgradeSellPanel();
+                        }
+                    } else if (hoveredTower) {
+                        hoveredTower = null;
+                        upgradeSellPanel.style.display = 'none';
+                    }
+                } else if (hoveredTower) {
+                    hoveredTower = null;
+                    upgradeSellPanel.style.display = 'none';
+                }
+            }
+        }
+
+        function onMouseClick() {
+            if (mouse.gridX < 0 || mouse.gridX >= GRID_COLS || mouse.gridY < 0 || mouse.gridY >= GRID_ROWS) return;
+            if (gameState === GAME_STATE.BUILD) {
+                if (selectedBuild) {
+                    placeDefense();
+                    return;
+                }
+                if (commander) commander.setTarget(mouse.gridX, mouse.gridY);
+            } else if (gameState === GAME_STATE.TARGETING) {
+                const clickedEntity = entities.find(e => e instanceof Enemy && Math.hypot(mouse.x - e.pixelX, mouse.y - e.pixelY) < TILE_SIZE * 0.4);
+                if (clickedEntity) {
+                    towerToSetTarget.setPriorityTarget(clickedEntity);
+                    showMessage(`Target set for ${towerToSetTarget.name}!`, 'var(--accent-color)');
+                }
+                deselect();
+            }
+        }
+
+        function onRightClick(event) {
+            event.preventDefault();
+            deselect();
+        }
+        
+        function onKeyDown(event) {
+            if (gameState === GAME_STATE.BUILD || gameState === GAME_STATE.ATTACK) {
+                switch(event.key.toLowerCase()) {
+                    case 'w': selectBuild('Wall'); break;
+                    case 'a': selectBuild('ArcherTower'); break;
+                    case 'c': selectBuild('CannonTower'); break;
+                    case 'q': if(commander) commander.useAbility(); break;
+                    case 'u': if(hoveredTower) upgradeHoveredTower(); break;
+                    case 's': if(hoveredTower) sellHoveredTower(); break;
+                    case 'escape': deselect(); break;
+                    case ' ': if (gameState === GAME_STATE.BUILD && !startWaveBtn.classList.contains('disabled')) startWave(); break;
+                }
+            }
+        }
+
+        function setupUIButtons() {
+            startWaveBtn.addEventListener('click', () => { if(gameState === GAME_STATE.BUILD) startWave() });
+            document.getElementById('commander-ability').addEventListener('click', () => commander?.useAbility());
+            upgradeBtn.addEventListener('click', upgradeHoveredTower);
+            sellBtn.addEventListener('click', sellHoveredTower);
+            targetPriorityBtn.addEventListener('click', setTargetingMode);
+            undoBtn.addEventListener('click', performUndo);
+
+            // Modals
+            document.getElementById('start-game-btn').addEventListener('click', () => { document.getElementById('main-menu-modal').style.display = 'none'; startGame(); });
+            document.getElementById('main-menu-armory-btn').addEventListener('click', showArmory);
+            document.getElementById('restart-btn').addEventListener('click', () => { document.getElementById('game-over-modal').style.display = 'none'; showMainMenu(); });
+            document.getElementById('armory-btn').addEventListener('click', showArmory);
+            document.getElementById('close-armory-btn').addEventListener('click', closeArmory);
+            document.getElementById('skip-gambit-btn').addEventListener('click', () => { activeGambit = null; document.getElementById('gambit-modal').style.display = 'none'; startWaveAttackPhase(); });
+        }
+        
+        function updateUI() {
+            goldDisplay.textContent = Math.floor(gold);
+            stoneDisplay.textContent = Math.floor(stone);
+            waveDisplay.textContent = wave;
+            scoreDisplay.textContent = `Score: ${score}`;
+
+            const hpPercentage = (heartstoneHp / HEARTSTONE_MAX_HP) * 100;
+            hpBar.style.width = `${hpPercentage}%`;
+            hpText.textContent = `${Math.ceil(heartstoneHp)} / ${HEARTSTONE_MAX_HP}`;
+            
+            startWaveBtn.classList.toggle('disabled', gameState !== GAME_STATE.BUILD);
+            startWaveBtn.textContent = gameState === GAME_STATE.BUILD ? "Start Wave (Space)" : "Wave in Progress";
+            undoBtn.classList.toggle('disabled', !lastBuildUndo || gameState !== GAME_STATE.BUILD);
+            
+            if (commander) {
+                const cdDiv = document.getElementById('commander-ability-cooldown');
+                if (commander.abilityCooldown > 0) {
+                    cdDiv.style.display = 'flex';
+                    cdDiv.textContent = commander.abilityCooldown.toFixed(1);
+                    const cdHeight = (commander.abilityCooldown / commander.getAbilityCooldown()) * 100;
+                    cdDiv.style.clipPath = `inset(${100 - cdHeight}% 0 0 0)`;
+                } else {
+                    cdDiv.style.display = 'none';
+                }
+            }
+        }
+        
+        function updateBuildMenu() {
+            buildMenu.innerHTML = '';
+            const buildableDefenses = {W: 'Wall', A: 'ArcherTower', C: 'CannonTower', F: 'FrostSpire', T: 'TarPit', M: 'StonemasonHut', G: 'MineShaft'};
+            Object.entries(buildableDefenses).forEach(([hotkey, key]) => {
+                const def = DEFENSE_DATA[key];
+                if (def.isUnlockable && !unlockedItems[key]) return;
+                const item = document.createElement('div');
+                item.className = 'build-item';
+                item.dataset.key = key;
+                item.dataset.tooltip = `<b>${def.name}</b><br>Cost: ${def.costGold}💰 ${def.costStone}💎`;
+                item.innerHTML = `
+                    <div class="build-item-hotkey">${hotkey}</div>
+                    <div class="build-item-icon">${def.icon}</div>
+                    <div class="build-item-name">${def.name}</div>
+                    <div class="build-item-cost">
+                        ${def.costGold > 0 ? `<span>${def.costGold}</span><span style="color:var(--gold)">💰</span>` : ''}
+                        ${def.costStone > 0 ? `<span>${def.costStone}</span><span style="color:var(--stone)">💎</span>` : ''}
+                    </div>
+                `;
+                item.addEventListener('click', () => selectBuild(key));
+                buildMenu.appendChild(item);
+            });
+        }
+        
+        function selectBuild(key) {
+            if (gameState !== GAME_STATE.BUILD) return;
+            deselect();
+            selectedBuild = key;
+            document.querySelectorAll('.build-item').forEach(el => el.classList.toggle('selected', el.dataset.key === key));
+        }
+        
+        function deselect() {
+            if (gameState === GAME_STATE.TARGETING) {
+                towerToSetTarget = null;
+            }
+            gameState = GAME_STATE.BUILD;
+            if (selectedBuild) {
+                selectedBuild = null;
+                document.querySelectorAll('.build-item.selected').forEach(el => el.classList.remove('selected'));
+            }
+            if (hoveredTower) {
+                hoveredTower = null;
+                upgradeSellPanel.style.display = 'none';
+            }
+        }
+
+        function placeDefense() {
+            const { gridX, gridY } = mouse;
+            const definition = DEFENSE_DATA[selectedBuild];
+            if (checkPlacement(gridX, gridY, definition) && gold >= definition.costGold && stone >= definition.costStone) {
+                gold -= definition.costGold;
+                stone -= definition.costStone;
+                
+                const newDefense = new CLASS_MAP[selectedBuild](gridX, gridY);
+                entities.push(newDefense);
+                grid[gridY][gridX].entity = newDefense;
+                
+                if (definition.type === 'wall') calculatePathfindingGrid();
+                
+                setUndo({ action: 'build', key: selectedBuild, x: gridX, y: gridY, costGold: definition.costGold, costStone: definition.costStone });
+                updateUI();
+                playSound('build');
+            } else {
+                showMessage("Cannot place here or not enough resources!", 'var(--red)');
+                playSound('error');
+            }
+        }
+        
+        function checkPlacement(x, y, definition) {
+            if (x < CASTLE_COLS || x >= GRID_COLS || y < 0 || y >= GRID_ROWS || grid[y][x].entity) return false;
+            const tileType = grid[y][x].type;
+            if (definition.requires) {
+                if (tileType !== definition.requires) return false;
+            } else if (tileType === 'quarry' || tileType === 'goldvein') return false;
+
+            if (definition.type === 'wall') {
+                const tempGrid = grid.map(row => row.map(cell => cell.entity));
+                tempGrid[y][x] = { type: 'wall' }; // Dummy wall for testing
+                if (!isPathPossible(tempGrid)) {
+                    showMessage("Cannot block the path completely!", 'var(--red)');
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        function showUpgradeSellPanel() {
+            if (!hoveredTower) return;
+            upgradeSellPanel.style.display = 'flex';
+            upgradeSellPanel.style.left = `${(hoveredTower.x + 1.1) * TILE_SIZE}px`;
+            upgradeSellPanel.style.top = `${hoveredTower.y * TILE_SIZE}px`;
+
+            const upgradeCost = hoveredTower.getUpgradeCost();
+            if (upgradeCost) {
+                upgradeBtn.style.display = 'flex';
+                upgradeBtn.innerHTML = `<span class="hotkey">U</span> Upgrade (${upgradeCost.gold}💰 ${upgradeCost.stone}💎)`;
+                upgradeBtn.classList.toggle('disabled', gold < upgradeCost.gold || stone < upgradeCost.stone);
+            } else {
+                upgradeBtn.innerHTML = `<span class="hotkey">U</span> Max Level`;
+                upgradeBtn.classList.add('disabled');
+            }
+
+            const sellValue = hoveredTower.getSellValue();
+            sellBtn.innerHTML = `<span class="hotkey">S</span> Sell (+${sellValue.gold}💰 +${sellValue.stone}💎)`;
+            targetPriorityBtn.style.display = (hoveredTower instanceof Tower && !(hoveredTower instanceof SpecialBuilding)) ? 'flex' : 'none';
+        }
+        
+        function upgradeHoveredTower() {
+            if (!hoveredTower || gameState !== GAME_STATE.BUILD) return;
+            const cost = hoveredTower.getUpgradeCost();
+            if (cost && gold >= cost.gold && stone >= cost.stone) {
+                setUndo({ action: 'upgrade', tower: hoveredTower, costGold: cost.gold, costStone: cost.stone });
+                gold -= cost.gold; stone -= cost.stone;
+                hoveredTower.upgrade();
+                showUpgradeSellPanel();
+                updateUI();
+                playSound('upgrade');
+            } else {
+                playSound('error');
+            }
+        }
+        
+        function sellHoveredTower() {
+            if (!hoveredTower || gameState !== GAME_STATE.BUILD) return;
+            const value = hoveredTower.getSellValue();
+            setUndo({ action: 'sell', tower: hoveredTower, x: hoveredTower.x, y: hoveredTower.y, sellGold: value.gold, sellStone: value.stone });
+            gold += value.gold; stone += value.stone;
+            
+            grid[hoveredTower.y][hoveredTower.x].entity = null;
+            hoveredTower.isAlive = false;
+            
+            if (hoveredTower instanceof Wall) calculatePathfindingGrid();
+            
+            hoveredTower = null;
+            upgradeSellPanel.style.display = 'none';
+            updateUI();
+            playSound('sell');
+        }
+
+        function setTargetingMode() {
+            if (!hoveredTower) return;
+            gameState = GAME_STATE.TARGETING;
+            towerToSetTarget = hoveredTower;
+            showMessage(`Select a target for the ${towerToSetTarget.name}`, 'var(--accent-color)');
+            upgradeSellPanel.style.display = 'none';
+        }
+
+        function setUndo(undoData) {
+            lastBuildUndo = undoData;
+            undoBtn.classList.remove('disabled');
+        }
+
+        function performUndo() {
+            if (!lastBuildUndo || gameState !== GAME_STATE.BUILD) return;
+            const { action, key, x, y, tower, costGold, costStone, sellGold, sellStone } = lastBuildUndo;
+            if (action === 'build') {
+                gold += costGold; stone += costStone;
+                grid[y][x].entity.isAlive = false;
+                grid[y][x].entity = null;
+                if (DEFENSE_DATA[key]?.type === 'wall') calculatePathfindingGrid();
+            } else if (action === 'upgrade') {
+                gold += costGold; stone += costStone;
+                tower.downgrade();
+            } else if (action === 'sell') {
+                gold -= sellGold; stone -= sellStone;
+                tower.isAlive = true;
+                entities.push(tower);
+                grid[y][x].entity = tower;
+                if (tower instanceof Wall) calculatePathfindingGrid();
+            }
+            lastBuildUndo = null;
+            updateUI();
+        }
+
+        // --- GAME FLOW & WAVES ---
+        function startWave() {
+            if (gameState !== GAME_STATE.BUILD) return;
+            deselect();
+            lastBuildUndo = null;
+            waveFlags = {}; // Reset temporary flags
+            if (wave > 1 && wave % 3 === 1) { 
+                 showGambitModal();
+            } else {
+                 startWaveAttackPhase();
+            }
+        }
+        
+        function startWaveAttackPhase() {
+            gameState = GAME_STATE.ATTACK;
+            setWaveEffects();
+            spawnWave();
+            updateUI();
+        }
+
+        function endWave() {
+            gameState = GAME_STATE.WAVE_END;
+            let goldBonus = 50 + wave * 5, stoneBonus = 20 + wave * 2, scoreBonus = 100 * wave;
+            if (activeGambit && activeGambit.onComplete) {
+                const bonus = activeGambit.onComplete({goldBonus, stoneBonus});
+                if(bonus.gold) goldBonus += bonus.gold; if(bonus.stone) stoneBonus += bonus.stone;
+            }
+            entities.forEach(e => {
+                if (e instanceof StonemasonHut) stoneBonus += e.generation;
+                if (e instanceof MineShaft) { goldBonus += e.collectedGold; e.collectedGold = 0; }
+            });
+            gold += goldBonus; stone += stoneBonus; score += scoreBonus;
+            showMessage(`Wave ${wave} Complete!`, 'var(--green)');
+            playSound('wave_end');
+            wave++;
+            setTimeout(() => { gameState = GAME_STATE.BUILD; activeGambit = null; updateUI(); }, 2000);
+        }
+
+        function setWaveEffects() {
+            // Day/night cycle is visual only, but some waves are designated 'night waves'
+            const isNightWave = wave % 5 === 0;
+            const weatherRoll = Math.random();
+            if (isNightWave && weatherRoll < 0.4) {
+                currentWaveEffects.weather = 'fog';
+            } else if (weatherRoll < 0.25) {
+                currentWaveEffects.weather = 'rain';
+            } else {
+                currentWaveEffects.weather = 'none';
+            }
+        }
+
+        function spawnWave() {
+            const waveData = getWaveData(wave);
+            let spawnDelay = 0;
+            waveData.enemies.forEach(group => {
+                for (let i = 0; i < group.count; i++) {
+                    setTimeout(() => spawnEnemy(group.type), spawnDelay);
+                    spawnDelay += group.interval;
+                }
+            });
+        }
+        
+        function spawnEnemy(type) {
+            const spawnY = Math.floor(Math.random() * GRID_ROWS);
+            const enemy = new CLASS_MAP[type](GRID_COLS - 1, spawnY);
+            if (activeGambit && activeGambit.enemyModifier) activeGambit.enemyModifier(enemy);
+            entities.push(enemy);
+        }
+
+        function getWaveData(waveNum) {
+            const isBossWave = waveNum % 10 === 0;
+            const isNightWave = waveNum % 5 === 0;
+            
+            if (isBossWave) {
+                if (waveNum === 10) return { enemies: [{ type: 'SiegeGolem', count: 1, interval: 1000 }] };
+                if (waveNum === 20) return { enemies: [{ type: 'WyvernLord', count: 1, interval: 1000 }] };
+                // Add more bosses or cycle
+                return { enemies: [{ type: 'SiegeGolem', count: 1 + Math.floor(waveNum / 20), interval: 1000 }] };
+            }
+
+            let enemies = [{ type: 'OrcGrunt', count: 5 + waveNum * 2, interval: 500 }];
+            if (waveNum > 2) enemies.push({ type: 'GoblinSapper', count: 1 + Math.floor(waveNum/3), interval: 2000 });
+            if (waveNum > 4) enemies.push({ type: 'GoblinShaman', count: Math.floor(waveNum/5), interval: 4000 });
+            if (isNightWave) enemies.push({ type: 'Wraith', count: 2 + Math.floor(waveNum/4), interval: 1500 });
+            if (waveNum > 6) enemies.push({ type: 'ImpCaster', count: 1 + Math.floor(waveNum/6), interval: 3000 });
+            return { enemies };
+        }
+
+        function gameOver() {
+            if (gameState === GAME_STATE.GAME_OVER) return; // Prevent multiple triggers
+            gameState = GAME_STATE.GAME_OVER;
+            const sealsEarned = Math.floor(score / 500);
+            royalSeals += sealsEarned;
+            saveMetaProgress();
+            document.getElementById('final-wave').textContent = wave;
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('royal-seals-earned').textContent = `${sealsEarned} 👑`;
+            document.getElementById('game-over-modal').style.display = 'flex';
+            playSound('game_over');
+        }
+        
+        function showMessage(text, color) {
+            const container = document.getElementById('game-message-container');
+            const msg = document.createElement('div');
+            msg.id = 'game-message';
+            msg.textContent = text;
+            msg.style.color = color;
+            container.appendChild(msg);
+            setTimeout(() => container.removeChild(msg), 2900);
+        }
+        
+        function screenShake(duration = 0.3, intensity = 'hard') {
+            gameContainer.classList.add(intensity === 'hard' ? 'shake-hard' : 'shake-soft');
+            setTimeout(() => gameContainer.classList.remove('shake-hard', 'shake-soft'), duration * 1000);
+        }
+
+        // --- PATHFINDING ---
+        function calculatePathfindingGrid() {
+            pathfindingGrid = Array(GRID_ROWS).fill().map(() => Array(GRID_COLS).fill(Infinity));
+            const queue = [];
+            const heartstoneY = Math.floor(GRID_ROWS / 2);
+            for(let y = heartstoneY-1; y <= heartstoneY; y++){
+                queue.push({ x: CASTLE_COLS-1, y: y, dist: 0 });
+                pathfindingGrid[y][CASTLE_COLS-1] = 0;
+            }
+            let head = 0;
+            while(head < queue.length) {
+                const { x, y, dist } = queue[head++];
+                const neighbors = [{dx:0, dy:1}, {dx:0, dy:-1}, {dx:1, dy:0}, {dx:-1, dy:0}];
+                for (const n of neighbors) {
+                    const nx = x + n.dx, ny = y + n.dy;
+                    if (nx >= 0 && nx < GRID_COLS && ny >= 0 && ny < GRID_ROWS && pathfindingGrid[ny][nx] === Infinity) {
+                        const cell = grid[ny][nx];
+                        if (!cell.entity || !(cell.entity instanceof Wall)) {
+                            pathfindingGrid[ny][nx] = dist + 1;
+                            queue.push({ x: nx, y: ny, dist: dist + 1 });
+                        }
+                    }
+                }
+            }
+        }
+        
+        function isPathPossible(entityGrid) {
+            // Check path from every spawn point
+            for (let startY = 0; startY < GRID_ROWS; startY++) {
+                const tempPathGrid = Array(GRID_ROWS).fill().map(() => Array(GRID_COLS).fill(Infinity));
+                const queue = [{ x: GRID_COLS - 1, y: startY }];
+                tempPathGrid[startY][GRID_COLS - 1] = 0;
+                let head = 0;
+                let pathFound = false;
+                while(head < queue.length) {
+                    const { x, y } = queue[head++];
+                    if (x < CASTLE_COLS) {
+                        pathFound = true;
+                        break;
+                    }
+                    const neighbors = [{dx:0, dy:1}, {dx:0, dy:-1}, {dx:1, dy:0}, {dx:-1, dy:0}];
+                    for (const n of neighbors) {
+                        const nx = x + n.dx, ny = y + n.dy;
+                        if (nx >= 0 && nx < GRID_COLS && ny >= 0 && ny < GRID_ROWS && tempPathGrid[ny][nx] === Infinity) {
+                            const entity = entityGrid[ny][nx];
+                            if (!entity || entity.type !== 'wall') {
+                               tempPathGrid[ny][nx] = 1;
+                               queue.push({ x: nx, y: ny });
+                            }
+                        }
+                    }
+                }
+                if (!pathFound) return false; // If any spawn point is blocked, fail
+            }
+            return true;
+        }
+
+        // --- GAMBITS ---
+        function getGambitOptions() {
+            const allGambits = [
+                { name: "Berserker's Rage", description: "<span class='gambit-risk'>Enemies have +30% attack speed</span>, but <span class='gambit-reward'>yield +50% Gold on kill</span>.", enemyModifier: (e) => { e.baseAttackSpeed *= 1.3; }, rewardModifier: (g) => g * 1.5, },
+                { name: "Iron Horde", description: "<span class='gambit-risk'>All enemies have +25% HP</span>, but you start the <span class='gambit-reward'>next build phase with +100 Stone</span>.", enemyModifier: (e) => { e.maxHp *= 1.25; e.hp = e.maxHp; }, onComplete: () => ({ stone: 100 }), },
+                { name: "Sudden Death", description: "<span class='gambit-risk'>The first enemy to reach the castle deals 5x damage</span>, but <span class='gambit-reward'>wave completion bonus is doubled</span>.", onSelect: () => { waveFlags.suddenDeath = true; }, onComplete: (b) => ({ gold: b.goldBonus, stone: b.stoneBonus }), },
+            ];
+            return [...allGambits].sort(() => 0.5 - Math.random()).slice(0, 2);
+        }
+
+        function showGambitModal() {
+            gameState = GAME_STATE.GAMBIT;
+            const options = getGambitOptions();
+            const container = document.getElementById('gambit-options-container');
+            container.innerHTML = '';
+            options.forEach(gambit => {
+                const optEl = document.createElement('div');
+                optEl.className = 'gambit-option';
+                optEl.innerHTML = `<h3>${gambit.name}</h3><p>${gambit.description}</p>`;
+                optEl.addEventListener('click', () => { activeGambit = gambit; if(gambit.onSelect) gambit.onSelect(); document.getElementById('gambit-modal').style.display = 'none'; startWaveAttackPhase(); });
+                container.appendChild(optEl);
+            });
+            document.getElementById('gambit-modal').style.display = 'flex';
+        }
+        
+        // --- MAIN MENU & ARMORY ---
+        function showMainMenu() {
+            gameState = GAME_STATE.MAIN_MENU;
+            document.getElementById('main-menu-modal').style.display = 'flex';
+            document.getElementById('game-over-modal').style.display = 'none';
+            document.getElementById('armory-modal').style.display = 'none';
+            updateRoyalSealsDisplay();
+        }
+        
+        function updateRoyalSealsDisplay() { royalSealsDisplay.innerHTML = `<span style="color: var(--accent-color);">${royalSeals}</span> 👑`; }
+
+        function showArmory() {
+            gameState = GAME_STATE.ARMORY;
+            document.getElementById('main-menu-modal').style.display = 'none';
+            document.getElementById('game-over-modal').style.display = 'none';
+            document.getElementById('armory-modal').style.display = 'flex';
+            
+            document.getElementById('armory-seals-display').textContent = royalSeals;
+            const container = document.getElementById('armory-upgrades-container');
+            container.innerHTML = '';
+            Object.keys(ARMORY_DATA).forEach(key => {
+                if (key.startsWith('STARTING_')) return; // Don't show these as buyable items
+                const item = ARMORY_DATA[key];
+                const itemEl = document.createElement('div');
+                itemEl.className = 'armory-item';
+                let content = `<div><h4>${item.name}</h4><p style="font-size:0.8em; margin:0; color:var(--secondary-text);">${item.description}</p></div>`;
+                if (item.type === 'passive') {
+                    const unlock = unlockedItems[key] || { level: 0 };
+                    const cost = item.cost + Math.floor(item.cost * unlock.level * 0.5);
+                    content += `<div><span>Lvl: ${unlock.level}/${item.maxLevel}</span><button data-key="${key}" data-cost="${cost}" ${unlock.level >= item.maxLevel || royalSeals < cost ? 'disabled' : ''}>Buy (${cost}👑)</button></div>`;
+                } else {
+                    const isUnlocked = unlockedItems[key];
+                    if (isUnlocked) itemEl.classList.add('unlocked');
+                    content += `<button data-key="${key}" data-cost="${item.cost}" ${isUnlocked || royalSeals < item.cost ? 'disabled' : ''}>${isUnlocked ? 'Unlocked' : `Unlock (${item.cost}👑)`}</button>`;
+                }
+                itemEl.innerHTML = content;
+                container.appendChild(itemEl);
+            });
+            container.querySelectorAll('button').forEach(btn => btn.addEventListener('click', buyArmoryItem));
+        }
+        
+        function buyArmoryItem(event) {
+            const key = event.target.dataset.key;
+            const cost = parseInt(event.target.dataset.cost);
+            const item = ARMORY_DATA[key];
+            if (royalSeals >= cost) {
+                royalSeals -= cost;
+                if (item.type === 'passive') {
+                    if (!unlockedItems[key]) unlockedItems[key] = { level: 0 };
+                    unlockedItems[key].level++;
+                } else unlockedItems[key] = true;
+                saveMetaProgress();
+                showArmory(); updateRoyalSealsDisplay(); updateBuildMenu();
+                playSound('upgrade');
+            } else {
+                playSound('error');
+            }
+        }
+        
+        function closeArmory() {
+            const gameOverVisible = document.getElementById('game-over-modal').style.display === 'flex';
+            if (!gameOverVisible) showMainMenu();
+            else document.getElementById('armory-modal').style.display = 'none';
+        }
+        
+        function updateTooltip(event) {
+            const target = event.target.closest('[data-tooltip]');
+            if (target) {
+                tooltip.style.display = 'block';
+                tooltip.innerHTML = target.dataset.tooltip;
+                tooltip.style.left = `${event.clientX + 15}px`;
+                tooltip.style.top = `${event.clientY + 15}px`;
+            } else {
+                tooltip.style.display = 'none';
+            }
+        }
+        
+        // --- AUDIO SYSTEM ---
+        function initAudio() {
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                // Base64 encoded sounds to keep it in a single file
+                const soundData = {
+                    arrow: 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU9vT19PCwEACgAKABsAEgANAAsADAAMABQADgAOAAsADgANAA4ACwAMAA4ADgAMAAkACgANAA4ADAALAAsADQANAAkACQALAA0ACgAJAAkADAAKAAYABwAJAAYABgAIAAYABQAGAAcABwAFAAYABgAGAAUABgAFAAUABQAFAAYABQAF=',
+                    build: 'data:audio/wav;base64,UklGRigBAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YQQBAAD///////////////////8=',
+                    cannon: 'data:audio/wav;base64,UklGRiQBAABXQVZFZm10IBAAAAABAAEARKwAABCxAgAEABgAZGF0YQAAAQAAAAEAAAAAAAAAAQAAAAEAAAAAAAAA',
+                    chaching: 'data:audio/wav;base64,UklGRkoAAABXQVZFZm10IBAAAAABAAEARKwAABCxAgAEABgAZGF0YQQAAAAEAQAAAAAAAEA=',
+                    error: 'data:audio/wav;base64,UklGRlYAAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YVIBAABzAF4AawBjAFsAWABXAFQAUQBSAFEAUABQAE8ATgBNAEsASQBHAEUAQwA/AD0AOwA5ADcANQA0ADMANQA3ADkAOwA9AD8A',
+                    wave_end: 'data:audio/wav;base64,UklGRlIAAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YUYBAABzAHAAYwBoAGgAZwBmAGUAZABjAGIAYgBjAGQAZQBmAGcAaABpAGoAawBsAGwAbQBuAG8AcA==',
+                    upgrade: 'data:audio/wav;base64,UklGRlIAAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YUYBAABwAGcAbABtAG4AbgBtAGwAawBqAGkAaABnAGYAZQBjAGIAYQBgAGAAQQBDAEUARwBJAEsATQ==',
+                    sell: 'data:audio/wav;base64,UklGRiwAAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YQgAAAAIAAgACAA=',
+                    game_over: 'data:audio/wav;base64,UklGRkIAAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YTwAAABOAEsARwBEAEEAPgA8ADoAOAA2ADQAMgAwAC4ALgAwADIA NAA2ADgAOgA8AD4AQQBEAEcASwBOAFA='
+                };
+                Object.keys(soundData).forEach(key => {
+                    fetch(soundData[key]).then(response => response.arrayBuffer())
+                    .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
+                    .then(audioBuffer => { sounds[key] = audioBuffer; });
+                });
+            } catch (e) { console.error("Web Audio API is not supported in this browser"); }
+        }
+        function playSound(name, volume = 0.5) {
+            if (!audioCtx || !sounds[name]) return;
+            const source = audioCtx.createBufferSource();
+            const gainNode = audioCtx.createGain();
+            source.buffer = sounds[name];
+            gainNode.gain.value = volume;
+            source.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            source.start(0);
+        }
+
+        // --- DATA CONFIGURATION ---
+        const DEFENSE_DATA = {
+            STARTING_GOLD: 100,
+            STARTING_STONE: 50,
+            Wall: { name: 'Wall', type: 'wall', costGold: 0, costStone: 10, icon: '🧱', hp: [300, 500, 800] },
+            ArcherTower: { name: 'Archer Tower', type: 'tower', costGold: 50, costStone: 10, icon: '🏹', range: [3, 3.3, 3.6], damage: [25, 40, 60], fireRate: [1, 0.9, 0.8], canAttackFlying: true },
+            CannonTower: { name: 'Cannon Tower', type: 'tower', costGold: 120, costStone: 30, icon: '💣', range: [4, 4.2, 4.5], damage: [60, 90, 130], fireRate: [3, 2.8, 2.5], canAttackFlying: false, aoeRadius: [1, 1.1, 1.2] },
+            FrostSpire: { name: 'Frost Spire', type: 'tower', costGold: 80, costStone: 20, icon: '❄️', range: [2.5, 2.8, 3.1], damage: [10, 15, 20], fireRate: [1.5, 1.4, 1.3], canAttackFlying: true, slow: { duration: 2, amount: [0.5, 0.4, 0.3] }, isUnlockable: true },
+            TarPit: { name: 'Tar Pit', type: 'trap', costGold: 20, costStone: 5, icon: '🕳️', hp: [1], slowAmount: 0.2, isUnlockable: true },
+            StonemasonHut: { name: 'Stonemason', type: 'special', costGold: 0, costStone: 75, icon: '🏛️', hp: [200], requires: 'quarry', generation: 10 },
+            MineShaft: { name: 'Mine Shaft', type: 'special', costGold: 100, costStone: 0, icon: '⚒️', hp: [200], requires: 'goldvein', range: [4], goldPerKill: 5 },
+        };
+        const ENEMY_DATA = {
+            OrcGrunt: { hp: 100, hpScaling: 10, speed: 1.5, gold: 5, attackDamage: 10, color: '#4b692f' },
+            GoblinSapper: { hp: 50, hpScaling: 5, speed: 2.5, gold: 8, structureDamage: 250, color: '#d13a34' },
+            Wraith: { hp: 80, hpScaling: 8, speed: 1.8, gold: 12, attackDamage: 15, isFlying: true, color: '#a0a0d0' },
+            GoblinShaman: { hp: 120, hpScaling: 12, speed: 1, gold: 15, attackDamage: 5, healAmount: 20, healRadius: 3, color: '#a971d4' },
+            ImpCaster: { hp: 90, hpScaling: 9, speed: 1.2, gold: 18, attackDamage: 5, castRadius: 4, disableDuration: 4, color: '#ff69b4' },
+            SiegeGolem: { hp: 5000, hpScaling: 500, speed: 0.5, gold: 500, attackDamage: 200, color: '#5d5d5d' },
+            WyvernLord: { hp: 8000, hpScaling: 800, speed: 1.5, gold: 800, attackDamage: 150, isFlying: true, color: '#8B0000' }
+        };
+        const ARMORY_DATA = {
+            FROST_SPIRE: { name: "Unlock Frost Spire", cost: 100, description: "A tower that slows enemies.", type: 'tower'},
+            TAR_PIT: { name: "Unlock Tar Pit", cost: 75, description: "A trap that heavily slows enemies on it.", type: 'trap'},
+            STARTING_GOLD: { name: "+10% Starting Gold", cost: 50, effect: 0.1, maxLevel: 5, type: 'passive' },
+            WALL_HP: { name: "+10% Wall HP", cost: 60, effect: 0.1, maxLevel: 5, type: 'passive' },
+            COMMANDER_COOLDOWN: { name: "-5% Commander Cooldown", cost: 120, effect: 0.05, maxLevel: 3, type: 'passive' },
+        };
+
+        // --- ENTITY CLASSES ---
+        class Entity { constructor(x, y) { this.x = x; this.y = y; this.pixelX = (x+0.5)*TILE_SIZE; this.pixelY = (y+0.5)*TILE_SIZE; this.isAlive = true; } update(dt) {} draw() {} }
+        class Particle extends Entity {
+            constructor(x, y, color, size, speed, life) { super(x/TILE_SIZE, y/TILE_SIZE); this.pixelX = x; this.pixelY = y; this.color = color; this.size = size; this.vx = (Math.random() - 0.5) * speed; this.vy = (Math.random() - 0.5) * speed; this.life = life; this.maxLife = life;}
+            update(dt) { this.pixelX += this.vx * dt; this.pixelY += this.vy * dt; this.life -= dt; if(this.life <= 0) this.isAlive = false; }
+            draw() { ctx.fillStyle = this.color; ctx.globalAlpha = Math.max(0, this.life / this.maxLife); ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, this.size, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; }
+        }
+        class RainDrop extends Particle {
+            constructor() { super(Math.random() * canvas.width, -10, 'rgba(174,194,224,0.5)', Math.random() * 1.5 + 1, 0, 1); this.vx = -100; this.vy = 400; }
+            draw() { ctx.strokeStyle = this.color; ctx.lineWidth = this.size; ctx.beginPath(); ctx.moveTo(this.pixelX, this.pixelY); ctx.lineTo(this.pixelX + this.vx/20, this.pixelY + this.vy/20); ctx.stroke(); }
+        }
+        function createExplosion(x, y, count, color, size, speed, life) { for(let i=0; i<count; i++) particles.push(new Particle(x, y, color, Math.random() * size, Math.random() * speed, Math.random() * life)); }
+        class Commander extends Entity {
+            constructor(x, y) { super(x, y); this.targetX = x; this.targetY = y; this.speed = 5; this.abilityCooldown = 0; this.rallyRadius = 3; }
+            getAbilityCooldown() { return 15 * (1 - getPassiveBonus('COMMANDER_COOLDOWN')); }
+            setTarget(gridX, gridY) { this.targetX = gridX; this.targetY = gridY; }
+            useAbility() {
+                if (this.abilityCooldown <= 0) {
+                    this.abilityCooldown = this.getAbilityCooldown();
+                    entities.forEach(e => { if (e instanceof Tower && Math.hypot(this.x - e.x, this.y - e.y) <= this.rallyRadius) e.applyBuff('attack_speed', 1.5, 5); });
+                    particles.push(new ExpandingRing(this.x, this.y, this.rallyRadius, 'rgba(255, 215, 0, 0.7)', 0.5));
+                }
+            }
+            update(dt) { if(this.abilityCooldown > 0) this.abilityCooldown -= dt; const dX = this.targetX - this.x, dY = this.targetY - this.y; const dist = Math.hypot(dX, dY); const moveDist = this.speed * dt; if (dist > 0.1) { if (dist < moveDist) { this.x = this.targetX; this.y = this.targetY; } else { this.x += (dX / dist) * this.speed * dt; this.y += (dY / dist) * this.speed * dt; } this.pixelX = (this.x+0.5)*TILE_SIZE; this.pixelY = (this.y+0.5)*TILE_SIZE; } }
+            draw() { ctx.fillStyle = 'gold'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.4, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = 'white'; ctx.lineWidth = 2; ctx.stroke(); }
+        }
+        class ExpandingRing extends Particle {
+            constructor(gridX, gridY, maxRadius, color, duration) { super((gridX + 0.5) * TILE_SIZE, (gridY + 0.5) * TILE_SIZE); this.maxRadius = maxRadius * TILE_SIZE; this.color = color; this.duration = duration; this.life = duration; this.currentRadius = 0; }
+            update(dt) { this.life -= dt; if(this.life <= 0) this.isAlive = false; this.currentRadius = this.maxRadius * (1 - (this.life / this.duration)); }
+            draw() { ctx.strokeStyle = this.color; ctx.lineWidth = 4; ctx.globalAlpha = this.life / this.duration; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, this.currentRadius, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = 1; }
+        }
+        class Projectile extends Entity {
+            constructor(startX, startY, target, damage, speed) { super(startX/TILE_SIZE, startY/TILE_SIZE); this.pixelX = startX; this.pixelY = startY; this.target = target; this.damage = damage; this.speed = speed; this.trail = []; }
+            update(dt) {
+                this.trail.push({x:this.pixelX, y:this.pixelY}); if(this.trail.length > 5) this.trail.shift();
+                if (!this.target || !this.target.isAlive) { this.isAlive = false; return; }
+                const tX = this.target.pixelX, tY = this.target.pixelY;
+                const dx = tX - this.pixelX, dy = tY - this.pixelY, dist = Math.hypot(dx, dy);
+                if (dist < TILE_SIZE * 0.3) this.hitTarget();
+                else { this.pixelX += (dx / dist) * this.speed * TILE_SIZE * dt; this.pixelY += (dy / dist) * this.speed * TILE_SIZE * dt; }
+            }
+            hitTarget() { this.target.takeDamage(this.damage); this.isAlive = false; }
+            drawTrail(color) { ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(this.pixelX, this.pixelY); this.trail.forEach(p => ctx.lineTo(p.x, p.y)); ctx.stroke(); }
+        }
+        class Arrow extends Projectile { constructor(x,y,t,d) { super((x+0.5)*TILE_SIZE, (y+0.5)*TILE_SIZE, t, d, 12); } draw() { this.drawTrail('rgba(210, 180, 140, 0.5)'); ctx.fillStyle = '#d2b48c'; ctx.fillRect(this.pixelX - 5, this.pixelY - 1, 10, 2); } hitTarget() { super.hitTarget(); playSound('arrow', 0.3); } }
+        class Cannonball extends Projectile {
+            constructor(x,y,t,d,r) { super((x+0.5)*TILE_SIZE, (y+0.5)*TILE_SIZE, t, d, 8); this.aoeRadius = r; }
+            draw() { ctx.fillStyle = '#333'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.15, 0, Math.PI * 2); ctx.fill(); }
+            hitTarget() { entities.forEach(e => { if (e instanceof Enemy && Math.hypot(this.target.pixelX - e.pixelX, this.target.pixelY - e.pixelY) <= this.aoeRadius * TILE_SIZE) e.takeDamage(this.damage); }); createExplosion(this.pixelX, this.pixelY, 20, '#ff9933', 3, 100, 0.5); screenShake(0.2); playSound('cannon', 0.8); this.isAlive = false; }
+        }
+        class FrostBolt extends Projectile { constructor(x,y,t,d,s) { super((x+0.5)*TILE_SIZE, (y+0.5)*TILE_SIZE, t, d, 9); this.slow = s; } draw() { this.drawTrail('rgba(170, 234, 255, 0.4)'); ctx.fillStyle = '#aaeaff'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.1, 0, Math.PI * 2); ctx.fill(); ctx.shadowColor = 'cyan'; ctx.shadowBlur = 10; ctx.fill(); ctx.shadowBlur = 0; } hitTarget() { this.target.takeDamage(this.damage); this.target.applyEffect('slow', this.slow.duration, this.slow.amount); this.isAlive = false; } }
+        
+        class Tower extends Entity {
+            constructor(x, y) { super(x, y); this.level = 1; this.fireCooldown = 0; this.target = null; this.priorityTarget = null; this.buffs = {}; this.data = DEFENSE_DATA[this.constructor.name]; this.name = this.data.name; this.maxLevel = this.data.damage?.length || 1; }
+            getSellValue() { return { gold: this.data.costGold * 0.75, stone: this.data.costStone * 0.75 }; }
+            getUpgradeCost() { if (this.level >= this.maxLevel) return null; return { gold: this.data.costGold * (this.level), stone: this.data.costStone * (this.level) }; }
+            upgrade() { if (this.level < this.maxLevel) this.level++; }
+            downgrade() { if (this.level > 1) this.level--; }
+            applyBuff(type, multiplier, duration) { this.buffs[type] = { multiplier, duration }; }
+            updateBuffs(dt) { for (const type in this.buffs) { this.buffs[type].duration -= dt; if (this.buffs[type].duration <= 0) delete this.buffs[type]; } }
+            getRange() { let range = this.data.range[this.level - 1]; if(currentWaveEffects.weather === 'fog') range *= 0.7; return range; }
+            getDamage() { return this.data.damage[this.level - 1]; }
+            getFireRate() { let rate = this.data.fireRate[this.level - 1]; if (this.buffs.attack_speed) rate /= this.buffs.attack_speed.multiplier; return rate; }
+            setPriorityTarget(enemy) { this.priorityTarget = enemy; }
+            findTarget() {
+                if(this.priorityTarget && this.priorityTarget.isAlive && Math.hypot(this.x - this.priorityTarget.x, this.y - this.priorityTarget.y) <= this.getRange()) { this.target = this.priorityTarget; return; }
+                this.priorityTarget = null; this.target = null; let closestDist = Infinity;
+                entities.forEach(e => { if (e instanceof Enemy && (!e.isFlying || this.data.canAttackFlying)) { const dist = Math.hypot(this.x - e.x, this.y - e.y); if (dist <= this.getRange() && dist < closestDist) { closestDist = dist; this.target = e; } } });
+            }
+            update(dt) { this.updateBuffs(dt); if (this.fireCooldown > 0) this.fireCooldown -= dt; if (!this.target || !this.target.isAlive || Math.hypot(this.x - this.target.x, this.y - this.target.y) > this.getRange()) this.findTarget(); if (this.target && this.fireCooldown <= 0 && !this.buffs.disabled) { this.fire(); this.fireCooldown = this.getFireRate(); } }
+            draw() { const pX = this.x * TILE_SIZE, pY = this.y * TILE_SIZE; ctx.fillStyle = '#4a4a4a'; ctx.fillRect(pX, pY, TILE_SIZE, TILE_SIZE); ctx.fillStyle = '#666'; ctx.fillRect(pX + 3, pY + 3, TILE_SIZE - 6, TILE_SIZE - 6); if(this.buffs.disabled){ ctx.fillStyle = 'rgba(255,0,0,0.5)'; ctx.font = `${TILE_SIZE*0.8}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('❌', this.pixelX, this.pixelY); } }
+        }
+        class Wall extends Tower {
+             constructor(x, y) { super(x, y); this.hp = this.getMaxHp(); }
+             getMaxHp() { return this.data.hp[this.level-1] * (1 + getPassiveBonus('WALL_HP')); }
+             upgrade() { super.upgrade(); this.hp = this.getMaxHp(); }
+             downgrade() { super.downgrade(); this.hp = this.getMaxHp(); }
+            takeDamage(amount) { this.hp -= amount; if (this.hp <= 0) { this.isAlive = false; grid[this.y][this.x].entity = null; calculatePathfindingGrid(); createExplosion(this.pixelX, this.pixelY, 15, '#966F33', 3, 80, 0.6); } }
+            update() {}
+            draw() { const hpPercent = this.hp / this.getMaxHp(); ctx.fillStyle = `rgb(${100 + 100 * (1-hpPercent)}, ${50 + 150 * hpPercent}, 50)`; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.strokeStyle = '#333'; ctx.strokeRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); }
+        }
+        class ArcherTower extends Tower { fire() { projectiles.push(new Arrow(this.x, this.y, this.target, this.getDamage())); } draw() { super.draw(); ctx.fillStyle = '#238636'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE*0.3, 0, Math.PI*2); ctx.fill(); } }
+        class CannonTower extends Tower { fire() { projectiles.push(new Cannonball(this.x, this.y, this.target, this.getDamage(), this.data.aoeRadius[this.level-1])); } draw() { super.draw(); ctx.fillStyle = '#333'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE*0.4, 0, Math.PI*2); ctx.fill(); } }
+        class FrostSpire extends Tower { fire() { projectiles.push(new FrostBolt(this.x, this.y, this.target, this.getDamage(), {duration: this.data.slow.duration, amount: this.data.slow.amount[this.level-1]})); } draw() { super.draw(); const x = this.pixelX, y = this.pixelY; ctx.fillStyle = '#77ddff'; ctx.beginPath(); ctx.moveTo(x, y - TILE_SIZE*0.4); ctx.lineTo(x - TILE_SIZE*0.3, y + TILE_SIZE*0.3); ctx.lineTo(x + TILE_SIZE*0.3, y + TILE_SIZE*0.3); ctx.closePath(); ctx.fill(); } }
+        class Trap extends Tower { update(dt) { entities.forEach(e => { if (e instanceof Enemy && Math.floor(e.x) === this.x && Math.floor(e.y) === this.y) this.trigger(e); }) } trigger(enemy) {} }
+        class TarPit extends Trap { trigger(enemy) { enemy.applyEffect('slow', 0.5, this.data.slowAmount); } draw() { ctx.fillStyle = 'rgba(20,10,0,0.7)'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE*0.45, 0, Math.PI*2); ctx.fill(); } }
+        class SpecialBuilding extends Tower { constructor(x,y) { super(x,y); } update() {} }
+        class StonemasonHut extends SpecialBuilding { constructor(x,y) { super(x,y); this.generation = this.data.generation; } draw() { ctx.fillStyle = '#b0b0b0'; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.font = `${TILE_SIZE * 0.6}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = 'black'; ctx.fillText('🏛️', this.pixelX, this.pixelY); } }
+        class MineShaft extends SpecialBuilding { constructor(x,y) { super(x,y); this.range = this.data.range[0]; this.goldPerKill = this.data.goldPerKill; this.collectedGold = 0; } addGold() { this.collectedGold += this.goldPerKill; createExplosion(this.pixelX, this.pixelY, 3, 'gold', 3, 50, 0.8); } draw() { ctx.fillStyle = '#d4af37'; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.font = `${TILE_SIZE * 0.6}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = 'black'; ctx.fillText('⚒️', this.pixelX, this.pixelY); } }
+
+        // --- ENEMY CLASSES ---
+        class Enemy extends Entity {
+            constructor(x, y) { super(x, y); const data = ENEMY_DATA[this.constructor.name]; this.maxHp = data.hp + wave * data.hpScaling; this.hp = this.maxHp; this.baseSpeed = data.speed; this.baseAttackSpeed = 1; this.goldValue = data.gold; this.isFlying = data.isFlying || false; this.attackDamage = data.attackDamage; this.color = data.color; this.effects = {}; }
+            applyEffect(type, duration, value) { this.effects[type] = { duration, value }; }
+            updateEffects(dt) { for (const type in this.effects) { this.effects[type].duration -= dt; if (this.effects[type].duration <= 0) delete this.effects[type]; } }
+            getSpeed() { let s = this.baseSpeed; if (this.effects.slow) s *= this.effects.slow.value; return s; }
+            takeDamage(amount) {
+                this.hp -= amount;
+                if (this.hp <= 0 && this.isAlive) {
+                    this.isAlive = false;
+                    let finalGold = this.goldValue;
+                    if (activeGambit && activeGambit.rewardModifier) finalGold = activeGambit.rewardModifier(finalGold);
+                    gold += finalGold; score += Math.floor(finalGold * 2);
+                    entities.forEach(e => { if (e instanceof MineShaft && Math.hypot(this.x - e.x, this.y - e.y) <= e.range) e.addGold(); });
+                    updateUI(); playSound('chaching', 0.2);
+                }
+            }
+            move(dt) {
+                let targetPixelX, targetPixelY;
+                if (this.isFlying) { targetPixelX = (CASTLE_COLS - 0.5) * TILE_SIZE; targetPixelY = (GRID_ROWS / 2) * TILE_SIZE; }
+                else { const neighbors=[{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}]; let bestNeighbor=null,minPathDist=Infinity; for(const n of neighbors){const nextX=this.x+n.dx,nextY=this.y+n.dy;if(nextX>=0&&nextX<GRID_COLS&&nextY>=0&&nextY<GRID_ROWS&&pathfindingGrid[nextY][nextX]<minPathDist){minPathDist=pathfindingGrid[nextY][nextX];bestNeighbor={x:nextX,y:nextY};}} if(bestNeighbor){targetPixelX=(bestNeighbor.x+0.5)*TILE_SIZE;targetPixelY=(bestNeighbor.y+0.5)*TILE_SIZE;} else {targetPixelX=this.pixelX;targetPixelY=this.pixelY;}}
+                const dx = targetPixelX - this.pixelX, dy = targetPixelY - this.pixelY, dist = Math.hypot(dx, dy), speed = this.getSpeed() * TILE_SIZE * dt;
+                if(dist > 0) { this.pixelX += (dx / dist) * speed; this.pixelY += (dy / dist) * speed; }
+                this.x = Math.floor(this.pixelX / TILE_SIZE); this.y = Math.floor(this.pixelY / TILE_SIZE);
+                if (this.x < CASTLE_COLS) this.attackCastle();
+            }
+            attackCastle() { let damage = this.attackDamage; if (waveFlags.suddenDeath) { damage *= 5; waveFlags.suddenDeath = false; } heartstoneHp -= damage; this.isAlive = false; if (heartstoneHp <= 0) { heartstoneHp = 0; gameOver(); } updateUI(); screenShake(0.3); }
+            update(dt) { this.updateEffects(dt); this.move(dt); }
+            draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.3, 0, Math.PI * 2); ctx.fill(); if (this.isFlying) { ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.4, 0, Math.PI * 2); ctx.fill(); } if (this.effects.slow) { ctx.fillStyle = 'rgba(100, 150, 255, 0.7)'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.4, 0, Math.PI * 2); ctx.fill(); } const hpPercent = this.hp / this.maxHp; ctx.fillStyle = '#555'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.3, this.pixelY - TILE_SIZE * 0.5, TILE_SIZE * 0.6, 5); ctx.fillStyle = 'green'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.3, this.pixelY - TILE_SIZE * 0.5, TILE_SIZE * 0.6 * hpPercent, 5); }
+        }
+        class OrcGrunt extends Enemy {}
+        class GoblinSapper extends Enemy { constructor(x,y) { super(x, y); this.structureDamage = ENEMY_DATA.GoblinSapper.structureDamage; } move(dt) { let targetWall = null, minDistance = Infinity; entities.forEach(e => { if (e instanceof Wall) { const dist = Math.hypot(this.pixelX - e.pixelX, this.pixelY - e.pixelY); if (dist < minDistance) { minDistance = dist; targetWall = e; } } }); if (targetWall && minDistance < TILE_SIZE * 0.8) { targetWall.takeDamage(this.structureDamage); this.isAlive = false; createExplosion(this.pixelX, this.pixelY, 30, '#ff6600', 4, 150, 0.7); screenShake(0.2); playSound('cannon'); } else super.move(dt); } }
+        class Wraith extends Enemy { draw() { ctx.globalAlpha = 0.7; super.draw(); ctx.globalAlpha = 1; } }
+        class GoblinShaman extends Enemy { constructor(x,y) { super(x, y); const data = ENEMY_DATA.GoblinShaman; this.healCooldown = 3; this.healAmount = data.healAmount; this.healRadius = data.healRadius; } update(dt) { super.update(dt); this.healCooldown -= dt; if (this.healCooldown <= 0) { this.heal(); this.healCooldown = 3; } } heal() { entities.forEach(e => { if (e instanceof Enemy && e !== this && Math.hypot(this.x - e.x, this.y - e.y) <= this.healRadius) { e.hp = Math.min(e.maxHp, e.hp + this.healAmount); createExplosion(e.pixelX, e.pixelY, 5, 'lightgreen', 2, 30, 0.5); } }); } }
+        class ImpCaster extends Enemy { constructor(x,y) { super(x, y); const data = ENEMY_DATA.ImpCaster; this.castCooldown = 5; this.castRadius = data.castRadius; this.disableDuration = data.disableDuration; } update(dt) { super.update(dt); this.castCooldown -= dt; if(this.castCooldown <= 0) { this.cast(); this.castCooldown = 5; } } cast() { const targets = entities.filter(e => e instanceof Tower && !(e instanceof Wall) && Math.hypot(this.x - e.x, this.y - e.y) <= this.castRadius); if (targets.length > 0) targets[Math.floor(Math.random() * targets.length)].applyBuff('disabled', this.disableDuration, 0); } }
+        class SiegeGolem extends Enemy { constructor(x,y) { super(x,y); this.smashCooldown = 5; } update(dt) { super.update(dt); this.smashCooldown -= dt; if(this.smashCooldown <= 0) { this.smash(); this.smashCooldown = 5; } } smash() { const smashX = this.x - 1, smashY = this.y; for(let dx = -1; dx <= 1; dx++) for(let dy = -1; dy <= 1; dy++) { const nx = smashX + dx, ny = smashY + dy; if(nx >=0 && ny >= 0 && nx < GRID_COLS && ny < GRID_ROWS) { const e = grid[ny][nx].entity; if(e && (e instanceof Wall || e instanceof Trap)) { e.isAlive = false; grid[ny][nx].entity = null; } } } calculatePathfindingGrid(); screenShake(0.4); playSound('cannon', 1.0); } draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.7, 0, Math.PI * 2); ctx.fill(); const hpPercent = this.hp / this.maxHp; ctx.fillStyle = '#555'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.6, this.pixelY - TILE_SIZE, TILE_SIZE * 1.2, 8); ctx.fillStyle = 'purple'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.6, this.pixelY - TILE_SIZE, TILE_SIZE * 1.2 * hpPercent, 8); } }
+        class WyvernLord extends Enemy { constructor(x,y) { super(x,y); this.fireBreathCooldown = 6; } update(dt) { super.update(dt); this.fireBreathCooldown -= dt; if (this.fireBreathCooldown <= 0) { this.breatheFire(); this.fireBreathCooldown = 6; } } breatheFire() { const targetY = commander.y; const startX = this.pixelX; const startY = this.pixelY; for (let i = 0; i < 20; i++) { setTimeout(() => { const pX = startX - (i * TILE_SIZE * 0.8); const pY = startY; particles.push(new FireParticle(pX, pY)); entities.forEach(e => { if ((e instanceof Tower || e instanceof Commander) && Math.hypot(e.pixelX - pX, e.pixelY - pY) < TILE_SIZE) { e.takeDamage?.(20); } }); }, i * 25); } playSound('cannon', 0.6); } draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.8, 0, Math.PI * 2); ctx.fill(); const hpPercent = this.hp / this.maxHp; ctx.fillStyle = '#555'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.7, this.pixelY - TILE_SIZE * 1.1, TILE_SIZE * 1.4, 8); ctx.fillStyle = 'purple'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.7, this.pixelY - TILE_SIZE * 1.1, TILE_SIZE * 1.4 * hpPercent, 8); } }
+        class FireParticle extends Particle { constructor(x, y) { super(x, y, `rgba(255, ${Math.random()*100+100}, 0, 0.7)`, Math.random() * TILE_SIZE*0.5, 30, 1.5); } }
+
+        const CLASS_MAP = { Wall, ArcherTower, CannonTower, FrostSpire, TarPit, StonemasonHut, MineShaft, OrcGrunt, GoblinSapper, Wraith, GoblinShaman, ImpCaster, SiegeGolem, WyvernLord };
+
+        init();
+    });
+    </script>
+</body>
+</html>
