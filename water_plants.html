@@ -24,8 +24,6 @@
             --plant-stem: #228B22;
             --sunflower-petal: #FFD700;
             --fern-leaf: #006400;
-            --corpse-flower-bulb: #8A2BE2;
-            --flytrap-head: #C70039;
             --water-color: #5dadec;
             --water-special-fertilizer: #70e000;
             --water-special-icy: #90e0ef;
@@ -296,19 +294,6 @@
         .misty-fern .ff3 { left: 50px; transform: rotate(25deg) scaleY(0.8); }
         .mist-effect { position: absolute; width: 20px; height: 20px; background: rgba(173, 216, 230, 0.7); border-radius: 50%; animation: mist-pulse 2s infinite ease-in-out; }
         @keyframes mist-pulse { 0%, 100% { transform: scale(0); opacity: 0; } 50% { transform: scale(1); opacity: 1; } }
-
-        .corpse-flower .plant { width: 40px; height: 60px; margin-left: -20px; }
-        .corpse-flower .plant-bulb { position: absolute; bottom: 0; left: 5px; width: 30px; height: 40px; background: var(--corpse-flower-bulb); border-radius: 50% 50% 10px 10px; }
-        .corpse-flower .plant-lip { position: absolute; top: 0; left: 0px; width: 40px; height: 15px; background: #c061ff; border-radius: 50% / 100% 100% 0 0; }
-        .stink-puff { position: absolute; width: 25px; height: 25px; background: rgba(126, 150, 10, 0.6); border-radius: 50%; animation: stink-fade 1.5s forwards; }
-        @keyframes stink-fade { from { transform: scale(0.2); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
-
-        .venus-flytrap .plant { width: 60px; height: 50px; margin-left: -30px; }
-        .venus-flytrap .plant-stem { position: absolute; bottom: 0; left: 27px; width: 6px; height: 30px; background: var(--plant-stem); }
-        .venus-flytrap .trap-head { position: absolute; bottom: 30px; left: 15px; width: 30px; height: 20px; }
-        .venus-flytrap .trap-jaw { position: absolute; width: 30px; height: 10px; background: var(--flytrap-head); border: 2px solid #800020; transition: transform 0.1s ease-in-out; }
-        .venus-flytrap .trap-jaw.bottom { bottom: 0; border-radius: 0 0 15px 15px; }
-        .venus-flytrap .trap-jaw.top { top: 0; border-radius: 15px 15px 0 0; transform-origin: bottom center; }
 
         /* UI */
         #top-ui-bar {
@@ -670,7 +655,7 @@
             }
             @media (max-width: 768px), (max-height: 500px) {
                 #score-display {
-                    font-size: 4.5vw;
+                    font-size: 4vw;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -715,7 +700,7 @@
             }
             #event-preview, #score-display, #golden-seeds-display {
                 flex: 1 1 30vw;
-                font-size: 5vw;
+                font-size: 4vw;
                 padding: 2vw 2vw;
                 min-width: 0;
                 min-height: 7vw;
@@ -935,7 +920,7 @@
         let upgrades = {
             waterCap: { name: "Water Can Capacity", level: 0, base: 100, inc: 20, costBase: 4, costFactor: 2 },
             refillSpeed: { name: "Refill Speed", level: 0, base: 50, inc: 10, costBase: 10, costFactor: 1.8 },
-            playerSpeed: { name: "Sprout's Speed", level: 0, base: 300, inc: 25, costBase: 15, costFactor: 2.2 },
+            playerSpeed: { name: "Gnome's Speed", level: 0, base: 300, inc: 25, costBase: 15, costFactor: 2.2 },
             goldenWater: { name: "Special Water", level: 0, base: 0.05, inc: 0.02, costBase: 25, costFactor: 2.5 },
             comboShield: { name: "Combo Shield", level: 0, base: 0, inc: 1, costBase: 40, costFactor: 3, maxLevel: 1 }
         };
@@ -977,8 +962,6 @@
         const PLANT_TYPES = {
             sunflower: { name: "Sunflower", thirstRate: 0.9, html: `<div class="plant-stem"></div><div class="plant-head"></div><div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div><div class="petal p4"></div><div class="petal p5"></div><div class="petal p6"></div><div class="petal p7"></div><div class="petal p8"></div>` },
             mistyFern: { name: "Misty Fern", thirstRate: 0.65, html: `<div class="fern-frond ff1"></div><div class="fern-frond ff2"></div><div class="fern-frond ff3"></div>` },
-            corpseFlower: { name: "Corpse Flower", thirstRate: 0.75, html: `<div class="plant-bulb"></div><div class="plant-lip"></div>` },
-            venusFlytrap: { name: "Venus Flytrap", thirstRate: 1.1, html: `<div class="plant-stem"></div><div class="trap-head"><div class="trap-jaw top"></div><div class="trap-jaw bottom"></div></div>` }
         };
 
         // --- Game Setup ---
@@ -1170,6 +1153,7 @@
                 if (p.isWilted) { wiltedCount++; anyWilted = true; return; }
                 
                 let currentThirstRate = p.baseThirstRate;
+                if (isMobile()) currentThirstRate *= 2; // Double thirst rate on mobile
                 if (activeEvent) {
                     if (activeEvent.type === 'heatwave') currentThirstRate *= 1.25;
                     if (activeEvent.type === 'sunbeam' && activeEvent.targetPlantId === p.id && !p.effects.shadeCloth) {
