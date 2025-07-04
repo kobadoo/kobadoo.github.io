@@ -8,7 +8,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-    <style>
+    <meta property="og:title" content="Garden Master" />
+    <meta property="og:description" content="Garden Master is a fun game where you play as a hard-working gnome who loves to garden! Move around, water your thirsty plants, and stop sneaky gophers from causing trouble. Collect golden seeds to unlock cool upgrades and make your garden even better. Can you keep all your plants happy and become the ultimate Garden Master?"/>
+    <meta property="og:url" content="https://www.kobadoo.com/GameMaster" />
+    <meta property="og:image" content="https://www.kobadoo.com/game_master_socialmedia.jpg" />
+    <meta property="og:type" content="website" />
+<style>
         :root {
             --bg-color: #87CEEB;
             --floor-color: #a0522d;
@@ -708,7 +713,7 @@
         /* Retro preview styles */
         #retro-preview {
             display: none;
-            width: 500px;
+            width: 550px;
             height: 60px;
             margin: 0 16px;
             align-items: center;
@@ -806,7 +811,7 @@
         <div id="start-screen" class="overlay">
             <div class="popup">
                 <h1>Garden Master</h1>
-                <p>Welcome! Your quirky plants are thirsty. Keep them happy!</p>
+                <p>Your quirky plants are thirsty. Keep them happy!</p>
                 <p><b>Desktop:</b>Arrow keys to move. Space to water.</p>
                 <p><b>Mobile:</b> Drag gnome to move. Get close to the plants to water.</p>
                 <button id="start-button">Start Gardening</button>
@@ -1333,7 +1338,7 @@
         // --- Level Up Popup and Pause/Resume Logic ---
         function showLevelPopup() {
           gameState = 'LEVELUP';
-          cancelAnimationFrame(loopId);  // freeze gameplay
+          cancelAnimationFrame(loopId);
           const pop = document.getElementById('level-popup');
           document.getElementById('level-popup-title').textContent =
               `Level ${currentLevel}!`;
