@@ -1336,8 +1336,8 @@
             item.el.style.left = `${rect.left - gameRect.left + rect.width / 2}px`;
             item.el.style.top = `${rect.top - gameRect.top + yOffset}px`;
             item.el.style.transform = 'translateX(-50%)';
-            item.el.style.animation = 'float-up 1.5s forwards ease-out';
-            setTimeout(() => returnToPool(item), 1500);
+            item.el.style.animation = 'float-up 3s forwards ease-out';
+            setTimeout(() => returnToPool(item), 3000);
         }
 
         function screenShake() {
