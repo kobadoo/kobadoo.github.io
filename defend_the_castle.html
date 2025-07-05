@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Siegebreaker: The King's Gambit</title>
+            <title>Siegebreaker: Defend the King</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -105,7 +105,7 @@
         }
         .resource-display .icon { font-size: 1.5em; }
 
-        #heartstone-hp-container {
+        #king-hp-container {
             width: 200px;
             height: 25px;
             background-color: var(--hp-bar-bg);
@@ -115,13 +115,13 @@
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
             position: relative;
         }
-        #heartstone-hp-bar {
+        #king-hp-bar {
             width: 100%;
             height: 100%;
             background: linear-gradient(to bottom, var(--hp-bar-fill), #a12825);
             transition: width 0.3s ease-out;
         }
-        #heartstone-hp-text {
+        #king-hp-text {
             position: absolute;
             left: 0;
             right: 0;
@@ -169,19 +169,21 @@
 
         #commander-ability {
             position: relative;
-            width: 50px;
-            height: 50px;
-            background-color: #222;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(to bottom, #444, #222);
             border: 2px solid var(--accent-color);
-            border-radius: 50%;
+            border-radius: 8px;
             cursor: pointer;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-size: 1.5em;
+            font-size: 1.2em;
             font-weight: 700;
             box-shadow: var(--shadow-light);
             transition: transform 0.2s ease;
+            gap: 2px;
         }
         #commander-ability:hover { transform: scale(1.1); }
         #commander-ability-cooldown {
@@ -412,6 +414,11 @@
             20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
         .shake-hard { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
 
         /* Responsive CSS */
         @media (max-width: 1200px) {
@@ -460,7 +467,7 @@
         <div id="score-display" class="ui-panel top-ui-element">Score: 0</div>
         <div id="royal-seals-display" class="ui-panel top-ui-element"></div>
 
-        <div id="bottom-bar" class="ui-panel">
+                <div id="bottom-bar" class="ui-panel">
             <div class="resource-display">
                 <span class="icon" style="color: var(--gold);">💰</span>
                 <span id="gold-display">100</span>
@@ -469,17 +476,13 @@
                 <span class="icon" style="color: var(--stone);">💎</span>
                 <span id="stone-display">50</span>
             </div>
-            <div id="heartstone-hp-container">
-                <div id="heartstone-hp-bar"></div>
-                <div id="heartstone-hp-text"></div>
+            <div id="king-hp-container">
+                <div id="king-hp-bar"></div>
+                <div id="king-hp-text"></div>
             </div>
             <div class="wave-display">
                 <span>Wave:</span>
                 <span id="wave-display">1</span>
-            </div>
-            <div id="commander-ability" data-tooltip="Rallying Cry (Q)<br>Boosts attack speed of nearby towers.">
-                <span>Q</span>
-                <div id="commander-ability-cooldown" style="display: none;"></div>
             </div>
             <button id="undo-btn" class="game-button disabled" data-tooltip="Undo Last Build Action">↶</button>
             <button id="start-wave-btn" class="game-button">Start Wave (Space)</button>
@@ -491,7 +494,6 @@
 
         <div id="upgrade-sell-panel" class="ui-panel">
             <div id="upgrade-btn" class="upgrade-sell-button"></div>
-            <div id="sell-btn" class="upgrade-sell-button"></div>
             <div id="target-priority-btn" class="upgrade-sell-button">🎯 Set Target</div>
         </div>
 
@@ -512,11 +514,11 @@
     <div id="game-over-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <h2 id="game-over-title">DEFEAT</h2>
-            <p>The Heartstone has fallen.</p>
+            <p>The King has fallen.</p>
             <p>You survived <span id="final-wave">0</span> waves.</p>
             <p>Final Score: <span id="final-score">0</span></p>
-            <p>Royal Seals Earned: <span id="royal-seals-earned">0</span></p>
-            <button id="armory-btn" class="game-button" style="background: linear-gradient(to bottom, var(--accent-color), #a8761c);">Royal Armory</button>
+            <p>Royal Seals Earned: <span id="royal-seals-earned">0</span> 🏅</p>
+            <button id="armory-btn" class="game-button" style="background: linear-gradient(to bottom, var(--accent-color), #a8761c);">Royal Armory 🏅</button>
             <button id="restart-btn" class="game-button" style="margin-left: 10px;">Play Again</button>
         </div>
     </div>
@@ -524,10 +526,10 @@
     <div id="main-menu-modal" class="modal-overlay">
         <div class="modal-content">
             <h2>Siegebreaker</h2>
-            <h3 style="font-family: var(--font-family-header); margin-top:-20px; margin-bottom: 20px; color: var(--accent-color);">The King's Gambit</h3>
-            <p style="color: var(--secondary-text);">Protect the Heartstone from waves of enemies. Build defenses, choose your gambits, and survive as long as you can.</p>
+            <h3 style="font-family: var(--font-family-header); margin-top:-20px; margin-bottom: 20px; color: var(--accent-color);">Defend the King</h3>
+            <p style="color: var(--secondary-text);">Protect the King from waves of enemies. Build defenses, choose your gambits, and survive as long as you can.</p>
             <button id="start-game-btn" class="game-button" style="margin-top: 20px;">Begin Siege</button>
-            <button id="main-menu-armory-btn" class="game-button" style="margin-left: 10px; background: linear-gradient(to bottom, var(--accent-color), #a8761c);">Royal Armory</button>
+            <button id="main-menu-armory-btn" class="game-button" style="margin-left: 10px; background: linear-gradient(to bottom, var(--accent-color), #a8761c); display: none;" data-tooltip="Unlock permanent upgrades with Royal Seals earned from completing games">Royal Armory 🏅</button>
         </div>
     </div>
 
@@ -535,7 +537,7 @@
         <div class="modal-content">
             <h2>The Royal Armory</h2>
             <p style="color: var(--secondary-text);">Spend Royal Seals on permanent upgrades.</p>
-            <p style="font-size: 1.2em;">Current Seals: <span id="armory-seals-display" style="color: var(--accent-color); font-weight:700;">0 👑</span></p>
+            <p style="font-size: 1.2em;">Current Seals: <span id="armory-seals-display" style="color: var(--accent-color); font-weight:700;">0 🏅</span></p>
             <div id="armory-upgrades-container" style="max-height: 300px; overflow-y: auto; text-align: left; padding-right: 10px;"></div>
             <button id="close-armory-btn" class="game-button" style="margin-top: 20px; background: #666; border-color: #555;">Close</button>
         </div>
@@ -561,13 +563,14 @@
 
         let gameState = GAME_STATE.MAIN_MENU;
         let grid = [], pathfindingGrid = [], entities = [], projectiles = [], particles = [];
-        let gold = 0, stone = 0, heartstoneHp = 0;
-        const HEARTSTONE_MAX_HP = 1000;
+        let gold = 0, stone = 0, kingHp = 0;
+        const KING_MAX_HP = 1000;
         let wave = 1, score = 0;
 
         let selectedBuild = null, hoveredTower = null, towerToSetTarget = null;
         let mouse = { x: 0, y: 0, gridX: -1, gridY: -1 };
-        let commander, activeGambit = null, lastBuildUndo = null;
+        let activeGambit = null, lastBuildUndo = null;
+        let rallyingCryCooldown = 0;
         let waveFlags = {}; // For temporary wave effects like "Sudden Death"
         let currentWaveEffects = { weather: 'none' };
         
@@ -629,12 +632,36 @@
             return (item && item.type === 'passive' && unlock) ? item.effect * unlock.level : 0;
         }
 
+        function useRallyingCry() {
+            if (!unlockedItems.RALLYING_CRY || rallyingCryCooldown > 0) return;
+            
+            const cooldown = 15 * (1 - getPassiveBonus('COMMANDER_COOLDOWN'));
+            rallyingCryCooldown = cooldown;
+            
+            // Boost all towers' attack speed
+            let towersBoosted = 0;
+            entities.forEach(e => {
+                if (e instanceof Tower && !(e instanceof Wall)) {
+                    e.applyBuff('attack_speed', 1.5, 5);
+                    towersBoosted++;
+                }
+            });
+            
+            // Create visual effect
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            particles.push(new ExpandingRing(centerX / TILE_SIZE, centerY / TILE_SIZE, 8, 'rgba(255, 215, 0, 0.7)', 0.5));
+            
+            showMessage(`Rallying Cry! ${towersBoosted} towers boosted!`, 'var(--accent-color)');
+            playSound('upgrade');
+        }
+
         // --- UI ELEMENTS ---
         const goldDisplay = document.getElementById('gold-display'), stoneDisplay = document.getElementById('stone-display');
-        const hpBar = document.getElementById('heartstone-hp-bar'), hpText = document.getElementById('heartstone-hp-text');
+        const hpBar = document.getElementById('king-hp-bar'), hpText = document.getElementById('king-hp-text');
         const waveDisplay = document.getElementById('wave-display'), startWaveBtn = document.getElementById('start-wave-btn');
         const buildMenu = document.getElementById('build-menu'), upgradeSellPanel = document.getElementById('upgrade-sell-panel');
-        const upgradeBtn = document.getElementById('upgrade-btn'), sellBtn = document.getElementById('sell-btn');
+        const upgradeBtn = document.getElementById('upgrade-btn');
         const targetPriorityBtn = document.getElementById('target-priority-btn'), scoreDisplay = document.getElementById('score-display');
         const royalSealsDisplay = document.getElementById('royal-seals-display'), tooltip = document.getElementById('tooltip');
         const undoBtn = document.getElementById('undo-btn');
@@ -681,9 +708,10 @@
             gameState = GAME_STATE.BUILD;
             grid = []; entities = []; projectiles = []; particles = [];
             gold = DEFENSE_DATA.STARTING_GOLD + Math.floor(DEFENSE_DATA.STARTING_GOLD * getPassiveBonus('STARTING_GOLD'));
-            stone = DEFENSE_DATA.STARTING_STONE; heartstoneHp = HEARTSTONE_MAX_HP;
+            stone = DEFENSE_DATA.STARTING_STONE; kingHp = KING_MAX_HP;
             wave = 1; score = 0;
             selectedBuild = null; hoveredTower = null; activeGambit = null; lastBuildUndo = null;
+            window.waveCanEnd = false;
 
             for (let y = 0; y < GRID_ROWS; y++) {
                 grid[y] = [];
@@ -691,8 +719,7 @@
                     grid[y][x] = { type: 'ground', entity: null };
                 }
             }
-            commander = new Commander(CASTLE_COLS + 1, Math.floor(GRID_ROWS / 2));
-            entities.push(commander);
+
             setupSpecialNodes();
             calculatePathfindingGrid();
             updateUI();
@@ -721,12 +748,16 @@
                 [...entities, ...projectiles].forEach(e => e.update(deltaTime));
                 entities = entities.filter(e => e.isAlive);
                 projectiles = projectiles.filter(p => p.isAlive);
-                if (!entities.some(e => e instanceof Enemy)) {
+                if (window.waveCanEnd && !entities.some(e => e instanceof Enemy)) {
                     endWave();
                 }
-            } else {
-                commander.update(deltaTime);
             }
+
+            // Update rallying cry cooldown
+            if (rallyingCryCooldown > 0) {
+                rallyingCryCooldown -= deltaTime;
+            }
+
             particles.forEach(p => p.update(deltaTime));
             particles = particles.filter(p => p.isAlive);
 
@@ -765,7 +796,9 @@
             }
 
             if (currentWaveEffects.weather === 'fog') {
-                const fogGradient = ctx.createRadialGradient(commander.pixelX, commander.pixelY, TILE_SIZE * 3, commander.pixelX, commander.pixelY, TILE_SIZE * 8);
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const fogGradient = ctx.createRadialGradient(centerX, centerY, TILE_SIZE * 3, centerX, centerY, TILE_SIZE * 8);
                 fogGradient.addColorStop(0, 'rgba(120, 130, 140, 0)');
                 fogGradient.addColorStop(1, 'rgba(120, 130, 140, 0.7)');
                 ctx.fillStyle = fogGradient;
@@ -782,14 +815,30 @@
             ctx.fillStyle = 'rgba(50, 50, 70, 0.3)';
             ctx.fillRect(0, 0, CASTLE_COLS * TILE_SIZE, canvas.height);
             
-            const heartX = 1.5 * TILE_SIZE;
-            const heartY = (Math.floor(GRID_ROWS/2-1) + 1) * TILE_SIZE;
-            const pulse = 0.5 + Math.sin(performance.now() / 400) * 0.15;
-            const grd = ctx.createRadialGradient(heartX, heartY, TILE_SIZE * 0.5, heartX, heartY, TILE_SIZE * 1.5 * pulse);
-            grd.addColorStop(0, 'rgba(255, 77, 77, 0.8)');
-            grd.addColorStop(1, 'rgba(255, 77, 77, 0)');
+            const kingX = 1.5 * TILE_SIZE;
+            const kingY = (Math.floor(GRID_ROWS/2-1) + 1) * TILE_SIZE;
+            
+            // Draw king's static golden aura
+            const grd = ctx.createRadialGradient(kingX, kingY, 0, kingX, kingY, TILE_SIZE * 0.8);
+            grd.addColorStop(0, 'rgba(255, 215, 0, 0.6)');
+            grd.addColorStop(1, 'rgba(255, 215, 0, 0)');
             ctx.fillStyle = grd;
-            ctx.fillRect(TILE_SIZE, Math.floor(GRID_ROWS/2-1)*TILE_SIZE, TILE_SIZE, 2*TILE_SIZE);
+            ctx.beginPath();
+            ctx.arc(kingX, kingY, TILE_SIZE * 0.8, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw the king sprite
+            ctx.font = `${TILE_SIZE * 1.2}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.fillText('👑', kingX, kingY);
+            
+            // Add a subtle shadow for depth
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = 4;
+            ctx.fillText('👑', kingX + 1, kingY + 1);
+            ctx.shadowBlur = 0;
             
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
             ctx.lineWidth = 1;
@@ -887,7 +936,7 @@
                     placeDefense();
                     return;
                 }
-                if (commander) commander.setTarget(mouse.gridX, mouse.gridY);
+
             } else if (gameState === GAME_STATE.TARGETING) {
                 const clickedEntity = entities.find(e => e instanceof Enemy && Math.hypot(mouse.x - e.pixelX, mouse.y - e.pixelY) < TILE_SIZE * 0.4);
                 if (clickedEntity) {
@@ -909,9 +958,8 @@
                     case 'w': selectBuild('Wall'); break;
                     case 'a': selectBuild('ArcherTower'); break;
                     case 'c': selectBuild('CannonTower'); break;
-                    case 'q': if(commander) commander.useAbility(); break;
+                    case 'q': useRallyingCry(); break;
                     case 'u': if(hoveredTower) upgradeHoveredTower(); break;
-                    case 's': if(hoveredTower) sellHoveredTower(); break;
                     case 'escape': deselect(); break;
                     case ' ': if (gameState === GAME_STATE.BUILD && !startWaveBtn.classList.contains('disabled')) startWave(); break;
                 }
@@ -920,9 +968,7 @@
 
         function setupUIButtons() {
             startWaveBtn.addEventListener('click', () => { if(gameState === GAME_STATE.BUILD) startWave() });
-            document.getElementById('commander-ability').addEventListener('click', () => commander?.useAbility());
             upgradeBtn.addEventListener('click', upgradeHoveredTower);
-            sellBtn.addEventListener('click', sellHoveredTower);
             targetPriorityBtn.addEventListener('click', setTargetingMode);
             undoBtn.addEventListener('click', performUndo);
 
@@ -941,25 +987,24 @@
             waveDisplay.textContent = wave;
             scoreDisplay.textContent = `Score: ${score}`;
 
-            const hpPercentage = (heartstoneHp / HEARTSTONE_MAX_HP) * 100;
+            const hpPercentage = (kingHp / KING_MAX_HP) * 100;
             hpBar.style.width = `${hpPercentage}%`;
-            hpText.textContent = `${Math.ceil(heartstoneHp)} / ${HEARTSTONE_MAX_HP}`;
+            hpText.textContent = `${Math.ceil(kingHp)} / ${KING_MAX_HP}`;
             
             startWaveBtn.classList.toggle('disabled', gameState !== GAME_STATE.BUILD);
-            startWaveBtn.textContent = gameState === GAME_STATE.BUILD ? "Start Wave (Space)" : "Wave in Progress";
+            if (gameState === GAME_STATE.BUILD) {
+                startWaveBtn.textContent = "Start Wave (Space)";
+                startWaveBtn.style.background = "linear-gradient(to bottom, var(--green), #1c682b)";
+            } else if (gameState === GAME_STATE.ATTACK) {
+                startWaveBtn.textContent = "Wave in Progress...";
+                startWaveBtn.style.background = "#666";
+            } else if (gameState === GAME_STATE.WAVE_END) {
+                startWaveBtn.textContent = "Wave Complete!";
+                startWaveBtn.style.background = "#666";
+            }
             undoBtn.classList.toggle('disabled', !lastBuildUndo || gameState !== GAME_STATE.BUILD);
             
-            if (commander) {
-                const cdDiv = document.getElementById('commander-ability-cooldown');
-                if (commander.abilityCooldown > 0) {
-                    cdDiv.style.display = 'flex';
-                    cdDiv.textContent = commander.abilityCooldown.toFixed(1);
-                    const cdHeight = (commander.abilityCooldown / commander.getAbilityCooldown()) * 100;
-                    cdDiv.style.clipPath = `inset(${100 - cdHeight}% 0 0 0)`;
-                } else {
-                    cdDiv.style.display = 'none';
-                }
-            }
+
         }
         
         function updateBuildMenu() {
@@ -1064,8 +1109,6 @@
                 upgradeBtn.classList.add('disabled');
             }
 
-            const sellValue = hoveredTower.getSellValue();
-            sellBtn.innerHTML = `<span class="hotkey">S</span> Sell (+${sellValue.gold}💰 +${sellValue.stone}💎)`;
             targetPriorityBtn.style.display = (hoveredTower instanceof Tower && !(hoveredTower instanceof SpecialBuilding)) ? 'flex' : 'none';
         }
         
@@ -1084,22 +1127,7 @@
             }
         }
         
-        function sellHoveredTower() {
-            if (!hoveredTower || gameState !== GAME_STATE.BUILD) return;
-            const value = hoveredTower.getSellValue();
-            setUndo({ action: 'sell', tower: hoveredTower, x: hoveredTower.x, y: hoveredTower.y, sellGold: value.gold, sellStone: value.stone });
-            gold += value.gold; stone += value.stone;
-            
-            grid[hoveredTower.y][hoveredTower.x].entity = null;
-            hoveredTower.isAlive = false;
-            
-            if (hoveredTower instanceof Wall) calculatePathfindingGrid();
-            
-            hoveredTower = null;
-            upgradeSellPanel.style.display = 'none';
-            updateUI();
-            playSound('sell');
-        }
+
 
         function setTargetingMode() {
             if (!hoveredTower) return;
@@ -1116,7 +1144,7 @@
 
         function performUndo() {
             if (!lastBuildUndo || gameState !== GAME_STATE.BUILD) return;
-            const { action, key, x, y, tower, costGold, costStone, sellGold, sellStone } = lastBuildUndo;
+            const { action, key, x, y, tower, costGold, costStone } = lastBuildUndo;
             if (action === 'build') {
                 gold += costGold; stone += costStone;
                 grid[y][x].entity.isAlive = false;
@@ -1125,12 +1153,6 @@
             } else if (action === 'upgrade') {
                 gold += costGold; stone += costStone;
                 tower.downgrade();
-            } else if (action === 'sell') {
-                gold -= sellGold; stone -= sellStone;
-                tower.isAlive = true;
-                entities.push(tower);
-                grid[y][x].entity = tower;
-                if (tower instanceof Wall) calculatePathfindingGrid();
             }
             lastBuildUndo = null;
             updateUI();
@@ -1152,8 +1174,19 @@
         function startWaveAttackPhase() {
             gameState = GAME_STATE.ATTACK;
             setWaveEffects();
+            
+            // Clear any existing messages before showing the new one
+            const messageContainer = document.getElementById('game-message-container');
+            messageContainer.innerHTML = '';
+            
+            showMessage(`Wave ${wave} Starting!`, 'var(--accent-color)');
             spawnWave();
             updateUI();
+            
+            // Add a delay before allowing wave completion check
+            setTimeout(() => {
+                window.waveCanEnd = true;
+            }, 3000); // 3 seconds delay
         }
 
         function endWave() {
@@ -1228,12 +1261,21 @@
             if (gameState === GAME_STATE.GAME_OVER) return; // Prevent multiple triggers
             gameState = GAME_STATE.GAME_OVER;
             const sealsEarned = Math.floor(score / 500);
+            const hadSealsBefore = royalSeals > 0;
             royalSeals += sealsEarned;
             saveMetaProgress();
             document.getElementById('final-wave').textContent = wave;
             document.getElementById('final-score').textContent = score;
             document.getElementById('royal-seals-earned').textContent = `${sealsEarned} 👑`;
             document.getElementById('game-over-modal').style.display = 'flex';
+            
+            // Show special message if this is the first time earning Royal Seals
+            if (!hadSealsBefore && sealsEarned > 0) {
+                const armoryBtn = document.getElementById('armory-btn');
+                armoryBtn.innerHTML = '🎉 Royal Armory Unlocked! 🏅';
+                armoryBtn.style.animation = 'pulse 2s infinite';
+            }
+            
             playSound('game_over');
         }
         
@@ -1256,8 +1298,8 @@
         function calculatePathfindingGrid() {
             pathfindingGrid = Array(GRID_ROWS).fill().map(() => Array(GRID_COLS).fill(Infinity));
             const queue = [];
-            const heartstoneY = Math.floor(GRID_ROWS / 2);
-            for(let y = heartstoneY-1; y <= heartstoneY; y++){
+            const kingY = Math.floor(GRID_ROWS / 2);
+            for(let y = kingY-1; y <= kingY; y++){
                 queue.push({ x: CASTLE_COLS-1, y: y, dist: 0 });
                 pathfindingGrid[y][CASTLE_COLS-1] = 0;
             }
@@ -1341,9 +1383,31 @@
             document.getElementById('game-over-modal').style.display = 'none';
             document.getElementById('armory-modal').style.display = 'none';
             updateRoyalSealsDisplay();
+            
+            // Only show Royal Armory button if player has earned Royal Seals
+            const armoryBtn = document.getElementById('main-menu-armory-btn');
+            if (royalSeals > 0) {
+                armoryBtn.style.display = 'inline-block';
+                armoryBtn.textContent = `Royal Armory 👑 (${royalSeals})`;
+            } else {
+                armoryBtn.style.display = 'none';
+            }
         }
         
-        function updateRoyalSealsDisplay() { royalSealsDisplay.innerHTML = `<span style="color: var(--accent-color);">${royalSeals}</span> 👑`; }
+        function updateRoyalSealsDisplay() { 
+            royalSealsDisplay.innerHTML = `<span style="color: var(--accent-color);">${royalSeals}</span> 🏅`;
+            
+            // Update main menu armory button if it exists and we're on main menu
+            const armoryBtn = document.getElementById('main-menu-armory-btn');
+            if (armoryBtn && gameState === GAME_STATE.MAIN_MENU) {
+                if (royalSeals > 0) {
+                    armoryBtn.style.display = 'inline-block';
+                    armoryBtn.textContent = `Royal Armory 🏅 (${royalSeals})`;
+                } else {
+                    armoryBtn.style.display = 'none';
+                }
+            }
+        }
 
         function showArmory() {
             gameState = GAME_STATE.ARMORY;
@@ -1363,11 +1427,11 @@
                 if (item.type === 'passive') {
                     const unlock = unlockedItems[key] || { level: 0 };
                     const cost = item.cost + Math.floor(item.cost * unlock.level * 0.5);
-                    content += `<div><span>Lvl: ${unlock.level}/${item.maxLevel}</span><button data-key="${key}" data-cost="${cost}" ${unlock.level >= item.maxLevel || royalSeals < cost ? 'disabled' : ''}>Buy (${cost}👑)</button></div>`;
+                    content += `<div><span>Lvl: ${unlock.level}/${item.maxLevel}</span><button data-key="${key}" data-cost="${cost}" ${unlock.level >= item.maxLevel || royalSeals < cost ? 'disabled' : ''}>Buy (${cost}🏅)</button></div>`;
                 } else {
                     const isUnlocked = unlockedItems[key];
                     if (isUnlocked) itemEl.classList.add('unlocked');
-                    content += `<button data-key="${key}" data-cost="${item.cost}" ${isUnlocked || royalSeals < item.cost ? 'disabled' : ''}>${isUnlocked ? 'Unlocked' : `Unlock (${item.cost}👑)`}</button>`;
+                    content += `<button data-key="${key}" data-cost="${item.cost}" ${isUnlocked || royalSeals < item.cost ? 'disabled' : ''}>${isUnlocked ? 'Unlocked' : `Unlock (${item.cost}🏅)`}</button>`;
                 }
                 itemEl.innerHTML = content;
                 container.appendChild(itemEl);
@@ -1417,15 +1481,15 @@
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 // Base64 encoded sounds to keep it in a single file
                 const soundData = {
-                    arrow: 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU9vT19PCwEACgAKABsAEgANAAsADAAMABQADgAOAAsADgANAA4ACwAMAA4ADgAMAAkACgANAA4ADAALAAsADQANAAkACQALAA0ACgAJAAkADAAKAAYABwAJAAYABgAIAAYABQAGAAcABwAFAAYABgAGAAUABgAFAAUABQAFAAYABQAF=',
-                    build: 'data:audio/wav;base64,UklGRigBAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YQQBAAD///////////////////8=',
-                    cannon: 'data:audio/wav;base64,UklGRiQBAABXQVZFZm10IBAAAAABAAEARKwAABCxAgAEABgAZGF0YQAAAQAAAAEAAAAAAAAAAQAAAAEAAAAAAAAA',
-                    chaching: 'data:audio/wav;base64,UklGRkoAAABXQVZFZm10IBAAAAABAAEARKwAABCxAgAEABgAZGF0YQQAAAAEAQAAAAAAAEA=',
-                    error: 'data:audio/wav;base64,UklGRlYAAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YVIBAABzAF4AawBjAFsAWABXAFQAUQBSAFEAUABQAE8ATgBNAEsASQBHAEUAQwA/AD0AOwA5ADcANQA0ADMANQA3ADkAOwA9AD8A',
-                    wave_end: 'data:audio/wav;base64,UklGRlIAAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YUYBAABzAHAAYwBoAGgAZwBmAGUAZABjAGIAYgBjAGQAZQBmAGcAaABpAGoAawBsAGwAbQBuAG8AcA==',
-                    upgrade: 'data:audio/wav;base64,UklGRlIAAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YUYBAABwAGcAbABtAG4AbgBtAGwAawBqAGkAaABnAGYAZQBjAGIAYQBgAGAAQQBDAEUARwBJAEsATQ==',
-                    sell: 'data:audio/wav;base64,UklGRiwAAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YQgAAAAIAAgACAA=',
-                    game_over: 'data:audio/wav;base64,UklGRkIAAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YTwAAABOAEsARwBEAEEAPgA8ADoAOAA2ADQAMgAwAC4ALgAwADIA NAA2ADgAOgA8AD4AQQBEAEcASwBOAFA='
+                    arrow: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAgD8AAP8/AAD/PwAA/z8AAP8/AAD/PwAA/z8AAP8/AAD/PwAA/z8AAP8/AAD/PwAA',
+                    build: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAA',
+                    cannon: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAA',
+                    chaching: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAA',
+                    error: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAMAPAADADwAAwD8AAMAPAADADwAAwD8AAMAPAADADwAAwD8AAMAPAADADwAA',
+                    wave_end: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAA',
+                    upgrade: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAA',
+
+                    game_over: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAMAPAADADwAAwD8AAMAPAADADwAAwD8AAMAPAADADwAAwD8AAMAPAADADwAA'
                 };
                 Object.keys(soundData).forEach(key => {
                     fetch(soundData[key]).then(response => response.arrayBuffer())
@@ -1469,9 +1533,10 @@
         const ARMORY_DATA = {
             FROST_SPIRE: { name: "Unlock Frost Spire", cost: 100, description: "A tower that slows enemies.", type: 'tower'},
             TAR_PIT: { name: "Unlock Tar Pit", cost: 75, description: "A trap that heavily slows enemies on it.", type: 'trap'},
+            RALLYING_CRY: { name: "Unlock Rallying Cry", cost: 150, description: "Press Q to boost all towers' attack speed for 5 seconds.", type: 'ability'},
             STARTING_GOLD: { name: "+10% Starting Gold", cost: 50, effect: 0.1, maxLevel: 5, type: 'passive' },
             WALL_HP: { name: "+10% Wall HP", cost: 60, effect: 0.1, maxLevel: 5, type: 'passive' },
-            COMMANDER_COOLDOWN: { name: "-5% Commander Cooldown", cost: 120, effect: 0.05, maxLevel: 3, type: 'passive' },
+            COMMANDER_COOLDOWN: { name: "-5% Rallying Cry Cooldown", cost: 120, effect: 0.05, maxLevel: 3, type: 'passive' },
         };
 
         // --- ENTITY CLASSES ---
@@ -1486,25 +1551,14 @@
             draw() { ctx.strokeStyle = this.color; ctx.lineWidth = this.size; ctx.beginPath(); ctx.moveTo(this.pixelX, this.pixelY); ctx.lineTo(this.pixelX + this.vx/20, this.pixelY + this.vy/20); ctx.stroke(); }
         }
         function createExplosion(x, y, count, color, size, speed, life) { for(let i=0; i<count; i++) particles.push(new Particle(x, y, color, Math.random() * size, Math.random() * speed, Math.random() * life)); }
-        class Commander extends Entity {
-            constructor(x, y) { super(x, y); this.targetX = x; this.targetY = y; this.speed = 5; this.abilityCooldown = 0; this.rallyRadius = 3; }
-            getAbilityCooldown() { return 15 * (1 - getPassiveBonus('COMMANDER_COOLDOWN')); }
-            setTarget(gridX, gridY) { this.targetX = gridX; this.targetY = gridY; }
-            useAbility() {
-                if (this.abilityCooldown <= 0) {
-                    this.abilityCooldown = this.getAbilityCooldown();
-                    entities.forEach(e => { if (e instanceof Tower && Math.hypot(this.x - e.x, this.y - e.y) <= this.rallyRadius) e.applyBuff('attack_speed', 1.5, 5); });
-                    particles.push(new ExpandingRing(this.x, this.y, this.rallyRadius, 'rgba(255, 215, 0, 0.7)', 0.5));
-                }
-            }
-            update(dt) { if(this.abilityCooldown > 0) this.abilityCooldown -= dt; const dX = this.targetX - this.x, dY = this.targetY - this.y; const dist = Math.hypot(dX, dY); const moveDist = this.speed * dt; if (dist > 0.1) { if (dist < moveDist) { this.x = this.targetX; this.y = this.targetY; } else { this.x += (dX / dist) * this.speed * dt; this.y += (dY / dist) * this.speed * dt; } this.pixelX = (this.x+0.5)*TILE_SIZE; this.pixelY = (this.y+0.5)*TILE_SIZE; } }
-            draw() { ctx.fillStyle = 'gold'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.4, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = 'white'; ctx.lineWidth = 2; ctx.stroke(); }
-        }
+
         class ExpandingRing extends Particle {
             constructor(gridX, gridY, maxRadius, color, duration) { super((gridX + 0.5) * TILE_SIZE, (gridY + 0.5) * TILE_SIZE); this.maxRadius = maxRadius * TILE_SIZE; this.color = color; this.duration = duration; this.life = duration; this.currentRadius = 0; }
             update(dt) { this.life -= dt; if(this.life <= 0) this.isAlive = false; this.currentRadius = this.maxRadius * (1 - (this.life / this.duration)); }
             draw() { ctx.strokeStyle = this.color; ctx.lineWidth = 4; ctx.globalAlpha = this.life / this.duration; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, this.currentRadius, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = 1; }
         }
+        
+
         class Projectile extends Entity {
             constructor(startX, startY, target, damage, speed) { super(startX/TILE_SIZE, startY/TILE_SIZE); this.pixelX = startX; this.pixelY = startY; this.target = target; this.damage = damage; this.speed = speed; this.trail = []; }
             update(dt) {
@@ -1528,7 +1582,6 @@
         
         class Tower extends Entity {
             constructor(x, y) { super(x, y); this.level = 1; this.fireCooldown = 0; this.target = null; this.priorityTarget = null; this.buffs = {}; this.data = DEFENSE_DATA[this.constructor.name]; this.name = this.data.name; this.maxLevel = this.data.damage?.length || 1; }
-            getSellValue() { return { gold: this.data.costGold * 0.75, stone: this.data.costStone * 0.75 }; }
             getUpgradeCost() { if (this.level >= this.maxLevel) return null; return { gold: this.data.costGold * (this.level), stone: this.data.costStone * (this.level) }; }
             upgrade() { if (this.level < this.maxLevel) this.level++; }
             downgrade() { if (this.level > 1) this.level--; }
@@ -1588,9 +1641,9 @@
                 const dx = targetPixelX - this.pixelX, dy = targetPixelY - this.pixelY, dist = Math.hypot(dx, dy), speed = this.getSpeed() * TILE_SIZE * dt;
                 if(dist > 0) { this.pixelX += (dx / dist) * speed; this.pixelY += (dy / dist) * speed; }
                 this.x = Math.floor(this.pixelX / TILE_SIZE); this.y = Math.floor(this.pixelY / TILE_SIZE);
-                if (this.x < CASTLE_COLS) this.attackCastle();
+                if (this.x < CASTLE_COLS) this.attackKing();
             }
-            attackCastle() { let damage = this.attackDamage; if (waveFlags.suddenDeath) { damage *= 5; waveFlags.suddenDeath = false; } heartstoneHp -= damage; this.isAlive = false; if (heartstoneHp <= 0) { heartstoneHp = 0; gameOver(); } updateUI(); screenShake(0.3); }
+            attackKing() { let damage = this.attackDamage; if (waveFlags.suddenDeath) { damage *= 5; waveFlags.suddenDeath = false; } kingHp -= damage; this.isAlive = false; if (kingHp <= 0) { kingHp = 0; gameOver(); } updateUI(); screenShake(0.3); }
             update(dt) { this.updateEffects(dt); this.move(dt); }
             draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.3, 0, Math.PI * 2); ctx.fill(); if (this.isFlying) { ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.4, 0, Math.PI * 2); ctx.fill(); } if (this.effects.slow) { ctx.fillStyle = 'rgba(100, 150, 255, 0.7)'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.4, 0, Math.PI * 2); ctx.fill(); } const hpPercent = this.hp / this.maxHp; ctx.fillStyle = '#555'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.3, this.pixelY - TILE_SIZE * 0.5, TILE_SIZE * 0.6, 5); ctx.fillStyle = 'green'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.3, this.pixelY - TILE_SIZE * 0.5, TILE_SIZE * 0.6 * hpPercent, 5); }
         }
