@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-            <title>Siegebreaker: Defend the King</title>
+            <title>Siegebreaker: Defend the Castle</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -473,7 +472,7 @@
                 <span id="gold-display">100</span>
             </div>
             <div class="resource-display">
-                <span class="icon" style="color: var(--stone);">💎</span>
+                <span class="icon" style="color: var(--stone);">🪨</span>
                 <span id="stone-display">50</span>
             </div>
             <div id="king-hp-container">
@@ -484,8 +483,8 @@
                 <span>Wave:</span>
                 <span id="wave-display">1</span>
             </div>
-            <button id="undo-btn" class="game-button disabled" data-tooltip="Undo Last Build Action">↶</button>
-            <button id="start-wave-btn" class="game-button">Start Wave (Space)</button>
+            <button id="undo-btn" class="game-button disabled" title="Undo your last build or upgrade action">↺</button>
+            <button id="start-wave-btn" class="game-button" title="Start the next enemy wave">Start Wave</button>
         </div>
 
         <div id="build-menu" class="ui-panel">
@@ -493,8 +492,8 @@
         </div>
 
         <div id="upgrade-sell-panel" class="ui-panel">
-            <div id="upgrade-btn" class="upgrade-sell-button"></div>
-            <div id="target-priority-btn" class="upgrade-sell-button">🎯 Set Target</div>
+            <div id="upgrade-btn" class="upgrade-sell-button" title="Upgrade this tower to the next level"></div>
+            <div id="target-priority-btn" class="upgrade-sell-button" title="Set this tower's target priority">🎯 Set Target</div>
         </div>
 
         <div id="game-message-container"></div>
@@ -507,7 +506,7 @@
             <h2>The King's Gambit</h2>
             <p style="color: var(--secondary-text);">Choose a challenge for the upcoming wave for a greater reward.</p>
             <div id="gambit-options-container" style="margin-top: 20px;"></div>
-            <button id="skip-gambit-btn" class="game-button" style="margin-top: 15px; background: #666; border-color: #555;">No Gambit, Play It Safe</button>
+            <button id="skip-gambit-btn" class="game-button" style="margin-top: 15px; background: #666; border-color: #555;" title="Skip the King's Gambit and play a normal wave">No Gambit, Play It Safe</button>
         </div>
     </div>
 
@@ -518,8 +517,8 @@
             <p>You survived <span id="final-wave">0</span> waves.</p>
             <p>Final Score: <span id="final-score">0</span></p>
             <p>Royal Seals Earned: <span id="royal-seals-earned">0</span> 🏅</p>
-            <button id="armory-btn" class="game-button" style="background: linear-gradient(to bottom, var(--accent-color), #a8761c);">Royal Armory 🏅</button>
-            <button id="restart-btn" class="game-button" style="margin-left: 10px;">Play Again</button>
+            <button id="armory-btn" class="game-button" style="background: linear-gradient(to bottom, var(--accent-color), #a8761c);" title="Open the Royal Armory to spend your seals">Royal Armory 🏅</button>
+            <button id="restart-btn" class="game-button" style="margin-left: 10px;" title="Restart the game from wave 1">Play Again</button>
         </div>
     </div>
     
@@ -528,8 +527,8 @@
             <h2>Siegebreaker</h2>
             <h3 style="font-family: var(--font-family-header); margin-top:-20px; margin-bottom: 20px; color: var(--accent-color);">Defend the King</h3>
             <p style="color: var(--secondary-text);">Protect the King from waves of enemies. Build defenses, choose your gambits, and survive as long as you can.</p>
-            <button id="start-game-btn" class="game-button" style="margin-top: 20px;">Begin Siege</button>
-            <button id="main-menu-armory-btn" class="game-button" style="margin-left: 10px; background: linear-gradient(to bottom, var(--accent-color), #a8761c); display: none;" data-tooltip="Unlock permanent upgrades with Royal Seals earned from completing games">Royal Armory 🏅</button>
+            <button id="start-game-btn" class="game-button" style="margin-top: 20px;" title="Start a new game">Begin Siege</button>
+            <button id="main-menu-armory-btn" class="game-button" style="margin-left: 10px; background: linear-gradient(to bottom, var(--accent-color), #a8761c); display: none;" title="Unlock permanent upgrades with Royal Seals earned from completing games">Royal Armory 🏅</button>
         </div>
     </div>
 
@@ -539,7 +538,7 @@
             <p style="color: var(--secondary-text);">Spend Royal Seals on permanent upgrades.</p>
             <p style="font-size: 1.2em;">Current Seals: <span id="armory-seals-display" style="color: var(--accent-color); font-weight:700;">0 🏅</span></p>
             <div id="armory-upgrades-container" style="max-height: 300px; overflow-y: auto; text-align: left; padding-right: 10px;"></div>
-            <button id="close-armory-btn" class="game-button" style="margin-top: 20px; background: #666; border-color: #555;">Close</button>
+            <button id="close-armory-btn" class="game-button" style="margin-top: 20px; background: #666; border-color: #555;" title="Close the Royal Armory and return to the menu or game">Close</button>
         </div>
     </div>
 
@@ -720,6 +719,85 @@
                 }
             }
 
+            // 1. Place king and castle in the center
+            const centerX = Math.floor(GRID_COLS / 2);
+            const centerY = Math.floor(GRID_ROWS / 2);
+            for (let y = centerY - 1; y <= centerY + 1; y++) {
+                for (let x = centerX - 1; x <= centerX + 1; x++) {
+                    grid[y][x].type = 'castle';
+                }
+            }
+            // King position
+            kingPos.x = centerX;
+            kingPos.y = centerY;
+
+            // In startGame(), after kingPos is set:
+            grid[centerY][centerX].type = 'castle_core';
+            const castleOffsets = [
+                [-1, -1], [0, -1], [1, -1],
+                [-1,  0],          [1,  0],
+                [-1,  1], [0,  1], [1,  1]
+            ];
+            for (const [dx, dy] of castleOffsets) {
+                const x = centerX + dx, y = centerY + dy;
+                if (x >= 0 && x < GRID_COLS && y >= 0 && y < GRID_ROWS) {
+                    grid[y][x].type = 'castle';
+                }
+            }
+
+            // 2. Generate a river with 2-3 bridges
+            function generateRiverAndBridges() {
+                const horizontal = Math.random() < 0.5;
+                let riverLine = [];
+                if (horizontal) {
+                    let y = Math.floor(Math.random() * (GRID_ROWS - 6)) + 3;
+                    let prevY = y;
+                    for (let x = 0; x < GRID_COLS; x++) {
+                        riverLine.push({ x, y });
+                        const move = Math.random();
+                        prevY = y;
+                        if (move < 0.3 && y > 1) y--;
+                        else if (move > 0.7 && y < GRID_ROWS - 2) y++;
+                        // If moved, fill in the vertical gap to avoid diagonal jumps
+                        if (y !== prevY) {
+                            riverLine.push({ x, y: prevY });
+                            riverLine.push({ x, y });
+                        }
+                    }
+                } else {
+                    let x = Math.floor(Math.random() * (GRID_COLS - 6)) + 3;
+                    let prevX = x;
+                    for (let y = 0; y < GRID_ROWS; y++) {
+                        riverLine.push({ x, y });
+                        const move = Math.random();
+                        prevX = x;
+                        if (move < 0.3 && x > 1) x--;
+                        else if (move > 0.7 && x < GRID_COLS - 2) x++;
+                        // If moved, fill in the horizontal gap to avoid diagonal jumps
+                        if (x !== prevX) {
+                            riverLine.push({ x: prevX, y });
+                            riverLine.push({ x, y });
+                        }
+                    }
+                }
+                riverLine.forEach(({ x, y }) => {
+                    if (grid[y][x].type !== 'castle' && grid[y][x].type !== 'castle_core') grid[y][x].type = 'water';
+                });
+                const bridgeCount = 2 + Math.floor(Math.random() * 2);
+                for (let i = 0; i < bridgeCount; i++) {
+                    const idx = Math.floor(Math.random() * riverLine.length);
+                    const { x, y } = riverLine[idx];
+                    // Place bridge on all river tiles at this x (vertical slice)
+                    for (let dy = -1; dy <= 1; dy++) {
+                        const yy = y + dy;
+                        if (yy >= 0 && yy < GRID_ROWS && grid[yy][x].type === 'water') {
+                            grid[yy][x].type = 'bridge';
+                        }
+                    }
+                }
+            }
+            generateRiverAndBridges();
+
             setupSpecialNodes();
             calculatePathfindingGrid();
             updateUI();
@@ -748,6 +826,7 @@
                 [...entities, ...projectiles].forEach(e => e.update(deltaTime));
                 entities = entities.filter(e => e.isAlive);
                 projectiles = projectiles.filter(p => p.isAlive);
+                // Only allow endWave if window.waveCanEnd is true
                 if (window.waveCanEnd && !entities.some(e => e instanceof Enemy)) {
                     endWave();
                 }
@@ -812,11 +891,29 @@
         }
 
         function drawGrid() {
-            ctx.fillStyle = 'rgba(50, 50, 70, 0.3)';
-            ctx.fillRect(0, 0, CASTLE_COLS * TILE_SIZE, canvas.height);
+            // Remove per-tile castle borders; only draw the single 3x3 border below
+            /*
+            for (let y = 0; y < GRID_ROWS; y++) {
+                for (let x = 0; x < GRID_COLS; x++) {
+                    if (grid[y][x].type === 'castle') {
+                        ctx.save();
+                        ctx.strokeStyle = 'rgba(241, 224, 90, 0.85)';
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                        ctx.restore();
+                    } else if (grid[y][x].type === 'castle_core') {
+                        ctx.save();
+                        ctx.strokeStyle = 'rgba(241, 224, 90, 1)';
+                        ctx.lineWidth = 3;
+                        ctx.strokeRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                        ctx.restore();
+                    }
+                }
+            }
+            */
             
-            const kingX = 1.5 * TILE_SIZE;
-            const kingY = (Math.floor(GRID_ROWS/2-1) + 1) * TILE_SIZE;
+            const kingX = kingPos.x * TILE_SIZE + TILE_SIZE / 2;
+            const kingY = kingPos.y * TILE_SIZE + TILE_SIZE / 2;
             
             // Draw king's static golden aura
             const grd = ctx.createRadialGradient(kingX, kingY, 0, kingX, kingY, TILE_SIZE * 0.8);
@@ -832,12 +929,12 @@
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-            ctx.fillText('👑', kingX, kingY);
+            ctx.fillText('🏰', kingX, kingY);
             
             // Add a subtle shadow for depth
             ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
             ctx.shadowBlur = 4;
-            ctx.fillText('👑', kingX + 1, kingY + 1);
+            ctx.fillText('🏰', kingX + 1, kingY + 1);
             ctx.shadowBlur = 0;
             
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
@@ -853,8 +950,34 @@
                 for (let x = 0; x < GRID_COLS; x++) {
                     const tile = grid[y][x];
                     if (!tile.entity) {
-                        if (tile.type === 'quarry') drawSpecialNode(x, y, 'rgba(139, 148, 158, 0.5)', '💎');
+                        if (tile.type === 'quarry') drawSpecialNode(x, y, 'rgba(139, 148, 158, 0.5)', '🪨');
                         if (tile.type === 'goldvein') drawSpecialNode(x, y, 'rgba(241, 224, 90, 0.4)', '💰');
+                    }
+                }
+            }
+
+            // Draw a single square border around the 3x3 castle area
+            const castleStartX = (kingPos.x - 1) * TILE_SIZE;
+            const castleStartY = (kingPos.y - 1) * TILE_SIZE;
+            ctx.save();
+            ctx.strokeStyle = 'rgba(241, 224, 90, 0.85)';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(castleStartX, castleStartY, TILE_SIZE * 3, TILE_SIZE * 3);
+            ctx.restore();
+
+            // Draw river and bridges as before
+            for (let y = 0; y < GRID_ROWS; y++) {
+                for (let x = 0; x < GRID_COLS; x++) {
+                    const tile = grid[y][x];
+                    if (tile.type === 'water') {
+                        ctx.fillStyle = 'rgba(60, 120, 200, 0.7)';
+                        ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    } else if (tile.type === 'bridge') {
+                        ctx.fillStyle = 'rgba(180, 140, 80, 0.85)';
+                        ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                        ctx.strokeStyle = '#8B5A2B';
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(x * TILE_SIZE + 2, y * TILE_SIZE + 2, TILE_SIZE - 4, TILE_SIZE - 4);
                     }
                 }
             }
@@ -993,7 +1116,7 @@
             
             startWaveBtn.classList.toggle('disabled', gameState !== GAME_STATE.BUILD);
             if (gameState === GAME_STATE.BUILD) {
-                startWaveBtn.textContent = "Start Wave (Space)";
+                startWaveBtn.textContent = "Start Wave";
                 startWaveBtn.style.background = "linear-gradient(to bottom, var(--green), #1c682b)";
             } else if (gameState === GAME_STATE.ATTACK) {
                 startWaveBtn.textContent = "Wave in Progress...";
@@ -1016,14 +1139,14 @@
                 const item = document.createElement('div');
                 item.className = 'build-item';
                 item.dataset.key = key;
-                item.dataset.tooltip = `<b>${def.name}</b><br>Cost: ${def.costGold}💰 ${def.costStone}💎`;
+                item.dataset.tooltip = `<b>${def.name}</b><br>Cost: ${def.costGold}💰 ${def.costStone}🪨`;
                 item.innerHTML = `
                     <div class="build-item-hotkey">${hotkey}</div>
                     <div class="build-item-icon">${def.icon}</div>
                     <div class="build-item-name">${def.name}</div>
                     <div class="build-item-cost">
                         ${def.costGold > 0 ? `<span>${def.costGold}</span><span style="color:var(--gold)">💰</span>` : ''}
-                        ${def.costStone > 0 ? `<span>${def.costStone}</span><span style="color:var(--stone)">💎</span>` : ''}
+                        ${def.costStone > 0 ? `<span>${def.costStone}</span><span style="color:var(--stone)">🪨</span>` : ''}
                     </div>
                 `;
                 item.addEventListener('click', () => selectBuild(key));
@@ -1076,12 +1199,12 @@
         }
         
         function checkPlacement(x, y, definition) {
-            if (x < CASTLE_COLS || x >= GRID_COLS || y < 0 || y >= GRID_ROWS || grid[y][x].entity) return false;
+            if (x < 0 || x >= GRID_COLS || y < 0 || y >= GRID_ROWS || grid[y][x].entity) return false;
             const tileType = grid[y][x].type;
+            if (tileType === 'water' || tileType === 'bridge' || tileType === 'castle') return false;
             if (definition.requires) {
                 if (tileType !== definition.requires) return false;
             } else if (tileType === 'quarry' || tileType === 'goldvein') return false;
-
             if (definition.type === 'wall') {
                 const tempGrid = grid.map(row => row.map(cell => cell.entity));
                 tempGrid[y][x] = { type: 'wall' }; // Dummy wall for testing
@@ -1102,7 +1225,7 @@
             const upgradeCost = hoveredTower.getUpgradeCost();
             if (upgradeCost) {
                 upgradeBtn.style.display = 'flex';
-                upgradeBtn.innerHTML = `<span class="hotkey">U</span> Upgrade (${upgradeCost.gold}💰 ${upgradeCost.stone}💎)`;
+                upgradeBtn.innerHTML = `<span class="hotkey">U</span> Upgrade (${upgradeCost.gold}💰 ${upgradeCost.stone}🪨)`;
                 upgradeBtn.classList.toggle('disabled', gold < upgradeCost.gold || stone < upgradeCost.stone);
             } else {
                 upgradeBtn.innerHTML = `<span class="hotkey">U</span> Max Level`;
@@ -1172,9 +1295,9 @@
         }
         
         function startWaveAttackPhase() {
+            playSound('wave_start', 0.7); // Play war horn at wave start
             gameState = GAME_STATE.ATTACK;
             setWaveEffects();
-            
             // Clear any existing messages before showing the new one
             const messageContainer = document.getElementById('game-message-container');
             messageContainer.innerHTML = '';
@@ -1183,7 +1306,8 @@
             spawnWave();
             updateUI();
             
-            // Add a delay before allowing wave completion check
+            // Prevent wave from ending until after delay
+            window.waveCanEnd = false;
             setTimeout(() => {
                 window.waveCanEnd = true;
             }, 3000); // 3 seconds delay
@@ -1232,8 +1356,28 @@
         }
         
         function spawnEnemy(type) {
-            const spawnY = Math.floor(Math.random() * GRID_ROWS);
-            const enemy = new CLASS_MAP[type](GRID_COLS - 1, spawnY);
+            // Randomly pick an edge: 0=top, 1=bottom, 2=left, 3=right
+            const edge = Math.floor(Math.random() * 4);
+            let spawnX, spawnY;
+            if (edge === 0) { // top
+                spawnX = Math.floor(Math.random() * GRID_COLS);
+                spawnY = 0;
+            } else if (edge === 1) { // bottom
+                spawnX = Math.floor(Math.random() * GRID_COLS);
+                spawnY = GRID_ROWS - 1;
+            } else if (edge === 2) { // left
+                spawnX = 0;
+                spawnY = Math.floor(Math.random() * GRID_ROWS);
+            } else { // right
+                spawnX = GRID_COLS - 1;
+                spawnY = Math.floor(Math.random() * GRID_ROWS);
+            }
+            // Don't spawn in water or castle
+            if (grid[spawnY][spawnX].type === 'water' || grid[spawnY][spawnX].type === 'castle') {
+                // Try again recursively (should be rare)
+                return spawnEnemy(type);
+            }
+            const enemy = new CLASS_MAP[type](spawnX, spawnY);
             if (activeGambit && activeGambit.enemyModifier) activeGambit.enemyModifier(enemy);
             entities.push(enemy);
         }
@@ -1298,23 +1442,19 @@
         function calculatePathfindingGrid() {
             pathfindingGrid = Array(GRID_ROWS).fill().map(() => Array(GRID_COLS).fill(Infinity));
             const queue = [];
-            const kingY = Math.floor(GRID_ROWS / 2);
-            for(let y = kingY-1; y <= kingY; y++){
-                queue.push({ x: CASTLE_COLS-1, y: y, dist: 0 });
-                pathfindingGrid[y][CASTLE_COLS-1] = 0;
-            }
+            queue.push({ x: kingPos.x, y: kingPos.y, dist: 0 });
+            pathfindingGrid[kingPos.y][kingPos.x] = 0;
             let head = 0;
-            while(head < queue.length) {
+            while (head < queue.length) {
                 const { x, y, dist } = queue[head++];
                 const neighbors = [{dx:0, dy:1}, {dx:0, dy:-1}, {dx:1, dy:0}, {dx:-1, dy:0}];
                 for (const n of neighbors) {
                     const nx = x + n.dx, ny = y + n.dy;
                     if (nx >= 0 && nx < GRID_COLS && ny >= 0 && ny < GRID_ROWS && pathfindingGrid[ny][nx] === Infinity) {
                         const cell = grid[ny][nx];
-                        if (!cell.entity || !(cell.entity instanceof Wall)) {
-                            pathfindingGrid[ny][nx] = dist + 1;
-                            queue.push({ x: nx, y: ny, dist: dist + 1 });
-                        }
+                        if (cell.type === 'water') continue; // Water is impassable
+                        pathfindingGrid[ny][nx] = dist + 1;
+                        queue.push({ x: nx, y: ny, dist: dist + 1 });
                     }
                 }
             }
@@ -1330,7 +1470,7 @@
                 let pathFound = false;
                 while(head < queue.length) {
                     const { x, y } = queue[head++];
-                    if (x < CASTLE_COLS) {
+                    if (grid[y][x].type === 'castle' || grid[y][x].type === 'castle_core') {
                         pathFound = true;
                         break;
                     }
@@ -1488,8 +1628,8 @@
                     error: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAMAPAADADwAAwD8AAMAPAADADwAAwD8AAMAPAADADwAAwD8AAMAPAADADwAA',
                     wave_end: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAA',
                     upgrade: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAA',
-
-                    game_over: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAMAPAADADwAAwD8AAMAPAADADwAAwD8AAMAPAADADwAAwD8AAMAPAADADwAA'
+                    game_over: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAMAPAADADwAAwD8AAMAPAADADwAAwD8AAMAPAADADwAAwD8AAMAPAADADwAA',
+                    wave_start: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAA'
                 };
                 Object.keys(soundData).forEach(key => {
                     fetch(soundData[key]).then(response => response.arrayBuffer())
@@ -1513,7 +1653,7 @@
         const DEFENSE_DATA = {
             STARTING_GOLD: 100,
             STARTING_STONE: 50,
-            Wall: { name: 'Wall', type: 'wall', costGold: 0, costStone: 10, icon: '🧱', hp: [300, 500, 800] },
+            Wall: { name: 'Wall', type: 'wall', costGold: 0, costStone: 10, icon: '🪨', hp: [300, 500, 800] },
             ArcherTower: { name: 'Archer Tower', type: 'tower', costGold: 50, costStone: 10, icon: '🏹', range: [3, 3.3, 3.6], damage: [25, 40, 60], fireRate: [1, 0.9, 0.8], canAttackFlying: true },
             CannonTower: { name: 'Cannon Tower', type: 'tower', costGold: 120, costStone: 30, icon: '💣', range: [4, 4.2, 4.5], damage: [60, 90, 130], fireRate: [3, 2.8, 2.5], canAttackFlying: false, aoeRadius: [1, 1.1, 1.2] },
             FrostSpire: { name: 'Frost Spire', type: 'tower', costGold: 80, costStone: 20, icon: '❄️', range: [2.5, 2.8, 3.1], damage: [10, 15, 20], fireRate: [1.5, 1.4, 1.3], canAttackFlying: true, slow: { duration: 2, amount: [0.5, 0.4, 0.3] }, isUnlockable: true },
@@ -1636,14 +1776,77 @@
             }
             move(dt) {
                 let targetPixelX, targetPixelY;
-                if (this.isFlying) { targetPixelX = (CASTLE_COLS - 0.5) * TILE_SIZE; targetPixelY = (GRID_ROWS / 2) * TILE_SIZE; }
-                else { const neighbors=[{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}]; let bestNeighbor=null,minPathDist=Infinity; for(const n of neighbors){const nextX=this.x+n.dx,nextY=this.y+n.dy;if(nextX>=0&&nextX<GRID_COLS&&nextY>=0&&nextY<GRID_ROWS&&pathfindingGrid[nextY][nextX]<minPathDist){minPathDist=pathfindingGrid[nextY][nextX];bestNeighbor={x:nextX,y:nextY};}} if(bestNeighbor){targetPixelX=(bestNeighbor.x+0.5)*TILE_SIZE;targetPixelY=(bestNeighbor.y+0.5)*TILE_SIZE;} else {targetPixelX=this.pixelX;targetPixelY=this.pixelY;}}
-                const dx = targetPixelX - this.pixelX, dy = targetPixelY - this.pixelY, dist = Math.hypot(dx, dy), speed = this.getSpeed() * TILE_SIZE * dt;
-                if(dist > 0) { this.pixelX += (dx / dist) * speed; this.pixelY += (dy / dist) * speed; }
-                this.x = Math.floor(this.pixelX / TILE_SIZE); this.y = Math.floor(this.pixelY / TILE_SIZE);
-                if (this.x < CASTLE_COLS) this.attackKing();
+                if (this.isFlying) {
+                    // Fly to the center of the castle
+                    targetPixelX = (kingPos.x + 0.5) * TILE_SIZE;
+                    targetPixelY = (kingPos.y + 0.5) * TILE_SIZE;
+                } else {
+                    const neighbors=[{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}]; let bestNeighbor=null,minPathDist=Infinity;
+                    for(const n of neighbors){
+                        const nextX=this.x+n.dx,nextY=this.y+n.dy;
+                        if(nextX>=0&&nextX<GRID_COLS&&nextY>=0&&nextY<GRID_ROWS&&pathfindingGrid[nextY][nextX]<minPathDist){
+                            minPathDist=pathfindingGrid[nextY][nextX];
+                            bestNeighbor={x:nextX,y:nextY};
+                        }
+                    }
+                    if(bestNeighbor && minPathDist !== Infinity) {
+                        targetPixelX=(bestNeighbor.x+0.5)*TILE_SIZE;
+                        targetPixelY=(bestNeighbor.y+0.5)*TILE_SIZE;
+                        const dx = targetPixelX - this.pixelX, dy = targetPixelY - this.pixelY, dist = Math.hypot(dx, dy), speed = this.getSpeed() * TILE_SIZE * dt;
+                        if(dist > 0) {
+                            this.pixelX += (dx / dist) * Math.min(speed, dist); // Don't overshoot
+                            this.pixelY += (dy / dist) * Math.min(speed, dist);
+                        }
+                        // Only update tile position if not blocked by wall
+                        const nextTileX = Math.floor(this.pixelX / TILE_SIZE);
+                        const nextTileY = Math.floor(this.pixelY / TILE_SIZE);
+                        if (grid[nextTileY][nextTileX].entity && grid[nextTileY][nextTileX].entity instanceof Wall) {
+                            // Attack the wall and disappear
+                            grid[nextTileY][nextTileX].entity.takeDamage(this.attackDamage || 10);
+                            this.isAlive = false;
+                            createExplosion(this.pixelX, this.pixelY, 10, '#ff6600', 3, 60, 0.5);
+                            screenShake(0.1);
+                            playSound('cannon');
+                            return;
+                        } else {
+                            this.x = nextTileX;
+                            this.y = nextTileY;
+                        }
+                    } // else: no path, do not move
+                    else {
+                        // No path, do not move
+                        // If stuck (no path), try to attack wall in front (if any)
+                        let attacked = false;
+                        for(const n of neighbors){
+                            const nx=this.x+n.dx, ny=this.y+n.dy;
+                            if(nx>=0&&nx<GRID_COLS&&ny>=0&&ny<GRID_ROWS){
+                                const ent = grid[ny][nx].entity;
+                                if(ent && ent instanceof Wall) {
+                                    ent.takeDamage(this.attackDamage || 10);
+                                    this.isAlive = false;
+                                    createExplosion(this.pixelX, this.pixelY, 10, '#ff6600', 3, 60, 0.5);
+                                    screenShake(0.1);
+                                    playSound('cannon');
+                                    attacked = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if(attacked) return;
+                    }
+                }
+                if (grid[this.y][this.x].type === 'castle' || grid[this.y][this.x].type === 'castle_core') this.attackKing();
             }
-            attackKing() { let damage = this.attackDamage; if (waveFlags.suddenDeath) { damage *= 5; waveFlags.suddenDeath = false; } kingHp -= damage; this.isAlive = false; if (kingHp <= 0) { kingHp = 0; gameOver(); } updateUI(); screenShake(0.3); }
+            attackKing() {
+                let damage = Number(this.attackDamage);
+                if (!isFinite(damage) || isNaN(damage)) damage = 0;
+                if (waveFlags.suddenDeath) { damage *= 5; waveFlags.suddenDeath = false; }
+                kingHp -= damage;
+                if (!isFinite(kingHp) || isNaN(kingHp)) kingHp = 0;
+                if (kingHp <= 0) { kingHp = 0; gameOver(); }
+                updateUI(); screenShake(0.3);
+                this.isAlive = false;
+            }
             update(dt) { this.updateEffects(dt); this.move(dt); }
             draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.3, 0, Math.PI * 2); ctx.fill(); if (this.isFlying) { ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.4, 0, Math.PI * 2); ctx.fill(); } if (this.effects.slow) { ctx.fillStyle = 'rgba(100, 150, 255, 0.7)'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.4, 0, Math.PI * 2); ctx.fill(); } const hpPercent = this.hp / this.maxHp; ctx.fillStyle = '#555'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.3, this.pixelY - TILE_SIZE * 0.5, TILE_SIZE * 0.6, 5); ctx.fillStyle = 'green'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.3, this.pixelY - TILE_SIZE * 0.5, TILE_SIZE * 0.6 * hpPercent, 5); }
         }
@@ -1657,6 +1860,8 @@
         class FireParticle extends Particle { constructor(x, y) { super(x, y, `rgba(255, ${Math.random()*100+100}, 0, 0.7)`, Math.random() * TILE_SIZE*0.5, 30, 1.5); } }
 
         const CLASS_MAP = { Wall, ArcherTower, CannonTower, FrostSpire, TarPit, StonemasonHut, MineShaft, OrcGrunt, GoblinSapper, Wraith, GoblinShaman, ImpCaster, SiegeGolem, WyvernLord };
+
+        let kingPos = { x: 0, y: 0 };
 
         init();
     });
