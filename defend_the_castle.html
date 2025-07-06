@@ -456,6 +456,80 @@
             #game-message { font-size: 1.5em; width: 90%; }
         }
 
+        @media (max-width: 600px), (max-height: 700px) {
+            #main-menu-modal .modal-content#main-menu-content {
+                font-size: 1.18em !important;
+                padding: 7vw 2vw 7vw 2vw !important;
+                min-width: unset !important;
+                width: 98vw !important;
+                max-width: 99vw !important;
+                min-height: 80vh !important;
+                max-height: 98vh !important;
+                box-sizing: border-box;
+            }
+            #main-menu-modal h2 {
+                font-size: 2em !important;
+            }
+            #main-menu-modal h3 {
+                font-size: 1.1em !important;
+            }
+            #controls-section {
+                font-size: 1.08em !important;
+                padding: 12px 4px 8px 4px !important;
+            }
+            #main-menu-modal button.game-button {
+                font-size: 1.08em !important;
+                padding: 14px 0 !important;
+                min-width: 90vw !important;
+                max-width: 99vw !important;
+            }
+        }
+
+        @media (max-width: 900px) {
+            #tip-panel {
+                display: block !important;
+                position: static;
+                left: unset;
+                top: unset;
+                min-width: unset;
+                max-width: unset;
+                width: 98vw;
+                margin: 0 auto 10px auto;
+                font-size: 1.12em;
+                padding: 10px 8px;
+            }
+        }
+        @media (max-width: 600px), (max-height: 700px) {
+            #controls-columns {
+                display: block !important;
+            }
+            .controls-col {
+                width: 100% !important;
+                min-width: unset !important;
+                margin-bottom: 12px;
+            }
+            #king-hp-container {
+                width: 120px !important;
+                min-width: 80px !important;
+                max-width: 140px !important;
+            }
+        }
+
+        #tip-panel {
+            position: absolute;
+            left: 10px;
+            top: 80px;
+            min-width: 220px;
+            max-width: 320px;
+            background: var(--panel-bg-translucent);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: var(--shadow-dark);
+            color: var(--primary-text);
+            font-size: 1.08em;
+            padding: 14px 18px;
+            z-index: 20;
+        }
     </style>
 </head>
 <body>
@@ -479,10 +553,6 @@
                 <div id="king-hp-bar"></div>
                 <div id="king-hp-text"></div>
             </div>
-            <div class="wave-display">
-                <span>Wave:</span>
-                <span id="wave-display">1</span>
-            </div>
             <button id="undo-btn" class="game-button disabled" title="Undo your last build or upgrade action">↺</button>
             <button id="start-wave-btn" class="game-button" title="Start the next enemy wave">Start Wave</button>
         </div>
@@ -493,7 +563,6 @@
 
         <div id="upgrade-sell-panel" class="ui-panel">
             <div id="upgrade-btn" class="upgrade-sell-button" title="Upgrade this tower to the next level"></div>
-            <div id="target-priority-btn" class="upgrade-sell-button" title="Set this tower's target priority">🎯 Set Target</div>
         </div>
 
         <div id="game-message-container"></div>
@@ -523,12 +592,39 @@
     </div>
     
     <div id="main-menu-modal" class="modal-overlay">
-        <div class="modal-content">
-            <h2>Siegebreaker</h2>
-            <h3 style="font-family: var(--font-family-header); margin-top:-20px; margin-bottom: 20px; color: var(--accent-color);">Defend the King</h3>
-            <p style="color: var(--secondary-text);">Protect the King from waves of enemies. Build defenses, choose your gambits, and survive as long as you can.</p>
-            <button id="start-game-btn" class="game-button" style="margin-top: 20px;" title="Start a new game">Begin Siege</button>
-            <button id="main-menu-armory-btn" class="game-button" style="margin-left: 10px; background: linear-gradient(to bottom, var(--accent-color), #a8761c); display: none;" title="Unlock permanent upgrades with Royal Seals earned from completing games">Royal Armory 🏅</button>
+        <div class="modal-content" id="main-menu-content">
+            <h2 style="font-size:2.5em; margin-bottom:0.2em;">Defend the Castle</h2>
+            <h3 style="font-family: var(--font-family-header); margin-top:-10px; margin-bottom: 18px; color: var(--accent-color); font-size:1.3em;">A Military Strategy Game</h3>
+            <p style="color: var(--secondary-text); font-size:1.1em; margin-bottom:1.2em;">Protect your castle from endless waves of enemies! Build walls and towers, manage your resources, and see how long you can survive.</p>
+            <div id="controls-section" style="background:rgba(22,27,34,0.95); border-radius:8px; padding:18px 12px 12px 12px; margin-bottom:1.2em; text-align:left; font-size:1.08em;">
+                <b style="color:var(--accent-color); font-size:1.15em;">Controls</b>
+                <div id="controls-columns">
+                    <div class="controls-col">
+                        <span style="font-weight:700; color:var(--primary-text);">Desktop</span>
+                        <ul style="margin:8px 0 0 18px; padding:0;">
+                            <li><b>Mouse</b>: Place, upgrade, or sell defenses</li>
+                            <li><b>W</b>: Select Wall</li>
+                            <li><b>A</b>: Select Archer Tower</li>
+                            <li><b>C</b>: Select Cannon Tower</li>
+                            <li><b>U</b>: Upgrade hovered tower</li>
+                            <li><b>Q</b>: Use Rallying Cry (if unlocked)</li>
+                            <li><b>Space</b>: Start next wave</li>
+                            <li><b>Undo</b>: Undo last build/upgrade</li>
+                        </ul>
+                    </div>
+                    <div class="controls-col">
+                        <span style="font-weight:700; color:var(--primary-text);">Mobile</span>
+                        <ul style="margin:8px 0 0 18px; padding:0;">
+                            <li><b>Tap</b>: Place, upgrade, or sell defenses</li>
+                            <li><b>Pinch</b>: Zoom in/out (if supported)</li>
+                            <li><b>Swipe</b>: Pan the board (if supported)</li>
+                            <li><b>Buttons</b>: Use on-screen UI for actions</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <button id="start-game-btn" class="game-button" style="margin-top: 10px; font-size:1.1em; width:100%; max-width:320px;" title="Start a new game">Start Game</button>
+            <button id="main-menu-armory-btn" class="game-button" style="margin:10px 0 0 0; background: linear-gradient(to bottom, var(--accent-color), #a8761c); display: none; width:100%; max-width:320px;" title="Unlock permanent upgrades with Royal Seals earned from completing games">Royal Armory 🏅</button>
         </div>
     </div>
 
@@ -541,6 +637,8 @@
             <button id="close-armory-btn" class="game-button" style="margin-top: 20px; background: #666; border-color: #555;" title="Close the Royal Armory and return to the menu or game">Close</button>
         </div>
     </div>
+
+    <div id="tip-panel" class="ui-panel" style="display:block;"></div>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -658,10 +756,10 @@
         // --- UI ELEMENTS ---
         const goldDisplay = document.getElementById('gold-display'), stoneDisplay = document.getElementById('stone-display');
         const hpBar = document.getElementById('king-hp-bar'), hpText = document.getElementById('king-hp-text');
-        const waveDisplay = document.getElementById('wave-display'), startWaveBtn = document.getElementById('start-wave-btn');
+        const startWaveBtn = document.getElementById('start-wave-btn');
         const buildMenu = document.getElementById('build-menu'), upgradeSellPanel = document.getElementById('upgrade-sell-panel');
         const upgradeBtn = document.getElementById('upgrade-btn');
-        const targetPriorityBtn = document.getElementById('target-priority-btn'), scoreDisplay = document.getElementById('score-display');
+        const scoreDisplay = document.getElementById('score-display');
         const royalSealsDisplay = document.getElementById('royal-seals-display'), tooltip = document.getElementById('tooltip');
         const undoBtn = document.getElementById('undo-btn');
         
@@ -700,6 +798,7 @@
             setupUIButtons();
             updateRoyalSealsDisplay();
             showMainMenu();
+            maybeShowInitialTip();
         }
         
         function startGame() {
@@ -1092,7 +1191,6 @@
         function setupUIButtons() {
             startWaveBtn.addEventListener('click', () => { if(gameState === GAME_STATE.BUILD) startWave() });
             upgradeBtn.addEventListener('click', upgradeHoveredTower);
-            targetPriorityBtn.addEventListener('click', setTargetingMode);
             undoBtn.addEventListener('click', performUndo);
 
             // Modals
@@ -1107,7 +1205,6 @@
         function updateUI() {
             goldDisplay.textContent = Math.floor(gold);
             stoneDisplay.textContent = Math.floor(stone);
-            waveDisplay.textContent = wave;
             scoreDisplay.textContent = `Score: ${score}`;
 
             const hpPercentage = (kingHp / KING_MAX_HP) * 100;
@@ -1118,12 +1215,20 @@
             if (gameState === GAME_STATE.BUILD) {
                 startWaveBtn.textContent = "Start Wave";
                 startWaveBtn.style.background = "linear-gradient(to bottom, var(--green), #1c682b)";
+                maybeShowInitialTip();
             } else if (gameState === GAME_STATE.ATTACK) {
-                startWaveBtn.textContent = "Wave in Progress...";
+                // On mobile, use shorter text
+                if (window.innerWidth <= 600) {
+                    startWaveBtn.textContent = "In progress";
+                } else {
+                    startWaveBtn.textContent = "Wave in Progress...";
+                }
                 startWaveBtn.style.background = "#666";
+                setTip('');
             } else if (gameState === GAME_STATE.WAVE_END) {
                 startWaveBtn.textContent = "Wave Complete!";
                 startWaveBtn.style.background = "#666";
+                setTip('');
             }
             undoBtn.classList.toggle('disabled', !lastBuildUndo || gameState !== GAME_STATE.BUILD);
             
@@ -1159,6 +1264,7 @@
             deselect();
             selectedBuild = key;
             document.querySelectorAll('.build-item').forEach(el => el.classList.toggle('selected', el.dataset.key === key));
+            showBuildTip(key);
         }
         
         function deselect() {
@@ -1231,8 +1337,6 @@
                 upgradeBtn.innerHTML = `<span class="hotkey">U</span> Max Level`;
                 upgradeBtn.classList.add('disabled');
             }
-
-            targetPriorityBtn.style.display = (hoveredTower instanceof Tower && !(hoveredTower instanceof SpecialBuilding)) ? 'flex' : 'none';
         }
         
         function upgradeHoveredTower() {
@@ -1654,12 +1758,12 @@
             STARTING_GOLD: 100,
             STARTING_STONE: 50,
             Wall: { name: 'Wall', type: 'wall', costGold: 0, costStone: 10, icon: '🪨', hp: [300, 500, 800] },
-            ArcherTower: { name: 'Archer Tower', type: 'tower', costGold: 50, costStone: 10, icon: '🏹', range: [3, 3.3, 3.6], damage: [25, 40, 60], fireRate: [1, 0.9, 0.8], canAttackFlying: true },
-            CannonTower: { name: 'Cannon Tower', type: 'tower', costGold: 120, costStone: 30, icon: '💣', range: [4, 4.2, 4.5], damage: [60, 90, 130], fireRate: [3, 2.8, 2.5], canAttackFlying: false, aoeRadius: [1, 1.1, 1.2] },
+            ArcherTower: { name: 'Archer', type: 'tower', costGold: 50, costStone: 10, icon: '🏹', range: [3, 3.3, 3.6], damage: [25, 40, 60], fireRate: [1, 0.9, 0.8], canAttackFlying: true },
+            CannonTower: { name: 'Cannon', type: 'tower', costGold: 120, costStone: 30, icon: '💣', range: [4, 4.2, 4.5], damage: [60, 90, 130], fireRate: [3, 2.8, 2.5], canAttackFlying: false, aoeRadius: [1, 1.1, 1.2] },
             FrostSpire: { name: 'Frost Spire', type: 'tower', costGold: 80, costStone: 20, icon: '❄️', range: [2.5, 2.8, 3.1], damage: [10, 15, 20], fireRate: [1.5, 1.4, 1.3], canAttackFlying: true, slow: { duration: 2, amount: [0.5, 0.4, 0.3] }, isUnlockable: true },
             TarPit: { name: 'Tar Pit', type: 'trap', costGold: 20, costStone: 5, icon: '🕳️', hp: [1], slowAmount: 0.2, isUnlockable: true },
             StonemasonHut: { name: 'Stonemason', type: 'special', costGold: 0, costStone: 75, icon: '🏛️', hp: [200], requires: 'quarry', generation: 10 },
-            MineShaft: { name: 'Mine Shaft', type: 'special', costGold: 100, costStone: 0, icon: '⚒️', hp: [200], requires: 'goldvein', range: [4], goldPerKill: 5 },
+            MineShaft: { name: 'Gold Mine', type: 'special', costGold: 100, costStone: 0, icon: '⚒️', hp: [200], requires: 'goldvein', range: [4], goldPerKill: 5 },
         };
         const ENEMY_DATA = {
             OrcGrunt: { hp: 100, hpScaling: 10, speed: 1.5, gold: 5, attackDamage: 10, color: '#4b692f' },
@@ -1862,6 +1966,33 @@
         const CLASS_MAP = { Wall, ArcherTower, CannonTower, FrostSpire, TarPit, StonemasonHut, MineShaft, OrcGrunt, GoblinSapper, Wraith, GoblinShaman, ImpCaster, SiegeGolem, WyvernLord };
 
         let kingPos = { x: 0, y: 0 };
+
+        // Tip system
+        const tipPanel = document.getElementById('tip-panel');
+        function setTip(text) {
+            tipPanel.innerHTML = text || '';
+        }
+        // Show initial tip before first wave
+        let hasShownInitialTip = false;
+        function maybeShowInitialTip() {
+            if (!hasShownInitialTip && gameState === GAME_STATE.BUILD && wave === 1) {
+                setTip('Prepare the defense of the castle with the assets on the menu and hit the Start Wave when you are ready.');
+                hasShownInitialTip = true;
+            }
+        }
+        // Show contextual tip when selecting build
+        function showBuildTip(key) {
+            const tips = {
+                Wall: 'Walls block enemy movement. Use them to shape the path enemies take toward your castle.',
+                ArcherTower: 'Archer Towers shoot arrows at enemies. Good for general defense.',
+                CannonTower: 'Cannon Towers deal area damage. Great against groups of enemies.',
+                FrostSpire: 'Frost Spires slow enemies. Useful for controlling large waves.',
+                TarPit: 'Tar Pits slow down enemies that walk over them.',
+                StonemasonHut: 'Stonemason Huts generate extra stone each wave when built on a quarry.',
+                MineShaft: 'Mine Shafts collect bonus gold from kills when built on a gold vein.'
+            };
+            setTip(tips[key] || '');
+        }
 
         init();
     });
