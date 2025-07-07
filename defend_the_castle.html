@@ -169,8 +169,7 @@
 
         #commander-ability {
             position: relative;
-            width: 60px;
-            height: 60px;
+            max-width: 60px;
             background: linear-gradient(to bottom, #444, #222);
             border: 2px solid var(--accent-color);
             border-radius: 8px;
@@ -179,11 +178,12 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-size: 1.2em;
+            font-size: 0.70em;
             font-weight: 700;
             box-shadow: var(--shadow-light);
             transition: transform 0.2s ease;
             gap: 2px;
+            padding: 7px 0;
         }
         #commander-ability:hover { transform: scale(1.1); }
         #commander-ability-cooldown {
@@ -557,6 +557,11 @@
         }
         // 1. Add CSS for pointer cursor on royal seals display
         #royal-seals-display { cursor: pointer; }
+        #commander-ability span { font-size: 0.9em; }
+        @media (max-width: 600px) {
+            #commander-ability { font-size: 0.85em; }
+            #commander-ability span { font-size: 0.8em; }
+        }
     </style>
 </head>
 <body>
@@ -582,6 +587,8 @@
             </div>
             <button id="undo-btn" class="game-button disabled" title="Undo your last build or upgrade action">↺</button>
             <button id="start-wave-btn" class="game-button" title="Start the next enemy wave">Start Wave</button>
+            <!-- Rallying Cry Button (hidden by default, shown when unlocked) -->
+            <button id="commander-ability" class="game-button" style="display:none; margin-left:10px; background:linear-gradient(to bottom, #c98e22, #a8761c); border-color:var(--accent-color);" title="Rallying Cry: Temporarily boost all towers' attack speed (Q)">Rallying Cry <span id="commander-ability-cooldown" style="display:none;"></span></button>
         </div>
 
         <div id="build-menu" class="ui-panel">
@@ -650,7 +657,7 @@
         </div>
     </div>
 
-    <div id="tip-panel" class="ui-panel" style="display:block;"></div>
+    <div id="tip-panel" class="ui-panel" style="display:none;"></div>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -774,6 +781,8 @@
         const scoreDisplay = document.getElementById('score-display');
         const royalSealsDisplay = document.getElementById('royal-seals-display'), tooltip = document.getElementById('tooltip');
         const undoBtn = document.getElementById('undo-btn');
+        const commanderAbilityBtn = document.getElementById('commander-ability');
+        const commanderAbilityCooldown = document.getElementById('commander-ability-cooldown');
         
         // --- GAME LOGIC ---
         function resizeCanvas() {
@@ -1057,9 +1066,12 @@
             for (let y = 0; y < GRID_ROWS; y++) {
                 for (let x = 0; x < GRID_COLS; x++) {
                     const tile = grid[y][x];
-                    if (!tile.entity) {
-                        if (tile.type === 'forest') drawSpecialNode(x, y, 'rgba(181, 136, 99, 0.5)', '🌲');
-                        if (tile.type === 'goldvein') drawSpecialNode(x, y, 'rgba(241, 224, 90, 0.4)', '💎');
+                    // Always show special node icons for forest and goldvein, even if occupied
+                    if (tile.type === 'forest') {
+                        drawSpecialNode(x, y, 'rgba(181, 136, 99, 0.5)', '🌲');
+                    }
+                    if (tile.type === 'goldvein') {
+                        drawSpecialNode(x, y, 'rgba(241, 224, 90, 0.4)', '💎');
                     }
                 }
             }
@@ -1249,6 +1261,11 @@
             document.getElementById('armory-btn').addEventListener('click', showArmory);
             document.getElementById('close-armory-btn').addEventListener('click', closeArmory);
             document.getElementById('skip-gambit-btn').addEventListener('click', () => { activeGambit = null; document.getElementById('gambit-modal').style.display = 'none'; startWaveAttackPhase(); });
+            commanderAbilityBtn.addEventListener('click', function() {
+                if (!commanderAbilityBtn.classList.contains('disabled')) {
+                    useRallyingCry();
+                }
+            });
         }
         
         function updateUI() {
@@ -1290,7 +1307,21 @@
             }
             undoBtn.classList.toggle('disabled', !lastBuildUndo || gameState !== GAME_STATE.BUILD);
             
-
+            // Rallying Cry button visibility and cooldown
+            if (unlockedItems.RALLYING_CRY && (gameState === GAME_STATE.BUILD || gameState === GAME_STATE.ATTACK)) {
+                commanderAbilityBtn.style.display = '';
+                if (rallyingCryCooldown > 0) {
+                    commanderAbilityBtn.classList.add('disabled');
+                    commanderAbilityCooldown.style.display = '';
+                    commanderAbilityCooldown.textContent = `${Math.ceil(rallyingCryCooldown)}s`;
+                } else {
+                    commanderAbilityBtn.classList.remove('disabled');
+                    commanderAbilityCooldown.style.display = 'none';
+                    commanderAbilityCooldown.textContent = '';
+                }
+            } else {
+                commanderAbilityBtn.style.display = 'none';
+            }
         }
         
         function updateBuildMenu() {
@@ -1302,7 +1333,21 @@
                 TarPit: 'TAR_PIT',
                 RallyingCry: 'RALLYING_CRY',
             };
+            // --- Hide WoodcutterHut if all forests are used, and GemMine if all goldveins are used ---
+            let forests = 0, forestsUsed = 0, goldveins = 0, goldveinsUsed = 0;
+            for (let y = 0; y < GRID_ROWS; y++) {
+                for (let x = 0; x < GRID_COLS; x++) {
+                    if (grid[y][x].type === 'forest') forests++;
+                    if (grid[y][x].type === 'goldvein') goldveins++;
+                    if (grid[y][x].entity && grid[y][x].entity instanceof WoodcutterHut) forestsUsed++;
+                    if (grid[y][x].entity && grid[y][x].entity instanceof GemMine) goldveinsUsed++;
+                }
+            }
             Object.entries(buildableDefenses).forEach(([hotkey, key]) => {
+                // Hide WoodcutterHut if all forests are used
+                if (key === 'WoodcutterHut' && forestsUsed >= forests) return;
+                // Hide GemMine if all goldveins are used
+                if (key === 'GemMine' && goldveinsUsed >= goldveins) return;
                 const def = DEFENSE_DATA[key];
                 let unlockKey = key;
                 if (def.isUnlockable) {
@@ -1360,11 +1405,15 @@
                 const newDefense = new CLASS_MAP[selectedBuild](gridX, gridY);
                 entities.push(newDefense);
                 grid[gridY][gridX].entity = newDefense;
-                
+                // If placing a GemMine, update tile for drawing
+                if (selectedBuild === 'GemMine') {
+                    grid[gridY][gridX].hasMine = true;
+                }
+                // If placing a WoodcutterHut, update tile for drawing (optional, not needed for icon)
                 if (definition.type === 'wall') calculatePathfindingGrid();
-                
                 setUndo({ action: 'build', key: selectedBuild, x: gridX, y: gridY, costGold: definition.costGold, costWood: definition.costWood });
                 updateUI();
+                updateBuildMenu(); // Ensure menu updates after building
                 playSound('build');
             } else {
                 showMessage("Cannot place here or not enough resources!", 'var(--red)');
@@ -1487,14 +1536,14 @@
 
         function endWave() {
             gameState = GAME_STATE.WAVE_END;
-            let goldBonus = 60 + wave * 5, woodBonus = 30 + wave * 2, scoreBonus = 100 * wave;
+            let goldBonus = 60 + wave * 5, woodBonus = 25 + wave * 2, scoreBonus = 100 * wave;
             if (activeGambit && activeGambit.onComplete) {
                 const bonus = activeGambit.onComplete({goldBonus, woodBonus});
                 if(bonus.gold) goldBonus += bonus.gold; if(bonus.wood) woodBonus += bonus.wood;
             }
             entities.forEach(e => {
                 if (e instanceof WoodcutterHut) woodBonus += e.generation;
-                if (e instanceof MineShaft) { goldBonus += e.collectedGold; e.collectedGold = 0; }
+                if (e instanceof GemMine) { goldBonus += e.collectedGold; e.collectedGold = 0; }
             });
             gold += goldBonus; wood += woodBonus; score += scoreBonus;
             showMessage(`Wave ${wave} Complete!`, 'var(--green)');
@@ -1860,8 +1909,8 @@
 
         // --- DATA CONFIGURATION ---
         const DEFENSE_DATA = {
-            STARTING_GOLD: 250,
-            STARTING_WOOD: 100,
+            STARTING_GOLD: 200,
+            STARTING_WOOD: 80,
             Wall: { name: 'Wall', type: 'wall', costGold: 0, costWood: 10, icon: '🛡️', hp: [300, 500, 800] },
             ArcherTower: { name: 'Archer', type: 'tower', costGold: 50, costWood: 10, icon: '🏹', range: [3, 3.3, 3.6], damage: [25, 40, 60], fireRate: [1, 0.9, 0.8], canAttackFlying: true },
             CannonTower: { name: 'Cannon', type: 'tower', costGold: 120, costWood: 30, icon: '💣', range: [4, 4.2, 4.5], damage: [60, 90, 130], fireRate: [3, 2.8, 2.5], canAttackFlying: false, aoeRadius: [1, 1.1, 1.2] },
@@ -1962,8 +2011,7 @@
         class TarPit extends Trap { trigger(enemy) { enemy.applyEffect('slow', 0.5, this.data.slowAmount); } draw() { ctx.fillStyle = 'rgba(20,10,0,0.7)'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE*0.45, 0, Math.PI*2); ctx.fill(); } }
         class SpecialBuilding extends Tower { constructor(x,y) { super(x,y); } update() {} }
         class WoodcutterHut extends SpecialBuilding { constructor(x,y) { super(x,y); this.generation = this.data.generation; } draw() { ctx.fillStyle = '#b58863'; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.font = `${TILE_SIZE * 0.6}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = 'black'; ctx.fillText('🪓', this.pixelX, this.pixelY); } }
-        class MineShaft extends SpecialBuilding { constructor(x,y) { super(x,y); this.range = this.data.range[0]; this.goldPerKill = this.data.goldPerKill; this.collectedGold = 0; } addGold() { this.collectedGold += this.goldPerKill; createExplosion(this.pixelX, this.pixelY, 3, 'gold', 3, 50, 0.8); } draw() { ctx.fillStyle = '#d4af37'; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.font = `${TILE_SIZE * 0.6}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = 'black'; ctx.fillText('⚒️', this.pixelX, this.pixelY); } }
-        class GemMine extends SpecialBuilding { constructor(x,y) { super(x,y); this.range = this.data.range[0]; this.goldPerKill = this.data.goldPerKill; this.collectedGold = 0; } addGold() { this.collectedGold += this.goldPerKill; createExplosion(this.pixelX, this.pixelY, 3, 'gold', 3, 50, 0.8); } draw() { ctx.fillStyle = '#d4af37'; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.font = `${TILE_SIZE * 0.6}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = 'black'; ctx.fillText('💎', this.pixelX, this.pixelY); } }
+        class GemMine extends SpecialBuilding { constructor(x,y) { super(x,y); this.range = this.data.range[0]; this.goldPerKill = this.data.goldPerKill; this.collectedGold = 0; } addGold() { this.collectedGold += this.goldPerKill; createExplosion(this.pixelX, this.pixelY, 3, 'gold', 3, 50, 0.8); } draw() { ctx.fillStyle = '#d4af37'; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.font = `${TILE_SIZE * 0.6}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = 'black'; ctx.fillText('⛏️', this.pixelX, this.pixelY); } }
 
         // --- ENEMY CLASSES ---
         class Enemy extends Entity {
@@ -1992,7 +2040,7 @@
                     let finalGold = this.goldValue;
                     if (activeGambit && activeGambit.rewardModifier) finalGold = activeGambit.rewardModifier(finalGold);
                     gold += finalGold; score += Math.floor(finalGold * 2);
-                    entities.forEach(e => { if (e instanceof MineShaft && Math.hypot(this.x - e.x, this.y - e.y) <= e.range) e.addGold(); });
+                    entities.forEach(e => { if (e instanceof GemMine && Math.hypot(this.x - e.x, this.y - e.y) <= e.range) e.addGold(); });
                     updateUI(); playSound('chaching', 0.2);
                 }
             }
@@ -2121,22 +2169,36 @@
         // Tip system
         const tipPanel = document.getElementById('tip-panel');
         let tipTimeout = null;
+        // --- TIP PANEL: Always hide if no tip text ---
+        let lastTipText = '';
+        let tipHideTimeout = null;
+        let tipLockout = false;
         function setTip(text) {
-            tipPanel.innerHTML = text || '';
-            if (text) {
+            // Normalize text for comparison
+            const normText = (text || '').trim();
+            if (tipLockout && normText === lastTipText) return;
+            if (normText === lastTipText && tipPanel.style.display === 'block') return;
+            lastTipText = normText;
+            tipPanel.innerHTML = normText;
+            if (normText) {
                 tipPanel.style.display = 'block';
-                // Auto-hide after 5 seconds, always reset timer
-                if (tipTimeout) clearTimeout(tipTimeout);
-                tipTimeout = setTimeout(() => {
+                if (tipHideTimeout) clearTimeout(tipHideTimeout);
+                tipHideTimeout = setTimeout(() => {
+                    console.log("HOOOO");
                     tipPanel.style.display = 'none';
-                    tipTimeout = null;
+                    tipHideTimeout = null;
+                    tipLockout = true;
+                    setTimeout(() => { tipLockout = false; }, 1200); // 1.2s lockout after hide
+                    lastTipText = '';
                 }, 4000);
             } else {
                 tipPanel.style.display = 'none';
-                if (tipTimeout) {
-                    clearTimeout(tipTimeout);
-                    tipTimeout = null;
+                if (tipHideTimeout) {
+                    clearTimeout(tipHideTimeout);
+                    tipHideTimeout = null;
                 }
+                tipLockout = false;
+                lastTipText = '';
             }
         }
         // Show initial tip before first wave
