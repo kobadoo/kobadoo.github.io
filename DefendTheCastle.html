@@ -577,7 +577,7 @@
             padding: 14px 18px;
             z-index: 20;
         }
-        // 1. Add CSS for pointer cursor on royal medals display
+
         #royal-seals-display { cursor: pointer; }
         #commander-ability span { font-size: 0.9em; }
         @media (max-width: 600px) {
@@ -1553,12 +1553,12 @@
             window.waveCanEnd = false;
             setTimeout(() => {
                 window.waveCanEnd = true;
-            }, 3000); // 3 seconds delay
+            }, 3000);
         }
 
         function endWave() {
             gameState = GAME_STATE.WAVE_END;
-            let goldBonus = 60 + wave * 5, woodBonus = 25 + wave * 2, scoreBonus = 100 * wave;
+            let goldBonus = 40 + wave * 2, woodBonus = 25 + wave * 2, scoreBonus = 100 * wave;
             if (activeGambit && activeGambit.onComplete) {
                 const bonus = activeGambit.onComplete({goldBonus, woodBonus});
                 if(bonus.gold) goldBonus += bonus.gold; if(bonus.wood) woodBonus += bonus.wood;
@@ -1589,11 +1589,9 @@
 
         function spawnWave() {
             const waveData = getWaveData(wave);
-            let spawnDelay = 0;
             waveData.enemies.forEach(group => {
                 for (let i = 0; i < group.count; i++) {
-                    setTimeout(() => spawnEnemy(group.type), spawnDelay);
-                    spawnDelay += group.interval;
+                    setTimeout(() => spawnEnemy(group.type), i * group.interval);
                 }
             });
         }
@@ -1641,14 +1639,14 @@
             
             if (isBossWave) {
                 // No OrcGrunt, just use GoblinSapper for all boss waves
-                return { enemies: [{ type: 'GoblinSapper', count: 10 + Math.floor(waveNum / 10), interval: 500 }] };
+                return { enemies: [{ type: 'GoblinSapper', count: 15 + Math.floor(waveNum / 10), interval: 500 }] };
             }
 
-            let enemies = [{ type: 'OrcGrunt', count: 5 + waveNum * 2, interval: 500 }];
-            if (waveNum > 2) enemies.push({ type: 'GoblinSapper', count: 1 + Math.floor(waveNum/3), interval: 2000 });
-            if (waveNum > 4) enemies.push({ type: 'GoblinShaman', count: Math.floor(waveNum/5), interval: 4000 });
-            if (isNightWave) enemies.push({ type: 'Wraith', count: 2 + Math.floor(waveNum/4), interval: 1500 });
-            if (waveNum > 6) enemies.push({ type: 'ImpCaster', count: 1 + Math.floor(waveNum/6), interval: 3000 });
+            let enemies = [{ type: 'OrcGrunt', count: 10 + waveNum * 2, interval: 500 }];
+            if (waveNum > 2) enemies.push({ type: 'GoblinSapper', count: 2 + Math.floor(waveNum/3), interval: 2000 });
+            if (waveNum > 4) enemies.push({ type: 'GoblinShaman', count: 2 + Math.floor(waveNum/5), interval: 4000 });
+            if (isNightWave) enemies.push({ type: 'Wraith', count: 4 + Math.floor(waveNum/4), interval: 1500 });
+            if (waveNum > 6) enemies.push({ type: 'ImpCaster', count: 2 + Math.floor(waveNum/6), interval: 3000 });
             return { enemies };
         }
 
@@ -1933,7 +1931,7 @@
 
         // --- DATA CONFIGURATION ---
         const DEFENSE_DATA = {
-            STARTING_GOLD: 200,
+            STARTING_GOLD: 150,
             STARTING_WOOD: 80,
             Wall: { name: 'Wall', type: 'wall', costGold: 0, costWood: 10, icon: '🛡️', hp: [300, 500, 800] },
             ArcherTower: { name: 'Archer', type: 'tower', costGold: 50, costWood: 10, icon: '🏹', range: [3, 3.3, 3.6], damage: [25, 40, 60], fireRate: [1, 0.9, 0.8], canAttackFlying: true },
