@@ -7,6 +7,7 @@ import Footer from '../../Footer/Footer';
 import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
 import BulbImg from '../../../images/bulb.png';
+import CastleImg from '../../../images/defend_the_castle_banner.png';
 import GardenImg from '../../../images/garden_master_banner.png';
 import VeganImg from '../../../images/vegan_quest_banner.png';
 import FlagMatchImg from '../../../images/flag_match_banner.jpg';
@@ -72,6 +73,17 @@ const StartScreen = (props) => {
                 <h3>Why should you train your <i>working memory</i>?</h3>
                 <p>Some programs to train the working memory have shown improvements in everyday functioning, including your <strong>concentration</strong>. It can be especially beneficial to some clinical groups like people with ADHD [<a href="https://www.sciencedirect.com/science/article/abs/pii/S0890856709614271" target="_blank" rel="noopener noreferrer">2</a>] [<a href="https://www.tandfonline.com/doi/abs/10.1080/15374416.2010.517162" target="_blank" rel="noopener noreferrer">3</a>] [<a href="https://www.tandfonline.com/doi/abs/10.1076/jcen.24.6.781.8395" target="_blank" rel="noopener noreferrer">4</a>], that suffer impaired working memory and inattentiveness. One example is the possibility to improve the <strong>school performance</strong> of children with ADHD.
                    Some adults have also improved their brain functions through this kind of exercises [<a href="https://psycnet.apa.org/record/2011-13119-001" target="_blank" rel="noopener noreferrer">5</a>] [<a href="https://psycnet.apa.org/record/2017-10607-007" target="_blank" rel="noopener noreferrer">6</a>]. Finally, some studies [<a href="https://www.sciencedirect.com/science/article/abs/pii/S0149763413000158" target="_blank" rel="noopener noreferrer">7</a>] [<a href="https://www.mitpressjournals.org/doi/full/10.1162/jocn_a_00478" target="_blank" rel="noopener noreferrer">8</a>] suggest that training your working memory can <strong>improve your mood</strong> by releasing dopamine in the brain.</p>
+            </div>
+
+            <div className={classes.BenefitsText}>
+                <div role="img">
+                    <a href="/DefendTheCastle" target="_blank"><img className={classes.VeganImage} src={CastleImg} alt="" /></a>
+                </div>
+                <h3>Defend The Castle</h3>
+                <p>Build walls and deploy cannons and archers to protect your castle from endless waves of enemies. How long can you keep the King safe and make your legendary kingdom survive?</p>
+                <button 
+                    className={classes.CrystalBallButton} 
+                    onClick={() => window.open('/DefendTheCastle', '_blank')}>Play Defend The Castle</button>
             </div>
 
             <div className={classes.BenefitsText}>

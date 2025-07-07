@@ -1,10 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Siegebreaker: The King's Gambit</title>
+    <title>Defend the Castle</title>
+    <meta property="og:title" content="Defend The Castle" />
+    <meta property="og:description" content="Build walls and deploy cannons and archers to protect your castle from endless waves of enemies. How long can you keep the King safe and make your legendary kingdom survive?" />
+    <meta property="og:url" content="https://www.kobadoo.com/GameMaster" />
+    <meta property="og:image" content="https://www.kobadoo.com/defend_the_castle_socialmedia.jpg" />
+    <meta property="og:type" content="website" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -29,6 +33,7 @@
             --font-family-body: 'Roboto', sans-serif;
             --shadow-light: 0 0 15px rgba(201, 142, 34, 0.3);
             --shadow-dark: 0 8px 24px rgba(0,0,0,0.6);
+            --wood: #b58863; /* New color for wood resource */
         }
 
         html, body {
@@ -105,7 +110,7 @@
         }
         .resource-display .icon { font-size: 1.5em; }
 
-        #heartstone-hp-container {
+        #king-hp-container {
             width: 200px;
             height: 25px;
             background-color: var(--hp-bar-bg);
@@ -115,13 +120,13 @@
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
             position: relative;
         }
-        #heartstone-hp-bar {
+        #king-hp-bar {
             width: 100%;
             height: 100%;
             background: linear-gradient(to bottom, var(--hp-bar-fill), #a12825);
             transition: width 0.3s ease-out;
         }
-        #heartstone-hp-text {
+        #king-hp-text {
             position: absolute;
             left: 0;
             right: 0;
@@ -165,23 +170,26 @@
             transform: none;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
             opacity: 0.7;
+            pointer-events:none;
         }
 
         #commander-ability {
             position: relative;
-            width: 50px;
-            height: 50px;
-            background-color: #222;
+            max-width: 60px;
+            background: linear-gradient(to bottom, #444, #222);
             border: 2px solid var(--accent-color);
-            border-radius: 50%;
+            border-radius: 8px;
             cursor: pointer;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-size: 1.5em;
+            font-size: 0.70em;
             font-weight: 700;
             box-shadow: var(--shadow-light);
             transition: transform 0.2s ease;
+            gap: 2px;
+            padding: 7px 0;
         }
         #commander-ability:hover { transform: scale(1.1); }
         #commander-ability-cooldown {
@@ -200,7 +208,7 @@
         }
         
         #undo-btn {
-            width: 40px; height: 40px; font-size: 1.5em; padding: 0;
+            width: 30px; height: 40px; font-size: 1.5em; padding: 0;
             display: flex; justify-content: center; align-items: center;
             background: #666; border-color: #555;
         }
@@ -276,9 +284,9 @@
             background-color: var(--panel-bg);
             border: 1px solid var(--border-color);
             border-radius: 10px;
-            padding: 30px 40px;
-            max-width: 90%;
-            width: 550px;
+            padding: 16px 16px;
+            max-width: 98%;
+            width: 480px;
             text-align: center;
             box-shadow: var(--shadow-dark);
             animation: modal-pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -363,26 +371,45 @@
             padding: 8px 15px;
         }
         #score-display { position: absolute; top: 10px; right: 10px; }
-        #royal-seals-display { position: absolute; top: 10px; left: 10px; display: flex; align-items: center; gap: 8px; }
+        #royal-seals-display { position: absolute; top: 10px; left: 10px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
 
         .armory-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
+            display: block;
+            padding: 8px 6px;
             background-color: #21262d;
             border: 1px solid var(--border-color);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             border-radius: 5px;
+            word-break: break-word;
+            text-align: left;
         }
         .armory-item.unlocked { opacity: 0.6; }
         .armory-item button {
+            display: block;
+            width: 100%;
+            min-width: 160px;
+            box-sizing: border-box;
+            margin-top: 8px;
             background: linear-gradient(to bottom, var(--accent-color), #a8761c);
-            color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;
-            font-weight: 700; transition: all 0.2s;
+            color: white;
+            border: none;
+            padding: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s;
         }
         .armory-item button:hover:not(:disabled) { background: linear-gradient(to bottom, var(--accent-hover), var(--accent-color)); }
-        .armory-item button:disabled { background: #555; cursor: not-allowed; }
+        .armory-item button:disabled {
+            background: #555 !important;
+            border-color: #444;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .armory-item.unavailable {
+            opacity: .45;
+            filter: grayscale(40%);
+        }
 
         #tooltip {
             position: absolute;
@@ -412,6 +439,11 @@
             20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
         .shake-hard { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
 
         /* Responsive CSS */
         @media (max-width: 1200px) {
@@ -428,11 +460,12 @@
                 flex-wrap: wrap;
                 order: 3;
                 border-radius: 0;
-                padding: 5px; gap: 5px;
+                padding: 1px; gap: 5px;
                 box-sizing: border-box;
+                margin-bottom: 10px;
             }
             .resource-display, .wave-display { font-size: 1em; }
-            .game-button { padding: 10px 18px; font-size: 1em; }
+            .game-button { padding: 10px; font-size: 1em; }
             #build-menu {
                 position: relative;
                 top: auto; bottom: auto; left: auto; right: auto;
@@ -442,14 +475,120 @@
                 justify-content: center;
                 width: 100%;
                 order: 2;
-                padding: 5px;
+                padding: 1px;
                 box-sizing: border-box;
             }
             .build-item { width: 60px; height: 60px; }
             .modal-content { width: 95%; padding: 20px; }
-            #game-message { font-size: 1.5em; width: 90%; }
+            #game-message { font-size: 1.5em; width: 90%; width:auto; max-width:80%; left:50%; transform:translateX(-50%); text-align:center;}
         }
 
+        @media (max-width: 600px), (max-height: 700px) {
+            #main-menu-modal .modal-content#main-menu-content {
+                font-size: 1.18em !important;
+                padding: 7vw 2vw 7vw 2vw !important;
+                min-width: unset !important;
+                width: 98vw !important;
+                max-width: 99vw !important;
+                min-height: 80vh !important;
+                max-height: 98vh !important;
+                box-sizing: border-box;
+            }
+            #main-menu-modal h2 {
+                font-size: 2em !important;
+            }
+            #main-menu-modal h3 {
+                font-size: 1.1em !important;
+            }
+            #controls-section {
+                font-size: 1.08em !important;
+                padding: 12px 4px 8px 4px !important;
+            }
+            #main-menu-modal button.game-button {
+                font-size: 1.08em !important;
+                padding: 14px 0 !important;
+                min-width: 90vw !important;
+                max-width: 99vw !important;
+            }
+            #armory-modal .modal-content {
+                width: 99vw !important;
+                max-width: 99vw !important;
+                min-width: unset !important;
+                padding: 2vw 2vw 2vw 2vw !important;
+                font-size: 1.08em !important;
+                box-sizing: border-box;
+                max-height: 98vh !important;
+                overflow-y: auto !important;
+            }
+            #armory-upgrades-container {
+                max-height: 60vh !important;
+                overflow-y: auto !important;
+            }
+        }
+
+        @media (max-width: 900px) {
+            #tip-panel {
+                display: block;
+                position: static;
+                left: unset;
+                top: unset;
+                min-width: unset;
+                max-width: unset;
+                width: 98vw;
+                margin: 0 auto 10px auto;
+                font-size: 1.12em;
+                padding: 10px 8px;
+            }
+        }
+        @media (max-width: 600px), (max-height: 700px) {
+            #controls-columns {
+                display: block !important;
+            }
+            .controls-col {
+                width: 100% !important;
+                min-width: unset !important;
+                margin-bottom: 12px;
+            }
+            #king-hp-container {
+                max-width: 80px !important;
+            }
+            #start-wave-btn {
+                padding: 5px;
+                height: 30px;
+            }
+            #undo-btn {
+                padding: 5px;
+                height: 30px;
+            }
+            #commander-ability {
+                padding: 3px;
+                height: 30px;
+                max-width: 40px;
+            }
+        }
+
+        #tip-panel {
+            position: absolute;
+            left: 10px;
+            top: 80px;
+            min-width: 220px;
+            max-width: 320px;
+            background: var(--panel-bg-translucent);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: var(--shadow-dark);
+            color: var(--primary-text);
+            font-size: 1.08em;
+            padding: 14px 18px;
+            z-index: 20;
+        }
+
+        #royal-seals-display { cursor: pointer; }
+        #commander-ability span { font-size: 0.9em; }
+        @media (max-width: 600px) {
+            #commander-ability { font-size: 0.70em; max-width: 40px; }
+            #commander-ability span { font-size: 0.8em; }
+        }
     </style>
 </head>
 <body>
@@ -460,29 +599,23 @@
         <div id="score-display" class="ui-panel top-ui-element">Score: 0</div>
         <div id="royal-seals-display" class="ui-panel top-ui-element"></div>
 
-        <div id="bottom-bar" class="ui-panel">
+                <div id="bottom-bar" class="ui-panel">
             <div class="resource-display">
                 <span class="icon" style="color: var(--gold);">💰</span>
                 <span id="gold-display">100</span>
             </div>
             <div class="resource-display">
-                <span class="icon" style="color: var(--stone);">💎</span>
-                <span id="stone-display">50</span>
+                <span class="icon" style="color: var(--wood);">🪵</span>
+                <span id="wood-display">50</span>
             </div>
-            <div id="heartstone-hp-container">
-                <div id="heartstone-hp-bar"></div>
-                <div id="heartstone-hp-text"></div>
+            <div id="king-hp-container">
+                <div id="king-hp-bar"></div>
+                <div id="king-hp-text"></div>
             </div>
-            <div class="wave-display">
-                <span>Wave:</span>
-                <span id="wave-display">1</span>
-            </div>
-            <div id="commander-ability" data-tooltip="Rallying Cry (Q)<br>Boosts attack speed of nearby towers.">
-                <span>Q</span>
-                <div id="commander-ability-cooldown" style="display: none;"></div>
-            </div>
-            <button id="undo-btn" class="game-button disabled" data-tooltip="Undo Last Build Action">↶</button>
-            <button id="start-wave-btn" class="game-button">Start Wave (Space)</button>
+            <button id="undo-btn" class="game-button disabled" title="Undo your last build or upgrade action">↺</button>
+            <button id="start-wave-btn" class="game-button" title="Start the next enemy wave">Start Wave</button>
+            <!-- Rallying Cry Button (hidden by default, shown when unlocked) -->
+            <button id="commander-ability" class="game-button" style="display:none; background:linear-gradient(to bottom, #c98e22, #a8761c); border-color:var(--accent-color);" title="Rallying Cry: Temporarily boost all towers' attack speed (Q)">Rallying Cry <span id="commander-ability-cooldown" style="display:none;"></span></button>
         </div>
 
         <div id="build-menu" class="ui-panel">
@@ -490,9 +623,7 @@
         </div>
 
         <div id="upgrade-sell-panel" class="ui-panel">
-            <div id="upgrade-btn" class="upgrade-sell-button"></div>
-            <div id="sell-btn" class="upgrade-sell-button"></div>
-            <div id="target-priority-btn" class="upgrade-sell-button">🎯 Set Target</div>
+            <div id="upgrade-btn" class="upgrade-sell-button" title="Upgrade this tower to the next level"></div>
         </div>
 
         <div id="game-message-container"></div>
@@ -505,41 +636,55 @@
             <h2>The King's Gambit</h2>
             <p style="color: var(--secondary-text);">Choose a challenge for the upcoming wave for a greater reward.</p>
             <div id="gambit-options-container" style="margin-top: 20px;"></div>
-            <button id="skip-gambit-btn" class="game-button" style="margin-top: 15px; background: #666; border-color: #555;">No Gambit, Play It Safe</button>
+            <button id="skip-gambit-btn" class="game-button" style="margin-top: 15px; background: #666; border-color: #555;" title="Skip the King's Gambit and play a normal wave">No Gambit, Play It Safe</button>
         </div>
     </div>
 
     <div id="game-over-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <h2 id="game-over-title">DEFEAT</h2>
-            <p>The Heartstone has fallen.</p>
+            <p>The King has fallen.</p>
             <p>You survived <span id="final-wave">0</span> waves.</p>
             <p>Final Score: <span id="final-score">0</span></p>
-            <p>Royal Seals Earned: <span id="royal-seals-earned">0</span></p>
-            <button id="armory-btn" class="game-button" style="background: linear-gradient(to bottom, var(--accent-color), #a8761c);">Royal Armory</button>
-            <button id="restart-btn" class="game-button" style="margin-left: 10px;">Play Again</button>
+            <p>Royal Medals Earned: <span id="royal-seals-earned">0</span> 🏅</p>
+            <button id="armory-btn" class="game-button" style="background: linear-gradient(to bottom, var(--accent-color), #a8761c);" title="Open the Royal Armory to spend your medals">Royal Armory 🏅</button>
+            <button id="restart-btn" class="game-button" style="margin-left: 10px;" title="Restart the game from wave 1">Play Again</button>
         </div>
     </div>
     
     <div id="main-menu-modal" class="modal-overlay">
-        <div class="modal-content">
-            <h2>Siegebreaker</h2>
-            <h3 style="font-family: var(--font-family-header); margin-top:-20px; margin-bottom: 20px; color: var(--accent-color);">The King's Gambit</h3>
-            <p style="color: var(--secondary-text);">Protect the Heartstone from waves of enemies. Build defenses, choose your gambits, and survive as long as you can.</p>
-            <button id="start-game-btn" class="game-button" style="margin-top: 20px;">Begin Siege</button>
-            <button id="main-menu-armory-btn" class="game-button" style="margin-left: 10px; background: linear-gradient(to bottom, var(--accent-color), #a8761c);">Royal Armory</button>
+        <div class="modal-content" id="main-menu-content">
+            <h2 style="font-size:2.5em; margin-bottom:0.2em;">Defend the Castle</h2>
+            <p style="color: var(--secondary-text); font-size:1.1em; margin-bottom:1.2em;">Protect your castle from endless waves of enemies! Build walls and towers, manage your resources, and see how long your historic kingdom can survive.</p>
+            <div id="controls-section" style="background:rgba(22,27,34,0.95); border-radius:8px; padding:18px 12px 12px 12px; margin-bottom:1.2em; text-align:left; font-size:1.08em;">
+                <b style="color:var(--accent-color); font-size:1.15em;">Desktop Controls</b><br>
+                - <b>Mouse</b>: Build, upgrade, and interact<br>
+                - <b>Space</b>: Start next wave<br>
+                - <b>W</b>: Select Wall<br>
+                - <b>A</b>: Select Archer Tower<br>
+                - <b>C</b>: Select Cannon Tower<br>
+                - <b>U</b>: Upgrade selected tower<br>
+                - <b>Q</b>: Use Rallying Cry (if unlocked)<br>
+                <b style="color:var(--accent-color); font-size:1.15em; margin-top:10px; display:block;">Mobile Controls</b>
+                - <b>Tap</b>: Build, upgrade, and interact<br>
+                - <b>Buttons</b>: Use on-screen UI for actions
+            </div>
+            <button id="start-game-btn" class="game-button" style="margin-top: 10px; font-size:1.1em; width:100%; max-width:320px;" title="Start a new game">Start Game</button>
+            <button id="main-menu-armory-btn" class="game-button" style="margin:10px 0 0 0; background: linear-gradient(to bottom, var(--accent-color), #a8761c); display: none; width:100%; max-width:320px;" title="Unlock permanent upgrades with Royal Medals earned from completing games">Royal Armory 🏅</button>
         </div>
     </div>
 
     <div id="armory-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <h2>The Royal Armory</h2>
-            <p style="color: var(--secondary-text);">Spend Royal Seals on permanent upgrades.</p>
-            <p style="font-size: 1.2em;">Current Seals: <span id="armory-seals-display" style="color: var(--accent-color); font-weight:700;">0 👑</span></p>
+            <p style="color: var(--secondary-text);">Spend Royal Medals on permanent upgrades.</p>
+            <p style="font-size: 1.2em;">Current Medals: <span id="armory-seals-display" style="color: var(--accent-color); font-weight:700;">0 🏅</span></p>
             <div id="armory-upgrades-container" style="max-height: 300px; overflow-y: auto; text-align: left; padding-right: 10px;"></div>
-            <button id="close-armory-btn" class="game-button" style="margin-top: 20px; background: #666; border-color: #555;">Close</button>
+            <button id="close-armory-btn" class="game-button" style="margin-top: 20px; background: #666; border-color: #555;" title="Close the Royal Armory and return to the menu or game">Close</button>
         </div>
     </div>
+
+    <div id="tip-panel" class="ui-panel" style="display:none;"></div>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -561,13 +706,14 @@
 
         let gameState = GAME_STATE.MAIN_MENU;
         let grid = [], pathfindingGrid = [], entities = [], projectiles = [], particles = [];
-        let gold = 0, stone = 0, heartstoneHp = 0;
-        const HEARTSTONE_MAX_HP = 1000;
+        let gold = 0, wood = 0, kingHp = 0;
+        const KING_MAX_HP = 1000;
         let wave = 1, score = 0;
 
         let selectedBuild = null, hoveredTower = null, towerToSetTarget = null;
         let mouse = { x: 0, y: 0, gridX: -1, gridY: -1 };
-        let commander, activeGambit = null, lastBuildUndo = null;
+        let activeGambit = null, lastBuildUndo = null;
+        let rallyingCryCooldown = 0;
         let waveFlags = {}; // For temporary wave effects like "Sudden Death"
         let currentWaveEffects = { weather: 'none' };
         
@@ -629,21 +775,47 @@
             return (item && item.type === 'passive' && unlock) ? item.effect * unlock.level : 0;
         }
 
+        function useRallyingCry() {
+            if (!unlockedItems.RALLYING_CRY || rallyingCryCooldown > 0) return;
+            
+            const cooldown = 15 * (1 - getPassiveBonus('COMMANDER_COOLDOWN'));
+            rallyingCryCooldown = cooldown;
+            
+            // Boost all towers' attack speed
+            let towersBoosted = 0;
+            entities.forEach(e => {
+                if (e instanceof Tower && !(e instanceof Wall)) {
+                    e.applyBuff('attack_speed', 1.5, 5);
+                    towersBoosted++;
+                }
+            });
+            
+            // Create visual effect
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            particles.push(new ExpandingRing(centerX / TILE_SIZE, centerY / TILE_SIZE, 8, 'rgba(255, 215, 0, 0.7)', 0.5));
+            
+            showMessage(`Rallying Cry! ${towersBoosted} towers boosted!`, 'var(--accent-color)');
+            playSound('upgrade');
+        }
+
         // --- UI ELEMENTS ---
-        const goldDisplay = document.getElementById('gold-display'), stoneDisplay = document.getElementById('stone-display');
-        const hpBar = document.getElementById('heartstone-hp-bar'), hpText = document.getElementById('heartstone-hp-text');
-        const waveDisplay = document.getElementById('wave-display'), startWaveBtn = document.getElementById('start-wave-btn');
+        const goldDisplay = document.getElementById('gold-display'), woodDisplay = document.getElementById('wood-display');
+        const hpBar = document.getElementById('king-hp-bar'), hpText = document.getElementById('king-hp-text');
+        const startWaveBtn = document.getElementById('start-wave-btn');
         const buildMenu = document.getElementById('build-menu'), upgradeSellPanel = document.getElementById('upgrade-sell-panel');
-        const upgradeBtn = document.getElementById('upgrade-btn'), sellBtn = document.getElementById('sell-btn');
-        const targetPriorityBtn = document.getElementById('target-priority-btn'), scoreDisplay = document.getElementById('score-display');
+        const upgradeBtn = document.getElementById('upgrade-btn');
+        const scoreDisplay = document.getElementById('score-display');
         const royalSealsDisplay = document.getElementById('royal-seals-display'), tooltip = document.getElementById('tooltip');
         const undoBtn = document.getElementById('undo-btn');
+        const commanderAbilityBtn = document.getElementById('commander-ability');
+        const commanderAbilityCooldown = document.getElementById('commander-ability-cooldown');
         
         // --- GAME LOGIC ---
         function resizeCanvas() {
             const bottomBarHeight = document.getElementById('bottom-bar').offsetHeight;
             const buildMenuHeight = document.getElementById('build-menu').offsetHeight;
-            const availableHeight = window.innerHeight - bottomBarHeight - buildMenuHeight - 20; // 20 for margins
+            const availableHeight = window.innerHeight - bottomBarHeight - buildMenuHeight - 60;
             const availableWidth = window.innerWidth - 20;
 
             const containerRatio = availableWidth / availableHeight;
@@ -674,6 +846,7 @@
             setupUIButtons();
             updateRoyalSealsDisplay();
             showMainMenu();
+            maybeShowInitialTip();
         }
         
         function startGame() {
@@ -681,9 +854,11 @@
             gameState = GAME_STATE.BUILD;
             grid = []; entities = []; projectiles = []; particles = [];
             gold = DEFENSE_DATA.STARTING_GOLD + Math.floor(DEFENSE_DATA.STARTING_GOLD * getPassiveBonus('STARTING_GOLD'));
-            stone = DEFENSE_DATA.STARTING_STONE; heartstoneHp = HEARTSTONE_MAX_HP;
+            wood = DEFENSE_DATA.STARTING_WOOD; kingHp = KING_MAX_HP;
             wave = 1; score = 0;
+            lastSealScore = 0;
             selectedBuild = null; hoveredTower = null; activeGambit = null; lastBuildUndo = null;
+            window.waveCanEnd = false;
 
             for (let y = 0; y < GRID_ROWS; y++) {
                 grid[y] = [];
@@ -691,8 +866,86 @@
                     grid[y][x] = { type: 'ground', entity: null };
                 }
             }
-            commander = new Commander(CASTLE_COLS + 1, Math.floor(GRID_ROWS / 2));
-            entities.push(commander);
+
+            // 1. Place king and castle in the center
+            const centerX = Math.floor(GRID_COLS / 2);
+            const centerY = Math.floor(GRID_ROWS / 2);
+            for (let y = centerY - 1; y <= centerY + 1; y++) {
+                for (let x = centerX - 1; x <= centerX + 1; x++) {
+                    grid[y][x].type = 'castle';
+                }
+            }
+            // King position
+            kingPos.x = centerX;
+            kingPos.y = centerY;
+
+            // In startGame(), after kingPos is set:
+            grid[centerY][centerX].type = 'castle_core';
+            const castleOffsets = [
+                [-1, -1], [0, -1], [1, -1],
+                [-1,  0],          [1,  0],
+                [-1,  1], [0,  1], [1,  1]
+            ];
+            for (const [dx, dy] of castleOffsets) {
+                const x = centerX + dx, y = centerY + dy;
+                if (x >= 0 && x < GRID_COLS && y >= 0 && y < GRID_ROWS) {
+                    grid[y][x].type = 'castle';
+                }
+            }
+
+            // 2. Generate a river with 2-3 bridges
+            function generateRiverAndBridges() {
+                const horizontal = Math.random() < 0.5;
+                let riverLine = [];
+                if (horizontal) {
+                    let y = Math.floor(Math.random() * (GRID_ROWS - 6)) + 3;
+                    let prevY = y;
+                    for (let x = 0; x < GRID_COLS; x++) {
+                        riverLine.push({ x, y });
+                        const move = Math.random();
+                        prevY = y;
+                        if (move < 0.3 && y > 1) y--;
+                        else if (move > 0.7 && y < GRID_ROWS - 2) y++;
+                        // If moved, fill in the vertical gap to avoid diagonal jumps
+                        if (y !== prevY) {
+                            riverLine.push({ x, y: prevY });
+                            riverLine.push({ x, y });
+                        }
+                    }
+                } else {
+                    let x = Math.floor(Math.random() * (GRID_COLS - 6)) + 3;
+                    let prevX = x;
+                    for (let y = 0; y < GRID_ROWS; y++) {
+                        riverLine.push({ x, y });
+                        const move = Math.random();
+                        prevX = x;
+                        if (move < 0.3 && x > 1) x--;
+                        else if (move > 0.7 && x < GRID_COLS - 2) x++;
+                        // If moved, fill in the horizontal gap to avoid diagonal jumps
+                        if (x !== prevX) {
+                            riverLine.push({ x: prevX, y });
+                            riverLine.push({ x, y });
+                        }
+                    }
+                }
+                riverLine.forEach(({ x, y }) => {
+                    if (grid[y][x].type !== 'castle' && grid[y][x].type !== 'castle_core') grid[y][x].type = 'water';
+                });
+                const bridgeCount = 2 + Math.floor(Math.random() * 2);
+                for (let i = 0; i < bridgeCount; i++) {
+                    const idx = Math.floor(Math.random() * riverLine.length);
+                    const { x, y } = riverLine[idx];
+                    // Place bridge on all river tiles at this x (vertical slice)
+                    for (let dy = -1; dy <= 1; dy++) {
+                        const yy = y + dy;
+                        if (yy >= 0 && yy < GRID_ROWS && grid[yy][x].type === 'water') {
+                            grid[yy][x].type = 'bridge';
+                        }
+                    }
+                }
+            }
+            generateRiverAndBridges();
+
             setupSpecialNodes();
             calculatePathfindingGrid();
             updateUI();
@@ -701,8 +954,8 @@
         }
         
         function setupSpecialNodes() {
-            grid[2][5].type = 'quarry';
-            grid[GRID_ROWS - 3][5].type = 'quarry';
+            grid[2][5].type = 'forest';
+            grid[GRID_ROWS - 3][5].type = 'forest';
             grid[Math.floor(GRID_ROWS/2)][18].type = 'goldvein';
         }
 
@@ -721,12 +974,17 @@
                 [...entities, ...projectiles].forEach(e => e.update(deltaTime));
                 entities = entities.filter(e => e.isAlive);
                 projectiles = projectiles.filter(p => p.isAlive);
-                if (!entities.some(e => e instanceof Enemy)) {
+                // Only allow endWave if window.waveCanEnd is true
+                if (window.waveCanEnd && !entities.some(e => e instanceof Enemy)) {
                     endWave();
                 }
-            } else {
-                commander.update(deltaTime);
             }
+
+            // Update rallying cry cooldown
+            if (rallyingCryCooldown > 0) {
+                rallyingCryCooldown -= deltaTime;
+            }
+
             particles.forEach(p => p.update(deltaTime));
             particles = particles.filter(p => p.isAlive);
 
@@ -765,31 +1023,63 @@
             }
 
             if (currentWaveEffects.weather === 'fog') {
-                const fogGradient = ctx.createRadialGradient(commander.pixelX, commander.pixelY, TILE_SIZE * 3, commander.pixelX, commander.pixelY, TILE_SIZE * 8);
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const fogGradient = ctx.createRadialGradient(centerX, centerY, TILE_SIZE * 3, centerX, centerY, TILE_SIZE * 8);
                 fogGradient.addColorStop(0, 'rgba(120, 130, 140, 0)');
                 fogGradient.addColorStop(1, 'rgba(120, 130, 140, 0.7)');
                 ctx.fillStyle = fogGradient;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
-            if (gameState === GAME_STATE.TARGETING) {
-                canvas.style.cursor = 'crosshair';
-            } else {
-                canvas.style.cursor = 'default';
-            }
+            // (Removed cursor style changes from draw; now handled in onMouseMove only)
         }
 
         function drawGrid() {
-            ctx.fillStyle = 'rgba(50, 50, 70, 0.3)';
-            ctx.fillRect(0, 0, CASTLE_COLS * TILE_SIZE, canvas.height);
+            // Remove per-tile castle borders; only draw the single 3x3 border below
+            /*
+            for (let y = 0; y < GRID_ROWS; y++) {
+                for (let x = 0; x < GRID_COLS; x++) {
+                    if (grid[y][x].type === 'castle') {
+                        ctx.save();
+                        ctx.strokeStyle = 'rgba(241, 224, 90, 0.85)';
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                        ctx.restore();
+                    } else if (grid[y][x].type === 'castle_core') {
+                        ctx.save();
+                        ctx.strokeStyle = 'rgba(241, 224, 90, 1)';
+                        ctx.lineWidth = 3;
+                        ctx.strokeRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                        ctx.restore();
+                    }
+                }
+            }
+            */
             
-            const heartX = 1.5 * TILE_SIZE;
-            const heartY = (Math.floor(GRID_ROWS/2-1) + 1) * TILE_SIZE;
-            const pulse = 0.5 + Math.sin(performance.now() / 400) * 0.15;
-            const grd = ctx.createRadialGradient(heartX, heartY, TILE_SIZE * 0.5, heartX, heartY, TILE_SIZE * 1.5 * pulse);
-            grd.addColorStop(0, 'rgba(255, 77, 77, 0.8)');
-            grd.addColorStop(1, 'rgba(255, 77, 77, 0)');
+            const kingX = kingPos.x * TILE_SIZE + TILE_SIZE / 2;
+            const kingY = kingPos.y * TILE_SIZE + TILE_SIZE / 2;
+            
+            // Draw king's static golden aura
+            const grd = ctx.createRadialGradient(kingX, kingY, 0, kingX, kingY, TILE_SIZE * 0.8);
+            grd.addColorStop(0, 'rgba(255, 215, 0, 0.6)');
+            grd.addColorStop(1, 'rgba(255, 215, 0, 0)');
             ctx.fillStyle = grd;
-            ctx.fillRect(TILE_SIZE, Math.floor(GRID_ROWS/2-1)*TILE_SIZE, TILE_SIZE, 2*TILE_SIZE);
+            ctx.beginPath();
+            ctx.arc(kingX, kingY, TILE_SIZE * 0.8, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw the king sprite
+            ctx.font = `${TILE_SIZE * 1.2}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.fillText('🏰', kingX, kingY);
+            
+            // Add a subtle shadow for depth
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = 4;
+            ctx.fillText('🏰', kingX + 1, kingY + 1);
+            ctx.shadowBlur = 0;
             
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
             ctx.lineWidth = 1;
@@ -803,9 +1093,38 @@
             for (let y = 0; y < GRID_ROWS; y++) {
                 for (let x = 0; x < GRID_COLS; x++) {
                     const tile = grid[y][x];
-                    if (!tile.entity) {
-                        if (tile.type === 'quarry') drawSpecialNode(x, y, 'rgba(139, 148, 158, 0.5)', '💎');
-                        if (tile.type === 'goldvein') drawSpecialNode(x, y, 'rgba(241, 224, 90, 0.4)', '💰');
+                    // Always show special node icons for forest and goldvein, even if occupied
+                    if (tile.type === 'forest') {
+                        drawSpecialNode(x, y, 'rgba(181, 136, 99, 0.5)', '🌲');
+                    }
+                    if (tile.type === 'goldvein') {
+                        drawSpecialNode(x, y, 'rgba(241, 224, 90, 0.4)', '💎');
+                    }
+                }
+            }
+
+            // Draw a single square border around the 3x3 castle area
+            const castleStartX = (kingPos.x - 1) * TILE_SIZE;
+            const castleStartY = (kingPos.y - 1) * TILE_SIZE;
+            ctx.save();
+            ctx.strokeStyle = '#aeb8c2'; // Stone grey
+            ctx.lineWidth = 3;
+            ctx.strokeRect(castleStartX, castleStartY, TILE_SIZE * 3, TILE_SIZE * 3);
+            ctx.restore();
+
+            // Draw river and bridges as before
+            for (let y = 0; y < GRID_ROWS; y++) {
+                for (let x = 0; x < GRID_COLS; x++) {
+                    const tile = grid[y][x];
+                    if (tile.type === 'water') {
+                        ctx.fillStyle = 'rgba(60, 120, 200, 0.7)';
+                        ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    } else if (tile.type === 'bridge') {
+                        ctx.fillStyle = 'rgba(180, 140, 80, 0.85)';
+                        ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                        ctx.strokeStyle = '#8B5A2B';
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(x * TILE_SIZE + 2, y * TILE_SIZE + 2, TILE_SIZE - 4, TILE_SIZE - 4);
                     }
                 }
             }
@@ -878,16 +1197,56 @@
                     upgradeSellPanel.style.display = 'none';
                 }
             }
+
+            // Set cursor: pointer for forest, goldvein, water, bridge, castle, castle_core
+            let cursorSet = false;
+            if (mouse.gridX >= 0 && mouse.gridX < GRID_COLS && mouse.gridY >= 0 && mouse.gridY < GRID_ROWS) {
+                const tile = grid[mouse.gridY][mouse.gridX];
+                if (["forest", "goldvein", "water", "bridge", "castle", "castle_core"].includes(tile.type)) {
+                    canvas.style.cursor = 'pointer';
+                    cursorSet = true;
+                }
+            }
+            if (!cursorSet) {
+                if (gameState === GAME_STATE.TARGETING) {
+                    canvas.style.cursor = 'crosshair';
+                } else {
+                    canvas.style.cursor = 'default';
+                }
+            }
         }
 
         function onMouseClick() {
             if (mouse.gridX < 0 || mouse.gridX >= GRID_COLS || mouse.gridY < 0 || mouse.gridY >= GRID_ROWS) return;
+            const tile = grid[mouse.gridY][mouse.gridX];
+            if (!selectedBuild) {
+                if (tile.type === 'forest') {
+                    setTip('Forests 🌲: Build a Woodcutter Hut 🪓 here to generate extra wood each wave.');
+                    return;
+                }
+                if (tile.type === 'goldvein') {
+                    setTip('Gem Vein 💎: Build a Mine ⛏️ here to collect bonus gold from enemy kills.');
+                    return;
+                }
+            }
+            if (tile.type === 'water') {
+                setTip('Water surface. Enemies cannot cross this area and you cannot build here.');
+                return;
+            }
+            if (tile.type === 'bridge') {
+                setTip('Bridge to cross the river. You cannot destroy it or build in this area.');
+                return;
+            }
+            if (tile.type === 'castle' || tile.type === 'castle_core') {
+                setTip('Your castle. If all your 1000 Health Points are gone, your kingdom is conquered and you lose the game.');
+                return;
+            }
             if (gameState === GAME_STATE.BUILD) {
                 if (selectedBuild) {
                     placeDefense();
                     return;
                 }
-                if (commander) commander.setTarget(mouse.gridX, mouse.gridY);
+
             } else if (gameState === GAME_STATE.TARGETING) {
                 const clickedEntity = entities.find(e => e instanceof Enemy && Math.hypot(mouse.x - e.pixelX, mouse.y - e.pixelY) < TILE_SIZE * 0.4);
                 if (clickedEntity) {
@@ -909,9 +1268,8 @@
                     case 'w': selectBuild('Wall'); break;
                     case 'a': selectBuild('ArcherTower'); break;
                     case 'c': selectBuild('CannonTower'); break;
-                    case 'q': if(commander) commander.useAbility(); break;
+                    case 'q': if (rallyingCryCooldown <= 0 && unlockedItems.RALLYING_CRY) { useRallyingCry();} break;
                     case 'u': if(hoveredTower) upgradeHoveredTower(); break;
-                    case 's': if(hoveredTower) sellHoveredTower(); break;
                     case 'escape': deselect(); break;
                     case ' ': if (gameState === GAME_STATE.BUILD && !startWaveBtn.classList.contains('disabled')) startWave(); break;
                 }
@@ -920,10 +1278,7 @@
 
         function setupUIButtons() {
             startWaveBtn.addEventListener('click', () => { if(gameState === GAME_STATE.BUILD) startWave() });
-            document.getElementById('commander-ability').addEventListener('click', () => commander?.useAbility());
             upgradeBtn.addEventListener('click', upgradeHoveredTower);
-            sellBtn.addEventListener('click', sellHoveredTower);
-            targetPriorityBtn.addEventListener('click', setTargetingMode);
             undoBtn.addEventListener('click', performUndo);
 
             // Modals
@@ -933,52 +1288,110 @@
             document.getElementById('armory-btn').addEventListener('click', showArmory);
             document.getElementById('close-armory-btn').addEventListener('click', closeArmory);
             document.getElementById('skip-gambit-btn').addEventListener('click', () => { activeGambit = null; document.getElementById('gambit-modal').style.display = 'none'; startWaveAttackPhase(); });
+            commanderAbilityBtn.addEventListener('click', function() {
+                if (!commanderAbilityBtn.classList.contains('disabled')) {
+                    useRallyingCry();
+                }
+            });
         }
         
         function updateUI() {
             goldDisplay.textContent = Math.floor(gold);
-            stoneDisplay.textContent = Math.floor(stone);
-            waveDisplay.textContent = wave;
-            scoreDisplay.textContent = `Score: ${score}`;
+            woodDisplay.textContent = Math.floor(wood);
+            scoreDisplay.innerHTML = `Score: <span style="color: var(--accent-color);">${score}</span>`;
 
-            const hpPercentage = (heartstoneHp / HEARTSTONE_MAX_HP) * 100;
+            // Award Royal Medals during the game
+            const sealsEarned = Math.floor(score / 500) - Math.floor(lastSealScore / 500);
+            if (sealsEarned > 0) {
+                royalSeals += sealsEarned;
+                lastSealScore = score - (score % 500); // Set to last awarded threshold
+                saveMetaProgress();
+                updateRoyalSealsDisplay();
+            }
+
+            const hpPercentage = (kingHp / KING_MAX_HP) * 100;
             hpBar.style.width = `${hpPercentage}%`;
-            hpText.textContent = `${Math.ceil(heartstoneHp)} / ${HEARTSTONE_MAX_HP}`;
+            hpText.textContent = `${Math.ceil(kingHp)} / ${KING_MAX_HP}`;
             
             startWaveBtn.classList.toggle('disabled', gameState !== GAME_STATE.BUILD);
-            startWaveBtn.textContent = gameState === GAME_STATE.BUILD ? "Start Wave (Space)" : "Wave in Progress";
+            if (gameState === GAME_STATE.BUILD) {
+                startWaveBtn.textContent = "Start Wave";
+                startWaveBtn.style.background = "linear-gradient(to bottom, var(--green), #1c682b)";
+                maybeShowInitialTip();
+            } else if (gameState === GAME_STATE.ATTACK) {
+                // On mobile, use shorter text
+                if (window.innerWidth <= 600) {
+                    startWaveBtn.textContent = "In progress";
+                } else {
+                    startWaveBtn.textContent = "Wave in Progress...";
+                }
+                startWaveBtn.style.background = "#666";
+                setTip('');
+            } else if (gameState === GAME_STATE.WAVE_END) {
+                startWaveBtn.textContent = "Wave Complete!";
+                startWaveBtn.style.background = "#666";
+                setTip('');
+            }
             undoBtn.classList.toggle('disabled', !lastBuildUndo || gameState !== GAME_STATE.BUILD);
             
-            if (commander) {
-                const cdDiv = document.getElementById('commander-ability-cooldown');
-                if (commander.abilityCooldown > 0) {
-                    cdDiv.style.display = 'flex';
-                    cdDiv.textContent = commander.abilityCooldown.toFixed(1);
-                    const cdHeight = (commander.abilityCooldown / commander.getAbilityCooldown()) * 100;
-                    cdDiv.style.clipPath = `inset(${100 - cdHeight}% 0 0 0)`;
+            // Rallying Cry button visibility and cooldown
+            if (unlockedItems.RALLYING_CRY && (gameState === GAME_STATE.BUILD || gameState === GAME_STATE.ATTACK)) {
+                commanderAbilityBtn.style.display = '';
+                if (rallyingCryCooldown > 0) {
+                    commanderAbilityBtn.classList.add('disabled');
+                    commanderAbilityCooldown.style.display = '';
+                    commanderAbilityCooldown.textContent = `${Math.ceil(rallyingCryCooldown)}s`;
                 } else {
-                    cdDiv.style.display = 'none';
+                    commanderAbilityBtn.classList.remove('disabled');
+                    commanderAbilityCooldown.style.display = 'none';
+                    commanderAbilityCooldown.textContent = '';
                 }
+            } else {
+                commanderAbilityBtn.style.display = 'none';
             }
         }
         
         function updateBuildMenu() {
             buildMenu.innerHTML = '';
-            const buildableDefenses = {W: 'Wall', A: 'ArcherTower', C: 'CannonTower', F: 'FrostSpire', T: 'TarPit', M: 'StonemasonHut', G: 'MineShaft'};
+            const buildableDefenses = {W: 'Wall', A: 'ArcherTower', C: 'CannonTower', F: 'FrostSpire', T: 'TarPit', M: 'WoodcutterHut', G: 'GemMine'};
+            // Map DEFENSE_DATA keys to ARMORY_DATA keys for unlock check
+            const armoryKeyMap = {
+                FrostSpire: 'FROST_SPIRE',
+                TarPit: 'TAR_PIT',
+                RallyingCry: 'RALLYING_CRY',
+            };
+            // --- Hide WoodcutterHut if all forests are used, and GemMine if all goldveins are used ---
+            let forests = 0, forestsUsed = 0, goldveins = 0, goldveinsUsed = 0;
+            for (let y = 0; y < GRID_ROWS; y++) {
+                for (let x = 0; x < GRID_COLS; x++) {
+                    if (grid[y][x].type === 'forest') forests++;
+                    if (grid[y][x].type === 'goldvein') goldveins++;
+                    if (grid[y][x].entity && grid[y][x].entity instanceof WoodcutterHut) forestsUsed++;
+                    if (grid[y][x].entity && grid[y][x].entity instanceof GemMine) goldveinsUsed++;
+                }
+            }
             Object.entries(buildableDefenses).forEach(([hotkey, key]) => {
+                // Hide WoodcutterHut if all forests are used
+                if (key === 'WoodcutterHut' && forestsUsed >= forests) return;
+                // Hide GemMine if all goldveins are used
+                if (key === 'GemMine' && goldveinsUsed >= goldveins) return;
                 const def = DEFENSE_DATA[key];
-                if (def.isUnlockable && !unlockedItems[key]) return;
+                let unlockKey = key;
+                if (def.isUnlockable) {
+                    unlockKey = armoryKeyMap[key] || key.toUpperCase();
+                    if (!unlockedItems[unlockKey]) return;
+                }
                 const item = document.createElement('div');
                 item.className = 'build-item';
                 item.dataset.key = key;
-                item.dataset.tooltip = `<b>${def.name}</b><br>Cost: ${def.costGold}💰 ${def.costStone}💎`;
+                item.dataset.tooltip = `<b>${def.name}</b><br>Cost: ${def.costGold}💰 ${def.costWood}🪵`;
                 item.innerHTML = `
                     <div class="build-item-hotkey">${hotkey}</div>
                     <div class="build-item-icon">${def.icon}</div>
                     <div class="build-item-name">${def.name}</div>
                     <div class="build-item-cost">
                         ${def.costGold > 0 ? `<span>${def.costGold}</span><span style="color:var(--gold)">💰</span>` : ''}
-                        ${def.costStone > 0 ? `<span>${def.costStone}</span><span style="color:var(--stone)">💎</span>` : ''}
+                        ${def.costWood > 0 ? `<span>${def.costWood}</span><span style="color:var(--wood)">🪵</span>` : ''}
                     </div>
                 `;
                 item.addEventListener('click', () => selectBuild(key));
@@ -991,6 +1404,7 @@
             deselect();
             selectedBuild = key;
             document.querySelectorAll('.build-item').forEach(el => el.classList.toggle('selected', el.dataset.key === key));
+            showBuildTip(key);
         }
         
         function deselect() {
@@ -1011,18 +1425,22 @@
         function placeDefense() {
             const { gridX, gridY } = mouse;
             const definition = DEFENSE_DATA[selectedBuild];
-            if (checkPlacement(gridX, gridY, definition) && gold >= definition.costGold && stone >= definition.costStone) {
+            if (checkPlacement(gridX, gridY, definition) && gold >= definition.costGold && wood >= definition.costWood) {
                 gold -= definition.costGold;
-                stone -= definition.costStone;
+                wood -= definition.costWood;
                 
                 const newDefense = new CLASS_MAP[selectedBuild](gridX, gridY);
                 entities.push(newDefense);
                 grid[gridY][gridX].entity = newDefense;
-                
+                // If placing a GemMine, update tile for drawing
+                if (selectedBuild === 'GemMine') {
+                    grid[gridY][gridX].hasMine = true;
+                }
+                // If placing a WoodcutterHut, update tile for drawing (optional, not needed for icon)
                 if (definition.type === 'wall') calculatePathfindingGrid();
-                
-                setUndo({ action: 'build', key: selectedBuild, x: gridX, y: gridY, costGold: definition.costGold, costStone: definition.costStone });
+                setUndo({ action: 'build', key: selectedBuild, x: gridX, y: gridY, costGold: definition.costGold, costWood: definition.costWood });
                 updateUI();
+                updateBuildMenu(); // Ensure menu updates after building
                 playSound('build');
             } else {
                 showMessage("Cannot place here or not enough resources!", 'var(--red)');
@@ -1031,12 +1449,12 @@
         }
         
         function checkPlacement(x, y, definition) {
-            if (x < CASTLE_COLS || x >= GRID_COLS || y < 0 || y >= GRID_ROWS || grid[y][x].entity) return false;
+            if (x < 0 || x >= GRID_COLS || y < 0 || y >= GRID_ROWS || grid[y][x].entity) return false;
             const tileType = grid[y][x].type;
+            if (tileType === 'water' || tileType === 'bridge' || tileType === 'castle') return false;
             if (definition.requires) {
                 if (tileType !== definition.requires) return false;
             } else if (tileType === 'quarry' || tileType === 'goldvein') return false;
-
             if (definition.type === 'wall') {
                 const tempGrid = grid.map(row => row.map(cell => cell.entity));
                 tempGrid[y][x] = { type: 'wall' }; // Dummy wall for testing
@@ -1057,24 +1475,20 @@
             const upgradeCost = hoveredTower.getUpgradeCost();
             if (upgradeCost) {
                 upgradeBtn.style.display = 'flex';
-                upgradeBtn.innerHTML = `<span class="hotkey">U</span> Upgrade (${upgradeCost.gold}💰 ${upgradeCost.stone}💎)`;
-                upgradeBtn.classList.toggle('disabled', gold < upgradeCost.gold || stone < upgradeCost.stone);
+                upgradeBtn.innerHTML = `<span class="hotkey">U</span> Upgrade (${upgradeCost.gold}💰 ${upgradeCost.wood}🪵)`;
+                upgradeBtn.classList.toggle('disabled', gold < upgradeCost.gold || wood < upgradeCost.wood);
             } else {
                 upgradeBtn.innerHTML = `<span class="hotkey">U</span> Max Level`;
                 upgradeBtn.classList.add('disabled');
             }
-
-            const sellValue = hoveredTower.getSellValue();
-            sellBtn.innerHTML = `<span class="hotkey">S</span> Sell (+${sellValue.gold}💰 +${sellValue.stone}💎)`;
-            targetPriorityBtn.style.display = (hoveredTower instanceof Tower && !(hoveredTower instanceof SpecialBuilding)) ? 'flex' : 'none';
         }
         
         function upgradeHoveredTower() {
             if (!hoveredTower || gameState !== GAME_STATE.BUILD) return;
             const cost = hoveredTower.getUpgradeCost();
-            if (cost && gold >= cost.gold && stone >= cost.stone) {
-                setUndo({ action: 'upgrade', tower: hoveredTower, costGold: cost.gold, costStone: cost.stone });
-                gold -= cost.gold; stone -= cost.stone;
+            if (cost && gold >= cost.gold && wood >= cost.wood) {
+                setUndo({ action: 'upgrade', tower: hoveredTower, costGold: cost.gold, costWood: cost.wood });
+                gold -= cost.gold; wood -= cost.wood;
                 hoveredTower.upgrade();
                 showUpgradeSellPanel();
                 updateUI();
@@ -1084,22 +1498,7 @@
             }
         }
         
-        function sellHoveredTower() {
-            if (!hoveredTower || gameState !== GAME_STATE.BUILD) return;
-            const value = hoveredTower.getSellValue();
-            setUndo({ action: 'sell', tower: hoveredTower, x: hoveredTower.x, y: hoveredTower.y, sellGold: value.gold, sellStone: value.stone });
-            gold += value.gold; stone += value.stone;
-            
-            grid[hoveredTower.y][hoveredTower.x].entity = null;
-            hoveredTower.isAlive = false;
-            
-            if (hoveredTower instanceof Wall) calculatePathfindingGrid();
-            
-            hoveredTower = null;
-            upgradeSellPanel.style.display = 'none';
-            updateUI();
-            playSound('sell');
-        }
+
 
         function setTargetingMode() {
             if (!hoveredTower) return;
@@ -1116,21 +1515,15 @@
 
         function performUndo() {
             if (!lastBuildUndo || gameState !== GAME_STATE.BUILD) return;
-            const { action, key, x, y, tower, costGold, costStone, sellGold, sellStone } = lastBuildUndo;
+            const { action, key, x, y, tower, costGold, costWood } = lastBuildUndo;
             if (action === 'build') {
-                gold += costGold; stone += costStone;
+                gold += costGold; wood += costWood;
                 grid[y][x].entity.isAlive = false;
                 grid[y][x].entity = null;
                 if (DEFENSE_DATA[key]?.type === 'wall') calculatePathfindingGrid();
             } else if (action === 'upgrade') {
-                gold += costGold; stone += costStone;
+                gold += costGold; wood += costWood;
                 tower.downgrade();
-            } else if (action === 'sell') {
-                gold -= sellGold; stone -= sellStone;
-                tower.isAlive = true;
-                entities.push(tower);
-                grid[y][x].entity = tower;
-                if (tower instanceof Wall) calculatePathfindingGrid();
             }
             lastBuildUndo = null;
             updateUI();
@@ -1150,24 +1543,36 @@
         }
         
         function startWaveAttackPhase() {
+            playSound('wave_start', 0.7); // Play war horn at wave start
             gameState = GAME_STATE.ATTACK;
             setWaveEffects();
+            // Clear any existing messages before showing the new one
+            const messageContainer = document.getElementById('game-message-container');
+            messageContainer.innerHTML = '';
+            
+            showMessage(`Wave ${wave} Starting!`, 'var(--accent-color)');
             spawnWave();
             updateUI();
+            
+            // Prevent wave from ending until after delay
+            window.waveCanEnd = false;
+            setTimeout(() => {
+                window.waveCanEnd = true;
+            }, 3000);
         }
 
         function endWave() {
             gameState = GAME_STATE.WAVE_END;
-            let goldBonus = 50 + wave * 5, stoneBonus = 20 + wave * 2, scoreBonus = 100 * wave;
+            let goldBonus = 40 + wave * 2, woodBonus = 25 + wave * 2, scoreBonus = 100 * wave;
             if (activeGambit && activeGambit.onComplete) {
-                const bonus = activeGambit.onComplete({goldBonus, stoneBonus});
-                if(bonus.gold) goldBonus += bonus.gold; if(bonus.stone) stoneBonus += bonus.stone;
+                const bonus = activeGambit.onComplete({goldBonus, woodBonus});
+                if(bonus.gold) goldBonus += bonus.gold; if(bonus.wood) woodBonus += bonus.wood;
             }
             entities.forEach(e => {
-                if (e instanceof StonemasonHut) stoneBonus += e.generation;
-                if (e instanceof MineShaft) { goldBonus += e.collectedGold; e.collectedGold = 0; }
+                if (e instanceof WoodcutterHut) woodBonus += e.generation;
+                if (e instanceof GemMine) { goldBonus += e.collectedGold; e.collectedGold = 0; }
             });
-            gold += goldBonus; stone += stoneBonus; score += scoreBonus;
+            gold += goldBonus; wood += woodBonus; score += scoreBonus;
             showMessage(`Wave ${wave} Complete!`, 'var(--green)');
             playSound('wave_end');
             wave++;
@@ -1189,20 +1594,48 @@
 
         function spawnWave() {
             const waveData = getWaveData(wave);
-            let spawnDelay = 0;
             waveData.enemies.forEach(group => {
                 for (let i = 0; i < group.count; i++) {
-                    setTimeout(() => spawnEnemy(group.type), spawnDelay);
-                    spawnDelay += group.interval;
+                    setTimeout(() => spawnEnemy(group.type), i * group.interval);
                 }
             });
         }
         
         function spawnEnemy(type) {
-            const spawnY = Math.floor(Math.random() * GRID_ROWS);
-            const enemy = new CLASS_MAP[type](GRID_COLS - 1, spawnY);
-            if (activeGambit && activeGambit.enemyModifier) activeGambit.enemyModifier(enemy);
-            entities.push(enemy);
+            // Try up to 20 times to find a valid spawn location
+            for (let attempt = 0; attempt < 20; attempt++) {
+                // Randomly pick an edge: 0=top, 1=bottom, 2=left, 3=right
+                const edge = Math.floor(Math.random() * 4);
+                let spawnX, spawnY;
+                if (edge === 0) { // top
+                    spawnX = Math.floor(Math.random() * GRID_COLS);
+                    spawnY = 0;
+                } else if (edge === 1) { // bottom
+                    spawnX = Math.floor(Math.random() * GRID_COLS);
+                    spawnY = GRID_ROWS - 1;
+                } else if (edge === 2) { // left
+                    spawnX = 0;
+                    spawnY = Math.floor(Math.random() * GRID_ROWS);
+                } else { // right
+                    spawnX = GRID_COLS - 1;
+                    spawnY = Math.floor(Math.random() * GRID_ROWS);
+                }
+                // Don't spawn in water, castle, or on impassable tiles
+                if (
+                    grid[spawnY][spawnX].type === 'water' ||
+                    grid[spawnY][spawnX].type === 'castle'
+                ) {
+                    continue;
+                }
+                // Only spawn if there is a valid path to the castle
+                if (pathfindingGrid[spawnY][spawnX] !== Infinity) {
+                    const enemy = new CLASS_MAP[type](spawnX, spawnY);
+                    if (activeGambit && activeGambit.enemyModifier) activeGambit.enemyModifier(enemy);
+                    entities.push(enemy);
+                    return;
+                }
+            }
+            // If no valid spawn found after 20 attempts, skip spawning
         }
 
         function getWaveData(waveNum) {
@@ -1210,17 +1643,15 @@
             const isNightWave = waveNum % 5 === 0;
             
             if (isBossWave) {
-                if (waveNum === 10) return { enemies: [{ type: 'SiegeGolem', count: 1, interval: 1000 }] };
-                if (waveNum === 20) return { enemies: [{ type: 'WyvernLord', count: 1, interval: 1000 }] };
-                // Add more bosses or cycle
-                return { enemies: [{ type: 'SiegeGolem', count: 1 + Math.floor(waveNum / 20), interval: 1000 }] };
+                // No OrcGrunt, just use GoblinSapper for all boss waves
+                return { enemies: [{ type: 'GoblinSapper', count: 15 + Math.floor(waveNum / 10), interval: 500 }] };
             }
 
-            let enemies = [{ type: 'OrcGrunt', count: 5 + waveNum * 2, interval: 500 }];
-            if (waveNum > 2) enemies.push({ type: 'GoblinSapper', count: 1 + Math.floor(waveNum/3), interval: 2000 });
-            if (waveNum > 4) enemies.push({ type: 'GoblinShaman', count: Math.floor(waveNum/5), interval: 4000 });
-            if (isNightWave) enemies.push({ type: 'Wraith', count: 2 + Math.floor(waveNum/4), interval: 1500 });
-            if (waveNum > 6) enemies.push({ type: 'ImpCaster', count: 1 + Math.floor(waveNum/6), interval: 3000 });
+            let enemies = [{ type: 'OrcGrunt', count: 10 + waveNum * 2, interval: 500 }];
+            if (waveNum > 2) enemies.push({ type: 'GoblinSapper', count: 2 + Math.floor(waveNum/3), interval: 2000 });
+            if (waveNum > 4) enemies.push({ type: 'GoblinShaman', count: 2 + Math.floor(waveNum/5), interval: 4000 });
+            if (isNightWave) enemies.push({ type: 'Wraith', count: 4 + Math.floor(waveNum/4), interval: 1500 });
+            if (waveNum > 6) enemies.push({ type: 'ImpCaster', count: 2 + Math.floor(waveNum/6), interval: 3000 });
             return { enemies };
         }
 
@@ -1228,12 +1659,21 @@
             if (gameState === GAME_STATE.GAME_OVER) return; // Prevent multiple triggers
             gameState = GAME_STATE.GAME_OVER;
             const sealsEarned = Math.floor(score / 500);
+            const hadSealsBefore = royalSeals > 0;
             royalSeals += sealsEarned;
             saveMetaProgress();
             document.getElementById('final-wave').textContent = wave;
             document.getElementById('final-score').textContent = score;
             document.getElementById('royal-seals-earned').textContent = `${sealsEarned} 👑`;
             document.getElementById('game-over-modal').style.display = 'flex';
+            
+            // Show special message if this is the first time earning Royal Medals
+            if (!hadSealsBefore && sealsEarned > 0) {
+                const armoryBtn = document.getElementById('armory-btn');
+                armoryBtn.innerHTML = '🎉 Royal Armory Unlocked! 🏅';
+                armoryBtn.style.animation = 'pulse 2s infinite';
+            }
+            
             playSound('game_over');
         }
         
@@ -1244,7 +1684,9 @@
             msg.textContent = text;
             msg.style.color = color;
             container.appendChild(msg);
-            setTimeout(() => container.removeChild(msg), 2900);
+            setTimeout(() => {
+                if (container.contains(msg)) container.removeChild(msg);
+            }, 2900);
         }
         
         function screenShake(duration = 0.3, intensity = 'hard') {
@@ -1256,23 +1698,19 @@
         function calculatePathfindingGrid() {
             pathfindingGrid = Array(GRID_ROWS).fill().map(() => Array(GRID_COLS).fill(Infinity));
             const queue = [];
-            const heartstoneY = Math.floor(GRID_ROWS / 2);
-            for(let y = heartstoneY-1; y <= heartstoneY; y++){
-                queue.push({ x: CASTLE_COLS-1, y: y, dist: 0 });
-                pathfindingGrid[y][CASTLE_COLS-1] = 0;
-            }
+            queue.push({ x: kingPos.x, y: kingPos.y, dist: 0 });
+            pathfindingGrid[kingPos.y][kingPos.x] = 0;
             let head = 0;
-            while(head < queue.length) {
+            while (head < queue.length) {
                 const { x, y, dist } = queue[head++];
                 const neighbors = [{dx:0, dy:1}, {dx:0, dy:-1}, {dx:1, dy:0}, {dx:-1, dy:0}];
                 for (const n of neighbors) {
                     const nx = x + n.dx, ny = y + n.dy;
                     if (nx >= 0 && nx < GRID_COLS && ny >= 0 && ny < GRID_ROWS && pathfindingGrid[ny][nx] === Infinity) {
                         const cell = grid[ny][nx];
-                        if (!cell.entity || !(cell.entity instanceof Wall)) {
-                            pathfindingGrid[ny][nx] = dist + 1;
-                            queue.push({ x: nx, y: ny, dist: dist + 1 });
-                        }
+                        if (cell.type === 'water') continue; // Only water is impassable for pathfinding
+                        pathfindingGrid[ny][nx] = dist + 1;
+                        queue.push({ x: nx, y: ny, dist: dist + 1 });
                     }
                 }
             }
@@ -1288,7 +1726,7 @@
                 let pathFound = false;
                 while(head < queue.length) {
                     const { x, y } = queue[head++];
-                    if (x < CASTLE_COLS) {
+                    if (grid[y][x].type === 'castle' || grid[y][x].type === 'castle_core') {
                         pathFound = true;
                         break;
                     }
@@ -1341,33 +1779,69 @@
             document.getElementById('game-over-modal').style.display = 'none';
             document.getElementById('armory-modal').style.display = 'none';
             updateRoyalSealsDisplay();
+            
+            // Only show Royal Armory button if player has earned Royal Medals
+            const armoryBtn = document.getElementById('main-menu-armory-btn');
+            if (royalSeals > 0) {
+                armoryBtn.style.display = 'inline-block';
+                armoryBtn.textContent = `Royal Armory`;
+            } else {
+                armoryBtn.style.display = 'none';
+            }
         }
         
-        function updateRoyalSealsDisplay() { royalSealsDisplay.innerHTML = `<span style="color: var(--accent-color);">${royalSeals}</span> 👑`; }
+        function updateRoyalSealsDisplay() { 
+            royalSealsDisplay.innerHTML = `<span style="color: var(--accent-color);">${royalSeals}</span> 🏅`;
+            
+            // Update main menu armory button if it exists and we're on main menu
+            const armoryBtn = document.getElementById('main-menu-armory-btn');
+            if (armoryBtn && gameState === GAME_STATE.MAIN_MENU) {
+                if (royalSeals > 0) {
+                    armoryBtn.style.display = 'inline-block';
+                    armoryBtn.textContent = `Royal Armory`;
+                } else {
+                    armoryBtn.style.display = 'none';
+                }
+            }
+        }
 
+        // Track previous game state for Armory
+        let prevGameState = null;
+
+        // Update royalSealsDisplay click handler
+        royalSealsDisplay.addEventListener('click', () => {
+            // Only allow opening Armory from in-game states (not MAIN_MENU or GAME_OVER)
+            if (gameState !== GAME_STATE.ATTACK && gameState !== GAME_STATE.MAIN_MENU && gameState !== GAME_STATE.GAME_OVER && typeof showArmory === 'function') {
+                prevGameState = gameState;
+                showArmory();
+            }
+        });
+
+        // Update showArmory to not overwrite prevGameState if already set
         function showArmory() {
             gameState = GAME_STATE.ARMORY;
             document.getElementById('main-menu-modal').style.display = 'none';
             document.getElementById('game-over-modal').style.display = 'none';
             document.getElementById('armory-modal').style.display = 'flex';
-            
             document.getElementById('armory-seals-display').textContent = royalSeals;
             const container = document.getElementById('armory-upgrades-container');
             container.innerHTML = '';
             Object.keys(ARMORY_DATA).forEach(key => {
-                if (key.startsWith('STARTING_')) return; // Don't show these as buyable items
+                if (key.startsWith('STARTING_')) return;
                 const item = ARMORY_DATA[key];
                 const itemEl = document.createElement('div');
                 itemEl.className = 'armory-item';
-                let content = `<div><h4>${item.name}</h4><p style="font-size:0.8em; margin:0; color:var(--secondary-text);">${item.description}</p></div>`;
+                let content = `<h4 style="margin:0 0 4px 0;">${item.name}</h4><p style="font-size:0.95em; margin:0 0 8px 0; color:var(--secondary-text); white-space:normal;">${item.description}</p>`;
                 if (item.type === 'passive') {
                     const unlock = unlockedItems[key] || { level: 0 };
                     const cost = item.cost + Math.floor(item.cost * unlock.level * 0.5);
-                    content += `<div><span>Lvl: ${unlock.level}/${item.maxLevel}</span><button data-key="${key}" data-cost="${cost}" ${unlock.level >= item.maxLevel || royalSeals < cost ? 'disabled' : ''}>Buy (${cost}👑)</button></div>`;
+                    const needsDisable = unlock.level >= item.maxLevel || royalSeals < cost;
+                    if (needsDisable) itemEl.classList.add('unavailable');
+                    content += `<span …>${unlock.level}/${item.maxLevel}</span><button data-key="${key}" data-cost="${cost}" ${needsDisable ? 'disabled="disabled"' : ''}>Buy (${cost}🏅)</button>`;
                 } else {
                     const isUnlocked = unlockedItems[key];
                     if (isUnlocked) itemEl.classList.add('unlocked');
-                    content += `<button data-key="${key}" data-cost="${item.cost}" ${isUnlocked || royalSeals < item.cost ? 'disabled' : ''}>${isUnlocked ? 'Unlocked' : `Unlock (${item.cost}👑)`}</button>`;
+                    content += `<button data-key="${key}" data-cost="${item.cost}" ${isUnlocked || royalSeals < item.cost ? 'disabled' : ''}>${isUnlocked ? 'Unlocked' : `Unlock (${item.cost}🏅)`}</button>`;
                 }
                 itemEl.innerHTML = content;
                 container.appendChild(itemEl);
@@ -1393,10 +1867,25 @@
             }
         }
         
+        // Update closeArmory to always clear prevGameState and update UI/BuildMenu
         function closeArmory() {
             const gameOverVisible = document.getElementById('game-over-modal').style.display === 'flex';
-            if (!gameOverVisible) showMainMenu();
-            else document.getElementById('armory-modal').style.display = 'none';
+            if (prevGameState && !gameOverVisible) {
+                gameState = prevGameState;
+                prevGameState = null;
+                document.getElementById('armory-modal').style.display = 'none';
+                setTimeout(() => { updateUI(); updateBuildMenu(); }, 10);
+                // Ensure game loop resumes if returning to BUILD or ATTACK
+                if (gameState === GAME_STATE.BUILD || gameState === GAME_STATE.ATTACK) {
+                    gameLoop(performance.now());
+                }
+            } else if (!gameOverVisible) {
+                prevGameState = null;
+                showMainMenu();
+            } else {
+                prevGameState = null;
+                document.getElementById('armory-modal').style.display = 'none';
+            }
         }
         
         function updateTooltip(event) {
@@ -1417,15 +1906,15 @@
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 // Base64 encoded sounds to keep it in a single file
                 const soundData = {
-                    arrow: 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU9vT19PCwEACgAKABsAEgANAAsADAAMABQADgAOAAsADgANAA4ACwAMAA4ADgAMAAkACgANAA4ADAALAAsADQANAAkACQALAA0ACgAJAAkADAAKAAYABwAJAAYABgAIAAYABQAGAAcABwAFAAYABgAGAAUABgAFAAUABQAFAAYABQAF=',
-                    build: 'data:audio/wav;base64,UklGRigBAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YQQBAAD///////////////////8=',
-                    cannon: 'data:audio/wav;base64,UklGRiQBAABXQVZFZm10IBAAAAABAAEARKwAABCxAgAEABgAZGF0YQAAAQAAAAEAAAAAAAAAAQAAAAEAAAAAAAAA',
-                    chaching: 'data:audio/wav;base64,UklGRkoAAABXQVZFZm10IBAAAAABAAEARKwAABCxAgAEABgAZGF0YQQAAAAEAQAAAAAAAEA=',
-                    error: 'data:audio/wav;base64,UklGRlYAAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YVIBAABzAF4AawBjAFsAWABXAFQAUQBSAFEAUABQAE8ATgBNAEsASQBHAEUAQwA/AD0AOwA5ADcANQA0ADMANQA3ADkAOwA9AD8A',
-                    wave_end: 'data:audio/wav;base64,UklGRlIAAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YUYBAABzAHAAYwBoAGgAZwBmAGUAZABjAGIAYgBjAGQAZQBmAGcAaABpAGoAawBsAGwAbQBuAG8AcA==',
-                    upgrade: 'data:audio/wav;base64,UklGRlIAAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YUYBAABwAGcAbABtAG4AbgBtAGwAawBqAGkAaABnAGYAZQBjAGIAYQBgAGAAQQBDAEUARwBJAEsATQ==',
-                    sell: 'data:audio/wav;base64,UklGRiwAAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YQgAAAAIAAgACAA=',
-                    game_over: 'data:audio/wav;base64,UklGRkIAAABXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABgAZGF0YTwAAABOAEsARwBEAEEAPgA8ADoAOAA2ADQAMgAwAC4ALgAwADIA NAA2ADgAOgA8AD4AQQBEAEcASwBOAFA='
+                    arrow: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAgD8AAP8/AAD/PwAA/z8AAP8/AAD/PwAA/z8AAP8/AAD/PwAA/z8AAP8/AAD/PwAA',
+                    build: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAA',
+                    cannon: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAA',
+                    chaching: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAA',
+                    error: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAMAPAADADwAAwD8AAMAPAADADwAAwD8AAMAPAADADwAAwD8AAMAPAADADwAA',
+                    wave_end: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAA',
+                    upgrade: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAAwD8AAP8/AAD/PwAA',
+                    game_over: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAMAPAADADwAAwD8AAMAPAADADwAAwD8AAMAPAADADwAAwD8AAMAPAADADwAA',
+                    wave_start: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAA'
                 };
                 Object.keys(soundData).forEach(key => {
                     fetch(soundData[key]).then(response => response.arrayBuffer())
@@ -1447,31 +1936,30 @@
 
         // --- DATA CONFIGURATION ---
         const DEFENSE_DATA = {
-            STARTING_GOLD: 100,
-            STARTING_STONE: 50,
-            Wall: { name: 'Wall', type: 'wall', costGold: 0, costStone: 10, icon: '🧱', hp: [300, 500, 800] },
-            ArcherTower: { name: 'Archer Tower', type: 'tower', costGold: 50, costStone: 10, icon: '🏹', range: [3, 3.3, 3.6], damage: [25, 40, 60], fireRate: [1, 0.9, 0.8], canAttackFlying: true },
-            CannonTower: { name: 'Cannon Tower', type: 'tower', costGold: 120, costStone: 30, icon: '💣', range: [4, 4.2, 4.5], damage: [60, 90, 130], fireRate: [3, 2.8, 2.5], canAttackFlying: false, aoeRadius: [1, 1.1, 1.2] },
-            FrostSpire: { name: 'Frost Spire', type: 'tower', costGold: 80, costStone: 20, icon: '❄️', range: [2.5, 2.8, 3.1], damage: [10, 15, 20], fireRate: [1.5, 1.4, 1.3], canAttackFlying: true, slow: { duration: 2, amount: [0.5, 0.4, 0.3] }, isUnlockable: true },
-            TarPit: { name: 'Tar Pit', type: 'trap', costGold: 20, costStone: 5, icon: '🕳️', hp: [1], slowAmount: 0.2, isUnlockable: true },
-            StonemasonHut: { name: 'Stonemason', type: 'special', costGold: 0, costStone: 75, icon: '🏛️', hp: [200], requires: 'quarry', generation: 10 },
-            MineShaft: { name: 'Mine Shaft', type: 'special', costGold: 100, costStone: 0, icon: '⚒️', hp: [200], requires: 'goldvein', range: [4], goldPerKill: 5 },
+            STARTING_GOLD: 150,
+            STARTING_WOOD: 80,
+            Wall: { name: 'Wall', type: 'wall', costGold: 0, costWood: 10, icon: '🛡️', hp: [300, 500, 800] },
+            ArcherTower: { name: 'Archer', type: 'tower', costGold: 50, costWood: 10, icon: '🏹', range: [3, 3.3, 3.6], damage: [25, 40, 60], fireRate: [1, 0.9, 0.8], canAttackFlying: true },
+            CannonTower: { name: 'Cannon', type: 'tower', costGold: 120, costWood: 30, icon: '💣', range: [4, 4.2, 4.5], damage: [60, 90, 130], fireRate: [3, 2.8, 2.5], canAttackFlying: false, aoeRadius: [1, 1.1, 1.2] },
+            FrostSpire: { name: 'Frost Spire', type: 'tower', costGold: 80, costWood: 20, icon: '❄️', range: [2.5, 2.8, 3.1], damage: [10, 15, 20], fireRate: [1.5, 1.4, 1.3], canAttackFlying: true, slow: { duration: 2, amount: [0.5, 0.4, 0.3] }, isUnlockable: true },
+            TarPit: { name: 'Tar Pit', type: 'trap', costGold: 20, costWood: 5, icon: '🕳️', hp: [1], slowAmount: 0.2, isUnlockable: true },
+            WoodcutterHut: { name: 'Woodcutter', type: 'special', costGold: 75, costWood: 0, icon: '🪓', hp: [200], requires: 'forest', generation: 10 },
+            GemMine: { name: 'Mine', type: 'special', costGold: 100, costWood: 0, icon: '⛏️', hp: [200], requires: 'goldvein', range: [4], goldPerKill: 5 },
         };
         const ENEMY_DATA = {
             OrcGrunt: { hp: 100, hpScaling: 10, speed: 1.5, gold: 5, attackDamage: 10, color: '#4b692f' },
             GoblinSapper: { hp: 50, hpScaling: 5, speed: 2.5, gold: 8, structureDamage: 250, color: '#d13a34' },
             Wraith: { hp: 80, hpScaling: 8, speed: 1.8, gold: 12, attackDamage: 15, isFlying: true, color: '#a0a0d0' },
-            GoblinShaman: { hp: 120, hpScaling: 12, speed: 1, gold: 15, attackDamage: 5, healAmount: 20, healRadius: 3, color: '#a971d4' },
-            ImpCaster: { hp: 90, hpScaling: 9, speed: 1.2, gold: 18, attackDamage: 5, castRadius: 4, disableDuration: 4, color: '#ff69b4' },
-            SiegeGolem: { hp: 5000, hpScaling: 500, speed: 0.5, gold: 500, attackDamage: 200, color: '#5d5d5d' },
-            WyvernLord: { hp: 8000, hpScaling: 800, speed: 1.5, gold: 800, attackDamage: 150, isFlying: true, color: '#8B0000' }
+            GoblinShaman: { hp: 120, hpScaling: 12, speed: 1, gold: 15, attackDamage: 20, healAmount: 20, healRadius: 3, color: '#a971d4' },
+            ImpCaster: { hp: 90, hpScaling: 9, speed: 1.2, gold: 18, attackDamage: 30, castRadius: 4, disableDuration: 4, color: '#ff69b4' },
         };
         const ARMORY_DATA = {
-            FROST_SPIRE: { name: "Unlock Frost Spire", cost: 100, description: "A tower that slows enemies.", type: 'tower'},
-            TAR_PIT: { name: "Unlock Tar Pit", cost: 75, description: "A trap that heavily slows enemies on it.", type: 'trap'},
-            STARTING_GOLD: { name: "+10% Starting Gold", cost: 50, effect: 0.1, maxLevel: 5, type: 'passive' },
-            WALL_HP: { name: "+10% Wall HP", cost: 60, effect: 0.1, maxLevel: 5, type: 'passive' },
-            COMMANDER_COOLDOWN: { name: "-5% Commander Cooldown", cost: 120, effect: 0.05, maxLevel: 3, type: 'passive' },
+            FROST_SPIRE: { name: "Unlock Frost Spire", cost: 90, description: "Unlocks the Frost Spire: a tower that slows enemies it hits, reducing their movement speed.", type: 'tower'},
+            TAR_PIT: { name: "Unlock Tar Pit", cost: 15, description: "Unlocks the Tar Pit: a trap that heavily slows enemies standing on it.", type: 'trap'},
+            RALLYING_CRY: { name: "Unlock Rallying Cry", cost: 165, description: "Press Q to temporarily boost all towers' attack speed for 5 seconds. Great for tough waves!", type: 'ability'},
+            STARTING_GOLD: { name: "+10% Starting Gold", cost: 60, effect: 0.1, maxLevel: 5, type: 'passive', description: "Start each game with 10% more gold per level of this upgrade (up to +50%)." },
+            WALL_HP: { name: "+10% Wall HP", cost: 35, effect: 0.1, maxLevel: 5, type: 'passive', description: "Walls have 10% more HP (Health Points) per level of this upgrade (up to +50%)." },
+            COMMANDER_COOLDOWN: { name: "-5% Rallying Cry Cooldown", cost: 125, effect: 0.05, maxLevel: 3, type: 'passive', description: "Reduces the cooldown of Rallying Cry by 5% per level (up to -15%)." },
         };
 
         // --- ENTITY CLASSES ---
@@ -1486,25 +1974,14 @@
             draw() { ctx.strokeStyle = this.color; ctx.lineWidth = this.size; ctx.beginPath(); ctx.moveTo(this.pixelX, this.pixelY); ctx.lineTo(this.pixelX + this.vx/20, this.pixelY + this.vy/20); ctx.stroke(); }
         }
         function createExplosion(x, y, count, color, size, speed, life) { for(let i=0; i<count; i++) particles.push(new Particle(x, y, color, Math.random() * size, Math.random() * speed, Math.random() * life)); }
-        class Commander extends Entity {
-            constructor(x, y) { super(x, y); this.targetX = x; this.targetY = y; this.speed = 5; this.abilityCooldown = 0; this.rallyRadius = 3; }
-            getAbilityCooldown() { return 15 * (1 - getPassiveBonus('COMMANDER_COOLDOWN')); }
-            setTarget(gridX, gridY) { this.targetX = gridX; this.targetY = gridY; }
-            useAbility() {
-                if (this.abilityCooldown <= 0) {
-                    this.abilityCooldown = this.getAbilityCooldown();
-                    entities.forEach(e => { if (e instanceof Tower && Math.hypot(this.x - e.x, this.y - e.y) <= this.rallyRadius) e.applyBuff('attack_speed', 1.5, 5); });
-                    particles.push(new ExpandingRing(this.x, this.y, this.rallyRadius, 'rgba(255, 215, 0, 0.7)', 0.5));
-                }
-            }
-            update(dt) { if(this.abilityCooldown > 0) this.abilityCooldown -= dt; const dX = this.targetX - this.x, dY = this.targetY - this.y; const dist = Math.hypot(dX, dY); const moveDist = this.speed * dt; if (dist > 0.1) { if (dist < moveDist) { this.x = this.targetX; this.y = this.targetY; } else { this.x += (dX / dist) * this.speed * dt; this.y += (dY / dist) * this.speed * dt; } this.pixelX = (this.x+0.5)*TILE_SIZE; this.pixelY = (this.y+0.5)*TILE_SIZE; } }
-            draw() { ctx.fillStyle = 'gold'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.4, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = 'white'; ctx.lineWidth = 2; ctx.stroke(); }
-        }
+
         class ExpandingRing extends Particle {
             constructor(gridX, gridY, maxRadius, color, duration) { super((gridX + 0.5) * TILE_SIZE, (gridY + 0.5) * TILE_SIZE); this.maxRadius = maxRadius * TILE_SIZE; this.color = color; this.duration = duration; this.life = duration; this.currentRadius = 0; }
             update(dt) { this.life -= dt; if(this.life <= 0) this.isAlive = false; this.currentRadius = this.maxRadius * (1 - (this.life / this.duration)); }
             draw() { ctx.strokeStyle = this.color; ctx.lineWidth = 4; ctx.globalAlpha = this.life / this.duration; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, this.currentRadius, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = 1; }
         }
+        
+
         class Projectile extends Entity {
             constructor(startX, startY, target, damage, speed) { super(startX/TILE_SIZE, startY/TILE_SIZE); this.pixelX = startX; this.pixelY = startY; this.target = target; this.damage = damage; this.speed = speed; this.trail = []; }
             update(dt) {
@@ -1528,8 +2005,7 @@
         
         class Tower extends Entity {
             constructor(x, y) { super(x, y); this.level = 1; this.fireCooldown = 0; this.target = null; this.priorityTarget = null; this.buffs = {}; this.data = DEFENSE_DATA[this.constructor.name]; this.name = this.data.name; this.maxLevel = this.data.damage?.length || 1; }
-            getSellValue() { return { gold: this.data.costGold * 0.75, stone: this.data.costStone * 0.75 }; }
-            getUpgradeCost() { if (this.level >= this.maxLevel) return null; return { gold: this.data.costGold * (this.level), stone: this.data.costStone * (this.level) }; }
+            getUpgradeCost() { if (this.level >= this.maxLevel) return null; return { gold: this.data.costGold * (this.level), wood: this.data.costWood * (this.level) }; }
             upgrade() { if (this.level < this.maxLevel) this.level++; }
             downgrade() { if (this.level > 1) this.level--; }
             applyBuff(type, multiplier, duration) { this.buffs[type] = { multiplier, duration }; }
@@ -1561,12 +2037,26 @@
         class Trap extends Tower { update(dt) { entities.forEach(e => { if (e instanceof Enemy && Math.floor(e.x) === this.x && Math.floor(e.y) === this.y) this.trigger(e); }) } trigger(enemy) {} }
         class TarPit extends Trap { trigger(enemy) { enemy.applyEffect('slow', 0.5, this.data.slowAmount); } draw() { ctx.fillStyle = 'rgba(20,10,0,0.7)'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE*0.45, 0, Math.PI*2); ctx.fill(); } }
         class SpecialBuilding extends Tower { constructor(x,y) { super(x,y); } update() {} }
-        class StonemasonHut extends SpecialBuilding { constructor(x,y) { super(x,y); this.generation = this.data.generation; } draw() { ctx.fillStyle = '#b0b0b0'; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.font = `${TILE_SIZE * 0.6}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = 'black'; ctx.fillText('🏛️', this.pixelX, this.pixelY); } }
-        class MineShaft extends SpecialBuilding { constructor(x,y) { super(x,y); this.range = this.data.range[0]; this.goldPerKill = this.data.goldPerKill; this.collectedGold = 0; } addGold() { this.collectedGold += this.goldPerKill; createExplosion(this.pixelX, this.pixelY, 3, 'gold', 3, 50, 0.8); } draw() { ctx.fillStyle = '#d4af37'; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.font = `${TILE_SIZE * 0.6}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = 'black'; ctx.fillText('⚒️', this.pixelX, this.pixelY); } }
+        class WoodcutterHut extends SpecialBuilding { constructor(x,y) { super(x,y); this.generation = this.data.generation; } draw() { ctx.fillStyle = '#b58863'; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.font = `${TILE_SIZE * 0.6}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = 'black'; ctx.fillText('🪓', this.pixelX, this.pixelY); } }
+        class GemMine extends SpecialBuilding { constructor(x,y) { super(x,y); this.range = this.data.range[0]; this.goldPerKill = this.data.goldPerKill; this.collectedGold = 0; } addGold() { this.collectedGold += this.goldPerKill; createExplosion(this.pixelX, this.pixelY, 3, 'gold', 3, 50, 0.8); } draw() { ctx.fillStyle = '#d4af37'; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.font = `${TILE_SIZE * 0.6}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = 'black'; ctx.fillText('⛏️', this.pixelX, this.pixelY); } }
 
         // --- ENEMY CLASSES ---
         class Enemy extends Entity {
-            constructor(x, y) { super(x, y); const data = ENEMY_DATA[this.constructor.name]; this.maxHp = data.hp + wave * data.hpScaling; this.hp = this.maxHp; this.baseSpeed = data.speed; this.baseAttackSpeed = 1; this.goldValue = data.gold; this.isFlying = data.isFlying || false; this.attackDamage = data.attackDamage; this.color = data.color; this.effects = {}; }
+            constructor(x, y) {
+                super(x, y);
+                const data = ENEMY_DATA[this.constructor.name];
+                this.maxHp = data.hp + wave * data.hpScaling;
+                this.hp = this.maxHp;
+                this.baseSpeed = data.speed;
+                this.baseAttackSpeed = 1;
+                this.goldValue = data.gold;
+                this.isFlying = data.isFlying || false;
+                this.attackDamage = data.attackDamage;
+                this.color = data.color;
+                this.effects = {};
+                this.stuckTime = 0;
+                this.lastPos = { x: this.x, y: this.y };
+            }
             applyEffect(type, duration, value) { this.effects[type] = { duration, value }; }
             updateEffects(dt) { for (const type in this.effects) { this.effects[type].duration -= dt; if (this.effects[type].duration <= 0) delete this.effects[type]; } }
             getSpeed() { let s = this.baseSpeed; if (this.effects.slow) s *= this.effects.slow.value; return s; }
@@ -1577,35 +2067,219 @@
                     let finalGold = this.goldValue;
                     if (activeGambit && activeGambit.rewardModifier) finalGold = activeGambit.rewardModifier(finalGold);
                     gold += finalGold; score += Math.floor(finalGold * 2);
-                    entities.forEach(e => { if (e instanceof MineShaft && Math.hypot(this.x - e.x, this.y - e.y) <= e.range) e.addGold(); });
+                    entities.forEach(e => { if (e instanceof GemMine && Math.hypot(this.x - e.x, this.y - e.y) <= e.range) e.addGold(); });
                     updateUI(); playSound('chaching', 0.2);
                 }
             }
             move(dt) {
+                let moved = false;
                 let targetPixelX, targetPixelY;
-                if (this.isFlying) { targetPixelX = (CASTLE_COLS - 0.5) * TILE_SIZE; targetPixelY = (GRID_ROWS / 2) * TILE_SIZE; }
-                else { const neighbors=[{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}]; let bestNeighbor=null,minPathDist=Infinity; for(const n of neighbors){const nextX=this.x+n.dx,nextY=this.y+n.dy;if(nextX>=0&&nextX<GRID_COLS&&nextY>=0&&nextY<GRID_ROWS&&pathfindingGrid[nextY][nextX]<minPathDist){minPathDist=pathfindingGrid[nextY][nextX];bestNeighbor={x:nextX,y:nextY};}} if(bestNeighbor){targetPixelX=(bestNeighbor.x+0.5)*TILE_SIZE;targetPixelY=(bestNeighbor.y+0.5)*TILE_SIZE;} else {targetPixelX=this.pixelX;targetPixelY=this.pixelY;}}
-                const dx = targetPixelX - this.pixelX, dy = targetPixelY - this.pixelY, dist = Math.hypot(dx, dy), speed = this.getSpeed() * TILE_SIZE * dt;
-                if(dist > 0) { this.pixelX += (dx / dist) * speed; this.pixelY += (dy / dist) * speed; }
-                this.x = Math.floor(this.pixelX / TILE_SIZE); this.y = Math.floor(this.pixelY / TILE_SIZE);
-                if (this.x < CASTLE_COLS) this.attackCastle();
+                if (this.isFlying) {
+                    // Fly to the center of the castle
+                    targetPixelX = (kingPos.x + 0.5) * TILE_SIZE;
+                    targetPixelY = (kingPos.y + 0.5) * TILE_SIZE;
+                    const dx = targetPixelX - this.pixelX, dy = targetPixelY - this.pixelY, dist = Math.hypot(dx, dy);
+                    const speed = this.getSpeed() * TILE_SIZE * dt;
+                    if (dist > 0) {
+                        this.pixelX += (dx / dist) * Math.min(speed, dist);
+                        this.pixelY += (dy / dist) * Math.min(speed, dist);
+                        // Update grid position for flying enemies
+                        this.x = Math.floor(this.pixelX / TILE_SIZE);
+                        this.y = Math.floor(this.pixelY / TILE_SIZE);
+                    }
+                    // Do not apply stuck logic to flying enemies
+                } else {
+                    const neighbors=[{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}]; let bestNeighbor=null,minPathDist=Infinity;
+                    for(const n of neighbors){
+                        const nextX=this.x+n.dx,nextY=this.y+n.dy;
+                        if(nextX>=0&&nextX<GRID_COLS&&nextY>=0&&nextY<GRID_ROWS&&pathfindingGrid[nextY][nextX]<minPathDist){
+                            minPathDist=pathfindingGrid[nextY][nextX];
+                            bestNeighbor={x:nextX,y:nextY};
+                        }
+                    }
+                    if(bestNeighbor && minPathDist !== Infinity) {
+                        targetPixelX=(bestNeighbor.x+0.5)*TILE_SIZE;
+                        targetPixelY=(bestNeighbor.y+0.5)*TILE_SIZE;
+                        const dx = targetPixelX - this.pixelX, dy = targetPixelY - this.pixelY, dist = Math.hypot(dx, dy), speed = this.getSpeed() * TILE_SIZE * dt;
+                        if(dist > 0) {
+                            this.pixelX += (dx / dist) * Math.min(speed, dist); // Don't overshoot
+                            this.pixelY += (dy / dist) * Math.min(speed, dist);
+                            moved = true;
+                        }
+                        // Only update tile position if not blocked by wall
+                        const nextTileX = Math.floor(this.pixelX / TILE_SIZE);
+                        const nextTileY = Math.floor(this.pixelY / TILE_SIZE);
+                        if (grid[nextTileY][nextTileX].entity && grid[nextTileY][nextTileX].entity instanceof Wall) {
+                            // Attack the wall and disappear
+                            grid[nextTileY][nextTileX].entity.takeDamage(this.attackDamage || 10);
+                            this.isAlive = false;
+                            createExplosion(this.pixelX, this.pixelY, 10, '#ff6600', 3, 60, 0.5);
+                            screenShake(0.1);
+                            playSound('cannon');
+                            return;
+                        } else {
+                            this.x = nextTileX;
+                            this.y = nextTileY;
+                        }
+                    } // else: no path, do not move
+                    else {
+                        // No path, do not move
+                        // If stuck (no path), try to attack wall in front (if any)
+                        let attacked = false;
+                        for(const n of neighbors){
+                            const nx=this.x+n.dx, ny=this.y+n.dy;
+                            if(nx>=0&&nx<GRID_COLS&&ny>=0&&ny<GRID_ROWS){
+                                const ent = grid[ny][nx].entity;
+                                if(ent && ent instanceof Wall) {
+                                    ent.takeDamage(this.attackDamage || 10);
+                                    this.isAlive = false;
+                                    createExplosion(this.pixelX, this.pixelY, 10, '#ff6600', 3, 60, 0.5);
+                                    screenShake(0.1);
+                                    playSound('cannon');
+                                    attacked = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if(attacked) return;
+                    }
+                    // Stuck logic: if not moved, increment stuckTime; else reset
+                    if (this.x === this.lastPos.x && this.y === this.lastPos.y) {
+                        this.stuckTime += dt;
+                    } else {
+                        this.stuckTime = 0;
+                        this.lastPos = { x: this.x, y: this.y };
+                    }
+                    // If stuck for more than 5 seconds, remove the enemy
+                    if (!this.isFlying && this.stuckTime > 5) {
+                        this.isAlive = false;
+                        // Optionally: create a small effect to show removal
+                        createExplosion(this.pixelX, this.pixelY, 5, '#888', 2, 30, 0.3);
+                    }
+                }
+                if (grid[this.y][this.x].type === 'castle' || grid[this.y][this.x].type === 'castle_core') this.attackKing();
             }
-            attackCastle() { let damage = this.attackDamage; if (waveFlags.suddenDeath) { damage *= 5; waveFlags.suddenDeath = false; } heartstoneHp -= damage; this.isAlive = false; if (heartstoneHp <= 0) { heartstoneHp = 0; gameOver(); } updateUI(); screenShake(0.3); }
+            attackKing() {
+                let damage = Number(this.attackDamage);
+                if (!isFinite(damage) || isNaN(damage)) damage = 0;
+                if (waveFlags.suddenDeath) { damage *= 5; waveFlags.suddenDeath = false; }
+                kingHp -= damage;
+                if (!isFinite(kingHp) || isNaN(kingHp)) kingHp = 0;
+                if (kingHp <= 0) { kingHp = 0; gameOver(); }
+                updateUI(); screenShake(0.3);
+                this.isAlive = false;
+            }
             update(dt) { this.updateEffects(dt); this.move(dt); }
             draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.3, 0, Math.PI * 2); ctx.fill(); if (this.isFlying) { ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.4, 0, Math.PI * 2); ctx.fill(); } if (this.effects.slow) { ctx.fillStyle = 'rgba(100, 150, 255, 0.7)'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.4, 0, Math.PI * 2); ctx.fill(); } const hpPercent = this.hp / this.maxHp; ctx.fillStyle = '#555'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.3, this.pixelY - TILE_SIZE * 0.5, TILE_SIZE * 0.6, 5); ctx.fillStyle = 'green'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.3, this.pixelY - TILE_SIZE * 0.5, TILE_SIZE * 0.6 * hpPercent, 5); }
         }
         class OrcGrunt extends Enemy {}
-        class GoblinSapper extends Enemy { constructor(x,y) { super(x, y); this.structureDamage = ENEMY_DATA.GoblinSapper.structureDamage; } move(dt) { let targetWall = null, minDistance = Infinity; entities.forEach(e => { if (e instanceof Wall) { const dist = Math.hypot(this.pixelX - e.pixelX, this.pixelY - e.pixelY); if (dist < minDistance) { minDistance = dist; targetWall = e; } } }); if (targetWall && minDistance < TILE_SIZE * 0.8) { targetWall.takeDamage(this.structureDamage); this.isAlive = false; createExplosion(this.pixelX, this.pixelY, 30, '#ff6600', 4, 150, 0.7); screenShake(0.2); playSound('cannon'); } else super.move(dt); } }
+        class GoblinSapper extends Enemy { constructor(x,y) { super(x, y); this.structureDamage = ENEMY_DATA.GoblinSapper.structureDamage; } move(dt) { let targetWall = null, minDistance = Infinity; entities.forEach(e => { if (e instanceof Wall) { const dist = Math.hypot(this.pixelX - e.pixelX, this.pixelY - e.pixelY); if (dist < minDistance) { minDistance = dist; targetWall = e; } } }); if (targetWall && minDistance < TILE_SIZE * 0.8) { targetWall.takeDamage(this.structureDamage); this.isAlive = false; createExplosion(this.pixelX, this.pixelY, 30, '#ff6600', 4, 150, 0.7); screenShake(0.2); playSound('cannon'); } else if (grid[this.y][this.x].type === 'castle' || grid[this.y][this.x].type === 'castle_core') {
+            // No walls, damage king/castle
+            kingHp -= this.structureDamage;
+            if (kingHp < 0) kingHp = 0;
+            updateUI();
+            screenShake(0.3);
+            this.isAlive = false;
+            createExplosion(this.pixelX, this.pixelY, 30, '#ff6600', 4, 150, 0.7);
+            playSound('cannon');
+        } else { super.move(dt); } } }
         class Wraith extends Enemy { draw() { ctx.globalAlpha = 0.7; super.draw(); ctx.globalAlpha = 1; } }
         class GoblinShaman extends Enemy { constructor(x,y) { super(x, y); const data = ENEMY_DATA.GoblinShaman; this.healCooldown = 3; this.healAmount = data.healAmount; this.healRadius = data.healRadius; } update(dt) { super.update(dt); this.healCooldown -= dt; if (this.healCooldown <= 0) { this.heal(); this.healCooldown = 3; } } heal() { entities.forEach(e => { if (e instanceof Enemy && e !== this && Math.hypot(this.x - e.x, this.y - e.y) <= this.healRadius) { e.hp = Math.min(e.maxHp, e.hp + this.healAmount); createExplosion(e.pixelX, e.pixelY, 5, 'lightgreen', 2, 30, 0.5); } }); } }
         class ImpCaster extends Enemy { constructor(x,y) { super(x, y); const data = ENEMY_DATA.ImpCaster; this.castCooldown = 5; this.castRadius = data.castRadius; this.disableDuration = data.disableDuration; } update(dt) { super.update(dt); this.castCooldown -= dt; if(this.castCooldown <= 0) { this.cast(); this.castCooldown = 5; } } cast() { const targets = entities.filter(e => e instanceof Tower && !(e instanceof Wall) && Math.hypot(this.x - e.x, this.y - e.y) <= this.castRadius); if (targets.length > 0) targets[Math.floor(Math.random() * targets.length)].applyBuff('disabled', this.disableDuration, 0); } }
-        class SiegeGolem extends Enemy { constructor(x,y) { super(x,y); this.smashCooldown = 5; } update(dt) { super.update(dt); this.smashCooldown -= dt; if(this.smashCooldown <= 0) { this.smash(); this.smashCooldown = 5; } } smash() { const smashX = this.x - 1, smashY = this.y; for(let dx = -1; dx <= 1; dx++) for(let dy = -1; dy <= 1; dy++) { const nx = smashX + dx, ny = smashY + dy; if(nx >=0 && ny >= 0 && nx < GRID_COLS && ny < GRID_ROWS) { const e = grid[ny][nx].entity; if(e && (e instanceof Wall || e instanceof Trap)) { e.isAlive = false; grid[ny][nx].entity = null; } } } calculatePathfindingGrid(); screenShake(0.4); playSound('cannon', 1.0); } draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.7, 0, Math.PI * 2); ctx.fill(); const hpPercent = this.hp / this.maxHp; ctx.fillStyle = '#555'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.6, this.pixelY - TILE_SIZE, TILE_SIZE * 1.2, 8); ctx.fillStyle = 'purple'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.6, this.pixelY - TILE_SIZE, TILE_SIZE * 1.2 * hpPercent, 8); } }
         class WyvernLord extends Enemy { constructor(x,y) { super(x,y); this.fireBreathCooldown = 6; } update(dt) { super.update(dt); this.fireBreathCooldown -= dt; if (this.fireBreathCooldown <= 0) { this.breatheFire(); this.fireBreathCooldown = 6; } } breatheFire() { const targetY = commander.y; const startX = this.pixelX; const startY = this.pixelY; for (let i = 0; i < 20; i++) { setTimeout(() => { const pX = startX - (i * TILE_SIZE * 0.8); const pY = startY; particles.push(new FireParticle(pX, pY)); entities.forEach(e => { if ((e instanceof Tower || e instanceof Commander) && Math.hypot(e.pixelX - pX, e.pixelY - pY) < TILE_SIZE) { e.takeDamage?.(20); } }); }, i * 25); } playSound('cannon', 0.6); } draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.8, 0, Math.PI * 2); ctx.fill(); const hpPercent = this.hp / this.maxHp; ctx.fillStyle = '#555'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.7, this.pixelY - TILE_SIZE * 1.1, TILE_SIZE * 1.4, 8); ctx.fillStyle = 'purple'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.7, this.pixelY - TILE_SIZE * 1.1, TILE_SIZE * 1.4 * hpPercent, 8); } }
         class FireParticle extends Particle { constructor(x, y) { super(x, y, `rgba(255, ${Math.random()*100+100}, 0, 0.7)`, Math.random() * TILE_SIZE*0.5, 30, 1.5); } }
 
-        const CLASS_MAP = { Wall, ArcherTower, CannonTower, FrostSpire, TarPit, StonemasonHut, MineShaft, OrcGrunt, GoblinSapper, Wraith, GoblinShaman, ImpCaster, SiegeGolem, WyvernLord };
+        const CLASS_MAP = { Wall, ArcherTower, CannonTower, FrostSpire, TarPit, WoodcutterHut, GemMine, OrcGrunt, GoblinSapper, Wraith, GoblinShaman, ImpCaster, WyvernLord };
+
+        let kingPos = { x: 0, y: 0 };
+
+        // Tip system
+        const tipPanel = document.getElementById('tip-panel');
+        let tipTimeout = null;
+        // --- TIP PANEL: Always hide if no tip text ---
+        let lastTipText = '';
+        let tipHideTimeout = null;
+        let tipLockout = false;
+        function setTip(text) {
+            // Normalize text for comparison
+            const normText = (text || '').trim();
+            if (tipLockout && normText === lastTipText) return;
+            if (normText === lastTipText && tipPanel.style.display === 'block') return;
+            lastTipText = normText;
+            tipPanel.innerHTML = normText;
+            if (normText) {
+                tipPanel.style.display = 'block';
+                if (tipHideTimeout) clearTimeout(tipHideTimeout);
+                tipHideTimeout = setTimeout(() => {
+                    tipPanel.style.display = 'none';
+                    tipHideTimeout = null;
+                    tipLockout = true;
+                    setTimeout(() => { tipLockout = false; }, 1200);
+                    lastTipText = '';
+                }, 4000);
+            } else {
+                tipPanel.style.display = 'none';
+                if (tipHideTimeout) {
+                    clearTimeout(tipHideTimeout);
+                    tipHideTimeout = null;
+                }
+                tipLockout = false;
+                lastTipText = '';
+            }
+        }
+        // Show initial tip before first wave
+        let hasShownInitialTip = false;
+        function maybeShowInitialTip() {
+            if (!hasShownInitialTip && gameState === GAME_STATE.BUILD && wave === 1) {
+                setTip('Prepare the defense of the castle with the assets on the menu and hit the Start Wave when you are ready.');
+                hasShownInitialTip = true;
+            }
+        }
+        // Show contextual tip when selecting build
+        function showBuildTip(key) {
+            const tips = {
+                Wall: 'Walls block enemy movement. Use them to shape the path enemies take toward your castle.',
+                ArcherTower: 'Archer Towers shoot arrows at enemies. Good for general defense. Select an existing one to upgrade.',
+                CannonTower: 'Cannon Towers deal area damage. Great against groups of enemies. Select an existing one to upgrade.',
+                FrostSpire: 'Frost Spires slow enemies. Useful for controlling large waves.',
+                TarPit: 'Tar Pits slow down enemies that walk over them.',
+                WoodcutterHut: 'Woodcutter Huts 🪓 generate extra wood 🪵 each wave when built on a forest.',
+                GemMine: 'Gem Mines 💎 collect bonus gold from enemies killed in the range area when built on a gem vein.'
+            };
+            setTip(tips[key] || '');
+        }
 
         init();
+        // 2. In JS, also set pointer cursor and title for extra reliability
+        royalSealsDisplay.style.cursor = 'pointer';
+        royalSealsDisplay.title = 'Click to open the Royal Armory';
+
+        // Change cursor to pointer when hovering over forest or gem vein
+        canvas.addEventListener('mousemove', function(event) {
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor((event.clientX - rect.left) / TILE_SIZE);
+            const y = Math.floor((event.clientY - rect.top) / TILE_SIZE);
+            if (x >= 0 && x < GRID_COLS && y >= 0 && y < GRID_ROWS) {
+                const tile = grid[y][x];
+                if ([
+                    'forest',
+                    'goldvein',
+                    'water',
+                    'bridge',
+                    'castle',
+                    'castle_core'
+                ].includes(tile.type)) {
+                    canvas.style.cursor = 'pointer';
+                    return;
+                }
+            }
+            // Fallback to default (or crosshair if targeting)
+            if (gameState === GAME_STATE.TARGETING) {
+                canvas.style.cursor = 'crosshair';
+            } else {
+                canvas.style.cursor = 'default';
+            }
+        });
     });
     </script>
 </body>
