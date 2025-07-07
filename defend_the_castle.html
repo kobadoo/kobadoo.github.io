@@ -395,7 +395,16 @@
             transition: all 0.2s;
         }
         .armory-item button:hover:not(:disabled) { background: linear-gradient(to bottom, var(--accent-hover), var(--accent-color)); }
-        .armory-item button:disabled { background: #555; cursor: not-allowed; }
+        .armory-item button:disabled {
+            background: #555 !important;
+            border-color: #444;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .armory-item.unavailable {
+            opacity: .45;
+            filter: grayscale(40%);
+        }
 
         #tooltip {
             position: absolute;
@@ -568,7 +577,7 @@
             padding: 14px 18px;
             z-index: 20;
         }
-        // 1. Add CSS for pointer cursor on royal seals display
+        // 1. Add CSS for pointer cursor on royal medals display
         #royal-seals-display { cursor: pointer; }
         #commander-ability span { font-size: 0.9em; }
         @media (max-width: 600px) {
@@ -632,8 +641,8 @@
             <p>The King has fallen.</p>
             <p>You survived <span id="final-wave">0</span> waves.</p>
             <p>Final Score: <span id="final-score">0</span></p>
-            <p>Royal Seals Earned: <span id="royal-seals-earned">0</span> 🏅</p>
-            <button id="armory-btn" class="game-button" style="background: linear-gradient(to bottom, var(--accent-color), #a8761c);" title="Open the Royal Armory to spend your seals">Royal Armory 🏅</button>
+            <p>Royal Medals Earned: <span id="royal-seals-earned">0</span> 🏅</p>
+            <button id="armory-btn" class="game-button" style="background: linear-gradient(to bottom, var(--accent-color), #a8761c);" title="Open the Royal Armory to spend your medals">Royal Armory 🏅</button>
             <button id="restart-btn" class="game-button" style="margin-left: 10px;" title="Restart the game from wave 1">Play Again</button>
         </div>
     </div>
@@ -656,15 +665,15 @@
                 - <b>Buttons</b>: Use on-screen UI for actions
             </div>
             <button id="start-game-btn" class="game-button" style="margin-top: 10px; font-size:1.1em; width:100%; max-width:320px;" title="Start a new game">Start Game</button>
-            <button id="main-menu-armory-btn" class="game-button" style="margin:10px 0 0 0; background: linear-gradient(to bottom, var(--accent-color), #a8761c); display: none; width:100%; max-width:320px;" title="Unlock permanent upgrades with Royal Seals earned from completing games">Royal Armory 🏅</button>
+            <button id="main-menu-armory-btn" class="game-button" style="margin:10px 0 0 0; background: linear-gradient(to bottom, var(--accent-color), #a8761c); display: none; width:100%; max-width:320px;" title="Unlock permanent upgrades with Royal Medals earned from completing games">Royal Armory 🏅</button>
         </div>
     </div>
 
     <div id="armory-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <h2>The Royal Armory</h2>
-            <p style="color: var(--secondary-text);">Spend Royal Seals on permanent upgrades.</p>
-            <p style="font-size: 1.2em;">Current Seals: <span id="armory-seals-display" style="color: var(--accent-color); font-weight:700;">0 🏅</span></p>
+            <p style="color: var(--secondary-text);">Spend Royal Medals on permanent upgrades.</p>
+            <p style="font-size: 1.2em;">Current Medals: <span id="armory-seals-display" style="color: var(--accent-color); font-weight:700;">0 🏅</span></p>
             <div id="armory-upgrades-container" style="max-height: 300px; overflow-y: auto; text-align: left; padding-right: 10px;"></div>
             <button id="close-armory-btn" class="game-button" style="margin-top: 20px; background: #666; border-color: #555;" title="Close the Royal Armory and return to the menu or game">Close</button>
         </div>
@@ -1286,7 +1295,7 @@
             woodDisplay.textContent = Math.floor(wood);
             scoreDisplay.innerHTML = `Score: <span style="color: var(--accent-color);">${score}</span>`;
 
-            // Award Royal Seals during the game
+            // Award Royal Medals during the game
             const sealsEarned = Math.floor(score / 500) - Math.floor(lastSealScore / 500);
             if (sealsEarned > 0) {
                 royalSeals += sealsEarned;
@@ -1655,7 +1664,7 @@
             document.getElementById('royal-seals-earned').textContent = `${sealsEarned} 👑`;
             document.getElementById('game-over-modal').style.display = 'flex';
             
-            // Show special message if this is the first time earning Royal Seals
+            // Show special message if this is the first time earning Royal Medals
             if (!hadSealsBefore && sealsEarned > 0) {
                 const armoryBtn = document.getElementById('armory-btn');
                 armoryBtn.innerHTML = '🎉 Royal Armory Unlocked! 🏅';
@@ -1768,7 +1777,7 @@
             document.getElementById('armory-modal').style.display = 'none';
             updateRoyalSealsDisplay();
             
-            // Only show Royal Armory button if player has earned Royal Seals
+            // Only show Royal Armory button if player has earned Royal Medals
             const armoryBtn = document.getElementById('main-menu-armory-btn');
             if (royalSeals > 0) {
                 armoryBtn.style.display = 'inline-block';
@@ -1823,7 +1832,9 @@
                 if (item.type === 'passive') {
                     const unlock = unlockedItems[key] || { level: 0 };
                     const cost = item.cost + Math.floor(item.cost * unlock.level * 0.5);
-                    content += `<span style="font-size:0.95em;">Lvl: ${unlock.level}/${item.maxLevel}</span><button data-key="${key}" data-cost="${cost}" ${unlock.level >= item.maxLevel || royalSeals < cost ? 'disabled' : ''}>Buy (${cost}🏅)</button>`;
+                    const needsDisable = unlock.level >= item.maxLevel || royalSeals < cost;
+                    if (needsDisable) itemEl.classList.add('unavailable');
+                    content += `<span …>${unlock.level}/${item.maxLevel}</span><button data-key="${key}" data-cost="${cost}" ${needsDisable ? 'disabled="disabled"' : ''}>Buy (${cost}🏅)</button>`;
                 } else {
                     const isUnlocked = unlockedItems[key];
                     if (isUnlocked) itemEl.classList.add('unlocked');
