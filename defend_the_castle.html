@@ -1068,7 +1068,7 @@
             const castleStartX = (kingPos.x - 1) * TILE_SIZE;
             const castleStartY = (kingPos.y - 1) * TILE_SIZE;
             ctx.save();
-            ctx.strokeStyle = 'rgba(241, 224, 90, 0.85)';
+            ctx.strokeStyle = '#aeb8c2'; // Stone grey
             ctx.lineWidth = 3;
             ctx.strokeRect(castleStartX, castleStartY, TILE_SIZE * 3, TILE_SIZE * 3);
             ctx.restore();
@@ -1528,30 +1528,40 @@
         }
         
         function spawnEnemy(type) {
-            // Randomly pick an edge: 0=top, 1=bottom, 2=left, 3=right
-            const edge = Math.floor(Math.random() * 4);
-            let spawnX, spawnY;
-            if (edge === 0) { // top
-                spawnX = Math.floor(Math.random() * GRID_COLS);
-                spawnY = 0;
-            } else if (edge === 1) { // bottom
-                spawnX = Math.floor(Math.random() * GRID_COLS);
-                spawnY = GRID_ROWS - 1;
-            } else if (edge === 2) { // left
-                spawnX = 0;
-                spawnY = Math.floor(Math.random() * GRID_ROWS);
-            } else { // right
-                spawnX = GRID_COLS - 1;
-                spawnY = Math.floor(Math.random() * GRID_ROWS);
+            // Try up to 20 times to find a valid spawn location
+            for (let attempt = 0; attempt < 20; attempt++) {
+                // Randomly pick an edge: 0=top, 1=bottom, 2=left, 3=right
+                const edge = Math.floor(Math.random() * 4);
+                let spawnX, spawnY;
+                if (edge === 0) { // top
+                    spawnX = Math.floor(Math.random() * GRID_COLS);
+                    spawnY = 0;
+                } else if (edge === 1) { // bottom
+                    spawnX = Math.floor(Math.random() * GRID_COLS);
+                    spawnY = GRID_ROWS - 1;
+                } else if (edge === 2) { // left
+                    spawnX = 0;
+                    spawnY = Math.floor(Math.random() * GRID_ROWS);
+                } else { // right
+                    spawnX = GRID_COLS - 1;
+                    spawnY = Math.floor(Math.random() * GRID_ROWS);
+                }
+                // Don't spawn in water, castle, or on impassable tiles
+                if (
+                    grid[spawnY][spawnX].type === 'water' ||
+                    grid[spawnY][spawnX].type === 'castle'
+                ) {
+                    continue;
+                }
+                // Only spawn if there is a valid path to the castle
+                if (pathfindingGrid[spawnY][spawnX] !== Infinity) {
+                    const enemy = new CLASS_MAP[type](spawnX, spawnY);
+                    if (activeGambit && activeGambit.enemyModifier) activeGambit.enemyModifier(enemy);
+                    entities.push(enemy);
+                    return;
+                }
             }
-            // Don't spawn in water or castle
-            if (grid[spawnY][spawnX].type === 'water' || grid[spawnY][spawnX].type === 'castle') {
-                // Try again recursively (should be rare)
-                return spawnEnemy(type);
-            }
-            const enemy = new CLASS_MAP[type](spawnX, spawnY);
-            if (activeGambit && activeGambit.enemyModifier) activeGambit.enemyModifier(enemy);
-            entities.push(enemy);
+            // If no valid spawn found after 20 attempts, skip spawning
         }
 
         function getWaveData(waveNum) {
@@ -1559,10 +1569,8 @@
             const isNightWave = waveNum % 5 === 0;
             
             if (isBossWave) {
-                if (waveNum === 10) return { enemies: [{ type: 'OrcGrunt', count: 10, interval: 500 }] };
-                if (waveNum === 20) return { enemies: [{ type: 'WyvernLord', count: 1, interval: 1000 }] };
-                // Add more bosses or cycle
-                return { enemies: [{ type: 'OrcGrunt', count: 10 + Math.floor(waveNum / 20), interval: 500 }] };
+                // No OrcGrunt, just use GoblinSapper for all boss waves
+                return { enemies: [{ type: 'GoblinSapper', count: 10 + Math.floor(waveNum / 10), interval: 500 }] };
             }
 
             let enemies = [{ type: 'OrcGrunt', count: 5 + waveNum * 2, interval: 500 }];
@@ -1626,7 +1634,7 @@
                     const nx = x + n.dx, ny = y + n.dy;
                     if (nx >= 0 && nx < GRID_COLS && ny >= 0 && ny < GRID_ROWS && pathfindingGrid[ny][nx] === Infinity) {
                         const cell = grid[ny][nx];
-                        if (cell.type === 'water') continue; // Water is impassable
+                        if (cell.type === 'water') continue; // Only water is impassable for pathfinding
                         pathfindingGrid[ny][nx] = dist + 1;
                         queue.push({ x: nx, y: ny, dist: dist + 1 });
                     }
@@ -1866,10 +1874,8 @@
             OrcGrunt: { hp: 100, hpScaling: 10, speed: 1.5, gold: 5, attackDamage: 10, color: '#4b692f' },
             GoblinSapper: { hp: 50, hpScaling: 5, speed: 2.5, gold: 8, structureDamage: 250, color: '#d13a34' },
             Wraith: { hp: 80, hpScaling: 8, speed: 1.8, gold: 12, attackDamage: 15, isFlying: true, color: '#a0a0d0' },
-            GoblinShaman: { hp: 120, hpScaling: 12, speed: 1, gold: 15, attackDamage: 5, healAmount: 20, healRadius: 3, color: '#a971d4' },
-            ImpCaster: { hp: 90, hpScaling: 9, speed: 1.2, gold: 18, attackDamage: 5, castRadius: 4, disableDuration: 4, color: '#ff69b4' },
-            SiegeGolem: { hp: 5000, hpScaling: 500, speed: 0.5, gold: 500, attackDamage: 200, color: '#5d5d5d' },
-            WyvernLord: { hp: 8000, hpScaling: 800, speed: 1.5, gold: 800, attackDamage: 150, isFlying: true, color: '#8B0000' }
+            GoblinShaman: { hp: 120, hpScaling: 12, speed: 1, gold: 15, attackDamage: 20, healAmount: 20, healRadius: 3, color: '#a971d4' },
+            ImpCaster: { hp: 90, hpScaling: 9, speed: 1.2, gold: 18, attackDamage: 30, castRadius: 4, disableDuration: 4, color: '#ff69b4' },
         };
         const ARMORY_DATA = {
             FROST_SPIRE: { name: "Unlock Frost Spire", cost: 4, description: "Unlocks the Frost Spire: a tower that slows enemies it hits, reducing their movement speed.", type: 'tower'},
@@ -1997,6 +2003,16 @@
                     // Fly to the center of the castle
                     targetPixelX = (kingPos.x + 0.5) * TILE_SIZE;
                     targetPixelY = (kingPos.y + 0.5) * TILE_SIZE;
+                    const dx = targetPixelX - this.pixelX, dy = targetPixelY - this.pixelY, dist = Math.hypot(dx, dy);
+                    const speed = this.getSpeed() * TILE_SIZE * dt;
+                    if (dist > 0) {
+                        this.pixelX += (dx / dist) * Math.min(speed, dist);
+                        this.pixelY += (dy / dist) * Math.min(speed, dist);
+                        // Update grid position for flying enemies
+                        this.x = Math.floor(this.pixelX / TILE_SIZE);
+                        this.y = Math.floor(this.pixelY / TILE_SIZE);
+                    }
+                    // Do not apply stuck logic to flying enemies
                 } else {
                     const neighbors=[{dx:0,dy:1},{dx:0,dy:-1},{dx:1,dy:0},{dx:-1,dy:0}]; let bestNeighbor=null,minPathDist=Infinity;
                     for(const n of neighbors){
@@ -2052,22 +2068,19 @@
                         }
                         if(attacked) return;
                     }
-                }
-                // Stuck logic: if not moved, increment stuckTime; else reset
-                if (this.x === this.lastPos.x && this.y === this.lastPos.y) {
-                    this.stuckTime += dt;
-                } else {
-                    this.stuckTime = 0;
-                    this.lastPos = { x: this.x, y: this.y };
-                }
-                // If stuck for more than 5 seconds, damage king/castle and die
-                if (!this.isFlying && this.stuckTime > 5) {
-                    kingHp -= this.attackDamage || 10;
-                    if (kingHp < 0) kingHp = 0;
-                    updateUI();
-                    screenShake(0.3);
-                    this.isAlive = false;
-                    createExplosion(this.pixelX, this.pixelY, 10, '#ff6600', 3, 60, 0.5);
+                    // Stuck logic: if not moved, increment stuckTime; else reset
+                    if (this.x === this.lastPos.x && this.y === this.lastPos.y) {
+                        this.stuckTime += dt;
+                    } else {
+                        this.stuckTime = 0;
+                        this.lastPos = { x: this.x, y: this.y };
+                    }
+                    // If stuck for more than 5 seconds, remove the enemy
+                    if (!this.isFlying && this.stuckTime > 5) {
+                        this.isAlive = false;
+                        // Optionally: create a small effect to show removal
+                        createExplosion(this.pixelX, this.pixelY, 5, '#888', 2, 30, 0.3);
+                    }
                 }
                 if (grid[this.y][this.x].type === 'castle' || grid[this.y][this.x].type === 'castle_core') this.attackKing();
             }
@@ -2098,11 +2111,10 @@
         class Wraith extends Enemy { draw() { ctx.globalAlpha = 0.7; super.draw(); ctx.globalAlpha = 1; } }
         class GoblinShaman extends Enemy { constructor(x,y) { super(x, y); const data = ENEMY_DATA.GoblinShaman; this.healCooldown = 3; this.healAmount = data.healAmount; this.healRadius = data.healRadius; } update(dt) { super.update(dt); this.healCooldown -= dt; if (this.healCooldown <= 0) { this.heal(); this.healCooldown = 3; } } heal() { entities.forEach(e => { if (e instanceof Enemy && e !== this && Math.hypot(this.x - e.x, this.y - e.y) <= this.healRadius) { e.hp = Math.min(e.maxHp, e.hp + this.healAmount); createExplosion(e.pixelX, e.pixelY, 5, 'lightgreen', 2, 30, 0.5); } }); } }
         class ImpCaster extends Enemy { constructor(x,y) { super(x, y); const data = ENEMY_DATA.ImpCaster; this.castCooldown = 5; this.castRadius = data.castRadius; this.disableDuration = data.disableDuration; } update(dt) { super.update(dt); this.castCooldown -= dt; if(this.castCooldown <= 0) { this.cast(); this.castCooldown = 5; } } cast() { const targets = entities.filter(e => e instanceof Tower && !(e instanceof Wall) && Math.hypot(this.x - e.x, this.y - e.y) <= this.castRadius); if (targets.length > 0) targets[Math.floor(Math.random() * targets.length)].applyBuff('disabled', this.disableDuration, 0); } }
-        class SiegeGolem extends Enemy { constructor(x,y) { super(x,y); this.smashCooldown = 5; } update(dt) { super.update(dt); this.smashCooldown -= dt; if(this.smashCooldown <= 0) { this.smash(); this.smashCooldown = 5; } } smash() { const smashX = this.x - 1, smashY = this.y; for(let dx = -1; dx <= 1; dx++) for(let dy = -1; dy <= 1; dy++) { const nx = smashX + dx, ny = smashY + dy; if(nx >=0 && ny >= 0 && nx < GRID_COLS && ny < GRID_ROWS) { const e = grid[ny][nx].entity; if(e && (e instanceof Wall || e instanceof Trap)) { e.isAlive = false; grid[ny][nx].entity = null; } } } calculatePathfindingGrid(); screenShake(0.4); playSound('cannon', 1.0); } draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.7, 0, Math.PI * 2); ctx.fill(); const hpPercent = this.hp / this.maxHp; ctx.fillStyle = '#555'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.6, this.pixelY - TILE_SIZE, TILE_SIZE * 1.2, 8); ctx.fillStyle = 'purple'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.6, this.pixelY - TILE_SIZE, TILE_SIZE * 1.2 * hpPercent, 8); } }
         class WyvernLord extends Enemy { constructor(x,y) { super(x,y); this.fireBreathCooldown = 6; } update(dt) { super.update(dt); this.fireBreathCooldown -= dt; if (this.fireBreathCooldown <= 0) { this.breatheFire(); this.fireBreathCooldown = 6; } } breatheFire() { const targetY = commander.y; const startX = this.pixelX; const startY = this.pixelY; for (let i = 0; i < 20; i++) { setTimeout(() => { const pX = startX - (i * TILE_SIZE * 0.8); const pY = startY; particles.push(new FireParticle(pX, pY)); entities.forEach(e => { if ((e instanceof Tower || e instanceof Commander) && Math.hypot(e.pixelX - pX, e.pixelY - pY) < TILE_SIZE) { e.takeDamage?.(20); } }); }, i * 25); } playSound('cannon', 0.6); } draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.8, 0, Math.PI * 2); ctx.fill(); const hpPercent = this.hp / this.maxHp; ctx.fillStyle = '#555'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.7, this.pixelY - TILE_SIZE * 1.1, TILE_SIZE * 1.4, 8); ctx.fillStyle = 'purple'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.7, this.pixelY - TILE_SIZE * 1.1, TILE_SIZE * 1.4 * hpPercent, 8); } }
         class FireParticle extends Particle { constructor(x, y) { super(x, y, `rgba(255, ${Math.random()*100+100}, 0, 0.7)`, Math.random() * TILE_SIZE*0.5, 30, 1.5); } }
 
-        const CLASS_MAP = { Wall, ArcherTower, CannonTower, FrostSpire, TarPit, WoodcutterHut, GemMine, OrcGrunt, GoblinSapper, Wraith, GoblinShaman, ImpCaster, SiegeGolem, WyvernLord };
+        const CLASS_MAP = { Wall, ArcherTower, CannonTower, FrostSpire, TarPit, WoodcutterHut, GemMine, OrcGrunt, GoblinSapper, Wraith, GoblinShaman, ImpCaster, WyvernLord };
 
         let kingPos = { x: 0, y: 0 };
 
