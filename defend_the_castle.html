@@ -1295,9 +1295,19 @@
         function updateBuildMenu() {
             buildMenu.innerHTML = '';
             const buildableDefenses = {W: 'Wall', A: 'ArcherTower', C: 'CannonTower', F: 'FrostSpire', T: 'TarPit', M: 'WoodcutterHut', G: 'GemMine'};
+            // Map DEFENSE_DATA keys to ARMORY_DATA keys for unlock check
+            const armoryKeyMap = {
+                FrostSpire: 'FROST_SPIRE',
+                TarPit: 'TAR_PIT',
+                RallyingCry: 'RALLYING_CRY',
+            };
             Object.entries(buildableDefenses).forEach(([hotkey, key]) => {
                 const def = DEFENSE_DATA[key];
-                if (def.isUnlockable && !unlockedItems[key]) return;
+                let unlockKey = key;
+                if (def.isUnlockable) {
+                    unlockKey = armoryKeyMap[key] || key.toUpperCase();
+                    if (!unlockedItems[unlockKey]) return;
+                }
                 const item = document.createElement('div');
                 item.className = 'build-item';
                 item.dataset.key = key;
@@ -1780,6 +1790,10 @@
                 prevGameState = null;
                 document.getElementById('armory-modal').style.display = 'none';
                 setTimeout(() => { updateUI(); updateBuildMenu(); }, 10);
+                // Ensure game loop resumes if returning to BUILD or ATTACK
+                if (gameState === GAME_STATE.BUILD || gameState === GAME_STATE.ATTACK) {
+                    gameLoop(performance.now());
+                }
             } else if (!gameOverVisible) {
                 prevGameState = null;
                 showMainMenu();
