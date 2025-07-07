@@ -1179,15 +1179,16 @@
 
         function onMouseClick() {
             if (mouse.gridX < 0 || mouse.gridX >= GRID_COLS || mouse.gridY < 0 || mouse.gridY >= GRID_ROWS) return;
-            // Show tip if clicking on forest or gem vein
             const tile = grid[mouse.gridY][mouse.gridX];
-            if (tile.type === 'forest') {
-                setTip('Forests 🌲: Build a Woodcutter Hut 🪓 here to generate extra wood each wave.');
-                return;
-            }
-            if (tile.type === 'goldvein') {
-                setTip('Gem Vein 💎: Build a Mine ⛏️ here to collect bonus gold from enemy kills.');
-                return;
+            if (!selectedBuild) {
+                if (tile.type === 'forest') {
+                    setTip('Forests 🌲: Build a Woodcutter Hut 🪓 here to generate extra wood each wave.');
+                    return;
+                }
+                if (tile.type === 'goldvein') {
+                    setTip('Gem Vein 💎: Build a Mine ⛏️ here to collect bonus gold from enemy kills.');
+                    return;
+                }
             }
             if (tile.type === 'water') {
                 setTip('Water surface. Enemies cannot cross this area and you cannot build here.');
@@ -2143,7 +2144,7 @@
                 FrostSpire: 'Frost Spires slow enemies. Useful for controlling large waves.',
                 TarPit: 'Tar Pits slow down enemies that walk over them.',
                 WoodcutterHut: 'Woodcutter Huts 🪓 generate extra wood 🪵 each wave when built on a forest.',
-                GemMine: 'Gem Mines 💎 collect bonus gold from kills when built on a gem vein.'
+                GemMine: 'Gem Mines 💎 collect bonus gold from enemies killed in the range area when built on a gem vein.'
             };
             setTip(tips[key] || '');
         }
