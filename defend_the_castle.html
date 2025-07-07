@@ -1487,7 +1487,7 @@
 
         function endWave() {
             gameState = GAME_STATE.WAVE_END;
-            let goldBonus = 50 + wave * 5, woodBonus = 20 + wave * 2, scoreBonus = 100 * wave;
+            let goldBonus = 2 * (50 + wave * 5), woodBonus = 2 * (20 + wave * 2), scoreBonus = 100 * wave;
             if (activeGambit && activeGambit.onComplete) {
                 const bonus = activeGambit.onComplete({goldBonus, woodBonus});
                 if(bonus.gold) goldBonus += bonus.gold; if(bonus.wood) woodBonus += bonus.wood;
@@ -1860,8 +1860,8 @@
 
         // --- DATA CONFIGURATION ---
         const DEFENSE_DATA = {
-            STARTING_GOLD: 100,
-            STARTING_WOOD: 50,
+            STARTING_GOLD: 250,
+            STARTING_WOOD: 200,
             Wall: { name: 'Wall', type: 'wall', costGold: 0, costWood: 10, icon: '🛡️', hp: [300, 500, 800] },
             ArcherTower: { name: 'Archer', type: 'tower', costGold: 50, costWood: 10, icon: '🏹', range: [3, 3.3, 3.6], damage: [25, 40, 60], fireRate: [1, 0.9, 0.8], canAttackFlying: true },
             CannonTower: { name: 'Cannon', type: 'tower', costGold: 120, costWood: 30, icon: '💣', range: [4, 4.2, 4.5], damage: [60, 90, 130], fireRate: [3, 2.8, 2.5], canAttackFlying: false, aoeRadius: [1, 1.1, 1.2] },
