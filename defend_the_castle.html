@@ -165,6 +165,7 @@
             transform: none;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
             opacity: 0.7;
+            pointer-events:none;
         }
 
         #commander-ability {
@@ -1239,7 +1240,7 @@
                     case 'w': selectBuild('Wall'); break;
                     case 'a': selectBuild('ArcherTower'); break;
                     case 'c': selectBuild('CannonTower'); break;
-                    case 'q': useRallyingCry(); break;
+                    case 'q': if (rallyingCryCooldown <= 0 && unlockedItems.RALLYING_CRY) { useRallyingCry();} break;
                     case 'u': if(hoveredTower) upgradeHoveredTower(); break;
                     case 'escape': deselect(); break;
                     case ' ': if (gameState === GAME_STATE.BUILD && !startWaveBtn.classList.contains('disabled')) startWave(); break;
@@ -1925,12 +1926,12 @@
             ImpCaster: { hp: 90, hpScaling: 9, speed: 1.2, gold: 18, attackDamage: 30, castRadius: 4, disableDuration: 4, color: '#ff69b4' },
         };
         const ARMORY_DATA = {
-            FROST_SPIRE: { name: "Unlock Frost Spire", cost: 4, description: "Unlocks the Frost Spire: a tower that slows enemies it hits, reducing their movement speed.", type: 'tower'},
-            TAR_PIT: { name: "Unlock Tar Pit", cost: 1, description: "Unlocks the Tar Pit: a trap that heavily slows enemies standing on it.", type: 'trap'},
-            RALLYING_CRY: { name: "Unlock Rallying Cry", cost: 6, description: "Press Q to temporarily boost all towers' attack speed for 5 seconds. Great for tough waves!", type: 'ability'},
-            STARTING_GOLD: { name: "+10% Starting Gold", cost: 3, effect: 0.1, maxLevel: 5, type: 'passive', description: "Start each game with 10% more gold per level of this upgrade (up to +50%)." },
-            WALL_HP: { name: "+10% Wall HP", cost: 2, effect: 0.1, maxLevel: 5, type: 'passive', description: "Walls have 10% more HP (Health Points) per level of this upgrade (up to +50%)." },
-            COMMANDER_COOLDOWN: { name: "-5% Rallying Cry Cooldown", cost: 5, effect: 0.05, maxLevel: 3, type: 'passive', description: "Reduces the cooldown of Rallying Cry by 5% per level (up to -15%)." },
+            FROST_SPIRE: { name: "Unlock Frost Spire", cost: 90, description: "Unlocks the Frost Spire: a tower that slows enemies it hits, reducing their movement speed.", type: 'tower'},
+            TAR_PIT: { name: "Unlock Tar Pit", cost: 15, description: "Unlocks the Tar Pit: a trap that heavily slows enemies standing on it.", type: 'trap'},
+            RALLYING_CRY: { name: "Unlock Rallying Cry", cost: 165, description: "Press Q to temporarily boost all towers' attack speed for 5 seconds. Great for tough waves!", type: 'ability'},
+            STARTING_GOLD: { name: "+10% Starting Gold", cost: 60, effect: 0.1, maxLevel: 5, type: 'passive', description: "Start each game with 10% more gold per level of this upgrade (up to +50%)." },
+            WALL_HP: { name: "+10% Wall HP", cost: 35, effect: 0.1, maxLevel: 5, type: 'passive', description: "Walls have 10% more HP (Health Points) per level of this upgrade (up to +50%)." },
+            COMMANDER_COOLDOWN: { name: "-5% Rallying Cry Cooldown", cost: 125, effect: 0.05, maxLevel: 3, type: 'passive', description: "Reduces the cooldown of Rallying Cry by 5% per level (up to -15%)." },
         };
 
         // --- ENTITY CLASSES ---
