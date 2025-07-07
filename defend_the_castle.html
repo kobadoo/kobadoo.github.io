@@ -446,8 +446,9 @@
                 flex-wrap: wrap;
                 order: 3;
                 border-radius: 0;
-                padding: 5px; gap: 5px;
+                padding: 1px; gap: 5px;
                 box-sizing: border-box;
+                margin-bottom: 10px;
             }
             .resource-display, .wave-display { font-size: 1em; }
             .game-button { padding: 10px; font-size: 1em; }
@@ -460,7 +461,7 @@
                 justify-content: center;
                 width: 100%;
                 order: 2;
-                padding: 5px;
+                padding: 1px;
                 box-sizing: border-box;
             }
             .build-item { width: 60px; height: 60px; }
@@ -535,7 +536,20 @@
                 margin-bottom: 12px;
             }
             #king-hp-container {
-                max-width: 60px !important;
+                max-width: 80px !important;
+            }
+            #start-wave-btn {
+                padding: 5px;
+                height: 30px;
+            }
+            #undo-btn {
+                padding: 5px;
+                height: 30px;
+            }
+            #commander-ability {
+                padding: 3px;
+                height: 30px;
+                max-width: 40px;
             }
         }
 
@@ -787,7 +801,7 @@
         function resizeCanvas() {
             const bottomBarHeight = document.getElementById('bottom-bar').offsetHeight;
             const buildMenuHeight = document.getElementById('build-menu').offsetHeight;
-            const availableHeight = window.innerHeight - bottomBarHeight - buildMenuHeight - 20; // 20 for margins
+            const availableHeight = window.innerHeight - bottomBarHeight - buildMenuHeight - 60;
             const availableWidth = window.innerWidth - 20;
 
             const containerRatio = availableWidth / availableHeight;
