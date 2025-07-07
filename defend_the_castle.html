@@ -202,7 +202,7 @@
         }
         
         #undo-btn {
-            width: 40px; height: 40px; font-size: 1.5em; padding: 0;
+            width: 30px; height: 40px; font-size: 1.5em; padding: 0;
             display: flex; justify-content: center; align-items: center;
             background: #666; border-color: #555;
         }
@@ -449,7 +449,7 @@
                 box-sizing: border-box;
             }
             .resource-display, .wave-display { font-size: 1em; }
-            .game-button { padding: 10px 18px; font-size: 1em; }
+            .game-button { padding: 10px; font-size: 1em; }
             #build-menu {
                 position: relative;
                 top: auto; bottom: auto; left: auto; right: auto;
@@ -464,7 +464,7 @@
             }
             .build-item { width: 60px; height: 60px; }
             .modal-content { width: 95%; padding: 20px; }
-            #game-message { font-size: 1.5em; width: 90%; }
+            #game-message { font-size: 1.5em; width: 90%; width:auto; max-width:80%; left:50%; transform:translateX(-50%); text-align:center;}
         }
 
         @media (max-width: 600px), (max-height: 700px) {
@@ -512,7 +512,7 @@
 
         @media (max-width: 900px) {
             #tip-panel {
-                display: block !important;
+                display: block;
                 position: static;
                 left: unset;
                 top: unset;
@@ -534,9 +534,7 @@
                 margin-bottom: 12px;
             }
             #king-hp-container {
-                width: 120px !important;
-                min-width: 80px !important;
-                max-width: 140px !important;
+                max-width: 60px !important;
             }
         }
 
@@ -559,7 +557,7 @@
         #royal-seals-display { cursor: pointer; }
         #commander-ability span { font-size: 0.9em; }
         @media (max-width: 600px) {
-            #commander-ability { font-size: 0.85em; }
+            #commander-ability { font-size: 0.70em; max-width: 40px; }
             #commander-ability span { font-size: 0.8em; }
         }
     </style>
@@ -588,7 +586,7 @@
             <button id="undo-btn" class="game-button disabled" title="Undo your last build or upgrade action">↺</button>
             <button id="start-wave-btn" class="game-button" title="Start the next enemy wave">Start Wave</button>
             <!-- Rallying Cry Button (hidden by default, shown when unlocked) -->
-            <button id="commander-ability" class="game-button" style="display:none; margin-left:10px; background:linear-gradient(to bottom, #c98e22, #a8761c); border-color:var(--accent-color);" title="Rallying Cry: Temporarily boost all towers' attack speed (Q)">Rallying Cry <span id="commander-ability-cooldown" style="display:none;"></span></button>
+            <button id="commander-ability" class="game-button" style="display:none; background:linear-gradient(to bottom, #c98e22, #a8761c); border-color:var(--accent-color);" title="Rallying Cry: Temporarily boost all towers' attack speed (Q)">Rallying Cry <span id="commander-ability-cooldown" style="display:none;"></span></button>
         </div>
 
         <div id="build-menu" class="ui-panel">
@@ -2184,11 +2182,10 @@
                 tipPanel.style.display = 'block';
                 if (tipHideTimeout) clearTimeout(tipHideTimeout);
                 tipHideTimeout = setTimeout(() => {
-                    console.log("HOOOO");
                     tipPanel.style.display = 'none';
                     tipHideTimeout = null;
                     tipLockout = true;
-                    setTimeout(() => { tipLockout = false; }, 1200); // 1.2s lockout after hide
+                    setTimeout(() => { tipLockout = false; }, 1200);
                     lastTipText = '';
                 }, 4000);
             } else {
