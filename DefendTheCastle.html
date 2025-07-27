@@ -651,6 +651,18 @@
             <button id="restart-btn" class="game-button" style="margin-left: 10px;" title="Restart the game from wave 1">Play Again</button>
         </div>
     </div>
+
+    <div id="victory-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2 id="victory-title" style="color: var(--green);">VICTORY!</h2>
+            <p style="font-size: 1.2em; color: var(--accent-color);">The enemy has lifted the siege!</p>
+            <p>Your legendary defense has broken the will of the invaders. After 30 relentless waves, they have retreated in defeat, and your kingdom stands triumphant!</p>
+            <p>Final Score: <span id="victory-final-score" style="color: var(--accent-color); font-weight: 700;">0</span></p>
+            <p>Royal Medals Earned: <span id="victory-royal-seals-earned" style="color: var(--accent-color); font-weight: 700;">0</span> 🏅</p>
+            <button id="victory-armory-btn" class="game-button" style="background: linear-gradient(to bottom, var(--accent-color), #a8761c);" title="Open the Royal Armory to spend your medals">Royal Armory 🏅</button>
+            <button id="victory-restart-btn" class="game-button" style="margin-left: 10px;" title="Start a new game">Play Again</button>
+        </div>
+    </div>
     
     <div id="main-menu-modal" class="modal-overlay">
         <div class="modal-content" id="main-menu-content">
@@ -709,6 +721,7 @@
         let gold = 0, wood = 0, kingHp = 0;
         const KING_MAX_HP = 1000;
         let wave = 1, score = 0;
+        let kingTookDamageThisWave = false;
 
         let selectedBuild = null, hoveredTower = null, towerToSetTarget = null;
         let mouse = { x: 0, y: 0, gridX: -1, gridY: -1 };
@@ -857,6 +870,7 @@
             wood = DEFENSE_DATA.STARTING_WOOD; kingHp = KING_MAX_HP;
             wave = 1; score = 0;
             lastSealScore = 0;
+            kingTookDamageThisWave = false; // Initialize damage tracking
             selectedBuild = null; hoveredTower = null; activeGambit = null; lastBuildUndo = null;
             window.waveCanEnd = false;
 
@@ -892,6 +906,10 @@
                     grid[y][x].type = 'castle';
                 }
             }
+
+            // Add castle defense system
+            const castleDefense = new CastleDefense(centerX, centerY);
+            entities.push(castleDefense);
 
             // 2. Generate a river with 2-3 bridges
             function generateRiverAndBridges() {
@@ -1286,6 +1304,8 @@
             document.getElementById('main-menu-armory-btn').addEventListener('click', showArmory);
             document.getElementById('restart-btn').addEventListener('click', () => { document.getElementById('game-over-modal').style.display = 'none'; showMainMenu(); });
             document.getElementById('armory-btn').addEventListener('click', showArmory);
+            document.getElementById('victory-restart-btn').addEventListener('click', () => { document.getElementById('victory-modal').style.display = 'none'; showMainMenu(); });
+            document.getElementById('victory-armory-btn').addEventListener('click', showArmory);
             document.getElementById('close-armory-btn').addEventListener('click', closeArmory);
             document.getElementById('skip-gambit-btn').addEventListener('click', () => { activeGambit = null; document.getElementById('gambit-modal').style.display = 'none'; startWaveAttackPhase(); });
             commanderAbilityBtn.addEventListener('click', function() {
@@ -1384,7 +1404,11 @@
                 const item = document.createElement('div');
                 item.className = 'build-item';
                 item.dataset.key = key;
-                item.dataset.tooltip = `<b>${def.name}</b><br>Cost: ${def.costGold}💰 ${def.costWood}🪵`;
+                let tooltip = `<b>${def.name}</b><br>Cost: ${def.costGold}💰 ${def.costWood}🪵`;
+                if (key === 'Wall') {
+                    tooltip += `<br><small>Damaged walls can be repaired for a wood cost</small>`;
+                }
+                item.dataset.tooltip = tooltip;
                 item.innerHTML = `
                     <div class="build-item-hotkey">${hotkey}</div>
                     <div class="build-item-icon">${def.icon}</div>
@@ -1472,19 +1496,57 @@
             upgradeSellPanel.style.left = `${(hoveredTower.x + 1.1) * TILE_SIZE}px`;
             upgradeSellPanel.style.top = `${hoveredTower.y * TILE_SIZE}px`;
 
+            // Check for wall repair first
+            if (hoveredTower instanceof Wall && hoveredTower.needsRepair()) {
+                const repairCost = hoveredTower.getRepairCost();
+                upgradeBtn.style.display = 'flex';
+                let repairText = `<span class="hotkey">U</span> Repair (${repairCost.wood}🪵)`;
+                upgradeBtn.innerHTML = repairText;
+                upgradeBtn.classList.toggle('disabled', wood < repairCost.wood);
+                return;
+            }
+
             const upgradeCost = hoveredTower.getUpgradeCost();
             if (upgradeCost) {
                 upgradeBtn.style.display = 'flex';
-                upgradeBtn.innerHTML = `<span class="hotkey">U</span> Upgrade (${upgradeCost.gold}💰 ${upgradeCost.wood}🪵)`;
+                let upgradeText = `<span class="hotkey">U</span> Upgrade (${upgradeCost.gold}💰 ${upgradeCost.wood}🪵)`;
+                upgradeBtn.innerHTML = upgradeText;
                 upgradeBtn.classList.toggle('disabled', gold < upgradeCost.gold || wood < upgradeCost.wood);
             } else {
-                upgradeBtn.innerHTML = `<span class="hotkey">U</span> Max Level`;
+                let maxText = `<span class="hotkey">U</span> Max Level`;
+                
+                // Show current generation for max level WoodcutterHut
+                if (hoveredTower instanceof WoodcutterHut) {
+                    const currentGen = hoveredTower.getGeneration();
+                    maxText += `<br><small>Wood: ${currentGen}/wave</small>`;
+                }
+                
+                upgradeBtn.innerHTML = maxText;
                 upgradeBtn.classList.add('disabled');
             }
         }
         
         function upgradeHoveredTower() {
             if (!hoveredTower || gameState !== GAME_STATE.BUILD) return;
+            
+            // Check if it's a wall repair
+            if (hoveredTower instanceof Wall && hoveredTower.needsRepair()) {
+                const repairCost = hoveredTower.getRepairCost();
+                if (repairCost && wood >= repairCost.wood) {
+                    const oldHp = hoveredTower.hp;
+                    setUndo({ action: 'repair', tower: hoveredTower, costGold: 0, costWood: repairCost.wood, oldHp: oldHp });
+                    wood -= repairCost.wood;
+                    hoveredTower.repair();
+                    showUpgradeSellPanel();
+                    updateUI();
+                    playSound('upgrade');
+                } else {
+                    playSound('error');
+                }
+                return;
+            }
+            
+            // Normal upgrade logic
             const cost = hoveredTower.getUpgradeCost();
             if (cost && gold >= cost.gold && wood >= cost.wood) {
                 setUndo({ action: 'upgrade', tower: hoveredTower, costGold: cost.gold, costWood: cost.wood });
@@ -1515,15 +1577,20 @@
 
         function performUndo() {
             if (!lastBuildUndo || gameState !== GAME_STATE.BUILD) return;
-            const { action, key, x, y, tower, costGold, costWood } = lastBuildUndo;
+            const { action, key, x, y, tower, costGold, costWood, oldHp } = lastBuildUndo;
             if (action === 'build') {
                 gold += costGold; wood += costWood;
                 grid[y][x].entity.isAlive = false;
                 grid[y][x].entity = null;
+                // Immediately remove dead entities from the entities array
+                entities = entities.filter(e => e.isAlive);
                 if (DEFENSE_DATA[key]?.type === 'wall') calculatePathfindingGrid();
             } else if (action === 'upgrade') {
                 gold += costGold; wood += costWood;
                 tower.downgrade();
+            } else if (action === 'repair') {
+                wood += costWood;
+                tower.hp = oldHp;
             }
             lastBuildUndo = null;
             updateUI();
@@ -1546,6 +1613,7 @@
             playSound('wave_start', 0.7); // Play war horn at wave start
             gameState = GAME_STATE.ATTACK;
             setWaveEffects();
+            kingTookDamageThisWave = false; // Reset damage tracking for new wave
             // Clear any existing messages before showing the new one
             const messageContainer = document.getElementById('game-message-container');
             messageContainer.innerHTML = '';
@@ -1569,10 +1637,29 @@
                 if(bonus.gold) goldBonus += bonus.gold; if(bonus.wood) woodBonus += bonus.wood;
             }
             entities.forEach(e => {
-                if (e instanceof WoodcutterHut) woodBonus += e.generation;
+                if (e instanceof WoodcutterHut) woodBonus += e.getGeneration();
                 if (e instanceof GemMine) { goldBonus += e.collectedGold; e.collectedGold = 0; }
             });
+            
+            // Award HP bonus for taking no damage
+            if (!kingTookDamageThisWave && kingHp < KING_MAX_HP) {
+                const hpBonus = Math.min(10, KING_MAX_HP - kingHp);
+                kingHp += hpBonus;
+                if (hpBonus > 0) {
+                    showMessage(`Perfect Defense! +${hpBonus} HP restored!`, 'var(--green)');
+                }
+            }
+            
             gold += goldBonus; wood += woodBonus; score += scoreBonus;
+            
+            // Check for victory condition (completed wave 30)
+            if (wave === 30) {
+                showMessage(`Wave ${wave} Complete! Victory!`, 'var(--green)');
+                playSound('wave_end');
+                setTimeout(() => victory(), 2000);
+                return;
+            }
+            
             showMessage(`Wave ${wave} Complete!`, 'var(--green)');
             playSound('wave_end');
             wave++;
@@ -1677,6 +1764,33 @@
             playSound('game_over');
         }
         
+        function victory() {
+            if (gameState === GAME_STATE.GAME_OVER) return; // Prevent multiple triggers
+            gameState = GAME_STATE.GAME_OVER; // Reuse GAME_OVER state for victory
+            
+            // Victory bonus: extra seals for completing the game!
+            const baseSealsEarned = Math.floor(score / 500);
+            const victoryBonus = 50; // Bonus medals for victory
+            const totalSealsEarned = baseSealsEarned + victoryBonus;
+            
+            const hadSealsBefore = royalSeals > 0;
+            royalSeals += totalSealsEarned;
+            saveMetaProgress();
+            
+            document.getElementById('victory-final-score').textContent = score;
+            document.getElementById('victory-royal-seals-earned').textContent = `${totalSealsEarned} (${baseSealsEarned} + ${victoryBonus} victory bonus)`;
+            document.getElementById('victory-modal').style.display = 'flex';
+            
+            // Show special message if this is the first time earning Royal Medals
+            if (!hadSealsBefore && totalSealsEarned > 0) {
+                const armoryBtn = document.getElementById('victory-armory-btn');
+                armoryBtn.innerHTML = '🎉 Royal Armory Unlocked! 🏅';
+                armoryBtn.style.animation = 'pulse 2s infinite';
+            }
+            
+            playSound('wave_end'); // Use a positive sound for victory
+        }
+        
         function showMessage(text, color) {
             const container = document.getElementById('game-message-container');
             const msg = document.createElement('div');
@@ -1751,8 +1865,8 @@
         function getGambitOptions() {
             const allGambits = [
                 { name: "Berserker's Rage", description: "<span class='gambit-risk'>Enemies have +30% attack speed</span>, but <span class='gambit-reward'>yield +50% Gold on kill</span>.", enemyModifier: (e) => { e.baseAttackSpeed *= 1.3; }, rewardModifier: (g) => g * 1.5, },
-                { name: "Iron Horde", description: "<span class='gambit-risk'>All enemies have +25% HP</span>, but you start the <span class='gambit-reward'>next build phase with +100 Stone</span>.", enemyModifier: (e) => { e.maxHp *= 1.25; e.hp = e.maxHp; }, onComplete: () => ({ stone: 100 }), },
-                { name: "Sudden Death", description: "<span class='gambit-risk'>The first enemy to reach the castle deals 5x damage</span>, but <span class='gambit-reward'>wave completion bonus is doubled</span>.", onSelect: () => { waveFlags.suddenDeath = true; }, onComplete: (b) => ({ gold: b.goldBonus, stone: b.stoneBonus }), },
+                { name: "Iron Horde", description: "<span class='gambit-risk'>All enemies have +25% HP</span>, but you start the <span class='gambit-reward'>next build phase with +100 wood</span>.", enemyModifier: (e) => { e.maxHp *= 1.25; e.hp = e.maxHp; }, onComplete: () => ({ wood: 100 }), },
+                { name: "Sudden Death", description: "<span class='gambit-risk'>The first enemy to reach the castle deals 5x damage</span>, but <span class='gambit-reward'>wave completion bonus is doubled</span>.", onSelect: () => { waveFlags.suddenDeath = true; }, onComplete: (b) => ({ gold: b.goldBonus, wood: b.woodBonus }), },
             ];
             return [...allGambits].sort(() => 0.5 - Math.random()).slice(0, 2);
         }
@@ -1777,6 +1891,7 @@
             gameState = GAME_STATE.MAIN_MENU;
             document.getElementById('main-menu-modal').style.display = 'flex';
             document.getElementById('game-over-modal').style.display = 'none';
+            document.getElementById('victory-modal').style.display = 'none';
             document.getElementById('armory-modal').style.display = 'none';
             updateRoyalSealsDisplay();
             
@@ -1810,8 +1925,8 @@
 
         // Update royalSealsDisplay click handler
         royalSealsDisplay.addEventListener('click', () => {
-            // Only allow opening Armory from in-game states (not MAIN_MENU or GAME_OVER)
-            if (gameState !== GAME_STATE.ATTACK && gameState !== GAME_STATE.MAIN_MENU && gameState !== GAME_STATE.GAME_OVER && typeof showArmory === 'function') {
+            // Only allow opening Armory from stable in-game states (not during transitions)
+            if (gameState === GAME_STATE.BUILD && typeof showArmory === 'function') {
                 prevGameState = gameState;
                 showArmory();
             }
@@ -1822,6 +1937,7 @@
             gameState = GAME_STATE.ARMORY;
             document.getElementById('main-menu-modal').style.display = 'none';
             document.getElementById('game-over-modal').style.display = 'none';
+            document.getElementById('victory-modal').style.display = 'none';
             document.getElementById('armory-modal').style.display = 'flex';
             document.getElementById('armory-seals-display').textContent = royalSeals;
             const container = document.getElementById('armory-upgrades-container');
@@ -1870,7 +1986,10 @@
         // Update closeArmory to always clear prevGameState and update UI/BuildMenu
         function closeArmory() {
             const gameOverVisible = document.getElementById('game-over-modal').style.display === 'flex';
-            if (prevGameState && !gameOverVisible) {
+            const victoryVisible = document.getElementById('victory-modal').style.display === 'flex';
+            const endGameVisible = gameOverVisible || victoryVisible;
+            
+            if (prevGameState && !endGameVisible) {
                 gameState = prevGameState;
                 prevGameState = null;
                 document.getElementById('armory-modal').style.display = 'none';
@@ -1879,7 +1998,7 @@
                 if (gameState === GAME_STATE.BUILD || gameState === GAME_STATE.ATTACK) {
                     gameLoop(performance.now());
                 }
-            } else if (!gameOverVisible) {
+            } else if (!endGameVisible) {
                 prevGameState = null;
                 showMainMenu();
             } else {
@@ -1943,7 +2062,7 @@
             CannonTower: { name: 'Cannon', type: 'tower', costGold: 120, costWood: 30, icon: '💣', range: [4, 4.2, 4.5], damage: [60, 90, 130], fireRate: [3, 2.8, 2.5], canAttackFlying: false, aoeRadius: [1, 1.1, 1.2] },
             FrostSpire: { name: 'Frost Spire', type: 'tower', costGold: 80, costWood: 20, icon: '❄️', range: [2.5, 2.8, 3.1], damage: [10, 15, 20], fireRate: [1.5, 1.4, 1.3], canAttackFlying: true, slow: { duration: 2, amount: [0.5, 0.4, 0.3] }, isUnlockable: true },
             TarPit: { name: 'Tar Pit', type: 'trap', costGold: 20, costWood: 5, icon: '🕳️', hp: [1], slowAmount: 0.2, isUnlockable: true },
-            WoodcutterHut: { name: 'Woodcutter', type: 'special', costGold: 75, costWood: 0, icon: '🪓', hp: [200], requires: 'forest', generation: 10 },
+            WoodcutterHut: { name: 'Woodcutter', type: 'special', costGold: 75, costWood: 0, icon: '🪓', hp: [200, 250, 300], requires: 'forest', generation: [10, 15, 22] },
             GemMine: { name: 'Mine', type: 'special', costGold: 100, costWood: 0, icon: '⛏️', hp: [200], requires: 'goldvein', range: [4], goldPerKill: 5 },
         };
         const ENEMY_DATA = {
@@ -2004,7 +2123,7 @@
         class FrostBolt extends Projectile { constructor(x,y,t,d,s) { super((x+0.5)*TILE_SIZE, (y+0.5)*TILE_SIZE, t, d, 9); this.slow = s; } draw() { this.drawTrail('rgba(170, 234, 255, 0.4)'); ctx.fillStyle = '#aaeaff'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.1, 0, Math.PI * 2); ctx.fill(); ctx.shadowColor = 'cyan'; ctx.shadowBlur = 10; ctx.fill(); ctx.shadowBlur = 0; } hitTarget() { this.target.takeDamage(this.damage); this.target.applyEffect('slow', this.slow.duration, this.slow.amount); this.isAlive = false; } }
         
         class Tower extends Entity {
-            constructor(x, y) { super(x, y); this.level = 1; this.fireCooldown = 0; this.target = null; this.priorityTarget = null; this.buffs = {}; this.data = DEFENSE_DATA[this.constructor.name]; this.name = this.data.name; this.maxLevel = this.data.damage?.length || 1; }
+            constructor(x, y) { super(x, y); this.level = 1; this.fireCooldown = 0; this.target = null; this.priorityTarget = null; this.buffs = {}; this.data = DEFENSE_DATA[this.constructor.name]; this.name = this.data.name; this.maxLevel = this.data.damage?.length || this.data.generation?.length || 1; }
             getUpgradeCost() { if (this.level >= this.maxLevel) return null; return { gold: this.data.costGold * (this.level), wood: this.data.costWood * (this.level) }; }
             upgrade() { if (this.level < this.maxLevel) this.level++; }
             downgrade() { if (this.level > 1) this.level--; }
@@ -2027,9 +2146,21 @@
              getMaxHp() { return this.data.hp[this.level-1] * (1 + getPassiveBonus('WALL_HP')); }
              upgrade() { super.upgrade(); this.hp = this.getMaxHp(); }
              downgrade() { super.downgrade(); this.hp = this.getMaxHp(); }
+             getRepairCost() {
+                 if (this.hp >= this.getMaxHp()) return null; // No repair needed
+                 const damagePercent = 1 - (this.hp / this.getMaxHp());
+                 const baseCost = this.data.costWood;
+                 return { gold: 0, wood: Math.max(1, Math.ceil(damagePercent * baseCost)) };
+             }
+             repair() {
+                 this.hp = this.getMaxHp();
+             }
+             needsRepair() {
+                 return this.hp < this.getMaxHp();
+             }
             takeDamage(amount) { this.hp -= amount; if (this.hp <= 0) { this.isAlive = false; grid[this.y][this.x].entity = null; calculatePathfindingGrid(); createExplosion(this.pixelX, this.pixelY, 15, '#966F33', 3, 80, 0.6); } }
             update() {}
-            draw() { const hpPercent = this.hp / this.getMaxHp(); ctx.fillStyle = `rgb(${100 + 100 * (1-hpPercent)}, ${50 + 150 * hpPercent}, 50)`; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.strokeStyle = '#333'; ctx.strokeRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); }
+            draw() { const hpPercent = this.hp / this.getMaxHp(); ctx.fillStyle = `rgb(${140 + 40 * (1-hpPercent)}, ${140 + 40 * (1-hpPercent)}, ${140 + 40 * (1-hpPercent)})`; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.strokeStyle = '#333'; ctx.strokeRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); }
         }
         class ArcherTower extends Tower { fire() { projectiles.push(new Arrow(this.x, this.y, this.target, this.getDamage())); } draw() { super.draw(); ctx.fillStyle = '#238636'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE*0.3, 0, Math.PI*2); ctx.fill(); } }
         class CannonTower extends Tower { fire() { projectiles.push(new Cannonball(this.x, this.y, this.target, this.getDamage(), this.data.aoeRadius[this.level-1])); } draw() { super.draw(); ctx.fillStyle = '#333'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE*0.4, 0, Math.PI*2); ctx.fill(); } }
@@ -2037,8 +2168,90 @@
         class Trap extends Tower { update(dt) { entities.forEach(e => { if (e instanceof Enemy && Math.floor(e.x) === this.x && Math.floor(e.y) === this.y) this.trigger(e); }) } trigger(enemy) {} }
         class TarPit extends Trap { trigger(enemy) { enemy.applyEffect('slow', 0.5, this.data.slowAmount); } draw() { ctx.fillStyle = 'rgba(20,10,0,0.7)'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE*0.45, 0, Math.PI*2); ctx.fill(); } }
         class SpecialBuilding extends Tower { constructor(x,y) { super(x,y); } update() {} }
-        class WoodcutterHut extends SpecialBuilding { constructor(x,y) { super(x,y); this.generation = this.data.generation; } draw() { ctx.fillStyle = '#b58863'; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.font = `${TILE_SIZE * 0.6}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = 'black'; ctx.fillText('🪓', this.pixelX, this.pixelY); } }
+        class WoodcutterHut extends SpecialBuilding { 
+            constructor(x,y) { 
+                super(x,y); 
+            } 
+            getGeneration() { 
+                return this.data.generation[this.level - 1]; 
+            }
+            draw() { 
+                ctx.fillStyle = '#b58863'; 
+                ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); 
+                ctx.font = `${TILE_SIZE * 0.6}px sans-serif`; 
+                ctx.textAlign = 'center'; 
+                ctx.textBaseline = 'middle'; 
+                ctx.fillStyle = 'black'; 
+                ctx.fillText('🪓', this.pixelX, this.pixelY); 
+                
+                // Show level indicator if upgraded
+                if (this.level > 1) {
+                    ctx.fillStyle = 'white';
+                    ctx.font = `${TILE_SIZE * 0.3}px sans-serif`;
+                    ctx.fillText(`Lv${this.level}`, this.pixelX, this.pixelY + TILE_SIZE * 0.35);
+                }
+            } 
+        }
         class GemMine extends SpecialBuilding { constructor(x,y) { super(x,y); this.range = this.data.range[0]; this.goldPerKill = this.data.goldPerKill; this.collectedGold = 0; } addGold() { this.collectedGold += this.goldPerKill; createExplosion(this.pixelX, this.pixelY, 3, 'gold', 3, 50, 0.8); } draw() { ctx.fillStyle = '#d4af37'; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.font = `${TILE_SIZE * 0.6}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = 'black'; ctx.fillText('⛏️', this.pixelX, this.pixelY); } }
+
+        // Castle Defense System - gives the castle basic archer capabilities
+        class CastleDefense extends Entity {
+            constructor(x, y) {
+                super(x, y);
+                this.level = 1;
+                this.fireCooldown = 0;
+                this.target = null;
+                this.priorityTarget = null;
+                this.buffs = {};
+                // Fixed stats - not upgradeable
+                this.name = 'Castle Defense';
+                this.maxLevel = 1;
+                this.range = 3.5; // Slightly better than basic archer
+                this.damage = 20; // Decent damage
+                this.fireRate = 1.2; // Slightly slower than archer
+                this.canAttackFlying = true;
+            }
+            
+            // Copy essential Tower methods
+            applyBuff(type, multiplier, duration) { this.buffs[type] = { multiplier, duration }; }
+            updateBuffs(dt) { for (const type in this.buffs) { this.buffs[type].duration -= dt; if (this.buffs[type].duration <= 0) delete this.buffs[type]; } }
+            setPriorityTarget(enemy) { this.priorityTarget = enemy; }
+            getUpgradeCost() { return null; } // Cannot be upgraded
+            
+            getRange() { 
+                let range = this.range;
+                if(currentWaveEffects.weather === 'fog') range *= 0.7; 
+                return range; 
+            }
+            getDamage() { return this.damage; }
+            getFireRate() { 
+                let rate = this.fireRate; 
+                if (this.buffs.attack_speed) rate /= this.buffs.attack_speed.multiplier; 
+                return rate; 
+            }
+            
+            findTarget() {
+                if(this.priorityTarget && this.priorityTarget.isAlive && Math.hypot(this.x - this.priorityTarget.x, this.y - this.priorityTarget.y) <= this.getRange()) { this.target = this.priorityTarget; return; }
+                this.priorityTarget = null; this.target = null; let closestDist = Infinity;
+                entities.forEach(e => { if (e instanceof Enemy && (!e.isFlying || this.canAttackFlying)) { const dist = Math.hypot(this.x - e.x, this.y - e.y); if (dist <= this.getRange() && dist < closestDist) { closestDist = dist; this.target = e; } } });
+            }
+            
+            update(dt) { 
+                this.updateBuffs(dt); 
+                if (this.fireCooldown > 0) this.fireCooldown -= dt; 
+                if (!this.target || !this.target.isAlive || Math.hypot(this.x - this.target.x, this.y - this.target.y) > this.getRange()) this.findTarget(); 
+                if (this.target && this.fireCooldown <= 0 && !this.buffs.disabled) { this.fire(); this.fireCooldown = this.getFireRate(); } 
+            }
+            
+            fire() { 
+                projectiles.push(new Arrow(this.x, this.y, this.target, this.getDamage())); 
+            }
+            
+            draw() {
+                // Don't draw anything - the castle is already visually represented
+                // The defense is invisible but functional
+            }
+        }
 
         // --- ENEMY CLASSES ---
         class Enemy extends Entity {
@@ -2163,6 +2376,7 @@
                 let damage = Number(this.attackDamage);
                 if (!isFinite(damage) || isNaN(damage)) damage = 0;
                 if (waveFlags.suddenDeath) { damage *= 5; waveFlags.suddenDeath = false; }
+                if (damage > 0) kingTookDamageThisWave = true; // Track damage taken
                 kingHp -= damage;
                 if (!isFinite(kingHp) || isNaN(kingHp)) kingHp = 0;
                 if (kingHp <= 0) { kingHp = 0; gameOver(); }
@@ -2173,8 +2387,9 @@
             draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.3, 0, Math.PI * 2); ctx.fill(); if (this.isFlying) { ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.4, 0, Math.PI * 2); ctx.fill(); } if (this.effects.slow) { ctx.fillStyle = 'rgba(100, 150, 255, 0.7)'; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.4, 0, Math.PI * 2); ctx.fill(); } const hpPercent = this.hp / this.maxHp; ctx.fillStyle = '#555'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.3, this.pixelY - TILE_SIZE * 0.5, TILE_SIZE * 0.6, 5); ctx.fillStyle = 'green'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.3, this.pixelY - TILE_SIZE * 0.5, TILE_SIZE * 0.6 * hpPercent, 5); }
         }
         class OrcGrunt extends Enemy {}
-        class GoblinSapper extends Enemy { constructor(x,y) { super(x, y); this.structureDamage = ENEMY_DATA.GoblinSapper.structureDamage; } move(dt) { let targetWall = null, minDistance = Infinity; entities.forEach(e => { if (e instanceof Wall) { const dist = Math.hypot(this.pixelX - e.pixelX, this.pixelY - e.pixelY); if (dist < minDistance) { minDistance = dist; targetWall = e; } } }); if (targetWall && minDistance < TILE_SIZE * 0.8) { targetWall.takeDamage(this.structureDamage); this.isAlive = false; createExplosion(this.pixelX, this.pixelY, 30, '#ff6600', 4, 150, 0.7); screenShake(0.2); playSound('cannon'); } else if (grid[this.y][this.x].type === 'castle' || grid[this.y][this.x].type === 'castle_core') {
+        class GoblinSapper extends Enemy { constructor(x,y) { super(x, y); this.structureDamage = ENEMY_DATA.GoblinSapper.structureDamage; } move(dt) { let targetWall = null, minDistance = Infinity; entities.forEach(e => { if (e instanceof Wall) { const dist = Math.hypot(this.pixelX - e.pixelX, this.pixelY - e.pixelY); if (dist < minDistance) { minDistance = dist; targetWall = e; } } }); if (targetWall && minDistance < TILE_SIZE * 0.8) { targetWall.takeDamage(this.structureDamage); this.isAlive = false; createExplosion(this.pixelX, this.pixelY, 30, '#ff6600', 4, 150, 0.7); screenShake(0.2); playSound('cannon');         } else if (grid[this.y][this.x].type === 'castle' || grid[this.y][this.x].type === 'castle_core') {
             // No walls, damage king/castle
+            kingTookDamageThisWave = true; // Track damage taken
             kingHp -= this.structureDamage;
             if (kingHp < 0) kingHp = 0;
             updateUI();
@@ -2189,7 +2404,7 @@
         class WyvernLord extends Enemy { constructor(x,y) { super(x,y); this.fireBreathCooldown = 6; } update(dt) { super.update(dt); this.fireBreathCooldown -= dt; if (this.fireBreathCooldown <= 0) { this.breatheFire(); this.fireBreathCooldown = 6; } } breatheFire() { const targetY = commander.y; const startX = this.pixelX; const startY = this.pixelY; for (let i = 0; i < 20; i++) { setTimeout(() => { const pX = startX - (i * TILE_SIZE * 0.8); const pY = startY; particles.push(new FireParticle(pX, pY)); entities.forEach(e => { if ((e instanceof Tower || e instanceof Commander) && Math.hypot(e.pixelX - pX, e.pixelY - pY) < TILE_SIZE) { e.takeDamage?.(20); } }); }, i * 25); } playSound('cannon', 0.6); } draw() { ctx.fillStyle = this.color; ctx.beginPath(); ctx.arc(this.pixelX, this.pixelY, TILE_SIZE * 0.8, 0, Math.PI * 2); ctx.fill(); const hpPercent = this.hp / this.maxHp; ctx.fillStyle = '#555'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.7, this.pixelY - TILE_SIZE * 1.1, TILE_SIZE * 1.4, 8); ctx.fillStyle = 'purple'; ctx.fillRect(this.pixelX - TILE_SIZE * 0.7, this.pixelY - TILE_SIZE * 1.1, TILE_SIZE * 1.4 * hpPercent, 8); } }
         class FireParticle extends Particle { constructor(x, y) { super(x, y, `rgba(255, ${Math.random()*100+100}, 0, 0.7)`, Math.random() * TILE_SIZE*0.5, 30, 1.5); } }
 
-        const CLASS_MAP = { Wall, ArcherTower, CannonTower, FrostSpire, TarPit, WoodcutterHut, GemMine, OrcGrunt, GoblinSapper, Wraith, GoblinShaman, ImpCaster, WyvernLord };
+        const CLASS_MAP = { Wall, ArcherTower, CannonTower, FrostSpire, TarPit, WoodcutterHut, GemMine, CastleDefense, OrcGrunt, GoblinSapper, Wraith, GoblinShaman, ImpCaster, WyvernLord };
 
         let kingPos = { x: 0, y: 0 };
 
@@ -2243,7 +2458,7 @@
                 CannonTower: 'Cannon Towers deal area damage. Great against groups of enemies. Select an existing one to upgrade.',
                 FrostSpire: 'Frost Spires slow enemies. Useful for controlling large waves.',
                 TarPit: 'Tar Pits slow down enemies that walk over them.',
-                WoodcutterHut: 'Woodcutter Huts 🪓 generate extra wood 🪵 each wave when built on a forest.',
+                WoodcutterHut: 'Woodcutter Huts 🪓 generate extra wood 🪵 each wave when built on a forest 🌲. Can be upgraded to generate more wood.',
                 GemMine: 'Gem Mines 💎 collect bonus gold from enemies killed in the range area when built on a gem vein.'
             };
             setTip(tips[key] || '');
