@@ -1645,9 +1645,6 @@
             if (!kingTookDamageThisWave && kingHp < KING_MAX_HP) {
                 const hpBonus = Math.min(10, KING_MAX_HP - kingHp);
                 kingHp += hpBonus;
-                if (hpBonus > 0) {
-                    showMessage(`Perfect Defense! +${hpBonus} HP restored!`, 'var(--green)');
-                }
             }
             
             gold += goldBonus; wood += woodBonus; score += scoreBonus;
