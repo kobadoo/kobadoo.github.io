@@ -614,12 +614,10 @@
             </div>
             <button id="undo-btn" class="game-button disabled" title="Undo your last build or upgrade action">↺</button>
             <button id="start-wave-btn" class="game-button" title="Start the next enemy wave">Start Wave</button>
-            <!-- Rallying Cry Button (hidden by default, shown when unlocked) -->
             <button id="commander-ability" class="game-button" style="display:none; background:linear-gradient(to bottom, #c98e22, #a8761c); border-color:var(--accent-color);" title="Rallying Cry: Temporarily boost all towers' attack speed (Q)">Rallying Cry <span id="commander-ability-cooldown" style="display:none;"></span></button>
         </div>
 
         <div id="build-menu" class="ui-panel">
-            <!-- Build items will be dynamically generated -->
         </div>
 
         <div id="upgrade-sell-panel" class="ui-panel">
@@ -630,7 +628,6 @@
         <div id="tooltip"></div>
     </div>
 
-    <!-- Modals -->
     <div id="gambit-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <h2>The King's Gambit</h2>
@@ -700,7 +697,6 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- CORE GAME SETUP ---
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const gameContainer = document.getElementById('game-container');
@@ -727,12 +723,11 @@
         let mouse = { x: 0, y: 0, gridX: -1, gridY: -1 };
         let activeGambit = null, lastBuildUndo = null;
         let rallyingCryCooldown = 0;
-        let waveFlags = {}; // For temporary wave effects like "Sudden Death"
+        let waveFlags = {};
         let currentWaveEffects = { weather: 'none' };
         
         let audioCtx, sounds = {};
 
-        // --- META PROGRESSION (with anti-tamper checksum) ---
         let royalSeals = 0, unlockedItems = {};
         const META_STORAGE_KEY = 'siegebreaker_data';
 
@@ -741,7 +736,7 @@
             for (let i = 0; i < str.length; i++) {
                 const char = str.charCodeAt(i);
                 hash = (hash << 5) - hash + char;
-                hash |= 0; // Convert to 32bit integer
+                hash |= 0;
             }
             return hash;
         }
@@ -766,7 +761,6 @@
                 royalSeals = 0;
                 unlockedItems = {};
             }
-            // Ensure passive unlocks have a level
             Object.keys(ARMORY_DATA).forEach(key => {
                 if (ARMORY_DATA[key].type === 'passive' && !unlockedItems[key]) {
                     unlockedItems[key] = { level: 0 };
@@ -794,7 +788,6 @@
             const cooldown = 15 * (1 - getPassiveBonus('COMMANDER_COOLDOWN'));
             rallyingCryCooldown = cooldown;
             
-            // Boost all towers' attack speed
             let towersBoosted = 0;
             entities.forEach(e => {
                 if (e instanceof Tower && !(e instanceof Wall)) {
@@ -803,7 +796,6 @@
                 }
             });
             
-            // Create visual effect
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
             particles.push(new ExpandingRing(centerX / TILE_SIZE, centerY / TILE_SIZE, 8, 'rgba(255, 215, 0, 0.7)', 0.5));
@@ -812,7 +804,6 @@
             playSound('upgrade');
         }
 
-        // --- UI ELEMENTS ---
         const goldDisplay = document.getElementById('gold-display'), woodDisplay = document.getElementById('wood-display');
         const hpBar = document.getElementById('king-hp-bar'), hpText = document.getElementById('king-hp-text');
         const startWaveBtn = document.getElementById('start-wave-btn');
@@ -823,8 +814,6 @@
         const undoBtn = document.getElementById('undo-btn');
         const commanderAbilityBtn = document.getElementById('commander-ability');
         const commanderAbilityCooldown = document.getElementById('commander-ability-cooldown');
-        
-        // --- GAME LOGIC ---
         function resizeCanvas() {
             const bottomBarHeight = document.getElementById('bottom-bar').offsetHeight;
             const buildMenuHeight = document.getElementById('build-menu').offsetHeight;
@@ -910,7 +899,6 @@
             const castleDefense = new CastleDefense(centerX, centerY);
             entities.push(castleDefense);
 
-            // 2. Generate a river with 2-3 bridges
             function generateRiverAndBridges() {
                 const horizontal = Math.random() < 0.5;
                 let riverLine = [];
@@ -923,7 +911,6 @@
                         prevY = y;
                         if (move < 0.3 && y > 1) y--;
                         else if (move > 0.7 && y < GRID_ROWS - 2) y++;
-                        // If moved, fill in the vertical gap to avoid diagonal jumps
                         if (y !== prevY) {
                             riverLine.push({ x, y: prevY });
                             riverLine.push({ x, y });
@@ -938,7 +925,6 @@
                         prevX = x;
                         if (move < 0.3 && x > 1) x--;
                         else if (move > 0.7 && x < GRID_COLS - 2) x++;
-                        // If moved, fill in the horizontal gap to avoid diagonal jumps
                         if (x !== prevX) {
                             riverLine.push({ x: prevX, y });
                             riverLine.push({ x, y });
@@ -952,7 +938,6 @@
                 for (let i = 0; i < bridgeCount; i++) {
                     const idx = Math.floor(Math.random() * riverLine.length);
                     const { x, y } = riverLine[idx];
-                    // Place bridge on all river tiles at this x (vertical slice)
                     for (let dy = -1; dy <= 1; dy++) {
                         const yy = y + dy;
                         if (yy >= 0 && yy < GRID_ROWS && grid[yy][x].type === 'water') {
@@ -979,7 +964,7 @@
         let lastTime = 0;
         function gameLoop(timestamp) {
             if (gameState === GAME_STATE.MAIN_MENU || gameState === GAME_STATE.ARMORY) return;
-            const deltaTime = Math.min(0.05, (timestamp - lastTime) / 1000); // Delta time with cap
+            const deltaTime = Math.min(0.05, (timestamp - lastTime) / 1000);
             lastTime = timestamp;
             update(deltaTime);
             draw();
@@ -991,13 +976,11 @@
                 [...entities, ...projectiles].forEach(e => e.update(deltaTime));
                 entities = entities.filter(e => e.isAlive);
                 projectiles = projectiles.filter(p => p.isAlive);
-                // Only allow endWave if window.waveCanEnd is true
                 if (window.waveCanEnd && !entities.some(e => e instanceof Enemy)) {
                     endWave();
                 }
             }
 
-            // Update rallying cry cooldown
             if (rallyingCryCooldown > 0) {
                 rallyingCryCooldown -= deltaTime;
             }
@@ -1013,7 +996,6 @@
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Dynamic background
             const cycleDuration = 600;
             const timeOfDay = (performance.now() / 1000) % cycleDuration;
             const dayRatio = Math.sin((timeOfDay / cycleDuration) * Math.PI * 2 - Math.PI/2) * 0.5 + 0.5;
@@ -1023,7 +1005,7 @@
             const b = Math.floor(dayBg[2] * dayRatio + nightBg[2] * (1 - dayRatio));
             ctx.fillStyle = `rgb(${r},${g},${b})`;
             ctx.fillRect(0,0,canvas.width, canvas.height);
-            if(dayRatio < 0.3) { // Night
+            if(dayRatio < 0.3) {
                 ctx.fillStyle = `rgba(0,0,0,${(1 - dayRatio / 0.3) * 0.3})`;
                 ctx.fillRect(0,0,canvas.width, canvas.height);
             }
@@ -1048,7 +1030,6 @@
                 ctx.fillStyle = fogGradient;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
-            // (Removed cursor style changes from draw; now handled in onMouseMove only)
         }
 
         function drawGrid() {
@@ -1056,7 +1037,6 @@
             const kingX = kingPos.x * TILE_SIZE + TILE_SIZE / 2;
             const kingY = kingPos.y * TILE_SIZE + TILE_SIZE / 2;
             
-            // Draw king's static golden aura
             const grd = ctx.createRadialGradient(kingX, kingY, 0, kingX, kingY, TILE_SIZE * 0.8);
             grd.addColorStop(0, 'rgba(255, 215, 0, 0.6)');
             grd.addColorStop(1, 'rgba(255, 215, 0, 0)');
@@ -1065,14 +1045,12 @@
             ctx.arc(kingX, kingY, TILE_SIZE * 0.8, 0, Math.PI * 2);
             ctx.fill();
             
-            // Draw the king sprite
             ctx.font = `${TILE_SIZE * 1.2}px sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
             ctx.fillText('🏰', kingX, kingY);
             
-            // Add a subtle shadow for depth
             ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
             ctx.shadowBlur = 4;
             ctx.fillText('🏰', kingX + 1, kingY + 1);
@@ -1090,7 +1068,6 @@
             for (let y = 0; y < GRID_ROWS; y++) {
                 for (let x = 0; x < GRID_COLS; x++) {
                     const tile = grid[y][x];
-                    // Always show special node icons for forest and goldvein, even if occupied
                     if (tile.type === 'forest') {
                         drawSpecialNode(x, y, 'rgba(181, 136, 99, 0.5)', '🌲');
                     }
@@ -1100,16 +1077,14 @@
                 }
             }
 
-            // Draw a single square border around the 3x3 castle area
             const castleStartX = (kingPos.x - 1) * TILE_SIZE;
             const castleStartY = (kingPos.y - 1) * TILE_SIZE;
             ctx.save();
-            ctx.strokeStyle = '#aeb8c2'; // Stone grey
+            ctx.strokeStyle = '#aeb8c2';
             ctx.lineWidth = 3;
             ctx.strokeRect(castleStartX, castleStartY, TILE_SIZE * 3, TILE_SIZE * 3);
             ctx.restore();
 
-            // Draw river and bridges as before
             for (let y = 0; y < GRID_ROWS; y++) {
                 for (let x = 0; x < GRID_COLS; x++) {
                     const tile = grid[y][x];
@@ -1167,7 +1142,6 @@
             ctx.stroke();
         }
 
-        // --- UI & INPUT ---
         function onMouseMove(event) {
             const rect = canvas.getBoundingClientRect();
             mouse.x = event.clientX - rect.left;
@@ -1195,7 +1169,6 @@
                 }
             }
 
-            // Set cursor: pointer for forest, goldvein, water, bridge, castle, castle_core
             let cursorSet = false;
             if (mouse.gridX >= 0 && mouse.gridX < GRID_COLS && mouse.gridY >= 0 && mouse.gridY < GRID_ROWS) {
                 const tile = grid[mouse.gridY][mouse.gridX];
@@ -1460,7 +1433,7 @@
             } else if (tileType === 'quarry' || tileType === 'goldvein') return false;
             if (definition.type === 'wall') {
                 const tempGrid = grid.map(row => row.map(cell => cell.entity));
-                tempGrid[y][x] = { type: 'wall' }; // Dummy wall for testing
+                tempGrid[y][x] = { type: 'wall' };
                 if (!isPathPossible(tempGrid)) {
                     showMessage("Cannot block the path completely!", 'var(--red)');
                     return false;
@@ -1475,7 +1448,6 @@
             upgradeSellPanel.style.left = `${(hoveredTower.x + 1.1) * TILE_SIZE}px`;
             upgradeSellPanel.style.top = `${hoveredTower.y * TILE_SIZE}px`;
 
-            // Check for wall repair first
             if (hoveredTower instanceof Wall && hoveredTower.needsRepair()) {
                 const repairCost = hoveredTower.getRepairCost();
                 upgradeBtn.style.display = 'flex';
@@ -1494,7 +1466,6 @@
             } else {
                 let maxText = `<span class="hotkey">U</span> Max Level`;
                 
-                // Show current generation for max level WoodcutterHut
                 if (hoveredTower instanceof WoodcutterHut) {
                     const currentGen = hoveredTower.getGeneration();
                     maxText += `<br><small>Wood: ${currentGen}/wave</small>`;
@@ -1508,7 +1479,6 @@
         function upgradeHoveredTower() {
             if (!hoveredTower || gameState !== GAME_STATE.BUILD) return;
             
-            // Check if it's a wall repair
             if (hoveredTower instanceof Wall && hoveredTower.needsRepair()) {
                 const repairCost = hoveredTower.getRepairCost();
                 if (repairCost && wood >= repairCost.wood) {
@@ -1525,7 +1495,6 @@
                 return;
             }
             
-            // Normal upgrade logic
             const cost = hoveredTower.getUpgradeCost();
             if (cost && gold >= cost.gold && wood >= cost.wood) {
                 setUndo({ action: 'upgrade', tower: hoveredTower, costGold: cost.gold, costWood: cost.wood });
@@ -1561,7 +1530,6 @@
                 gold += costGold; wood += costWood;
                 grid[y][x].entity.isAlive = false;
                 grid[y][x].entity = null;
-                // Immediately remove dead entities from the entities array
                 entities = entities.filter(e => e.isAlive);
                 if (DEFENSE_DATA[key]?.type === 'wall') calculatePathfindingGrid();
             } else if (action === 'upgrade') {
@@ -1575,12 +1543,11 @@
             updateUI();
         }
 
-        // --- GAME FLOW & WAVES ---
         function startWave() {
             if (gameState !== GAME_STATE.BUILD) return;
             deselect();
             lastBuildUndo = null;
-            waveFlags = {}; // Reset temporary flags
+            waveFlags = {};
             if (wave > 1 && wave % 3 === 1) { 
                  showGambitModal();
             } else {
@@ -1589,11 +1556,10 @@
         }
         
         function startWaveAttackPhase() {
-            playSound('wave_start', 0.7); // Play war horn at wave start
+            playSound('wave_start', 0.7);
             gameState = GAME_STATE.ATTACK;
             setWaveEffects();
-            kingTookDamageThisWave = false; // Reset damage tracking for new wave
-            // Clear any existing messages before showing the new one
+            kingTookDamageThisWave = false;
             const messageContainer = document.getElementById('game-message-container');
             messageContainer.innerHTML = '';
             
@@ -1601,7 +1567,6 @@
             spawnWave();
             updateUI();
             
-            // Prevent wave from ending until after delay
             window.waveCanEnd = false;
             setTimeout(() => {
                 window.waveCanEnd = true;
@@ -1620,7 +1585,6 @@
                 if (e instanceof GemMine) { goldBonus += e.collectedGold; e.collectedGold = 0; }
             });
             
-            // Award HP bonus for taking no damage
             if (!kingTookDamageThisWave && kingHp < KING_MAX_HP) {
                 const hpBonus = Math.min(10, KING_MAX_HP - kingHp);
                 kingHp += hpBonus;
@@ -1628,7 +1592,6 @@
             
             gold += goldBonus; wood += woodBonus; score += scoreBonus;
             
-            // Check for victory condition (completed wave 30)
             if (wave === 30) {
                 showMessage(`Wave ${wave} Complete! Victory!`, 'var(--green)');
                 playSound('wave_end');
@@ -1643,7 +1606,6 @@
         }
 
         function setWaveEffects() {
-            // Day/night cycle is visual only, but some waves are designated 'night waves'
             const isNightWave = wave % 5 === 0;
             const weatherRoll = Math.random();
             if (isNightWave && weatherRoll < 0.4) {
@@ -1665,32 +1627,28 @@
         }
         
         function spawnEnemy(type) {
-            // Try up to 20 times to find a valid spawn location
             for (let attempt = 0; attempt < 20; attempt++) {
-                // Randomly pick an edge: 0=top, 1=bottom, 2=left, 3=right
                 const edge = Math.floor(Math.random() * 4);
                 let spawnX, spawnY;
-                if (edge === 0) { // top
+                if (edge === 0) {
                     spawnX = Math.floor(Math.random() * GRID_COLS);
                     spawnY = 0;
-                } else if (edge === 1) { // bottom
+                } else if (edge === 1) {
                     spawnX = Math.floor(Math.random() * GRID_COLS);
                     spawnY = GRID_ROWS - 1;
-                } else if (edge === 2) { // left
+                } else if (edge === 2) {
                     spawnX = 0;
                     spawnY = Math.floor(Math.random() * GRID_ROWS);
-                } else { // right
+                } else {
                     spawnX = GRID_COLS - 1;
                     spawnY = Math.floor(Math.random() * GRID_ROWS);
                 }
-                // Don't spawn in water, castle, or on impassable tiles
                 if (
                     grid[spawnY][spawnX].type === 'water' ||
                     grid[spawnY][spawnX].type === 'castle'
                 ) {
                     continue;
                 }
-                // Only spawn if there is a valid path to the castle
                 if (pathfindingGrid[spawnY][spawnX] !== Infinity) {
                     const enemy = new CLASS_MAP[type](spawnX, spawnY);
                     if (activeGambit && activeGambit.enemyModifier) activeGambit.enemyModifier(enemy);
@@ -1698,7 +1656,6 @@
                     return;
                 }
             }
-            // If no valid spawn found after 20 attempts, skip spawning
         }
 
         function getWaveData(waveNum) {
@@ -1706,7 +1663,6 @@
             const isNightWave = waveNum % 5 === 0;
             
             if (isBossWave) {
-                // No OrcGrunt, just use GoblinSapper for all boss waves
                 return { enemies: [{ type: 'GoblinSapper', count: 15 + Math.floor(waveNum / 10), interval: 500 }] };
             }
 
@@ -1719,7 +1675,7 @@
         }
 
         function gameOver() {
-            if (gameState === GAME_STATE.GAME_OVER) return; // Prevent multiple triggers
+            if (gameState === GAME_STATE.GAME_OVER) return;
             gameState = GAME_STATE.GAME_OVER;
             const sealsEarned = Math.floor(score / 500);
             const hadSealsBefore = royalSeals > 0;
@@ -1730,7 +1686,6 @@
             document.getElementById('royal-seals-earned').textContent = `${sealsEarned} 👑`;
             document.getElementById('game-over-modal').style.display = 'flex';
             
-            // Show special message if this is the first time earning Royal Medals
             if (!hadSealsBefore && sealsEarned > 0) {
                 const armoryBtn = document.getElementById('armory-btn');
                 armoryBtn.innerHTML = '🎉 Royal Armory Unlocked! 🏅';
@@ -1741,12 +1696,11 @@
         }
         
         function victory() {
-            if (gameState === GAME_STATE.GAME_OVER) return; // Prevent multiple triggers
-            gameState = GAME_STATE.GAME_OVER; // Reuse GAME_OVER state for victory
+            if (gameState === GAME_STATE.GAME_OVER) return;
+            gameState = GAME_STATE.GAME_OVER;
             
-            // Victory bonus: extra seals for completing the game!
             const baseSealsEarned = Math.floor(score / 500);
-            const victoryBonus = 50; // Bonus medals for victory
+            const victoryBonus = 50;
             const totalSealsEarned = baseSealsEarned + victoryBonus;
             
             const hadSealsBefore = royalSeals > 0;
@@ -1757,14 +1711,13 @@
             document.getElementById('victory-royal-seals-earned').textContent = `${totalSealsEarned} (${baseSealsEarned} + ${victoryBonus} victory bonus)`;
             document.getElementById('victory-modal').style.display = 'flex';
             
-            // Show special message if this is the first time earning Royal Medals
             if (!hadSealsBefore && totalSealsEarned > 0) {
                 const armoryBtn = document.getElementById('victory-armory-btn');
                 armoryBtn.innerHTML = '🎉 Royal Armory Unlocked! 🏅';
                 armoryBtn.style.animation = 'pulse 2s infinite';
             }
             
-            playSound('wave_end'); // Use a positive sound for victory
+            playSound('wave_end');
         }
         
         function showMessage(text, color) {
@@ -1784,7 +1737,6 @@
             setTimeout(() => gameContainer.classList.remove('shake-hard', 'shake-soft'), duration * 1000);
         }
 
-        // --- PATHFINDING ---
         function calculatePathfindingGrid() {
             pathfindingGrid = Array(GRID_ROWS).fill().map(() => Array(GRID_COLS).fill(Infinity));
             const queue = [];
@@ -1798,7 +1750,7 @@
                     const nx = x + n.dx, ny = y + n.dy;
                     if (nx >= 0 && nx < GRID_COLS && ny >= 0 && ny < GRID_ROWS && pathfindingGrid[ny][nx] === Infinity) {
                         const cell = grid[ny][nx];
-                        if (cell.type === 'water') continue; // Only water is impassable for pathfinding
+                        if (cell.type === 'water') continue;
                         pathfindingGrid[ny][nx] = dist + 1;
                         queue.push({ x: nx, y: ny, dist: dist + 1 });
                     }
@@ -1807,7 +1759,6 @@
         }
         
         function isPathPossible(entityGrid) {
-            // Check path from every spawn point
             for (let startY = 0; startY < GRID_ROWS; startY++) {
                 const tempPathGrid = Array(GRID_ROWS).fill().map(() => Array(GRID_COLS).fill(Infinity));
                 const queue = [{ x: GRID_COLS - 1, y: startY }];
@@ -1832,12 +1783,11 @@
                         }
                     }
                 }
-                if (!pathFound) return false; // If any spawn point is blocked, fail
+                if (!pathFound) return false;
             }
             return true;
         }
 
-        // --- GAMBITS ---
         function getGambitOptions() {
             const allGambits = [
                 { name: "Berserker's Rage", description: "<span class='gambit-risk'>Enemies have +30% attack speed</span>, but <span class='gambit-reward'>yield +50% Gold on kill</span>.", enemyModifier: (e) => { e.baseAttackSpeed *= 1.3; }, rewardModifier: (g) => g * 1.5, },
@@ -1862,7 +1812,6 @@
             document.getElementById('gambit-modal').style.display = 'flex';
         }
         
-        // --- MAIN MENU & ARMORY ---
         function showMainMenu() {
             gameState = GAME_STATE.MAIN_MENU;
             document.getElementById('main-menu-modal').style.display = 'flex';
@@ -1871,7 +1820,6 @@
             document.getElementById('armory-modal').style.display = 'none';
             updateRoyalSealsDisplay();
             
-            // Only show Royal Armory button if player has earned Royal Medals
             const armoryBtn = document.getElementById('main-menu-armory-btn');
             if (royalSeals > 0) {
                 armoryBtn.style.display = 'inline-block';
@@ -1884,7 +1832,6 @@
         function updateRoyalSealsDisplay() { 
             royalSealsDisplay.innerHTML = `<span style="color: var(--accent-color);">${royalSeals}</span> 🏅`;
             
-            // Update main menu armory button if it exists and we're on main menu
             const armoryBtn = document.getElementById('main-menu-armory-btn');
             if (armoryBtn && gameState === GAME_STATE.MAIN_MENU) {
                 if (royalSeals > 0) {
@@ -1896,19 +1843,15 @@
             }
         }
 
-        // Track previous game state for Armory
         let prevGameState = null;
 
-        // Update royalSealsDisplay click handler
         royalSealsDisplay.addEventListener('click', () => {
-            // Only allow opening Armory from stable in-game states (not during transitions)
             if (gameState === GAME_STATE.BUILD && typeof showArmory === 'function') {
                 prevGameState = gameState;
                 showArmory();
             }
         });
 
-        // Update showArmory to not overwrite prevGameState if already set
         function showArmory() {
             gameState = GAME_STATE.ARMORY;
             document.getElementById('main-menu-modal').style.display = 'none';
@@ -1959,7 +1902,6 @@
             }
         }
         
-        // Update closeArmory to always clear prevGameState and update UI/BuildMenu
         function closeArmory() {
             const gameOverVisible = document.getElementById('game-over-modal').style.display === 'flex';
             const victoryVisible = document.getElementById('victory-modal').style.display === 'flex';
@@ -1970,7 +1912,6 @@
                 prevGameState = null;
                 document.getElementById('armory-modal').style.display = 'none';
                 setTimeout(() => { updateUI(); updateBuildMenu(); }, 10);
-                // Ensure game loop resumes if returning to BUILD or ATTACK
                 if (gameState === GAME_STATE.BUILD || gameState === GAME_STATE.ATTACK) {
                     gameLoop(performance.now());
                 }
@@ -1995,11 +1936,9 @@
             }
         }
         
-        // --- AUDIO SYSTEM ---
         function initAudio() {
             try {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                // Base64 encoded sounds to keep it in a single file
                 const soundData = {
                     arrow: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAgD8AAP8/AAD/PwAA/z8AAP8/AAD/PwAA/z8AAP8/AAD/PwAA/z8AAP8/AAD/PwAA',
                     build: 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAAAwD8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAAwA8AAMAPAADADwAA',
@@ -2029,9 +1968,8 @@
             source.start(0);
         }
 
-        // --- DATA CONFIGURATION ---
         const DEFENSE_DATA = {
-            STARTING_GOLD: 150,
+            STARTING_GOLD: 145,
             STARTING_WOOD: 80,
             Wall: { name: 'Wall', type: 'wall', costGold: 0, costWood: 10, icon: '🛡️', hp: [300, 500, 800] },
             ArcherTower: { name: 'Archer', type: 'tower', costGold: 50, costWood: 10, icon: '🏹', range: [3, 3.3, 3.6], damage: [25, 40, 60], fireRate: [1, 0.9, 0.8], canAttackFlying: true },
@@ -2057,7 +1995,6 @@
             COMMANDER_COOLDOWN: { name: "-5% Rallying Cry Cooldown", cost: 125, effect: 0.05, maxLevel: 3, type: 'passive', description: "Reduces the cooldown of Rallying Cry by 5% per level (up to -15%)." },
         };
 
-        // --- ENTITY CLASSES ---
         class Entity { constructor(x, y) { this.x = x; this.y = y; this.pixelX = (x+0.5)*TILE_SIZE; this.pixelY = (y+0.5)*TILE_SIZE; this.isAlive = true; } update(dt) {} draw() {} }
         class Particle extends Entity {
             constructor(x, y, color, size, speed, life) { super(x/TILE_SIZE, y/TILE_SIZE); this.pixelX = x; this.pixelY = y; this.color = color; this.size = size; this.vx = (Math.random() - 0.5) * speed; this.vy = (Math.random() - 0.5) * speed; this.life = life; this.maxLife = life;}
@@ -2170,7 +2107,6 @@
         }
         class GemMine extends SpecialBuilding { constructor(x,y) { super(x,y); this.range = this.data.range[0]; this.goldPerKill = this.data.goldPerKill; this.collectedGold = 0; } addGold() { this.collectedGold += this.goldPerKill; createExplosion(this.pixelX, this.pixelY, 3, 'gold', 3, 50, 0.8); } draw() { ctx.fillStyle = '#d4af37'; ctx.fillRect(this.x * TILE_SIZE, this.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); ctx.font = `${TILE_SIZE * 0.6}px sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = 'black'; ctx.fillText('⛏️', this.pixelX, this.pixelY); } }
 
-        // Castle Defense System - gives the castle basic archer capabilities
         class CastleDefense extends Entity {
             constructor(x, y) {
                 super(x, y);
@@ -2179,20 +2115,18 @@
                 this.target = null;
                 this.priorityTarget = null;
                 this.buffs = {};
-                // Fixed stats - not upgradeable
                 this.name = 'Castle Defense';
                 this.maxLevel = 1;
-                this.range = 3.5; // Slightly better than basic archer
-                this.damage = 20; // Decent damage
-                this.fireRate = 1.2; // Slightly slower than archer
+                this.range = 3.5;
+                this.damage = 20;
+                this.fireRate = 1.2;
                 this.canAttackFlying = true;
             }
             
-            // Copy essential Tower methods
             applyBuff(type, multiplier, duration) { this.buffs[type] = { multiplier, duration }; }
             updateBuffs(dt) { for (const type in this.buffs) { this.buffs[type].duration -= dt; if (this.buffs[type].duration <= 0) delete this.buffs[type]; } }
             setPriorityTarget(enemy) { this.priorityTarget = enemy; }
-            getUpgradeCost() { return null; } // Cannot be upgraded
+            getUpgradeCost() { return null; }
             
             getRange() { 
                 let range = this.range;
@@ -2224,12 +2158,10 @@
             }
             
             draw() {
-                // Don't draw anything - the castle is already visually represented
-                // The defense is invisible but functional
+
             }
         }
 
-        // --- ENEMY CLASSES ---
         class Enemy extends Entity {
             constructor(x, y) {
                 super(x, y);
@@ -2384,15 +2316,12 @@
 
         let kingPos = { x: 0, y: 0 };
 
-        // Tip system
         const tipPanel = document.getElementById('tip-panel');
         let tipTimeout = null;
-        // --- TIP PANEL: Always hide if no tip text ---
         let lastTipText = '';
         let tipHideTimeout = null;
         let tipLockout = false;
         function setTip(text) {
-            // Normalize text for comparison
             const normText = (text || '').trim();
             if (tipLockout && normText === lastTipText) return;
             if (normText === lastTipText && tipPanel.style.display === 'block') return;
@@ -2418,7 +2347,6 @@
                 lastTipText = '';
             }
         }
-        // Show initial tip before first wave
         let hasShownInitialTip = false;
         function maybeShowInitialTip() {
             if (!hasShownInitialTip && gameState === GAME_STATE.BUILD && wave === 1) {
@@ -2426,7 +2354,6 @@
                 hasShownInitialTip = true;
             }
         }
-        // Show contextual tip when selecting build
         function showBuildTip(key) {
             const tips = {
                 Wall: 'Walls block enemy movement. Use them to shape the path enemies take toward your castle.',
@@ -2441,11 +2368,9 @@
         }
 
         init();
-        // 2. In JS, also set pointer cursor and title for extra reliability
         royalSealsDisplay.style.cursor = 'pointer';
         royalSealsDisplay.title = 'Click to open the Royal Armory';
 
-        // Change cursor to pointer when hovering over forest or gem vein
         canvas.addEventListener('mousemove', function(event) {
             const rect = canvas.getBoundingClientRect();
             const x = Math.floor((event.clientX - rect.left) / TILE_SIZE);
