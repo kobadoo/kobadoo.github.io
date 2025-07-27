@@ -870,7 +870,7 @@
             wood = DEFENSE_DATA.STARTING_WOOD; kingHp = KING_MAX_HP;
             wave = 1; score = 0;
             lastSealScore = 0;
-            kingTookDamageThisWave = false; // Initialize damage tracking
+            kingTookDamageThisWave = false;
             selectedBuild = null; hoveredTower = null; activeGambit = null; lastBuildUndo = null;
             window.waveCanEnd = false;
 
@@ -907,7 +907,6 @@
                 }
             }
 
-            // Add castle defense system
             const castleDefense = new CastleDefense(centerX, centerY);
             entities.push(castleDefense);
 
@@ -1053,26 +1052,6 @@
         }
 
         function drawGrid() {
-            // Remove per-tile castle borders; only draw the single 3x3 border below
-            /*
-            for (let y = 0; y < GRID_ROWS; y++) {
-                for (let x = 0; x < GRID_COLS; x++) {
-                    if (grid[y][x].type === 'castle') {
-                        ctx.save();
-                        ctx.strokeStyle = 'rgba(241, 224, 90, 0.85)';
-                        ctx.lineWidth = 2;
-                        ctx.strokeRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-                        ctx.restore();
-                    } else if (grid[y][x].type === 'castle_core') {
-                        ctx.save();
-                        ctx.strokeStyle = 'rgba(241, 224, 90, 1)';
-                        ctx.lineWidth = 3;
-                        ctx.strokeRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-                        ctx.restore();
-                    }
-                }
-            }
-            */
             
             const kingX = kingPos.x * TILE_SIZE + TILE_SIZE / 2;
             const kingY = kingPos.y * TILE_SIZE + TILE_SIZE / 2;
