@@ -334,6 +334,7 @@
         <!-- Start Screen -->
         <div id="start-screen" class="screen">
             <h1>Math Fight Game</h1>
+            <div style="font-size: 4rem; margin: 20px 0;">🤓</div>
             <div id="start-button" class="button" tabindex="0">Start Tournament</div>
         </div>
 
@@ -946,6 +947,7 @@
                 state.combo = 0;
                 showScreen('game');
                 setupOpponent(opponent);
+                updateUI(); // Ensure health bars display correctly from the start
                 nextQuestion();
             }
 
@@ -1073,8 +1075,13 @@
                 
                 // Calculate opponent health percentage based on their max health
                 const opponent = opponents[state.currentOpponentIndex];
-                const opponentHealthPercentage = (state.opponentHealth / opponent.health) * 100;
-                ui.opponentStamina.style.width = `${Math.max(0, opponentHealthPercentage)}%`;
+                if (opponent && opponent.health) {
+                    const opponentHealthPercentage = (state.opponentHealth / opponent.health) * 100;
+                    ui.opponentStamina.style.width = `${Math.max(0, opponentHealthPercentage)}%`;
+                } else {
+                    // Fallback if opponent not properly set yet
+                    ui.opponentStamina.style.width = `${state.opponentHealth}%`;
+                }
                 
                 if (state.combo > 1) {
                     ui.comboMeter.textContent = `${state.combo}x COMBO!`;
@@ -1275,6 +1282,7 @@
                     ui.gameOverTitle.textContent = "DEFEAT!";
                     ui.gameOverMessage.textContent = `You were pinned by ${opponents[state.currentOpponentIndex].name}.`;
                     ui.rematchButton.style.display = 'inline-block';
+                    ui.mainMenuButton.style.display = 'none';
                     showScreen('gameOver');
                 }
                 checkAchievements();
@@ -1299,6 +1307,7 @@
                 } else {
                     ui.gameOverTitle.textContent = "🏆 CHAMPION! 🏆";
                     ui.gameOverMessage.textContent = "You've won the tournament!";
+                    ui.mainMenuButton.style.display = 'inline-block';
                     // Don't show endless rumble for tournament completion
                 }
             }
