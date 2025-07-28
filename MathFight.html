@@ -465,228 +465,385 @@
                 { id: 1, name: "Digit Destroyer", health: 120, specialty: "Multi-digit operations", mechanic: 'shuffle', mask: '🤡', color1: '#8e44ad', color2: '#2ecc71' },
                 { id: 2, name: "Equation Master", health: 150, specialty: "Linear equations", mechanic: 'fade', mask: '👽', color1: '#d35400', color2: '#bdc3c7' },
                 { id: 3, name: "Root Crusher", health: 180, specialty: "Square roots & powers", mechanic: 'smokescreen', mask: '💀', color1: '#e83e8c', color2: '#ffffff' },
-                { id: 4, name: "Formula Kßing", health: 220, specialty: "Advanced operations", mechanic: 'shuffle', mask: '👑', color1: '#6f42c1', color2: '#ffd700' },
+                { id: 4, name: "Formula King", health: 220, specialty: "Advanced operations", mechanic: 'shuffle', mask: '👑', color1: '#6f42c1', color2: '#ffd700' },
             ];
 
-            const questionsByLevel = {
-              0: [  // Fractions & decimals (Level 1)
-                { id: '0a', sentence: "1/2 + 1/4 = ?",                    options: ["3/4","2/3","5/6"],                  correct: 0 },
-                { id: '0b', sentence: "0.5 + 0.3 = ?",                    options: ["0.8","0.7","0.9"],                  correct: 0 },
-                { id: '0c', sentence: "3/4 - 1/4 = ?",                    options: ["1/2","1/3","2/3"],                  correct: 0 },
-                { id: '0d', sentence: "1.2 - 0.7 = ?",                    options: ["0.5","0.4","0.6"],                  correct: 0 },
-                { id: '0e', sentence: "2/3 × 3/4 = ?",                    options: ["1/2","2/5","3/5"],                  correct: 0 },
-                { id: '0f', sentence: "0.6 × 0.5 = ?",                    options: ["0.3","0.25","0.35"],                correct: 0 },
-                { id: '0g', sentence: "1/3 + 1/6 = ?",                    options: ["1/2","2/5","3/7"],                  correct: 0 },
-                { id: '0h', sentence: "2.5 + 1.75 = ?",                   options: ["4.25","4.5","3.75"],                correct: 0 },
-                { id: '0i', sentence: "5/6 - 1/3 = ?",                    options: ["1/2","1/4","2/3"],                  correct: 0 },
-                { id: '0j', sentence: "3.8 - 1.9 = ?",                    options: ["1.9","2.1","1.7"],                  correct: 0 },
-                { id: '0k', sentence: "1/4 × 2/3 = ?",                    options: ["1/6","1/8","1/4"],                  correct: 0 },
-                { id: '0l', sentence: "0.4 × 0.25 = ?",                   options: ["0.1","0.15","0.05"],                correct: 0 },
-                { id: '0m', sentence: "2/5 + 1/10 = ?",                   options: ["1/2","3/7","4/9"],                  correct: 0 },
-                { id: '0n', sentence: "4.6 + 2.85 = ?",                   options: ["7.45","7.25","7.65"],               correct: 0 },
-                { id: '0o', sentence: "7/8 - 3/8 = ?",                    options: ["1/2","1/4","3/4"],                  correct: 0 },
-                { id: '0p', sentence: "5.0 - 2.35 = ?",                   options: ["2.65","2.75","2.55"],               correct: 0 },
-                { id: '0q', sentence: "3/5 × 1/2 = ?",                    options: ["3/10","2/7","1/3"],                 correct: 0 },
-                { id: '0r', sentence: "0.8 × 0.4 = ?",                    options: ["0.32","0.28","0.36"],               correct: 0 },
-                { id: '0s', sentence: "1/6 + 1/3 = ?",                    options: ["1/2","2/5","3/7"],                  correct: 0 },
-                { id: '0t', sentence: "6.25 - 3.7 = ?",                   options: ["2.55","2.45","2.65"],               correct: 0 },
-                { id: '0u', sentence: "3/8 + 1/8 = ?",                    options: ["1/2","3/8","5/8"],                  correct: 0 },
-                { id: '0v', sentence: "0.9 - 0.4 = ?",                    options: ["0.5","0.6","0.4"],                  correct: 0 },
-                { id: '0w', sentence: "1/5 × 2/3 = ?",                    options: ["2/15","1/8","3/15"],                correct: 0 },
-                { id: '0x', sentence: "3.2 + 1.8 = ?",                    options: ["5.0","4.8","5.2"],                  correct: 0 },
-                { id: '0y', sentence: "4/5 - 2/5 = ?",                    options: ["2/5","1/5","3/5"],                  correct: 0 },
-                { id: '0z', sentence: "0.75 × 0.2 = ?",                   options: ["0.15","0.12","0.18"],               correct: 0 },
-                { id: '0aa', sentence: "1/8 + 3/8 = ?",                   options: ["1/2","3/8","5/8"],                  correct: 0 },
-                { id: '0bb', sentence: "7.3 - 2.8 = ?",                   options: ["4.5","4.3","4.7"],                  correct: 0 },
-                { id: '0cc', sentence: "2/7 × 3/4 = ?",                   options: ["3/14","2/11","6/11"],               correct: 0 },
-                { id: '0dd', sentence: "1.6 + 2.9 = ?",                   options: ["4.5","4.2","4.8"],                  correct: 0 },
-                { id: '0ee', sentence: "9/10 - 3/10 = ?",                 options: ["3/5","7/10","4/5"],                 correct: 0 },
-                { id: '0ff', sentence: "0.36 × 0.5 = ?",                  options: ["0.18","0.16","0.20"],               correct: 0 },
-                { id: '0gg', sentence: "2/9 + 1/9 = ?",                   options: ["1/3","2/9","4/9"],                  correct: 0 },
-                { id: '0hh', sentence: "8.7 - 3.2 = ?",                   options: ["5.5","5.3","5.7"],                  correct: 0 },
-                { id: '0ii', sentence: "3/10 × 2/5 = ?",                  options: ["3/25","2/15","1/8"],                correct: 0 },
-                { id: '0jj', sentence: "0.64 + 0.28 = ?",                 options: ["0.92","0.90","0.94"],               correct: 0 },
-                { id: '0kk', sentence: "11/12 - 5/12 = ?",                options: ["1/2","5/12","7/12"],                correct: 0 },
-                { id: '0ll', sentence: "1.25 × 0.4 = ?",                  options: ["0.5","0.45","0.55"],                correct: 0 },
-                { id: '0mm', sentence: "1/7 + 2/7 = ?",                   options: ["3/7","1/7","4/7"],                  correct: 0 },
-                { id: '0nn', sentence: "9.6 - 4.8 = ?",                   options: ["4.8","4.6","5.0"],                  correct: 0 }
-              ],
+            // Random Question Generation System
+            function random(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
 
-              1: [  // Multi-digit operations (Level 2)
-                { id: '1a', sentence: "23 + 17 = ?",                      options: ["40","42","38"],                     correct: 0 },
-                { id: '1b', sentence: "156 - 89 = ?",                     options: ["67","69","65"],                     correct: 0 },
-                { id: '1c', sentence: "37 × 8 = ?",                       options: ["296","294","298"],                  correct: 0 },
-                { id: '1d', sentence: "448 ÷ 8 = ?",                      options: ["56","54","58"],                     correct: 0 },
-                { id: '1e', sentence: "145 + 297 = ?",                    options: ["442","440","444"],                  correct: 0 },
-                { id: '1f', sentence: "512 - 186 = ?",                    options: ["326","324","328"],                  correct: 0 },
-                { id: '1g', sentence: "24 × 15 = ?",                      options: ["360","350","370"],                  correct: 0 },
-                { id: '1h', sentence: "684 ÷ 12 = ?",                     options: ["57","55","59"],                     correct: 0 },
-                { id: '1i', sentence: "278 + 394 = ?",                    options: ["672","670","674"],                  correct: 0 },
-                { id: '1j', sentence: "803 - 467 = ?",                    options: ["336","334","338"],                  correct: 0 },
-                { id: '1k', sentence: "43 × 19 = ?",                      options: ["817","815","819"],                  correct: 0 },
-                { id: '1l', sentence: "896 ÷ 16 = ?",                     options: ["56","54","58"],                     correct: 0 },
-                { id: '1m', sentence: "365 + 487 = ?",                    options: ["852","850","854"],                  correct: 0 },
-                { id: '1n', sentence: "700 - 338 = ?",                    options: ["362","360","364"],                  correct: 0 },
-                { id: '1o', sentence: "56 × 23 = ?",                      options: ["1288","1286","1290"],               correct: 0 },
-                { id: '1p', sentence: "1104 ÷ 24 = ?",                    options: ["46","44","48"],                     correct: 0 },
-                { id: '1q', sentence: "564 + 789 = ?",                    options: ["1353","1351","1355"],               correct: 0 },
-                { id: '1r', sentence: "1000 - 743 = ?",                   options: ["257","255","259"],                  correct: 0 },
-                { id: '1s', sentence: "72 × 14 = ?",                      options: ["1008","1006","1010"],               correct: 0 },
-                { id: '1t', sentence: "1365 ÷ 15 = ?",                    options: ["91","89","93"],                     correct: 0 },
-                { id: '1u', sentence: "89 + 76 = ?",                      options: ["165","163","167"],                  correct: 0 },
-                { id: '1v', sentence: "234 - 147 = ?",                    options: ["87","85","89"],                     correct: 0 },
-                { id: '1w', sentence: "29 × 7 = ?",                       options: ["203","201","205"],                  correct: 0 },
-                { id: '1x', sentence: "576 ÷ 9 = ?",                      options: ["64","62","66"],                     correct: 0 },
-                { id: '1y', sentence: "458 + 367 = ?",                    options: ["825","823","827"],                  correct: 0 },
-                { id: '1z', sentence: "892 - 456 = ?",                    options: ["436","434","438"],                  correct: 0 },
-                { id: '1aa', sentence: "38 × 17 = ?",                     options: ["646","644","648"],                  correct: 0 },
-                { id: '1bb', sentence: "714 ÷ 21 = ?",                    options: ["34","32","36"],                     correct: 0 },
-                { id: '1cc', sentence: "679 + 284 = ?",                   options: ["963","961","965"],                  correct: 0 },
-                { id: '1dd', sentence: "750 - 389 = ?",                   options: ["361","359","363"],                  correct: 0 },
-                { id: '1ee', sentence: "45 × 26 = ?",                     options: ["1170","1168","1172"],               correct: 0 },
-                { id: '1ff', sentence: "952 ÷ 17 = ?",                    options: ["56","54","58"],                     correct: 0 },
-                { id: '1gg', sentence: "327 + 596 = ?",                   options: ["923","921","925"],                  correct: 0 },
-                { id: '1hh', sentence: "1200 - 847 = ?",                  options: ["353","351","355"],                  correct: 0 },
-                { id: '1ii', sentence: "64 × 18 = ?",                     options: ["1152","1150","1154"],               correct: 0 },
-                { id: '1jj', sentence: "1274 ÷ 22 = ?",                   options: ["58","56","60"],                     correct: 0 },
-                { id: '1kk', sentence: "743 + 289 = ?",                   options: ["1032","1030","1034"],               correct: 0 },
-                { id: '1ll', sentence: "865 - 478 = ?",                   options: ["387","385","389"],                  correct: 0 },
-                { id: '1mm', sentence: "73 × 12 = ?",                     options: ["876","874","878"],                  correct: 0 },
-                { id: '1nn', sentence: "1316 ÷ 28 = ?",                   options: ["47","45","49"],                     correct: 0 }
-              ],
+            function gcd(a, b) {
+                return b === 0 ? a : gcd(b, a % b);
+            }
 
-              2: [  // Linear equations (Level 3)
-                { id: '2a', sentence: "2x + 5 = 15, x = ?",               options: ["5","4","6"],                        correct: 0 },
-                { id: '2b', sentence: "3x - 7 = 14, x = ?",               options: ["7","6","8"],                        correct: 0 },
-                { id: '2c', sentence: "4x + 12 = 32, x = ?",              options: ["5","4","6"],                        correct: 0 },
-                { id: '2d', sentence: "5x - 8 = 27, x = ?",               options: ["7","6","8"],                        correct: 0 },
-                { id: '2e', sentence: "6x + 9 = 39, x = ?",               options: ["5","4","6"],                        correct: 0 },
-                { id: '2f', sentence: "2x - 11 = 5, x = ?",               options: ["8","7","9"],                        correct: 0 },
-                { id: '2g', sentence: "7x + 4 = 25, x = ?",               options: ["3","2","4"],                        correct: 0 },
-                { id: '2h', sentence: "3x - 15 = 0, x = ?",               options: ["5","4","6"],                        correct: 0 },
-                { id: '2i', sentence: "8x + 7 = 31, x = ?",               options: ["3","2","4"],                        correct: 0 },
-                { id: '2j', sentence: "4x - 9 = 11, x = ?",               options: ["5","4","6"],                        correct: 0 },
-                { id: '2k', sentence: "9x + 6 = 33, x = ?",               options: ["3","2","4"],                        correct: 0 },
-                { id: '2l', sentence: "5x - 12 = 18, x = ?",              options: ["6","5","7"],                        correct: 0 },
-                { id: '2m', sentence: "2x + 17 = 29, x = ?",              options: ["6","5","7"],                        correct: 0 },
-                { id: '2n', sentence: "6x - 4 = 26, x = ?",               options: ["5","4","6"],                        correct: 0 },
-                { id: '2o', sentence: "10x + 8 = 48, x = ?",              options: ["4","3","5"],                        correct: 0 },
-                { id: '2p', sentence: "3x - 21 = 6, x = ?",               options: ["9","8","10"],                       correct: 0 },
-                { id: '2q', sentence: "7x + 14 = 42, x = ?",              options: ["4","3","5"],                        correct: 0 },
-                { id: '2r', sentence: "4x - 16 = 12, x = ?",              options: ["7","6","8"],                        correct: 0 },
-                { id: '2s', sentence: "8x + 5 = 37, x = ?",               options: ["4","3","5"],                        correct: 0 },
-                { id: '2t', sentence: "5x - 25 = 10, x = ?",              options: ["7","6","8"],                        correct: 0 },
-                { id: '2u', sentence: "3x + 8 = 23, x = ?",               options: ["5","4","6"],                        correct: 0 },
-                { id: '2v', sentence: "6x - 18 = 12, x = ?",              options: ["5","4","6"],                        correct: 0 },
-                { id: '2w', sentence: "2x + 13 = 25, x = ?",              options: ["6","5","7"],                        correct: 0 },
-                { id: '2x', sentence: "9x - 27 = 18, x = ?",              options: ["5","4","6"],                        correct: 0 },
-                { id: '2y', sentence: "4x + 6 = 22, x = ?",               options: ["4","3","5"],                        correct: 0 },
-                { id: '2z', sentence: "7x - 21 = 14, x = ?",              options: ["5","4","6"],                        correct: 0 },
-                { id: '2aa', sentence: "3x + 15 = 36, x = ?",             options: ["7","6","8"],                        correct: 0 },
-                { id: '2bb', sentence: "8x - 32 = 24, x = ?",             options: ["7","6","8"],                        correct: 0 },
-                { id: '2cc', sentence: "5x + 10 = 35, x = ?",             options: ["5","4","6"],                        correct: 0 },
-                { id: '2dd', sentence: "6x - 12 = 24, x = ?",             options: ["6","5","7"],                        correct: 0 },
-                { id: '2ee', sentence: "2x + 22 = 38, x = ?",             options: ["8","7","9"],                        correct: 0 },
-                { id: '2ff', sentence: "4x - 20 = 16, x = ?",             options: ["9","8","10"],                       correct: 0 },
-                { id: '2gg', sentence: "7x + 28 = 56, x = ?",             options: ["4","3","5"],                        correct: 0 },
-                { id: '2hh', sentence: "3x - 18 = 9, x = ?",              options: ["9","8","10"],                       correct: 0 },
-                { id: '2ii', sentence: "5x + 20 = 45, x = ?",             options: ["5","4","6"],                        correct: 0 },
-                { id: '2jj', sentence: "8x - 24 = 32, x = ?",             options: ["7","6","8"],                        correct: 0 },
-                { id: '2kk', sentence: "6x + 18 = 48, x = ?",             options: ["5","4","6"],                        correct: 0 },
-                { id: '2ll', sentence: "9x - 36 = 27, x = ?",             options: ["7","6","8"],                        correct: 0 },
-                { id: '2mm', sentence: "4x + 16 = 36, x = ?",             options: ["5","4","6"],                        correct: 0 },
-                { id: '2nn', sentence: "10x - 30 = 50, x = ?",            options: ["8","7","9"],                        correct: 0 }
-              ],
+            function simplifyFraction(num, den) {
+                const divisor = gcd(Math.abs(num), Math.abs(den));
+                return [num / divisor, den / divisor];
+            }
 
-              3: [  // Square roots & powers (Level 4)
-                { id: '3a', sentence: "√25 = ?",                          options: ["5","4","6"],                        correct: 0 },
-                { id: '3b', sentence: "3² = ?",                           options: ["9","8","10"],                       correct: 0 },
-                { id: '3c', sentence: "√36 = ?",                          options: ["6","5","7"],                        correct: 0 },
-                { id: '3d', sentence: "4³ = ?",                           options: ["64","62","66"],                     correct: 0 },
-                { id: '3e', sentence: "√49 = ?",                          options: ["7","6","8"],                        correct: 0 },
-                { id: '3f', sentence: "5² = ?",                           options: ["25","24","26"],                     correct: 0 },
-                { id: '3g', sentence: "√64 = ?",                          options: ["8","7","9"],                        correct: 0 },
-                { id: '3h', sentence: "2⁵ = ?",                           options: ["32","30","34"],                     correct: 0 },
-                { id: '3i', sentence: "√81 = ?",                          options: ["9","8","10"],                       correct: 0 },
-                { id: '3j', sentence: "6² = ?",                           options: ["36","35","37"],                     correct: 0 },
-                { id: '3k', sentence: "√100 = ?",                         options: ["10","9","11"],                      correct: 0 },
-                { id: '3l', sentence: "3⁴ = ?",                           options: ["81","80","82"],                     correct: 0 },
-                { id: '3m', sentence: "√121 = ?",                         options: ["11","10","12"],                     correct: 0 },
-                { id: '3n', sentence: "7² = ?",                           options: ["49","48","50"],                     correct: 0 },
-                { id: '3o', sentence: "√144 = ?",                         options: ["12","11","13"],                     correct: 0 },
-                { id: '3p', sentence: "2⁶ = ?",                           options: ["64","62","66"],                     correct: 0 },
-                { id: '3q', sentence: "√169 = ?",                         options: ["13","12","14"],                     correct: 0 },
-                { id: '3r', sentence: "8² = ?",                           options: ["64","63","65"],                     correct: 0 },
-                { id: '3s', sentence: "√196 = ?",                         options: ["14","13","15"],                     correct: 0 },
-                { id: '3t', sentence: "5³ = ?",                           options: ["125","124","126"],                  correct: 0 },
-                { id: '3u', sentence: "√225 = ?",                         options: ["15","14","16"],                     correct: 0 },
-                { id: '3v', sentence: "9² = ?",                           options: ["81","80","82"],                     correct: 0 },
-                { id: '3w', sentence: "√256 = ?",                         options: ["16","15","17"],                     correct: 0 },
-                { id: '3x', sentence: "2⁷ = ?",                           options: ["128","126","130"],                  correct: 0 },
-                { id: '3y', sentence: "√289 = ?",                         options: ["17","16","18"],                     correct: 0 },
-                { id: '3z', sentence: "10² = ?",                          options: ["100","99","101"],                   correct: 0 },
-                { id: '3aa', sentence: "√324 = ?",                        options: ["18","17","19"],                     correct: 0 },
-                { id: '3bb', sentence: "6³ = ?",                          options: ["216","214","218"],                  correct: 0 },
-                { id: '3cc', sentence: "√361 = ?",                        options: ["19","18","20"],                     correct: 0 },
-                { id: '3dd', sentence: "11² = ?",                         options: ["121","120","122"],                  correct: 0 },
-                { id: '3ee', sentence: "√400 = ?",                        options: ["20","19","21"],                     correct: 0 },
-                { id: '3ff', sentence: "2⁸ = ?",                          options: ["256","254","258"],                  correct: 0 },
-                { id: '3gg', sentence: "12² = ?",                         options: ["144","143","145"],                  correct: 0 },
-                { id: '3hh', sentence: "√441 = ?",                        options: ["21","20","22"],                     correct: 0 },
-                { id: '3ii', sentence: "7³ = ?",                          options: ["343","341","345"],                  correct: 0 },
-                { id: '3jj', sentence: "√484 = ?",                        options: ["22","21","23"],                     correct: 0 },
-                { id: '3kk', sentence: "13² = ?",                         options: ["169","168","170"],                  correct: 0 },
-                { id: '3ll', sentence: "√529 = ?",                        options: ["23","22","24"],                     correct: 0 },
-                { id: '3mm', sentence: "3⁵ = ?",                          options: ["243","241","245"],                  correct: 0 },
-                { id: '3nn', sentence: "√576 = ?",                        options: ["24","23","25"],                     correct: 0 }
-              ],
+            function generateWrongAnswers(correct, type = 'number', count = 2) {
+                const wrong = [];
+                const variations = type === 'decimal' ? [0.01, 0.02, 0.05, 0.1, 0.2] : [1, 2, 3, 5, 10];
+                
+                while (wrong.length < count) {
+                    const variation = variations[random(0, variations.length - 1)];
+                    const candidate = random(0, 1) ? correct + variation : correct - variation;
+                    
+                    if (type === 'decimal') {
+                        const rounded = Math.round(candidate * 100) / 100;
+                        if (rounded !== correct && rounded > 0 && !wrong.includes(rounded)) {
+                            wrong.push(rounded);
+                        }
+                    } else {
+                        const rounded = Math.round(candidate);
+                        if (rounded !== correct && rounded > 0 && !wrong.includes(rounded)) {
+                            wrong.push(rounded);
+                        }
+                    }
+                }
+                return wrong;
+            }
 
-              4: [  // Advanced operations (Level 5)
-                { id: '4a', sentence: "log₂(16) = ?",                     options: ["4","3","5"],                        correct: 0 },
-                { id: '4b', sentence: "3^x = 27, x = ?",                   options: ["3","2","4"],                        correct: 0 },
-                { id: '4c', sentence: "sin(30°) = ?",                     options: ["0.5","0.6","0.4"],                  correct: 0 },
-                { id: '4d', sentence: "∛64 = ?",                          options: ["4","3","5"],                        correct: 0 },
-                { id: '4e', sentence: "5! = ?",                           options: ["120","110","130"],                  correct: 0 },
-                { id: '4f', sentence: "2^x = 64, x = ?",                   options: ["6","5","7"],                        correct: 0 },
-                { id: '4g', sentence: "cos(60°) = ?",                     options: ["0.5","0.6","0.4"],                  correct: 0 },
-                { id: '4h', sentence: "log₁₀(1000) = ?",                  options: ["3","2","4"],                        correct: 0 },
-                { id: '4i', sentence: "∛125 = ?",                         options: ["5","4","6"],                        correct: 0 },
-                { id: '4j', sentence: "4! = ?",                           options: ["24","22","26"],                     correct: 0 },
-                { id: '4k', sentence: "tan(45°) = ?",                     options: ["1","0.8","1.2"],                    correct: 0 },
-                { id: '4l', sentence: "5^x = 125, x = ?",                  options: ["3","2","4"],                        correct: 0 },
-                { id: '4m', sentence: "√(x + 9) = 5, x = ?",              options: ["16","15","17"],                     correct: 0 },
-                { id: '4n', sentence: "e^x = e³, x = ?",                   options: ["3","2","4"],                        correct: 0 },
-                { id: '4o', sentence: "6! ÷ 4! = ?",                      options: ["30","28","32"],                     correct: 0 },
-                { id: '4p', sentence: "∛216 = ?",                         options: ["6","5","7"],                        correct: 0 },
-                { id: '4q', sentence: "log₃(81) = ?",                     options: ["4","3","5"],                        correct: 0 },
-                { id: '4r', sentence: "sin²(30°) + cos²(30°) = ?",        options: ["1","0.8","1.2"],                    correct: 0 },
-                { id: '4s', sentence: "∛(-27) = ?",                       options: ["-3","-2","-4"],                     correct: 0 },
-                { id: '4t', sentence: "log₂(32) = ?",                     options: ["5","4","6"],                        correct: 0 },
-                { id: '4u', sentence: "4^x = 256, x = ?",                  options: ["4","3","5"],                        correct: 0 },
-                { id: '4v', sentence: "sin(90°) = ?",                     options: ["1","0.9","1.1"],                    correct: 0 },
-                { id: '4w', sentence: "∛343 = ?",                         options: ["7","6","8"],                        correct: 0 },
-                { id: '4x', sentence: "7! ÷ 5! = ?",                      options: ["42","40","44"],                     correct: 0 },
-                { id: '4y', sentence: "6^x = 216, x = ?",                  options: ["3","2","4"],                        correct: 0 },
-                { id: '4z', sentence: "cos(0°) = ?",                      options: ["1","0.9","1.1"],                    correct: 0 },
-                { id: '4aa', sentence: "log₁₀(100) = ?",                  options: ["2","1","3"],                        correct: 0 },
-                { id: '4bb', sentence: "∛512 = ?",                        options: ["8","7","9"],                        correct: 0 },
-                { id: '4cc', sentence: "3! × 2! = ?",                     options: ["12","10","14"],                     correct: 0 },
-                { id: '4dd', sentence: "tan(0°) = ?",                     options: ["0","0.1","-0.1"],                   correct: 0 },
-                { id: '4ee', sentence: "7^x = 343, x = ?",                 options: ["3","2","4"],                        correct: 0 },
-                { id: '4ff', sentence: "sin(60°) = ?",                    options: ["0.866","0.8","0.9"],                correct: 0 },
-                { id: '4gg', sentence: "log₅(625) = ?",                   options: ["4","3","5"],                        correct: 0 },
-                { id: '4hh', sentence: "∛729 = ?",                        options: ["9","8","10"],                       correct: 0 },
-                { id: '4ii', sentence: "8! ÷ 6! = ?",                     options: ["56","54","58"],                     correct: 0 },
-                { id: '4jj', sentence: "cos(30°) = ?",                    options: ["0.866","0.8","0.9"],                correct: 0 },
-                { id: '4kk', sentence: "9^x = 729, x = ?",                 options: ["3","2","4"],                        correct: 0 },
-                { id: '4ll', sentence: "log₂(128) = ?",                   options: ["7","6","8"],                        correct: 0 },
-                { id: '4mm', sentence: "∛1000 = ?",                       options: ["10","9","11"],                      correct: 0 },
-                { id: '4nn', sentence: "sin(45°) = ?",                    options: ["0.707","0.7","0.75"],               correct: 0 }
-              ]
+            function generateFractionWrongAnswers(correctNum, correctDen, count = 2) {
+                const wrong = [];
+                const [simplifiedNum, simplifiedDen] = simplifyFraction(correctNum, correctDen);
+                
+                while (wrong.length < count) {
+                    let candidateNum, candidateDen;
+                    
+                    if (random(0, 1)) {
+                        // Vary numerator
+                        candidateNum = simplifiedNum + random(-3, 3);
+                        candidateDen = simplifiedDen;
+                    } else {
+                        // Vary denominator
+                        candidateNum = simplifiedNum;
+                        candidateDen = simplifiedDen + random(-3, 3);
+                    }
+                    
+                    if (candidateNum > 0 && candidateDen > 0) {
+                        const [simpNum, simpDen] = simplifyFraction(candidateNum, candidateDen);
+                        const fractionStr = simpDen === 1 ? simpNum.toString() : `${simpNum}/${simpDen}`;
+                        const correctStr = simplifiedDen === 1 ? simplifiedNum.toString() : `${simplifiedNum}/${simplifiedDen}`;
+                        
+                        if (fractionStr !== correctStr && !wrong.includes(fractionStr)) {
+                            wrong.push(fractionStr);
+                        }
+                    }
+                }
+                return wrong;
+            }
+
+            // Level-specific question generators
+            function generateLevel0Question() {
+                const questionTypes = [
+                    'fractionAdd', 'fractionSub', 'fractionMult', 'fractionDiv',
+                    'decimalAdd', 'decimalSub', 'decimalMult'
+                ];
+                const type = questionTypes[random(0, questionTypes.length - 1)];
+
+                switch (type) {
+                    case 'fractionAdd': {
+                        const den = random(2, 12);
+                        const num1 = random(1, den - 1);
+                        const num2 = random(1, den - num1);
+                        const resultNum = num1 + num2;
+                        const [simpNum, simpDen] = simplifyFraction(resultNum, den);
+                        const correct = simpDen === 1 ? simpNum.toString() : `${simpNum}/${simpDen}`;
+                        const wrong = generateFractionWrongAnswers(simpNum, simpDen);
+                        return {
+                            sentence: `${num1}/${den} + ${num2}/${den} = ?`,
+                            options: [correct, ...wrong],
+                            correct: 0
+                        };
+                    }
+                    case 'fractionSub': {
+                        const den = random(3, 12);
+                        const num1 = random(2, den - 1);
+                        const num2 = random(1, num1 - 1);
+                        const resultNum = num1 - num2;
+                        const [simpNum, simpDen] = simplifyFraction(resultNum, den);
+                        const correct = simpDen === 1 ? simpNum.toString() : `${simpNum}/${simpDen}`;
+                        const wrong = generateFractionWrongAnswers(simpNum, simpDen);
+                        return {
+                            sentence: `${num1}/${den} - ${num2}/${den} = ?`,
+                            options: [correct, ...wrong],
+                            correct: 0
+                        };
+                    }
+                    case 'fractionMult': {
+                        const num1 = random(1, 5), den1 = random(2, 8);
+                        const num2 = random(1, 5), den2 = random(2, 8);
+                        const resultNum = num1 * num2;
+                        const resultDen = den1 * den2;
+                        const [simpNum, simpDen] = simplifyFraction(resultNum, resultDen);
+                        const correct = simpDen === 1 ? simpNum.toString() : `${simpNum}/${simpDen}`;
+                        const wrong = generateFractionWrongAnswers(simpNum, simpDen);
+                        return {
+                            sentence: `${num1}/${den1} × ${num2}/${den2} = ?`,
+                            options: [correct, ...wrong],
+                            correct: 0
+                        };
+                    }
+                    case 'decimalAdd': {
+                        const a = (random(10, 99) / 10);
+                        const b = (random(10, 99) / 10);
+                        const correct = Math.round((a + b) * 100) / 100;
+                        const wrong = generateWrongAnswers(correct, 'decimal');
+                        return {
+                            sentence: `${a} + ${b} = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                    case 'decimalSub': {
+                        const a = (random(20, 99) / 10);
+                        const b = (random(10, Math.floor(a * 10) - 1) / 10);
+                        const correct = Math.round((a - b) * 100) / 100;
+                        const wrong = generateWrongAnswers(correct, 'decimal');
+                        return {
+                            sentence: `${a} - ${b} = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                    case 'decimalMult': {
+                        const a = (random(2, 9) / 10);
+                        const b = (random(2, 9) / 10);
+                        const correct = Math.round((a * b) * 100) / 100;
+                        const wrong = generateWrongAnswers(correct, 'decimal');
+                        return {
+                            sentence: `${a} × ${b} = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                }
+            }
+
+            function generateLevel1Question() {
+                const questionTypes = ['multDigitMult', 'multDigitDiv', 'largeAdd', 'largeSub'];
+                const type = questionTypes[random(0, questionTypes.length - 1)];
+
+                switch (type) {
+                    case 'multDigitMult': {
+                        const a = random(15, 99);
+                        const b = random(12, 35);
+                        const correct = a * b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${a} × ${b} = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                    case 'multDigitDiv': {
+                        const b = random(12, 25);
+                        const correct = random(15, 50);
+                        const a = b * correct;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${a} ÷ ${b} = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                    case 'largeAdd': {
+                        const a = random(150, 999);
+                        const b = random(150, 999);
+                        const correct = a + b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${a} + ${b} = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                    case 'largeSub': {
+                        const correct = random(100, 500);
+                        const b = random(100, 400);
+                        const a = correct + b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${a} - ${b} = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                }
+            }
+
+            function generateLevel2Question() {
+                const questionTypes = ['oneStepLinear', 'twoStepLinear', 'distributive'];
+                const type = questionTypes[random(0, questionTypes.length - 1)];
+
+                switch (type) {
+                    case 'oneStepLinear': {
+                        const x = random(2, 20);
+                        const a = random(2, 12);
+                        const c = a * x;
+                        const correct = x;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${a}x = ${c}`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                    case 'twoStepLinear': {
+                        const x = random(3, 15);
+                        const a = random(2, 8);
+                        const b = random(5, 25);
+                        const c = a * x + b;
+                        const correct = x;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${a}x + ${b} = ${c}`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                    case 'distributive': {
+                        const x = random(2, 10);
+                        const a = random(2, 6);
+                        const b = random(1, 8);
+                        const c = a * (x + b);
+                        const correct = x;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${a}(x + ${b}) = ${c}`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                }
+            }
+
+            function generateLevel3Question() {
+                const questionTypes = ['perfectSquare', 'squareRoot', 'simplePower', 'cubeRoot'];
+                const type = questionTypes[random(0, questionTypes.length - 1)];
+
+                switch (type) {
+                    case 'perfectSquare': {
+                        const base = random(2, 15);
+                        const correct = base * base;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${base}² = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                    case 'squareRoot': {
+                        const correct = random(3, 12);
+                        const square = correct * correct;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `√${square} = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                    case 'simplePower': {
+                        const base = random(2, 6);
+                        const exp = random(3, 4);
+                        const correct = Math.pow(base, exp);
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${base}^${exp} = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                    case 'cubeRoot': {
+                        const correct = random(2, 6);
+                        const cube = correct * correct * correct;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `∛${cube} = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                }
+            }
+
+            function generateLevel4Question() {
+                const questionTypes = ['simpleLog', 'factorial', 'powerEquation', 'complexArithmetic'];
+                const type = questionTypes[random(0, questionTypes.length - 1)];
+
+                switch (type) {
+                    case 'simpleLog': {
+                        const base = random(2, 5);
+                        const correct = random(2, 4);
+                        const result = Math.pow(base, correct);
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `log₂(${result}) = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                    case 'factorial': {
+                        const n = random(4, 7);
+                        let correct = 1;
+                        for (let i = 1; i <= n; i++) correct *= i;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${n}! = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                    case 'powerEquation': {
+                        const x = random(2, 8);
+                        const exp = random(2, 3);
+                        const base = random(2, 4);
+                        const result = Math.pow(base, exp);
+                        const c = result * x;
+                        const correct = x;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${base}^${exp} × x = ${c}`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                    case 'complexArithmetic': {
+                        const a = random(5, 15);
+                        const b = random(2, 8);
+                        const c = random(3, 7);
+                        const correct = a * b + c;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${a} × ${b} + ${c} = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                }
+            }
+
+            // Replace the static questions with generator functions
+            const questionGenerators = {
+                0: generateLevel0Question,
+                1: generateLevel1Question,
+                2: generateLevel2Question,
+                3: generateLevel3Question,
+                4: generateLevel4Question
             };
 
-            
-
+            // Helper function to get a random question for a level
+            function getRandomQuestion(level) {
+                if (questionGenerators[level]) {
+                    const question = questionGenerators[level]();
+                    // Add unique ID for tracking
+                    question.id = `${level}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                    return question;
+                }
+                return null;
+            }
 
             const achievements = {
                 "PERFECT_CALCULATOR": { name: "Perfect Calculator", description: "Beat Ms Calculus without taking damage." },
@@ -702,207 +859,203 @@
             // --- GAME STATE ---
             const getInitialState = () => ({
                 currentScreen: 'start', score: 0, combo: 0, maxCombo: 0, playerHealth: 100, opponentHealth: 100,
-                currentOpponentIndex: 0, currentQuestion: null, timerInterval: null, timeLeft: 10, canAnswer: true,
-                wins: 0, perfectWins: 0,
-                matchQuestions: [], isEndlessMode: false,
-                unlockedMasks: new Set(['👹', '😈']), earnedAchievements: new Set(),
-                playerMask: '👹',
-                usedQuestionIds: new Set(),
-                mechanicTimers: [],  
+                currentOpponentIndex: 0, currentQuestion: null, canAnswer: true, timerInterval: null, timerRemaining: 0,
+                wins: 0, perfectWins: 0, isEndlessMode: false, earnedAchievements: new Set(),
+                unlockedMasks: new Set(['👹', '😈', '🤖', '💩']), playerMask: '👹', mechanicTimers: []
             });
+
             let state = getInitialState();
 
-            // --- GAME LOGIC ---
-
+            // --- SCREEN MANAGEMENT ---
             function showScreen(screenName) {
-                Object.values(screens).forEach(screen => {
-                    if (screen) screen.classList.add('hidden');
-                });
-
-                const nextScreen = screens[screenName];
-                if (nextScreen) {
-                    nextScreen.classList.remove('hidden');
+                Object.values(screens).forEach(screen => screen.classList.add('hidden'));
+                if (screens[screenName]) {
+                    screens[screenName].classList.remove('hidden');
                     state.currentScreen = screenName;
-                } else {
-                    console.error(`Screen "${screenName}" not found.`);
-                    return;
                 }
+            }
 
-                if (screenName === 'start') {
-                    document.getElementById('start-button').focus();
-                }
+            // --- GAME FUNCTIONS ---
+            function startMatch(opponentIndex) {
+                state.currentOpponentIndex = opponentIndex;
+                const opponent = opponents[opponentIndex];
+                state.playerHealth = 100;
+                state.opponentHealth = opponent.health;
+                state.combo = 0;
+                showScreen('game');
+                setupOpponent(opponent);
+                nextQuestion();
+            }
+
+            function setupOpponent(opponent) {
+                ui.opponentName.textContent = opponent.name;
+                ui.opponentPortrait.textContent = opponent.mask;
+                ui.opponentPortrait.style.backgroundColor = opponent.color1;
+                
+                const opponentMask = ui.opponentLuchador.querySelector('.luchador-mask');
+                const opponentBody = ui.opponentLuchador.querySelector('.luchador-body');
+                const maskIcon = ui.opponentLuchador.querySelector('.mask-icon');
+                
+                opponentMask.style.backgroundColor = opponent.color1;
+                opponentBody.style.backgroundColor = opponent.color2;
+                maskIcon.textContent = opponent.mask;
+            }
+
+            function nextQuestion() {
+                clearInterval(state.timerInterval);
+                state.canAnswer = false;
+                ui.questionBox.style.opacity = '0.5';
+                ui.questionBox.style.filter = 'blur(2px)';
+                ui.answerButtons.innerHTML = '';
+                
+                setTimeout(() => {
+                    // Generate a random question for the current opponent level
+                    state.currentQuestion = getRandomQuestion(state.currentOpponentIndex);
+                    
+                    if (!state.currentQuestion) {
+                        console.error('Failed to generate question for level', state.currentOpponentIndex);
+                        return;
+                    }
+                    
+                    showQuestion();
+                    startTimer();
+                    
+                    // Apply opponent special mechanic
+                    const opponent = opponents[state.currentOpponentIndex];
+                    if (opponent.mechanic) applyOpponentMechanic(opponent.mechanic);
+                    
+                    ui.questionBox.style.opacity = '1';
+                    ui.questionBox.style.filter = 'none';
+                    state.canAnswer = true;
+                }, 500);
+            }
+
+            function showQuestion() {
+                const { sentence, options } = state.currentQuestion;
+                ui.questionBox.textContent = sentence;
+                ui.answerButtons.innerHTML = '';
+                
+                options.forEach((option, index) => {
+                    const button = document.createElement('div');
+                    button.className = 'answer-button button';
+                    button.textContent = option;
+                    button.tabIndex = 0;
+                    button.addEventListener('click', () => selectAnswer(index));
+                    ui.answerButtons.appendChild(button);
+                });
+            }
+
+            function selectAnswer(index) {
+                if (!state.canAnswer) return;
+                state.canAnswer = false;
+                clearInterval(state.timerInterval);
+                
+                const buttons = Array.from(ui.answerButtons.querySelectorAll('.answer-button'));
+                const selectedButton = buttons[index];
+                const correctIndex = state.currentQuestion.correct;
+                const isCorrect = index === correctIndex;
+                
+                buttons.forEach((button, i) => {
+                    if (i === correctIndex) button.classList.add('correct');
+                    else if (i === index && !isCorrect) button.classList.add('incorrect');
+                    else button.style.opacity = '0.5';
+                });
+                
+                setTimeout(() => {
+                    if (isCorrect) handleCorrectAnswer();
+                    else handleIncorrectAnswer();
+                }, 800);
+            }
+
+            function startTimer() {
+                const baseTime = [24, 30, 40, 50, 60];
+                const timeLimit = baseTime[state.currentOpponentIndex] || 30;
+                state.timerRemaining = timeLimit;
+                
+                ui.timerBar.style.width = '100%';
+                
+                state.timerInterval = setInterval(() => {
+                    state.timerRemaining--;
+                    const percentage = (state.timerRemaining / timeLimit) * 100;
+                    ui.timerBar.style.width = `${Math.max(0, percentage)}%`;
+                    
+                    if (state.timerRemaining <= 0) {
+                        clearInterval(state.timerInterval);
+                        if (state.canAnswer) handleTimeOut();
+                    }
+                }, 1000);
+            }
+
+            function handleTimeOut() {
+                state.canAnswer = false;
+                state.combo = 0;
+                state.playerHealth = Math.max(0, state.playerHealth - 20);
+                
+                const feedbackEl = document.createElement('div');
+                feedbackEl.className = 'feedback-text';
+                feedbackEl.style.cssText = 'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: var(--font-display); font-size: 2.5rem; color: var(--ropes-color); text-shadow: 3px 3px 0px #000; z-index: 101; pointer-events: none; animation: incorrectoPop 1.5s ease-out forwards;';
+                feedbackEl.textContent = 'Time\'s Up!';
+                ui.effectsContainer.appendChild(feedbackEl);
+                setTimeout(() => feedbackEl.remove(), 1500);
+                
+                updateUI();
+                setTimeout(() => {
+                    checkGameOver();
+                    if (state.playerHealth > 0) nextQuestion();
+                }, 1500);
             }
 
             function updateUI() {
                 ui.score.textContent = state.score;
+                ui.playerStamina.style.width = `${state.playerHealth}%`;
+                ui.opponentStamina.style.width = `${state.opponentHealth}%`;
+                
                 if (state.combo > 1) {
-                    ui.comboMeter.textContent = `x${state.combo} COMBO!`;
-                    if (ui.comboMeter.style.animationName !== 'comboPop') {
-                        ui.comboMeter.style.animation = 'comboPop 0.2s forwards';
-                        ui.comboMeter.addEventListener('animationend', () => ui.comboMeter.style.animation = '', { once: true });
-                    }
+                    ui.comboMeter.textContent = `${state.combo}x COMBO!`;
+                    ui.comboMeter.style.animation = 'comboPop 0.3s ease-out';
+                    setTimeout(() => ui.comboMeter.style.animation = '', 300);
                 } else {
                     ui.comboMeter.textContent = '';
                 }
-
-                ui.playerStamina.style.width = `${state.playerHealth}%`;
-                ui.opponentStamina.style.width = `${state.opponentHealth}%`;
-            }
-
-            function startMatch(opponentIndex) {
-                clearMechanicTimers();
-                state.currentOpponentIndex = opponentIndex;
-                const opponent = opponents[opponentIndex];
                 
-                const healthMultiplier = state.isEndlessMode ? 1 + (state.wins - opponents.length) * 0.1 : 1;
-
-                state.playerHealth = 100;
-                state.opponentHealth = opponent.health * healthMultiplier;
-                if (!state.isEndlessMode) {
-                    state.score = 0;
-                }
-                state.combo = 0;
-                state.matchQuestions  = [...questionsByLevel[opponent.id]].sort(() => Math.random() - 0.5);
-                state.usedQuestionIds = new Set();
-                ui.opponentName.textContent = opponent.name;
-                ui.opponentPortrait.style.backgroundColor = opponent.color1;
-                ui.opponentPortrait.textContent = opponent.mask;
-                ui.opponentLuchador.querySelector('.luchador-mask').style.backgroundColor = opponent.color1;
-                ui.opponentLuchador.querySelector('.luchador-body').style.backgroundColor = opponent.color2;
-                ui.opponentLuchador.querySelector('.mask-icon').textContent = opponent.mask;
-
-                updatePlayerAppearance();
-                updateUI();
-                showScreen('game');
-                nextQuestion();
-            }
-
-            function nextQuestion() {
-                clearMechanicTimers();
-                if (state.playerHealth <= 0 || state.opponentHealth <= 0) return;
-                if (state.matchQuestions.length === 0) {
-                  const pool  = questionsByLevel[opponents[state.currentOpponentIndex].id];
-                  const fresh = pool.filter(q => !state.usedQuestionIds.has(q.id));
-
-                  /* all 20 asked?  reset the set and start over */
-                  if (fresh.length === 0) {
-                    state.usedQuestionIds.clear();
-                    state.matchQuestions = [...pool];
-                  } else {
-                    state.matchQuestions = fresh;
-                  }
-                  state.matchQuestions.sort(() => Math.random() - 0.5);
-                }
-
-                /* Pull the card and mark it as used */
-                state.currentQuestion = state.matchQuestions.pop();
-                state.usedQuestionIds.add(state.currentQuestion.id);
-
-                state.canAnswer = true;
-                ui.questionBox.style.opacity = 1;
-                ui.questionBox.style.filter = 'none';
-                ui.questionBox.innerHTML = state.currentQuestion.sentence.replace('______', `<span style="color: var(--accent-gold);">______</span>`);
-                
-                ui.answerButtons.innerHTML = '';
-                const shuffledOptions = [...state.currentQuestion.options].sort(() => Math.random() - 0.5);
-                
-                shuffledOptions.forEach(text => {
-                    const button = document.createElement('div');
-                    button.classList.add('button', 'answer-button');
-                    button.textContent = text;
-                    button.tabIndex = 0;
-                    button.onclick = () => handleAnswer(text, button);
-                    ui.answerButtons.appendChild(button);
-                });
-                
-                const mechanic = opponents[state.currentOpponentIndex].mechanic;
-                if (mechanic === 'shuffle' && Math.random() > 0.3) {
-                    const opponentSnapshot = state.currentOpponentIndex;           // 👈 freeze the match we’re in
-
-                    const timerId = setTimeout(() => {
-                      if (
-                           state.currentOpponentIndex !== opponentSnapshot ||
-                           !state.canAnswer ||
-                           opponents[state.currentOpponentIndex].mechanic !== 'shuffle'
-                         ) return;
-
-                        /* Shuffle the visible buttons (Fisher-Yates on the DOM) */
-                        const parent = ui.answerButtons;
-                        for (let i = parent.children.length - 1; i > 0; i--) {
-                            parent.insertBefore(parent.children[i], parent.children[Math.floor(Math.random() * (i + 1))]);
-                        }
-                    }, 500);
-                    state.mechanicTimers.push(timerId);
-                }
-                if (mechanic === 'fade') {
-                    setTimeout(() => ui.questionBox.style.opacity = 0.3, 3000);
-                }
-                if (mechanic === 'smokescreen' && Math.random() > 0.4) {
-                    const smoke = document.createElement('div');
-                    smoke.className = 'smoke-overlay';
-                    const targetEl = Math.random() > 0.5 ? document.querySelector('.timer-container') : Array.from(ui.answerButtons.querySelectorAll('.answer-button')).filter(b => b.textContent !== state.currentQuestion.options[state.currentQuestion.correct])[0];
-                    if(targetEl) {
-                        const rect = targetEl.getBoundingClientRect();
-                        smoke.style.top = `${rect.top + rect.height / 2 - 75}px`;
-                        smoke.style.left = `${rect.left + rect.width / 2 - 75}px`;
-                        ui.effectsContainer.appendChild(smoke);
-                        setTimeout(() => smoke.remove(), 3000);
-                    }
-                }
-                
-                startTimer();
-            }
-
-            function startTimer() {
-                clearInterval(state.timerInterval);
-                
-                // Adjust time based on difficulty level
-                const baseTime = [24, 30, 40, 50, 60][state.currentOpponentIndex] || 20;
-                state.timeLeft = baseTime;
-                
-                ui.timerBar.style.transition = 'none';
-                ui.timerBar.style.width = '100%';
-
-                setTimeout(() => {
-                    ui.timerBar.style.transition = `width ${state.timeLeft}s linear`;
-                    ui.timerBar.style.width = '0%';
-                }, 100);
-
-                state.timerInterval = setInterval(() => {
-                    state.timeLeft--;
-                    if (state.timeLeft < 0) handleAnswer(null, null);
-                }, 1000);
-            }
-
-            function handleAnswer(selectedOption, buttonEl) {
-                clearMechanicTimers();
-                if (!state.canAnswer) return;
-                state.canAnswer = false;
-                clearInterval(state.timerInterval);
-
-                const correctOption = state.currentQuestion.options[state.currentQuestion.correct];
-                const isCorrect = selectedOption === correctOption;
-
-                Array.from(ui.answerButtons.children).forEach(btn => {
-                    btn.onclick = null;
-                    if (btn.textContent === correctOption) btn.classList.add('correct');
-                    else if (btn === buttonEl) btn.classList.add('incorrect');
-                    else btn.style.opacity = '0.5';
-                });
-
-                if (isCorrect) {
-                    const basePoints = 100;
-                    const timeBonus = Math.max(0, state.timeLeft * 5);
-                    setTimeout(() => handleCorrectAnswer(basePoints, timeBonus), 500);
-                } else {
-                    setTimeout(handleIncorrectAnswer, 500);
-                }
-            }
-
-            function handleCorrectAnswer(basePoints, timeBonus) {
-                state.combo++;
                 if (state.combo > state.maxCombo) state.maxCombo = state.combo;
-                
+            }
+
+            function applyOpponentMechanic(mechanic) {
+                switch (mechanic) {
+                    case 'shuffle':
+                        setTimeout(() => {
+                            const buttons = Array.from(ui.answerButtons.querySelectorAll('.answer-button'));
+                            if (buttons.length > 0) {
+                                buttons.forEach(button => {
+                                    button.style.order = Math.floor(Math.random() * 1000);
+                                });
+                            }
+                        }, 2000);
+                        break;
+                    case 'fade':
+                        setTimeout(() => {
+                            ui.questionBox.style.opacity = '0.3';
+                            setTimeout(() => ui.questionBox.style.opacity = '1', 3000);
+                        }, 1000);
+                        break;
+                    case 'smokescreen':
+                        setTimeout(() => {
+                            const smoke = document.createElement('div');
+                            smoke.className = 'smoke-overlay';
+                            smoke.style.cssText = `position: absolute; top: 40%; left: 40%; width: 20%; height: 20%; background: radial-gradient(circle, rgba(200,200,200,0.8) 0%, rgba(200,200,200,0) 70%); border-radius: 50%; pointer-events: none; z-index: 50; animation: smokeDrift 4s ease-out forwards;`;
+                            ui.effectsContainer.appendChild(smoke);
+                            setTimeout(() => smoke.remove(), 4000);
+                        }, 1500);
+                        break;
+                }
+            }
+
+            function handleCorrectAnswer() {
+                const timeBonus = Math.max(0, state.timerRemaining * 2);
+                const basePoints = 100;
+                state.combo++;
+
                 ui.playerLuchador.style.animation = 'attackLunge 0.2s ease-out forwards';
                 ui.playerLuchador.addEventListener('animationend', () => ui.playerLuchador.style.animation = '', { once: true });
 
