@@ -1030,7 +1030,7 @@
             }
 
             function startTimer() {
-                const baseTime = [20, 24, 30, 40, 50, 60];
+                const baseTime = [10, 12, 15, 20, 25, 30];
                 const timeLimit = baseTime[state.currentOpponentIndex] || 30;
                 state.timerRemaining = timeLimit;
                 
@@ -1099,19 +1099,17 @@
                         }, 3000);
                         break;
                     case 'fade':
-                        setTimeout(() => {
-                            ui.questionBox.style.opacity = '0.3';
-                            setTimeout(() => ui.questionBox.style.opacity = '1', 3000);
-                        }, 1000);
+                        // Fade mechanic disabled - was causing visual confusion
+                        // Instead, add extra wrong answers for more confusion
                         break;
                     case 'smokescreen':
+                        // Smokescreen mechanic disabled - was causing visual confusion
+                        // Instead, add more distraction through faster countdown
                         setTimeout(() => {
-                            const smoke = document.createElement('div');
-                            smoke.className = 'smoke-overlay';
-                            smoke.style.cssText = `position: absolute; top: 40%; left: 40%; width: 20%; height: 20%; background: radial-gradient(circle, rgba(200,200,200,0.8) 0%, rgba(200,200,200,0) 70%); border-radius: 50%; pointer-events: none; z-index: 50; animation: smokeDrift 4s ease-out forwards;`;
-                            ui.effectsContainer.appendChild(smoke);
-                            setTimeout(() => smoke.remove(), 4000);
-                        }, 1500);
+                            if (state.timerRemaining > 3) {
+                                state.timerRemaining = Math.max(3, state.timerRemaining - 5);
+                            }
+                        }, 2000);
                         break;
                 }
             }
@@ -1252,18 +1250,23 @@
                     ui.gameOverTitle.textContent = "VICTORY!";
                     ui.gameOverMessage.textContent = `You defeated ${opponents[state.currentOpponentIndex].name}!`;
                     
+                    // Always show victory screen first
+                    showScreen('gameOver');
+                    
                     // Check if this was the final opponent (tournament complete)
                     if (state.currentOpponentIndex >= opponents.length - 1 && !state.isEndlessMode) {
+                        // Tournament complete - stay on victory screen
                         setTimeout(() => {
                             showGameOverScreen();
                         }, 2000);
                     } else if (!state.isEndlessMode) {
-                        // Auto-advance to locker room for next opponent
+                        // Auto-advance to locker room for next opponent after showing victory
                         setTimeout(() => {
                             state.currentOpponentIndex++;
                             setupLockerRoom();
                         }, 2000);
                     } else {
+                        // Endless mode - stay on victory screen
                         setTimeout(() => {
                             showGameOverScreen();
                         }, 2000);
