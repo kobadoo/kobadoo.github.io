@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Math Fight</title>
+    <title>Math Fight Game</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
@@ -331,8 +331,7 @@
 
         <!-- Start Screen -->
         <div id="start-screen" class="screen">
-            <h1>Math Fight</h1>
-            <p style="font-size: 1.2rem; margin-top: 0; margin-bottom: 30px; font-weight: 600;">The Ultimate Math Showdown!</p>
+            <h1>Math Fight Game</h1>
             <div id="start-button" class="button" tabindex="0">Start Tournament</div>
         </div>
 
@@ -343,8 +342,8 @@
                 <h2>Customize Your Luchador</h2>
                 <div class="swatches-container">
                     <div class="swatch-group"><span style="margin-right: 10px;">Mask:</span><div id="mask-swatches" class="swatch-group"></div></div>
-                    <div class="swatch-group"><span style="margin-right: 10px;">Color 1:</span><div id="primary-swatches" class="swatch-group"></div></div>
-                    <div class="swatch-group"><span style="margin-right: 10px;">Color 2:</span><div id="secondary-swatches" class="swatch-group"></div></div>
+                    <div class="swatch-group"><span style="margin-right: 10px;">Top:</span><div id="primary-swatches" class="swatch-group"></div></div>
+                    <div class="swatch-group"><span style="margin-right: 10px;">Shorts:</span><div id="secondary-swatches" class="swatch-group"></div></div>
                 </div>
             </div>
             <div class="content-box">
@@ -461,11 +460,12 @@
 
             // --- GAME DATA ---
             const opponents = [
-                { id: 0, name: "Ms. Calculus", health: 100, specialty: "Fractions & decimals", mechanic: null, mask: '😾', color1: '#c0392b', color2: '#f1c40f' },
-                { id: 1, name: "Digit Destroyer", health: 120, specialty: "Multi-digit operations", mechanic: 'shuffle', mask: '🤡', color1: '#8e44ad', color2: '#2ecc71' },
-                { id: 2, name: "Equation Master", health: 150, specialty: "Linear equations", mechanic: 'fade', mask: '👽', color1: '#d35400', color2: '#bdc3c7' },
-                { id: 3, name: "Root Crusher", health: 180, specialty: "Square roots & powers", mechanic: 'smokescreen', mask: '💀', color1: '#e83e8c', color2: '#ffffff' },
-                { id: 4, name: "Formula King", health: 220, specialty: "Advanced operations", mechanic: 'shuffle', mask: '👑', color1: '#6f42c1', color2: '#ffd700' },
+                { id: 0, name: "Numerito", health: 80, specialty: "Basic arithmetic", mechanic: null, mask: '💩', color1: '#28a745', color2: '#17a2b8' },
+                { id: 1, name: "Calculus Devil", health: 100, specialty: "Fractions & decimals", mechanic: null, mask: '😈', color1: '#c0392b', color2: '#f1c40f' },
+                { id: 2, name: "Digit Clown", health: 120, specialty: "Multi-digit operations", mechanic: 'shuffle', mask: '🤡', color1: '#8e44ad', color2: '#2ecc71' },
+                { id: 3, name: "Equation Alien", health: 150, specialty: "Linear equations", mechanic: 'fade', mask: '👽', color1: '#d35400', color2: '#bdc3c7' },
+                { id: 4, name: "Root Death", health: 180, specialty: "Square roots & powers", mechanic: 'smokescreen', mask: '💀', color1: '#e83e8c', color2: '#ffffff' },
+                { id: 5, name: "Formula Robot", health: 220, specialty: "Advanced operations", mechanic: 'shuffle', mask: '🤖', color1: '#6f42c1', color2: '#ffd700' },
             ];
 
             // Random Question Generation System
@@ -480,6 +480,26 @@
             function simplifyFraction(num, den) {
                 const divisor = gcd(Math.abs(num), Math.abs(den));
                 return [num / divisor, den / divisor];
+            }
+
+            function shuffleArray(array) {
+                const shuffled = [...array];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            }
+
+            function createQuestion(sentence, correctAnswer, wrongAnswers) {
+                const allOptions = [correctAnswer, ...wrongAnswers];
+                const shuffledOptions = shuffleArray(allOptions);
+                const correctIndex = shuffledOptions.indexOf(correctAnswer);
+                return {
+                    sentence,
+                    options: shuffledOptions,
+                    correct: correctIndex
+                };
             }
 
             function generateWrongAnswers(correct, type = 'number', count = 2) {
@@ -563,7 +583,51 @@
             }
 
             // Level-specific question generators
-            function generateLevel0Question() {
+            function generateNewLevel0Question() {
+                const questionTypes = ['twoDigitAdd', 'twoDigitSub', 'twoDigitMultOneDigit', 'twoDigitDivOneDigit'];
+                const type = questionTypes[random(0, questionTypes.length - 1)];
+
+                switch (type) {
+                    case 'twoDigitAdd': {
+                        const a = random(15, 99);
+                        const b = random(15, 99);
+                        const correct = a + b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} + ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'twoDigitSub': {
+                        const correct = random(10, 80);
+                        const b = random(15, 60);
+                        const a = correct + b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} - ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'twoDigitMultOneDigit': {
+                        const a = random(12, 25);
+                        const b = random(2, 9);
+                        const correct = a * b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} × ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'twoDigitDivOneDigit': {
+                        const b = random(2, 9);
+                        const correct = random(4, 15);
+                        const a = b * correct;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} ÷ ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    default: {
+                        // Fallback case
+                        const a = random(15, 99);
+                        const b = random(15, 99);
+                        const correct = a + b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} + ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                }
+            }
+
+            function generateLevel1Question() {
                 const questionTypes = [
                     'fractionAdd', 'fractionSub', 'fractionMult',
                     'decimalAdd', 'decimalSub', 'decimalMult'
@@ -579,11 +643,7 @@
                         const [simpNum, simpDen] = simplifyFraction(resultNum, den);
                         const correct = simpDen === 1 ? simpNum.toString() : `${simpNum}/${simpDen}`;
                         const wrong = generateFractionWrongAnswers(simpNum, simpDen);
-                        return {
-                            sentence: `${num1}/${den} + ${num2}/${den} = ?`,
-                            options: [correct, ...wrong],
-                            correct: 0
-                        };
+                        return createQuestion(`${num1}/${den} + ${num2}/${den} = ?`, correct, wrong);
                     }
                     case 'fractionSub': {
                         const den = random(3, 12);
@@ -618,11 +678,7 @@
                         const b = (random(10, 99) / 10);
                         const correct = Math.round((a + b) * 100) / 100;
                         const wrong = generateWrongAnswers(correct, 'decimal');
-                        return {
-                            sentence: `${a} + ${b} = ?`,
-                            options: [correct.toString(), ...wrong.map(w => w.toString())],
-                            correct: 0
-                        };
+                        return createQuestion(`${a} + ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
                     }
                     case 'decimalSub': {
                         const a = (random(20, 99) / 10);
@@ -661,7 +717,7 @@
                 }
             }
 
-            function generateLevel1Question() {
+            function generateLevel2Question() {
                 const questionTypes = ['multDigitMult', 'multDigitDiv', 'largeAdd', 'largeSub'];
                 const type = questionTypes[random(0, questionTypes.length - 1)];
 
@@ -725,7 +781,7 @@
                 }
             }
 
-            function generateLevel2Question() {
+            function generateLevel3Question() {
                 const questionTypes = ['oneStepLinear', 'twoStepLinear', 'distributive'];
                 const type = questionTypes[random(0, questionTypes.length - 1)];
 
@@ -736,11 +792,7 @@
                         const c = a * x;
                         const correct = x;
                         const wrong = generateWrongAnswers(correct, 'number');
-                        return {
-                            sentence: `${a}x = ${c}`,
-                            options: [correct.toString(), ...wrong.map(w => w.toString())],
-                            correct: 0
-                        };
+                        return createQuestion(`${a}x = ${c}; x?`, correct.toString(), wrong.map(w => w.toString()));
                     }
                     case 'twoStepLinear': {
                         const x = random(3, 15);
@@ -749,11 +801,7 @@
                         const c = a * x + b;
                         const correct = x;
                         const wrong = generateWrongAnswers(correct, 'number');
-                        return {
-                            sentence: `${a}x + ${b} = ${c}`,
-                            options: [correct.toString(), ...wrong.map(w => w.toString())],
-                            correct: 0
-                        };
+                        return createQuestion(`${a}x + ${b} = ${c}; x?`, correct.toString(), wrong.map(w => w.toString()));
                     }
                     case 'distributive': {
                         const x = random(2, 10);
@@ -762,11 +810,7 @@
                         const c = a * (x + b);
                         const correct = x;
                         const wrong = generateWrongAnswers(correct, 'number');
-                        return {
-                            sentence: `${a}(x + ${b}) = ${c}`,
-                            options: [correct.toString(), ...wrong.map(w => w.toString())],
-                            correct: 0
-                        };
+                        return createQuestion(`${a}(x + ${b}) = ${c}; x?`, correct.toString(), wrong.map(w => w.toString()));
                     }
                     default: {
                         // Fallback case
@@ -775,16 +819,12 @@
                         const c = a * x;
                         const correct = x;
                         const wrong = generateWrongAnswers(correct, 'number');
-                        return {
-                            sentence: `${a}x = ${c}`,
-                            options: [correct.toString(), ...wrong.map(w => w.toString())],
-                            correct: 0
-                        };
+                        return createQuestion(`${a}x = ${c}; x?`, correct.toString(), wrong.map(w => w.toString()));
                     }
                 }
             }
 
-            function generateLevel3Question() {
+            function generateLevel4Question() {
                 const questionTypes = ['perfectSquare', 'squareRoot', 'simplePower', 'cubeRoot'];
                 const type = questionTypes[random(0, questionTypes.length - 1)];
 
@@ -844,7 +884,7 @@
                 }
             }
 
-            function generateLevel4Question() {
+            function generateLevel5Question() {
                 const questionTypes = ['simpleLog', 'factorial', 'powerEquation', 'complexArithmetic'];
                 const type = questionTypes[random(0, questionTypes.length - 1)];
 
@@ -879,11 +919,7 @@
                         const c = result * x;
                         const correct = x;
                         const wrong = generateWrongAnswers(correct, 'number');
-                        return {
-                            sentence: `${base}^${exp} × x = ${c}`,
-                            options: [correct.toString(), ...wrong.map(w => w.toString())],
-                            correct: 0
-                        };
+                        return createQuestion(`${base}^${exp} × x = ${c}; x?`, correct.toString(), wrong.map(w => w.toString()));
                     }
                     case 'complexArithmetic': {
                         const a = random(5, 15);
@@ -914,11 +950,12 @@
 
             // Replace the static questions with generator functions
             const questionGenerators = {
-                0: generateLevel0Question,
+                0: generateNewLevel0Question,
                 1: generateLevel1Question,
                 2: generateLevel2Question,
                 3: generateLevel3Question,
-                4: generateLevel4Question
+                4: generateLevel4Question,
+                5: generateLevel5Question
             };
 
             // Helper function to get a random question for a level
@@ -960,7 +997,7 @@
                 currentScreen: 'start', score: 0, combo: 0, maxCombo: 0, playerHealth: 100, opponentHealth: 100,
                 currentOpponentIndex: 0, currentQuestion: null, canAnswer: true, timerInterval: null, timerRemaining: 0,
                 wins: 0, perfectWins: 0, isEndlessMode: false, earnedAchievements: new Set(),
-                unlockedMasks: new Set(['👹', '😈', '🤖', '💩']), playerMask: '👹', mechanicTimers: []
+                unlockedMasks: new Set(['👹']), playerMask: '👹', mechanicTimers: []
             });
 
             let state = getInitialState();
@@ -1067,7 +1104,7 @@
             }
 
             function startTimer() {
-                const baseTime = [24, 30, 40, 50, 60];
+                const baseTime = [20, 24, 30, 40, 50, 60];
                 const timeLimit = baseTime[state.currentOpponentIndex] || 30;
                 state.timerRemaining = timeLimit;
                 
@@ -1272,7 +1309,7 @@
                 ui.endlessRumbleButton.style.display = 'none';
                 
                 if (playerWon) {
-                    if (state.playerHealth === 100 && !state.isEndlessMode && state.currentOpponentIndex === 0) {
+                    if (state.playerHealth === 100 && !state.isEndlessMode && state.currentOpponentIndex === 1) {
                         state.earnedAchievements.add("PERFECT_CALCULATOR");
                         state.perfectWins++;
                     }
@@ -1281,14 +1318,28 @@
                         state.unlockedMasks.add(defeatedOpponent.mask);
                     }
                     state.wins++;
-                                    ui.gameOverTitle.textContent = "VICTORY!";
-                ui.gameOverMessage.textContent = `You defeated ${opponents[state.currentOpponentIndex].name}!`;
-                    setTimeout(() => {
-                        showGameOverScreen();
-                    }, 2000);
+                    ui.gameOverTitle.textContent = "VICTORY!";
+                    ui.gameOverMessage.textContent = `You defeated ${opponents[state.currentOpponentIndex].name}!`;
+                    
+                    // Check if this was the final opponent (tournament complete)
+                    if (state.currentOpponentIndex >= opponents.length - 1 && !state.isEndlessMode) {
+                        setTimeout(() => {
+                            showGameOverScreen();
+                        }, 2000);
+                    } else if (!state.isEndlessMode) {
+                        // Auto-advance to locker room for next opponent
+                        setTimeout(() => {
+                            state.currentOpponentIndex++;
+                            setupLockerRoom();
+                        }, 2000);
+                    } else {
+                        setTimeout(() => {
+                            showGameOverScreen();
+                        }, 2000);
+                    }
                 } else {
-                                    ui.gameOverTitle.textContent = "DEFEAT!";
-                ui.gameOverMessage.textContent = `You were pinned by ${opponents[state.currentOpponentIndex].name}.`;
+                    ui.gameOverTitle.textContent = "DEFEAT!";
+                    ui.gameOverMessage.textContent = `You were pinned by ${opponents[state.currentOpponentIndex].name}.`;
                     ui.rematchButton.style.display = 'inline-block';
                     showScreen('gameOver');
                 }
@@ -1312,9 +1363,9 @@
                     ui.nextMatchButton.style.display = 'inline-block';
                     ui.nextMatchButton.textContent = 'Next Opponent';
                 } else {
-                    ui.gameOverTitle.textContent = "CHAMPION!";
+                    ui.gameOverTitle.textContent = "🏆 CHAMPION! 🏆";
                     ui.gameOverMessage.textContent = "You've won the tournament!";
-                    ui.endlessRumbleButton.style.display = 'inline-block';
+                    // Don't show endless rumble for tournament completion
                 }
             }
             
