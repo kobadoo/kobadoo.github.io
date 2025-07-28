@@ -485,8 +485,11 @@
             function generateWrongAnswers(correct, type = 'number', count = 2) {
                 const wrong = [];
                 const variations = type === 'decimal' ? [0.01, 0.02, 0.05, 0.1, 0.2] : [1, 2, 3, 5, 10];
+                let attempts = 0;
+                const maxAttempts = 50; // Prevent infinite loops
                 
-                while (wrong.length < count) {
+                while (wrong.length < count && attempts < maxAttempts) {
+                    attempts++;
                     const variation = variations[random(0, variations.length - 1)];
                     const candidate = random(0, 1) ? correct + variation : correct - variation;
                     
@@ -502,14 +505,30 @@
                         }
                     }
                 }
+                
+                // Fill remaining slots with backup answers if needed
+                while (wrong.length < count) {
+                    const backup = type === 'decimal' ? 
+                        Math.round((correct + (wrong.length + 1) * 0.1) * 100) / 100 :
+                        correct + (wrong.length + 1);
+                    if (!wrong.includes(backup)) {
+                        wrong.push(backup);
+                    } else {
+                        wrong.push(backup + 1);
+                    }
+                }
+                
                 return wrong;
             }
 
             function generateFractionWrongAnswers(correctNum, correctDen, count = 2) {
                 const wrong = [];
                 const [simplifiedNum, simplifiedDen] = simplifyFraction(correctNum, correctDen);
+                let attempts = 0;
+                const maxAttempts = 50; // Prevent infinite loops
                 
-                while (wrong.length < count) {
+                while (wrong.length < count && attempts < maxAttempts) {
+                    attempts++;
                     let candidateNum, candidateDen;
                     
                     if (random(0, 1)) {
@@ -532,13 +551,21 @@
                         }
                     }
                 }
+                
+                // Fill remaining slots with backup answers if needed
+                while (wrong.length < count) {
+                    const backupNum = simplifiedNum + wrong.length + 1;
+                    const backupStr = simplifiedDen === 1 ? backupNum.toString() : `${backupNum}/${simplifiedDen}`;
+                    wrong.push(backupStr);
+                }
+                
                 return wrong;
             }
 
             // Level-specific question generators
             function generateLevel0Question() {
                 const questionTypes = [
-                    'fractionAdd', 'fractionSub', 'fractionMult', 'fractionDiv',
+                    'fractionAdd', 'fractionSub', 'fractionMult',
                     'decimalAdd', 'decimalSub', 'decimalMult'
                 ];
                 const type = questionTypes[random(0, questionTypes.length - 1)];
@@ -619,6 +646,18 @@
                             correct: 0
                         };
                     }
+                    default: {
+                        // Fallback case
+                        const a = (random(10, 99) / 10);
+                        const b = (random(10, 99) / 10);
+                        const correct = Math.round((a + b) * 100) / 100;
+                        const wrong = generateWrongAnswers(correct, 'decimal');
+                        return {
+                            sentence: `${a} + ${b} = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
                 }
             }
 
@@ -671,6 +710,18 @@
                             correct: 0
                         };
                     }
+                    default: {
+                        // Fallback case
+                        const a = random(15, 99);
+                        const b = random(12, 35);
+                        const correct = a * b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${a} × ${b} = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
                 }
             }
 
@@ -713,6 +764,19 @@
                         const wrong = generateWrongAnswers(correct, 'number');
                         return {
                             sentence: `${a}(x + ${b}) = ${c}`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                    default: {
+                        // Fallback case
+                        const x = random(2, 20);
+                        const a = random(2, 12);
+                        const c = a * x;
+                        const correct = x;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${a}x = ${c}`,
                             options: [correct.toString(), ...wrong.map(w => w.toString())],
                             correct: 0
                         };
@@ -762,6 +826,17 @@
                         const wrong = generateWrongAnswers(correct, 'number');
                         return {
                             sentence: `∛${cube} = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
+                    default: {
+                        // Fallback case - perfect square
+                        const base = random(2, 15);
+                        const correct = base * base;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${base}² = ?`,
                             options: [correct.toString(), ...wrong.map(w => w.toString())],
                             correct: 0
                         };
@@ -822,6 +897,18 @@
                             correct: 0
                         };
                     }
+                    default: {
+                        // Fallback case - factorial
+                        const n = random(4, 7);
+                        let correct = 1;
+                        for (let i = 1; i <= n; i++) correct *= i;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return {
+                            sentence: `${n}! = ?`,
+                            options: [correct.toString(), ...wrong.map(w => w.toString())],
+                            correct: 0
+                        };
+                    }
                 }
             }
 
@@ -838,9 +925,21 @@
             function getRandomQuestion(level) {
                 if (questionGenerators[level]) {
                     const question = questionGenerators[level]();
-                    // Add unique ID for tracking
-                    question.id = `${level}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-                    return question;
+                    // Safety check to ensure question was generated
+                    if (question && typeof question === 'object') {
+                        // Add unique ID for tracking
+                        question.id = `${level}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                        return question;
+                    } else {
+                        console.error('Question generator returned invalid result for level', level);
+                        // Fallback to a simple question
+                        return {
+                            sentence: "2 + 2 = ?",
+                            options: ["4", "3", "5"],
+                            correct: 0,
+                            id: `fallback_${Date.now()}`
+                        };
+                    }
                 }
                 return null;
             }
