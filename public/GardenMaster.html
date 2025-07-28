@@ -68,7 +68,7 @@
             overflow: hidden;
             background: linear-gradient(to bottom, #87CEEB 0%, #B0E0E6 100%);
             box-shadow: 0 0 30px rgba(0,0,0,0.3);
-            transform: translateZ(0); /* GPU acceleration */
+            transform: translateZ(0);
         }
         
         #game-container.shake {
@@ -85,15 +85,15 @@
         .game-area {
             position: absolute;
             width: 100%;
-            height: 80%; /* Garden Area */
+            height: 80%;
             top: 0;
         }
 
         .floor-area {
             position: absolute;
             width: 100%;
-            height: 20%; /* Floor Area */
-            bottom: 0; /* Corrected from -20% */
+            height: 20%;
+            bottom: 0;
             background-color: var(--floor-color);
             border-top: 5px solid var(--floor-dark);
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="20" viewBox="0 0 80 20"><path fill="%238B4513" fill-opacity="0.1" d="M0 10 H80 M0 0 V20 M80 0 V20"></path></svg>');
@@ -158,7 +158,7 @@
             position: absolute;
             width: 60px;
             height: 84px;
-            bottom: 20%; /* Start on the floor */
+            bottom: 20%;
             left: 50%;
             transform: translateX(-50%);
             transform-origin: center bottom;
@@ -183,7 +183,7 @@
             position: absolute; width: 24px; height: 14px; background: var(--gnome-skin);
             border-radius: 3px; top: 48px; left: 18px; z-index: 2;
         }
-        .gnome-face::before, .gnome-face::after { /* eyes */
+        .gnome-face::before, .gnome-face::after {
             content: ''; position: absolute; width: 5px; height: 5px;
             background: #222; border-radius: 50%; top: 3px;
         }
@@ -204,7 +204,7 @@
             left: 0;
             z-index: 3;
         }
-        .gnome-hat::after { /* hat pompom */
+        .gnome-hat::after {
             content: ''; position: absolute; width: 10px; height: 10px;
             background: #fff; border-radius: 50%; top: -5px; left: -5px;
         }
@@ -225,7 +225,7 @@
             border: 3px solid #666; border-radius: 4px; top: 80px; left: -20px;
             transition: background-color 0.3s; z-index: 5;
         }
-        #watering-can::before { /* Spout */
+        #watering-can::before {
             content: ''; position: absolute; width: 20px; height: 10px; background: #c0c0c0;
             border: 3px solid #666; border-left: none; border-radius: 0 100% 100% 0 / 0 50% 50% 0;
             top: -8px; right: 25px; transform: rotate(-20deg);
@@ -233,7 +233,7 @@
         
         .water-stream, .floating-text {
             position: absolute; pointer-events: none;
-            will-change: transform, opacity; display: none; /* Initially hidden for pooling */
+            will-change: transform, opacity; display: none;
         }
         .water-stream.active { display: block; }
         .water-stream {
@@ -285,7 +285,6 @@
             border-radius: 4px; transition: width 0.2s linear, background-color 0.3s linear;
         }
         
-        /* Plant Types */
         .sunflower .plant { width: 50px; height: 50px; margin-left: -25px; }
         .sunflower .plant-stem { position: absolute; bottom: 0; left: 22px; width: 6px; height: 30px; background: var(--plant-stem); }
         .sunflower .plant-head { position: absolute; bottom: 25px; left: 15px; width: 20px; height: 20px; background: #5a3a22; border-radius: 50%; transition: transform 0.5s ease; }
@@ -300,7 +299,6 @@
         .mist-effect { position: absolute; width: 20px; height: 20px; background: rgba(173, 216, 230, 0.7); border-radius: 50%; animation: mist-pulse 2s infinite ease-in-out; }
         @keyframes mist-pulse { 0%, 100% { transform: scale(0); opacity: 0; } 50% { transform: scale(1); opacity: 1; } }
 
-        /* UI */
         #top-ui-bar {
             position: absolute;
             top: 10px;
@@ -322,6 +320,8 @@
             gap: 15px;
             pointer-events: auto;
             flex-wrap: nowrap;
+            z-index: 100;
+            position: relative;
         }
 
         #score-display, #golden-seeds-display {
@@ -348,6 +348,14 @@
             flex-grow: 1;
             flex-shrink: 1;
             justify-content: flex-end;
+            cursor: pointer !important;
+            transition: background-color 0.2s ease;
+            pointer-events: auto !important;
+        }
+
+        #golden-seeds-display:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
         }
 
         #combo-display {
@@ -496,10 +504,14 @@
         .upgrade-item {
             background: var(--floor-dark); padding: 15px; border-radius: 10px;
             width: 150px; border: 3px solid var(--barrel-dark);
+            box-sizing: border-box; display: flex; flex-direction: column;
+            text-align: center;
         }
         .upgrade-item button {
-            width: 100%; padding: 10px; font-size: 2vh;
+            padding: 10px; font-size: 1.4vh;
             background: #ffca3a; color: var(--barrel-color); border-color: #e9a200;
+            text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            box-sizing: border-box; margin-top: auto;
         }
         .upgrade-item button:disabled {
             background: #999; color: #666;
@@ -508,7 +520,6 @@
         .upgrade-item button:disabled:active { transform: none; border-bottom-width: 6px; }
         .upgrade-cost { font-weight: bold; }
         
-        /* Event Visuals */
         .sunbeam {
             position: absolute; width: 12%; height: 100%;
             background: linear-gradient(to bottom, transparent, var(--sunbeam-color), transparent);
@@ -532,7 +543,7 @@
             border-radius: 50% 50% 0 0; bottom: 40%; left: 30%; cursor: pointer;
             animation: gopher-pop 0.3s ease-out; border: 3px solid #634822; z-index: 2;
         }
-        .gopher::before { /* eyes */
+        .gopher::before {
             content: '• •'; font-size: 10px; color: #222; position: absolute;
             top: 10px; width: 100%; text-align: center;
         }
@@ -545,7 +556,7 @@
             justify-content: center; align-items: center; font-size: 24px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.4);
         }
-        .shade-cloth-icon::before { content: '☂️'; }
+        .shade-cloth-icon::before { content: '⛱️'; }
         
         .helper-text {
             position: absolute;
@@ -561,7 +572,6 @@
             animation: fade-in 0.3s;
         }
 
-        /* Mobile Controls */
         #mobile-controls {
             display: none; position: absolute; bottom: 5%; right: 5%; z-index: 50;
         }
@@ -620,11 +630,15 @@
                 margin-top: 10px;
             }
             .upgrade-item {
-                width: 44vw;
+                width: 42vw;
                 min-width: 120px;
-                max-width: 48vw;
+                max-width: 45vw;
                 padding: 8px;
                 font-size: 2.5vw;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                text-align: center;
             }
             .upgrade-item h4 {
                 font-size: 3vw;
@@ -635,8 +649,19 @@
                 margin: 0 0 6px 0;
             }
             .upgrade-item button {
-                font-size: 2.5vw;
-                padding: 6px 0;
+                font-size: 1.4vh;
+                padding: 6px 4px;
+                white-space: normal !important;
+                word-wrap: break-word;
+                text-align: center;
+                line-height: 1.2;
+                min-height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: visible;
+                text-overflow: initial;
+                margin-top: auto;
             }
             #nursery-back-button {
                 position: relative;
@@ -708,9 +733,8 @@
                 }
             }
         }
-        /* Remove garden health bar styles */
         #garden-health-container, #garden-health-bar { display: none !important; }
-        /* Retro preview styles */
+        
         #retro-preview {
             display: none;
             width: 550px;
@@ -742,6 +766,10 @@
                 min-height: 7vw;
                 justify-content: center;
                 align-items: center;
+            }
+            #golden-seeds-display {
+                cursor: pointer !important;
+                pointer-events: auto !important;
             }
             #score-display {
                 padding: 2vw 5vw !important;
@@ -812,8 +840,8 @@
             <div class="popup">
                 <h1>Garden Master</h1>
                 <p>Your quirky plants are thirsty. Keep them happy!</p>
-                <p><b>Desktop:</b>Arrow keys to move. Space to water.</p>
-                <p><b>Mobile:</b> Drag gnome to move. Get close to the plants to water.</p>
+                <p><strong>Desktop:</strong> Arrow keys to move. Space to water.</p>
+                <p><strong>Mobile:</strong> Drag gnome to move. Get close to the plants to water.</p>
                 <button id="start-button">Start Gardening</button>
             </div>
         </div>
@@ -841,7 +869,6 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // --- CONSTANTS & CONFIG ---
         const CONSTANTS = {
             GARDEN_HEALTH_DEPLETE_RATE: 40,
             PLAYER_WATER_BURST_COST: 50,
@@ -861,21 +888,18 @@
             WATERING_RANGE: 150,
             INTERACTION_RANGE: 80,
         };
-        /* -------------------------------------------
-           📈  Level system – put near other constants
-        -------------------------------------------- */
         const LEVELS = {
           start: 1,
-          scoreStep: 1200,          // +1 level every 1 200 pts
-          thirstStep: 0.06,         // +6 % plant-thirst / lvl
-          eventStep: 0.05           // −5 % event cooldown / lvl
+          scoreStep: 2000,
+          thirstStep: 0.06,
+          eventStep: 0.05
         };
         let currentLevel   = LEVELS.start;
         let nextLevelScore = LEVELS.scoreStep;
-        let EVENT_BASE_COOLDOWN = 12000; // ms, used for event scheduling
-        let loopId = null; // for requestAnimationFrame
+        let EVENT_BASE_COOLDOWN = 12000;
+        let loopId = null;
 
-        // DOM Elements
+        
         const gameContainer = document.getElementById('game-container');
         const player = document.getElementById('player');
         const playerWaterFill = document.getElementById('player-water-fill');
@@ -893,7 +917,6 @@
         const heatwaveOverlay = document.getElementById('heatwave-overlay');
         const goldenSeedsDisplay = document.getElementById('golden-seeds-display');
         
-        // Screens & Buttons
         const startScreen = document.getElementById('start-screen');
         const gameOverScreen = document.getElementById('game-over-screen');
         const nurseryScreen = document.getElementById('nursery-screen');
@@ -905,7 +928,6 @@
         const nurseryUpgradesContainer = document.getElementById('nursery-upgrades');
         const shopButton = document.getElementById('shop-button');
 
-        // Game State
         let gameState = 'START';
         let lastTime = 0;
         let score = 0;
@@ -927,7 +949,6 @@
         let playerTargetY = 80;
         let oneTimeHelpers = { specialWater: false, gopher: false, sunbeam: false };
 
-        // --- OBJECT POOLS ---
         const effectPools = { particles: [], texts: [] };
         function initPools() {
             effectsContainer.innerHTML = '';
@@ -966,7 +987,6 @@
 
         hookPopupCloses();
         
-        // --- UPGRADES & PERSISTENCE ---
         let upgrades = {
             waterCap: { name: "Water Can Capacity", level: 0, base: 100, inc: 20, costBase: 4, costFactor: 2 },
             refillSpeed: { name: "Refill Speed", level: 0, base: 50, inc: 10, costBase: 10, costFactor: 1.8 },
@@ -975,7 +995,7 @@
             comboShield: { name: "Combo Shield", level: 0, base: 0, inc: 1, costBase: 40, costFactor: 3, maxLevel: 1 }
         };
         let goldenSeeds = 0;
-        let lastSeedScore = 0; // Track last score at which a seed was awarded
+        let lastSeedScore = 0;
         function getUpgradeValue(key) { const u = upgrades[key]; return u.base + u.level * u.inc; }
         function getUpgradeCost(key) {
             const u = upgrades[key];
@@ -1004,7 +1024,6 @@
             nurserySeedCount.innerText = goldenSeeds;
         }
 
-        // Player State
         let playerState = {
             x: 50, y: 80, water: 100, maxWater: 100, isRefilling: false, specialWater: null,
         };
@@ -1014,7 +1033,6 @@
             mistyFern: { name: "Misty Fern", thirstRate: 0.65, html: `<div class="fern-frond ff1"></div><div class="fern-frond ff2"></div><div class="fern-frond ff3"></div>` },
         };
 
-        // --- Game Setup ---
         function initGame() {
             score = combo = timeSurvived = gophersWhacked = 0;
             gardenHealth = 100; activeEvent = null;
@@ -1054,7 +1072,6 @@
             scheduleNextEvent();
         }
 
-        // Add this helper function near the top of the script section
         function toKebabCase(str) {
             return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
         }
@@ -1065,7 +1082,6 @@
             const type = PLANT_TYPES[typeKey];
 
             const container = document.createElement('div');
-            // Use kebab-case for the type class
             container.className = `plant-container ${toKebabCase(typeKey)}`;
             container.style.left = `${x - 5}%`;
             container.style.bottom = `${y}%`;
@@ -1080,7 +1096,6 @@
             });
         }
 
-        // --- Game Loop ---
         function gameLoop(timestamp) {
             if (gameState !== 'PLAYING') return;
             const deltaTime = Math.min(0.1, (timestamp - lastTime) / 1000);
@@ -1091,7 +1106,6 @@
             updatePlants(deltaTime);
             updateEffects(deltaTime);
             updateUI();
-            maybeLevelUp(); // <-- Level up check after score update
             
             timeSurvived += deltaTime;
 
@@ -1099,7 +1113,6 @@
             else loopId = requestAnimationFrame(gameLoop);
         }
 
-        // --- Update Functions ---
         function updatePlayer(deltaTime) {
             const speed = getUpgradeValue('playerSpeed');
             if (keys['a'] || keys['arrowleft']) playerTargetX -= speed * deltaTime;
@@ -1112,7 +1125,6 @@
             const playerWidth = player.offsetWidth;
             const playerHeight = player.offsetHeight;
             playerTargetX = Math.max((playerWidth/2), Math.min(gameWidth - (playerWidth/2), playerTargetX));
-            // Clamp Y: 0 (top) to game area height - player height
             playerTargetY = Math.max(0, Math.min(gameHeight - playerHeight, playerTargetY));
 
             const currentX = player.offsetLeft;
@@ -1135,7 +1147,6 @@
 
             const barrelRect = waterBarrel.getBoundingClientRect();
             const playerRect = player.getBoundingClientRect();
-            // Use center-to-center distance for proximity
             const barrelCenterX = barrelRect.left + barrelRect.width / 2;
             const barrelCenterY = barrelRect.top + barrelRect.height / 2;
             const playerCenterX = playerRect.left + playerRect.width / 2;
@@ -1164,12 +1175,10 @@
         }
         
         function handleWatering(deltaTime) {
-            // Mobile auto-watering: if on mobile, not refilling, and not already watering, auto-water if super close to a plant
             if (isMobile() && gameState === 'PLAYING' && !playerState.isRefilling && !isActionKeyDown) {
-                const autoWaterRange = 60; // px, super close
+                const autoWaterRange = 60;
                 const targetPlant = findClosestPlantInRange(autoWaterRange);
                 if (targetPlant && playerState.water > 0) {
-                    // Simulate holding watering
                     const waterCost = CONSTANTS.PLAYER_WATER_STREAM_RATE * deltaTime;
                     playerState.water -= waterCost;
                     const thirstAmount = CONSTANTS.WATER_STREAM_THIRST_PER_SEC * deltaTime;
@@ -1179,7 +1188,6 @@
                     }
                 }
             }
-            // Existing manual watering logic
             if (!isWateringHeld || playerState.water <= 0) return;
             const targetPlant = findClosestPlantInRange(CONSTANTS.WATERING_RANGE);
             if (targetPlant) {
@@ -1203,7 +1211,7 @@
                 if (p.isWilted) { wiltedCount++; anyWilted = true; return; }
                 
                 let currentThirstRate = p.baseThirstRate;
-                if (isMobile()) currentThirstRate *= 2; // Double thirst rate on mobile
+                if (isMobile()) currentThirstRate *= 2;
                 if (activeEvent) {
                     if (activeEvent.type === 'heatwave') currentThirstRate *= 1.25;
                     if (activeEvent.type === 'sunbeam' && activeEvent.targetPlantId === p.id && !p.effects.shadeCloth) {
@@ -1253,7 +1261,7 @@
         function updateEffects(deltaTime) {
             effectPools.particles.forEach(p => {
                 if (!p.active) return;
-                p.x += p.vx * deltaTime; p.y += p.vy * deltaTime; p.vy += 400 * deltaTime; // gravity
+                p.x += p.vx * deltaTime; p.y += p.vy * deltaTime; p.vy += 400 * deltaTime;
                 p.life -= deltaTime;
                 p.el.style.transform = `translate(${p.x}px, ${p.y}px)`;
                 if (p.life <= 0) {
@@ -1293,8 +1301,6 @@
             if(playerState.water <=0) playerState.specialWater = null;
         }
 
-
-        // --- UI, Scoring & Juice ---
         function updateUI() {
             scoreDisplay.textContent = `Score: ${Math.floor(score)}`;
             playerWaterFill.style.width = `${(playerState.water / playerState.maxWater) * 100}%`;
@@ -1303,7 +1309,6 @@
             else if (playerState.specialWater === 'icy') waterFill.style.backgroundColor = 'var(--water-special-icy)';
             else waterFill.style.backgroundColor = 'var(--thirst-bar-fg)';
 
-            // Award golden seeds for every 500 points during play
             if (gameState === 'PLAYING') {
                 const seedsNow = Math.floor(score / 500);
                 const seedsPrev = Math.floor(lastSeedScore / 500);
@@ -1313,14 +1318,15 @@
                     saveGameData();
                     updateGoldenSeedDisplays();
                 }
+                maybeLevelUp();
             }
         }
-        /* Call this inside updateUI() (or wherever you tally score) */
         function maybeLevelUp() {
           if (score >= nextLevelScore) {
             nextLevelScore += LEVELS.scoreStep;
             currentLevel++;
             applyLevelDifficulty();
+            
             // Award an extra golden seed for passing a level
             goldenSeeds += 1;
             saveGameData();
@@ -1329,13 +1335,10 @@
           }
         }
         function applyLevelDifficulty() {
-          // bleed garden health faster & make plants thirstier
           CONSTANTS.GARDEN_HEALTH_DEPLETE_RATE *= 1 + LEVELS.thirstStep;
           plants.forEach(p => p.baseThirstRate *= 1 + LEVELS.thirstStep);
-          // events fire a bit sooner
           EVENT_BASE_COOLDOWN *= 1 - LEVELS.eventStep;
         }
-        // --- Level Up Popup and Pause/Resume Logic ---
         function showLevelPopup() {
           gameState = 'LEVELUP';
           cancelAnimationFrame(loopId);
@@ -1343,7 +1346,6 @@
           document.getElementById('level-popup-title').textContent =
               `Level ${currentLevel}!`;
           pop.style.display = 'flex';
-          // auto-resume after 5 s
           setTimeout(() => {
             pop.style.display = 'none';
             if (gameState === 'LEVELUP') resumePlay();
@@ -1391,7 +1393,6 @@
             gameContainer.classList.add('shake'); setTimeout(() => gameContainer.classList.remove('shake'), 200);
         }
 
-        // --- Events ---
         function scheduleNextEvent() { eventTimeout = setTimeout(triggerEvent, 12000 + Math.random() * 8000); }
         function triggerEvent() {
             if (gameState !== 'PLAYING') return;
@@ -1506,7 +1507,6 @@
             setTimeout(() => effectEl.remove(), duration);
         }
 
-        // --- Plant Personalities & Helpers ---
         function createWaterParticle(startRect, endRect) {
             const p = getFromPool('particles'); if (!p) return;
             const gameRect = gameContainer.getBoundingClientRect();
@@ -1531,7 +1531,6 @@
             p.el.style.backgroundColor = playerState.specialWater === 'fertilizer' ? 'var(--water-special-fertilizer)' : playerState.specialWater === 'icy' ? 'var(--water-special-icy)' : 'var(--water-color)';
         }
         
-        // --- State Management & Controls ---
         function setGameState(newState) {
             gameState = newState;
             [startScreen, gameOverScreen, nurseryScreen].forEach(o => o.style.display = 'none');
@@ -1549,7 +1548,6 @@
                     break;
                 case 'GAMEOVER':
                     endCurrentEvent();
-                    // Only award leftover seeds for points not already awarded
                     const earnedSeeds = Math.floor(score / 500) - Math.floor(lastSeedScore / 500);
                     if (earnedSeeds > 0) {
                         goldenSeeds += earnedSeeds;
@@ -1569,7 +1567,7 @@
                 const u = upgrades[key]; const cost = getUpgradeCost(key);
                 const item = document.createElement('div'); item.className = 'upgrade-item';
                 const canAfford = goldenSeeds >= cost, isMaxed = (u.maxLevel && u.level >= u.maxLevel);
-                item.innerHTML = `<h4>${u.name}</h4><p>Level: ${u.level}</p><button data-upgrade-key="${key}" ${!canAfford || isMaxed ? 'disabled' : ''}>${isMaxed ? 'MAXED' : `Upgrade (<span class="upgrade-cost">${cost} 🌰</span>)`}</button>`;
+                item.innerHTML = `<h4>${u.name}</h4><p>Level: ${u.level}</p><button data-upgrade-key="${key}" ${!canAfford || isMaxed ? 'disabled' : ''}>${isMaxed ? 'MAXED' : `Buy ${cost} 🌰`}</button>`;
                 nurseryUpgradesContainer.appendChild(item);
             }
         }
@@ -1581,18 +1579,26 @@
             }
         });
 
-        // --- Event Listeners ---
         startButton.addEventListener('click', () => setGameState('PLAYING'));
         restartButton.addEventListener('click', () => setGameState('PLAYING'));
         nurseryButtonFromGameOver.addEventListener('click', () => { lastGameStateBeforeNursery = 'GAMEOVER'; setGameState('NURSERY'); });
         nurseryBackButton.addEventListener('click', () => setGameState(lastGameStateBeforeNursery === 'GAMEOVER' ? 'START' : lastGameStateBeforeNursery));
+        
+        goldenSeedsDisplay.addEventListener('click', () => {
+            if (gameState === 'PLAYING') {
+                cancelAnimationFrame(loopId);
+                lastGameStateBeforeNursery = 'PLAYING';
+            } else {
+                lastGameStateBeforeNursery = gameState;
+            }
+            setGameState('NURSERY');
+        });
 
         window.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; if ((e.key === ' ' || e.key === 'Spacebar') && !isActionKeyDown) { isActionKeyDown = true; handleWaterStart(); } });
         window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; if (e.key === ' ' || e.key === 'Spacebar') { isActionKeyDown = false; handleWaterEnd(); } });
         gameContainer.addEventListener('mousedown', e => { if (e.button !== 0 || e.target.closest('.popup')) return; isActionKeyDown = true; handleWaterStart(); });
         window.addEventListener('mouseup', e => { if (e.button !== 0) return; isActionKeyDown = false; handleWaterEnd(); });
         
-        // --- Mobile Drag-to-Move for Gnome ---
         let isDraggingGnome = false;
         let dragOffsetX = 0, dragOffsetY = 0;
         player.addEventListener('touchstart', function(e) {
@@ -1614,7 +1620,6 @@
             const gameRect = gameContainer.getBoundingClientRect();
             let x = touch.clientX - gameRect.left - dragOffsetX;
             let y = touch.clientY - gameRect.top - dragOffsetY;
-            // Clamp to game area
             const playerWidth = player.offsetWidth;
             const playerHeight = player.offsetHeight;
             x = Math.max(playerWidth/2, Math.min(gameContainer.offsetWidth - playerWidth/2, x));
@@ -1628,15 +1633,12 @@
             isDraggingGnome = false;
         });
         
-        // Helper to detect mobile
         function isMobile() {
             return window.innerWidth <= 768 || window.innerHeight <= 500;
         }
 
         function handleWaterStart() {
             if (gameState !== 'PLAYING') return;
-            // Gopher and Shade Cloth are handled by their own tap listeners, checking proximity.
-            // This simplifies the logic here.
             
             const targetPlant = findClosestPlantInRange(CONSTANTS.WATERING_RANGE);
             currentWateringSession = { plantId: targetPlant ? targetPlant.id : null, thirstAdded: 0 };
@@ -1648,15 +1650,14 @@
             clearTimeout(waterActionTimeout);
             if (gameState !== 'PLAYING' || !isActionKeyDown) { isWateringHeld = false; return; }
             
-            // If it was a hold, the stream logic already ran. Just reset.
             if(isWateringHeld) {
                 isWateringHeld = false;
                 checkAndApplyCombo();
-                if (playerState.specialWater) playerState.specialWater = null; // Use special water for one full can
+                if (playerState.specialWater) playerState.specialWater = null;
                 return;
             }
 
-            // This was a tap/burst
+            
             const targetPlant = findClosestPlantInRange(CONSTANTS.WATERING_RANGE);
             if (targetPlant && playerState.water > CONSTANTS.PLAYER_WATER_BURST_COST) {
                 playerState.water -= CONSTANTS.PLAYER_WATER_BURST_COST;
@@ -1682,7 +1683,6 @@
             const playerRect = player.getBoundingClientRect();
             for (const plant of plants) {
                 const plantRect = plant.element.getBoundingClientRect();
-                // Check if player is below the plant
                 if (playerRect.bottom > plantRect.top) {
                     const dist = getDistanceBetweenRects(playerRect, plantRect);
                     if (dist < minDistance) { minDistance = dist; closestPlant = plant; }
