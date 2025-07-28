@@ -202,10 +202,10 @@
         #player-luchador .luchador-mask { background-color: var(--player-color-primary); }
         #player-luchador .luchador-body { background-color: var(--player-color-secondary); }
         
-        #question-box { background: rgba(0,0,0,0.7); padding: 20px; border-radius: 15px; font-size: clamp(1.3rem, 4vw, 2rem); font-weight: 600; margin-top: 20px; border: 3px solid var(--accent-cyan); box-shadow: 0 0 15px rgba(0, 188, 212, 0.5); min-height: 80px; display: flex; justify-content: center; align-items: center; width: 95%; max-width: 900px; transition: opacity 0.5s, filter 0.5s; }
+        #question-box { background: rgba(0,0,0,0.7); padding: 20px; border-radius: 15px; font-size: clamp(1.3rem, 4vw, 2rem); font-weight: 600; margin-top: 20px; border: 3px solid var(--accent-cyan); box-shadow: 0 0 15px rgba(0, 188, 212, 0.5); min-height: 80px; display: flex; justify-content: center; align-items: center; width: 95%; max-width: 900px; transition: opacity 0.5s, filter 0.5s; font-family: 'Arial', 'Helvetica', monospace; }
         .bottom-bar { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         #answer-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; }
-        .answer-button { min-width: 220px; padding: 20px; font-size: 1.5rem; }
+        .answer-button { min-width: 220px; padding: 20px; font-size: 1.5rem; font-family: 'Arial', 'Helvetica', monospace; font-weight: bold; }
         .answer-button.correct { background-color: var(--btn-correct-bg); border-color: #fff; animation: popIn 0.3s; }
         .answer-button.incorrect { background-color: var(--btn-incorrect-bg); border-color: #555; opacity: 0.6; }
 
@@ -256,7 +256,7 @@
             .center-hud { order: 0; }
             .top-bar { flex-wrap: wrap; justify-content: center; }
             #question-box { font-size: 1.2rem; }
-            .answer-button { min-width: 180px; font-size: 1.2rem; padding: 15px; }
+            .answer-button { min-width: 180px; font-size: 1.2rem; padding: 15px; font-family: 'Arial', 'Helvetica', monospace; font-weight: bold; }
             .ring-area { height: 150px; }
             .luchador { width: 100px; height: 120px; }
             @keyframes attackLunge { 50% { transform: translate(80px, -20px) scale(1.15) rotate(15deg); z-index: 10; } }
@@ -317,6 +317,8 @@
                 width: 90%; 
                 padding: 12px;
                 margin: 0;
+                font-family: 'Arial', 'Helvetica', monospace; 
+                font-weight: bold;
             }
 
         }
@@ -1068,7 +1070,11 @@
             function updateUI() {
                 ui.score.textContent = state.score;
                 ui.playerStamina.style.width = `${state.playerHealth}%`;
-                ui.opponentStamina.style.width = `${state.opponentHealth}%`;
+                
+                // Calculate opponent health percentage based on their max health
+                const opponent = opponents[state.currentOpponentIndex];
+                const opponentHealthPercentage = (state.opponentHealth / opponent.health) * 100;
+                ui.opponentStamina.style.width = `${Math.max(0, opponentHealthPercentage)}%`;
                 
                 if (state.combo > 1) {
                     ui.comboMeter.textContent = `${state.combo}x COMBO!`;
@@ -1084,14 +1090,13 @@
             function applyOpponentMechanic(mechanic) {
                 switch (mechanic) {
                     case 'shuffle':
+                        // Shuffle mechanic is now handled in question generation
+                        // Add a different mechanic instead - faster timer
                         setTimeout(() => {
-                            const buttons = Array.from(ui.answerButtons.querySelectorAll('.answer-button'));
-                            if (buttons.length > 0) {
-                                buttons.forEach(button => {
-                                    button.style.order = Math.floor(Math.random() * 1000);
-                                });
+                            if (state.timerRemaining > 5) {
+                                state.timerRemaining = Math.max(5, state.timerRemaining - 8);
                             }
-                        }, 2000);
+                        }, 3000);
                         break;
                     case 'fade':
                         setTimeout(() => {
