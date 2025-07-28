@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Word Gap</title>
+    <title>Math Fight</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
@@ -30,8 +30,7 @@
             --stamina-bar-bg: #444;
             --stamina-bar-damage: #ff4757;
 
-            --special-bar-color: var(--accent-gold);
-            --special-bar-bg: #444;
+
             
             --timer-bar-color: var(--accent-cyan);
             --timer-bar-bg: #444;
@@ -82,14 +81,8 @@
             from { transform: translate(-50%, -50%) scale(2.5); opacity: 0.9; }
             to { transform: translate(-50%, -50%) scale(0.2); opacity: 1; }
         }
-        @keyframes specialGlow {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.5); opacity: 1; }
-        }
-        @keyframes piñataFly {
-            from { transform: translateX(-150px) rotate(0deg); }
-            to { transform: translateX(110vw) rotate(720deg); }
-        }
+
+
         @keyframes textFadeOut { from { opacity: 1; } to { opacity: 0; } }
         @keyframes comboPop {
             0% { transform: scale(1); opacity: 0.8; }
@@ -212,12 +205,7 @@
         .answer-button.correct { background-color: var(--btn-correct-bg); border-color: #fff; animation: popIn 0.3s; }
         .answer-button.incorrect { background-color: var(--btn-incorrect-bg); border-color: #555; opacity: 0.6; }
 
-        .special-container { display: flex; align-items: center; gap: 10px; position: relative; }
-        #special-button { position: relative; padding: 10px 20px; font-size: 1.2rem; background-color: #6c757d; border-color: #5a6268; opacity: 0.6; cursor: default; border-bottom-width: 6px; z-index: 1; }
-        #special-button.ready { opacity: 1; cursor: pointer; background-color: var(--special-bar-color); color: var(--text-dark); }
-        #special-button.ready::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--special-bar-color); border-radius: 12px; z-index: -1; animation: specialGlow 1.5s infinite ease-in-out; filter: blur(15px); }
-        .special-meter-container { width: 200px; height: 15px; background-color: var(--special-bar-bg); border-radius: 10px; overflow: hidden; border: 2px solid #222; padding: 2px; }
-        .special-meter { width: 0%; height: 100%; background: linear-gradient(to right, var(--special-bar-color), #fff700); border-radius: 5px; transition: width 0.3s ease-out; }
+
         
         /* --- EFFECTS & FEEDBACK --- */
         #qte-container { position: absolute; z-index: 100; }
@@ -242,11 +230,7 @@
         .smoke-overlay { position: absolute; width: 150px; height: 150px; background: radial-gradient(circle, rgba(200,200,200,0.6) 0%, rgba(200,200,200,0) 70%); border-radius: 50%; pointer-events: none; z-index: 50; animation: smokeDrift 3s ease-out forwards; }
         .piñata-burst { position: absolute; width: 20px; height: 20px; background-color: var(--accent-gold); border-radius: 50%; pointer-events: none; z-index: 100; animation: piñataBurst 0.5s ease-out forwards; }
 
-        /* --- PIÑATA FIESTA --- */
-        #piñata-fiesta-screen { overflow: hidden; }
-        #piñata-timer { position: absolute; top: 20px; font-family: var(--font-display); font-size: 4rem; color: var(--accent-gold); text-shadow: 4px 4px 0 #000; }
-        .piñata-word { position: absolute; padding: 10px 20px; background: linear-gradient(45deg, #f3ec78, #af4261); color: #000; border-radius: 30px; cursor: pointer; font-weight: 700; animation-name: piñataFly; animation-timing-function: linear; box-shadow: 3px 3px 5px rgba(0,0,0,0.5); transition: transform 0.1s; left: 0; }
-        .piñata-word:hover { transform: scale(1.1); }
+
 
         /* --- MODALS --- */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out; }
@@ -278,12 +262,13 @@
         /* --- HUMAN/QA FEEDBACK IMPLEMENTATION for MOBILE --- */
         @media (max-width: 480px) {
             .top-bar { 
-                flex-direction: column; 
+                flex-direction: row; 
+                flex-wrap: wrap;
                 gap: 8px; 
                 padding-top: 60px; /* HUMAN FEEDBACK FIX: Make space for shorter absolute positioned scoreboard */
                 position: relative;
             }
-            .player-info, .opponent-info { width: 100%; }
+            .player-info, .opponent-info { width: 48%; }
             .center-hud { 
                 position: absolute; 
                 top: 10px; 
@@ -329,10 +314,7 @@
                 padding: 12px;
                 margin: 0;
             }
-            .special-container { 
-                flex-direction: column; 
-                gap: 8px;
-            }
+
         }
     </style>
 </head>
@@ -345,8 +327,8 @@
 
         <!-- Start Screen -->
         <div id="start-screen" class="screen">
-            <h1>Word Gap</h1>
-            <p style="font-size: 1.2rem; margin-top: 0; margin-bottom: 30px; font-weight: 600;">The Ultimate Grammar Smackdown!</p>
+            <h1>Math Fight</h1>
+            <p style="font-size: 1.2rem; margin-top: 0; margin-bottom: 30px; font-weight: 600;">The Ultimate Math Showdown!</p>
             <div id="start-button" class="button" tabindex="0">Start Tournament</div>
         </div>
 
@@ -368,7 +350,6 @@
             <div class="locker-room-actions">
                 <div id="continue-to-match-button" class="button" tabindex="0">Fight!</div>
                 <div id="bracket-button" class="button" tabindex="0">Tournament Bracket</div>
-                <div id="libro-button" class="button" tabindex="0">Libro de Gramática</div>
                 <div id="stats-button" class="button" tabindex="0">Career Stats</div>
             </div>
         </div>
@@ -379,7 +360,7 @@
                 <div class="player-info">
                     <div id="player-portrait" class="luchador-portrait"></div>
                     <div class="info-details">
-                        <h3>El Jugador</h3>
+                        <h3>The Player</h3>
                         <div class="stamina-bar-container"><div id="player-stamina" class="stamina-bar"></div></div>
                     </div>
                 </div>
@@ -407,19 +388,10 @@
 
             <div class="bottom-bar">
                 <div id="answer-buttons"></div>
-                <div class="special-container">
-                    <div id="special-button" class="button" tabindex="0">SPECIAL</div>
-                    <div class="special-meter-container"><div id="special-meter" class="special-meter"></div></div>
-                </div>
             </div>
         </div>
 
-        <!-- Piñata Fiesta Screen -->
-        <div id="piñata-fiesta-screen" class="screen hidden">
-            <h1>Piñata Fiesta!</h1>
-            <div id="piñata-timer">15</div>
-            <p>Click the correctly conjugated verbs!</p>
-        </div>
+
 
         <!-- Game Over Screen -->
         <div id="game-over-screen" class="screen hidden">
@@ -437,9 +409,9 @@
 
         <!-- Modals -->
         <div id="bracket-modal" class="modal"><div class="modal-content"><h2>Tournament Bracket</h2><ul id="bracket-list"></ul><div id="close-bracket-button" class="button" tabindex="0">Close</div></div></div>
-        <div id="libro-modal" class="modal"><div class="modal-content"><h2>Libro de Gramática</h2><ul id="libro-list"><li>No tips collected yet.</li></ul><div id="close-libro-button" class="button" tabindex="0">Close</div></div></div>
-        <div id="stats-modal" class="modal"><div class="modal-content"><h2>Career Stats</h2><p>Wins: <span id="stats-wins">0</span></p><p>Perfect Rounds: <span id="stats-perfect">0</span></p><p>Highest Combo: <span id="stats-combo">0</span></p><h3>Campeón Titles</h3><ul id="achievement-list" class="achievement-list"><li>None yet!</li></ul><div id="close-stats-button" class="button" tabindex="0">Close</div></div></div>
-        <div id="special-choice-modal" class="modal"><div class="modal-content"><h2>Choose Your Special!</h2><div id="grammar-slam-button" class="button" tabindex="0">Grammar Slam (Offensive)</div><div id="clarity-kick-button" class="button" tabindex="0">Clarity Kick (Defensive)</div><div id="cancel-special-button" class="button" style="background-color: #6c757d; border-bottom-color: #494f54;" tabindex="0">Cancel</div></div></div>
+
+        <div id="stats-modal" class="modal"><div class="modal-content"><h2>Career Stats</h2><p>Wins: <span id="stats-wins">0</span></p><p>Perfect Rounds: <span id="stats-perfect">0</span></p><p>Highest Combo: <span id="stats-combo">0</span></p><h3>Champion Titles</h3><ul id="achievement-list" class="achievement-list"><li>None yet!</li></ul><div id="close-stats-button" class="button" tabindex="0">Close</div></div></div>
+
 
     </div>
 
@@ -451,7 +423,6 @@
                 start: document.getElementById('start-screen'),
                 lockerRoom: document.getElementById('locker-room-screen'),
                 game: document.getElementById('game-screen'),
-                piñata: document.getElementById('piñata-fiesta-screen'),
                 gameOver: document.getElementById('game-over-screen'),
             };
 
@@ -463,8 +434,6 @@
                 questionBox: document.getElementById('question-box'),
                 answerButtons: document.getElementById('answer-buttons'),
                 timerBar: document.getElementById('timer-bar'),
-                specialMeter: document.getElementById('special-meter'),
-                specialButton: document.getElementById('special-button'),
                 playerLuchador: document.getElementById('player-luchador'),
                 opponentLuchador: document.getElementById('opponent-luchador'),
                 playerPortrait: document.getElementById('player-portrait'),
@@ -483,123 +452,242 @@
             
             const modals = {
                 bracket: document.getElementById('bracket-modal'),
-                libro: document.getElementById('libro-modal'),
                 stats: document.getElementById('stats-modal'),
-                special: document.getElementById('special-choice-modal'),
             };
 
             // --- GAME DATA ---
             const opponents = [
-                { id: 0, name: "Señor Presente", health: 100, specialty: "Basic present tense", mechanic: null, mask: '😾', color1: '#c0392b', color2: '#f1c40f' },
-                { id: 1, name: "El Irregular", health: 120, specialty: "Irregular verbs", mechanic: 'shuffle', mask: '🤡', color1: '#8e44ad', color2: '#2ecc71' },
-                { id: 2, name: "Los Gemelos del Pasado", health: 150, specialty: "Preterite vs. Imperfect", mechanic: 'fade', mask: '👽', color1: '#d35400', color2: '#bdc3c7' },
-                { id: 3, name: "La Reina del Subjuntivo", health: 200, specialty: "The Subjunctive Mood", mechanic: 'smokescreen', mask: '💀', color1: '#e83e8c', color2: '#ffffff' },
+                { id: 0, name: "The Calculator", health: 100, specialty: "Fractions & decimals", mechanic: null, mask: '😾', color1: '#c0392b', color2: '#f1c40f' },
+                { id: 1, name: "Digit Destroyer", health: 120, specialty: "Multi-digit operations", mechanic: 'shuffle', mask: '🤡', color1: '#8e44ad', color2: '#2ecc71' },
+                { id: 2, name: "Equation Master", health: 150, specialty: "Linear equations", mechanic: 'fade', mask: '👽', color1: '#d35400', color2: '#bdc3c7' },
+                { id: 3, name: "Root Crusher", health: 180, specialty: "Square roots & powers", mechanic: 'smokescreen', mask: '💀', color1: '#e83e8c', color2: '#ffffff' },
+                { id: 4, name: "Formula King", health: 220, specialty: "Advanced operations", mechanic: 'shuffle', mask: '👑', color1: '#6f42c1', color2: '#ffd700' },
             ];
 
             const questionsByLevel = {
-              0: [  // Regular-present
-                { id: '0a', sentence: "Yo ______ café por la mañana.",      options: ["tomo","tomas","toma"],              correct: 0, tip: "-er verb, yo → -o" },
-                { id: '0b', sentence: "Tú ______ muy rápido.",             options: ["corres","corro","corre"],           correct: 0, tip: "-er verb, tú → -es" },
-                { id: '0c', sentence: "Él ______ la guitarra.",            options: ["toca","toco","tocas"],              correct: 0, tip: "-ar verb, él → -a" },
-                { id: '0d', sentence: "Nosotros ______ en el parque.",     options: ["paseamos","pasea","paseas"],        correct: 0, tip: "-ar verb, nosotros → -amos" },
-                { id: '0e', sentence: "Ellos ______ temprano.",            options: ["llegan","llego","llegas"],          correct: 0, tip: "-ar verb, ellos → -an" },
-                { id: '0f', sentence: "Yo ______ cartas cada semana.",     options: ["escribo","escribe","escribes"],     correct: 0, tip: "-ir verb, yo → -o" },
-                { id: '0g', sentence: "Tú ______ la televisión.",          options: ["ves","veo","ve"],              correct: 0, tip: "-ar verb, tú → -as" },
-                { id: '0h', sentence: "Ella ______ flores bonitas.",       options: ["pinta","pinto","pintas"],           correct: 0, tip: "-ar verb, ella → -a" },
-                { id: '0i', sentence: "Nosotros ______ la comida.",        options: ["cocinamos","cocina","cocinas"],     correct: 0, tip: "-ar verb, nosotros → -amos" },
-                { id: '0j', sentence: "Ellos ______ muy alto.",            options: ["cantan","canto","cantas"],          correct: 0, tip: "-ar verb, ellos → -an" },
-                { id: '0k', sentence: "Yo ______ la puerta.",              options: ["abro","abre","abres"],              correct: 0, tip: "-ir verb, yo → -o" },
-                { id: '0l', sentence: "Tú ______ la mesa.",                options: ["arreglas","arreglo","arregla"],     correct: 0, tip: "-ar verb, tú → -as" },
-                { id: '0m', sentence: "Él ______ su cuarto.",              options: ["limpia","limpio","limpias"],        correct: 0, tip: "-ar verb, él → -a" },
-                { id: '0n', sentence: "Nosotros ______ español.",          options: ["estudiamos","estudia","estudias"],  correct: 0, tip: "-ar verb, nosotros → -amos" },
-                { id: '0o', sentence: "Ellos ______ agua fría.",           options: ["beben","bebo","bebes"],             correct: 0, tip: "-er verb, ellos → -en" },
-                { id: '0p', sentence: "Yo ______ la música.",              options: ["escucho","escucha","escuchas"],     correct: 0, tip: "-ar verb, yo → -o" },
-                { id: '0q', sentence: "Ella ______ nuevos libros.",        options: ["lee","leo","lees"],                 correct: 0, tip: "-er verb, ella → -e" },
-                { id: '0r', sentence: "Nosotros ______ a la maestra.",     options: ["preguntamos","pregunta","preguntas"],correct:0, tip:"-ar verb, nosotros → -amos"},
-                { id: '0s', sentence: "Ellos ______ en el río.",           options: ["pescan","pesco","pescas"],          correct: 0, tip: "-ar verb, ellos → -an" },
-                { id: '0t', sentence: "Yo ______ en bicicleta al trabajo.",options: ["voy","vas","van"],           correct: 0, tip: "-ar verb, yo → -o" }
+              0: [  // Fractions & decimals (Level 1)
+                { id: '0a', sentence: "1/2 + 1/4 = ?",                    options: ["3/4","2/3","5/6"],                  correct: 0 },
+                { id: '0b', sentence: "0.5 + 0.3 = ?",                    options: ["0.8","0.7","0.9"],                  correct: 0 },
+                { id: '0c', sentence: "3/4 - 1/4 = ?",                    options: ["1/2","1/3","2/3"],                  correct: 0 },
+                { id: '0d', sentence: "1.2 - 0.7 = ?",                    options: ["0.5","0.4","0.6"],                  correct: 0 },
+                { id: '0e', sentence: "2/3 × 3/4 = ?",                    options: ["1/2","2/5","3/5"],                  correct: 0 },
+                { id: '0f', sentence: "0.6 × 0.5 = ?",                    options: ["0.3","0.25","0.35"],                correct: 0 },
+                { id: '0g', sentence: "1/3 + 1/6 = ?",                    options: ["1/2","2/5","3/7"],                  correct: 0 },
+                { id: '0h', sentence: "2.5 + 1.75 = ?",                   options: ["4.25","4.5","3.75"],                correct: 0 },
+                { id: '0i', sentence: "5/6 - 1/3 = ?",                    options: ["1/2","1/4","2/3"],                  correct: 0 },
+                { id: '0j', sentence: "3.8 - 1.9 = ?",                    options: ["1.9","2.1","1.7"],                  correct: 0 },
+                { id: '0k', sentence: "1/4 × 2/3 = ?",                    options: ["1/6","1/8","1/4"],                  correct: 0 },
+                { id: '0l', sentence: "0.4 × 0.25 = ?",                   options: ["0.1","0.15","0.05"],                correct: 0 },
+                { id: '0m', sentence: "2/5 + 1/10 = ?",                   options: ["1/2","3/7","4/9"],                  correct: 0 },
+                { id: '0n', sentence: "4.6 + 2.85 = ?",                   options: ["7.45","7.25","7.65"],               correct: 0 },
+                { id: '0o', sentence: "7/8 - 3/8 = ?",                    options: ["1/2","1/4","3/4"],                  correct: 0 },
+                { id: '0p', sentence: "5.0 - 2.35 = ?",                   options: ["2.65","2.75","2.55"],               correct: 0 },
+                { id: '0q', sentence: "3/5 × 1/2 = ?",                    options: ["3/10","2/7","1/3"],                 correct: 0 },
+                { id: '0r', sentence: "0.8 × 0.4 = ?",                    options: ["0.32","0.28","0.36"],               correct: 0 },
+                { id: '0s', sentence: "1/6 + 1/3 = ?",                    options: ["1/2","2/5","3/7"],                  correct: 0 },
+                { id: '0t', sentence: "6.25 - 3.7 = ?",                   options: ["2.55","2.45","2.65"],               correct: 0 },
+                { id: '0u', sentence: "3/8 + 1/8 = ?",                    options: ["1/2","3/8","5/8"],                  correct: 0 },
+                { id: '0v', sentence: "0.9 - 0.4 = ?",                    options: ["0.5","0.6","0.4"],                  correct: 0 },
+                { id: '0w', sentence: "1/5 × 2/3 = ?",                    options: ["2/15","1/8","3/15"],                correct: 0 },
+                { id: '0x', sentence: "3.2 + 1.8 = ?",                    options: ["5.0","4.8","5.2"],                  correct: 0 },
+                { id: '0y', sentence: "4/5 - 2/5 = ?",                    options: ["2/5","1/5","3/5"],                  correct: 0 },
+                { id: '0z', sentence: "0.75 × 0.2 = ?",                   options: ["0.15","0.12","0.18"],               correct: 0 },
+                { id: '0aa', sentence: "1/8 + 3/8 = ?",                   options: ["1/2","3/8","5/8"],                  correct: 0 },
+                { id: '0bb', sentence: "7.3 - 2.8 = ?",                   options: ["4.5","4.3","4.7"],                  correct: 0 },
+                { id: '0cc', sentence: "2/7 × 3/4 = ?",                   options: ["6/28","3/14","6/11"],               correct: 0 },
+                { id: '0dd', sentence: "1.6 + 2.9 = ?",                   options: ["4.5","4.3","4.7"],                  correct: 0 },
+                { id: '0ee', sentence: "9/10 - 3/10 = ?",                 options: ["3/5","6/10","4/5"],                 correct: 0 },
+                { id: '0ff', sentence: "0.36 × 0.5 = ?",                  options: ["0.18","0.16","0.20"],               correct: 0 },
+                { id: '0gg', sentence: "2/9 + 1/9 = ?",                   options: ["1/3","2/9","4/9"],                  correct: 0 },
+                { id: '0hh', sentence: "8.7 - 3.2 = ?",                   options: ["5.5","5.3","5.7"],                  correct: 0 },
+                { id: '0ii', sentence: "3/10 × 2/5 = ?",                  options: ["3/25","6/50","1/8"],                correct: 0 },
+                { id: '0jj', sentence: "0.64 + 0.28 = ?",                 options: ["0.92","0.90","0.94"],               correct: 0 },
+                { id: '0kk', sentence: "11/12 - 5/12 = ?",                options: ["1/2","6/12","7/12"],                correct: 0 },
+                { id: '0ll', sentence: "1.25 × 0.4 = ?",                  options: ["0.5","0.45","0.55"],                correct: 0 },
+                { id: '0mm', sentence: "1/7 + 2/7 = ?",                   options: ["3/7","1/7","4/7"],                  correct: 0 },
+                { id: '0nn', sentence: "9.6 - 4.8 = ?",                   options: ["4.8","4.6","5.0"],                  correct: 0 }
               ],
 
-              1: [  // Irregular-present
-                { id: '1a', sentence: "Yo ______ a casa tarde.",           options: ["vengo","viene","vienes"],           correct: 0, tip: "'Venir' – yo form 'vengo'" },
-                { id: '1b', sentence: "Tú ______ la verdad.",              options: ["dices","digo","dice"],              correct: 0, tip: "'Decir' – tú form 'dices'" },
-                { id: '1c', sentence: "Él ______ su tarea.",               options: ["hace","hago","haces"],              correct: 0, tip: "'Hacer' – él/ella form 'hace'" },
-                { id: '1d', sentence: "Nosotros ______ poder ir.",         options: ["podemos","puedo","puede"],          correct: 0, tip: "'Poder' – nosotros keeps the stem" },
-                { id: '1e', sentence: "Ellos ______ salir temprano.",      options: ["quieren","quiero","quieres"],       correct: 0, tip: "'Querer' – ellos 'quieren'" },
-                { id: '1f', sentence: "Yo ______ mucho dinero.",           options: ["tengo","tienes","tiene"],           correct: 0, tip: "'Tener' – yo 'tengo'" },
-                { id: '1g', sentence: "Tú ______ español e inglés.",       options: ["sabes","sé","sabe"],                correct: 0, tip: "'Saber' – tú 'sabes'" },
-                { id: '1h', sentence: "Ella ______ el autobús.",           options: ["pierde","pierdo","pierdes"],        correct: 0, tip: "'Perder' – e→ie except nosotros" },
-                { id: '1i', sentence: "Nosotros ______ las luces.",        options: ["encendemos","enciendo","enciende"], correct: 0, tip: "'Encender' – nosotros regular" },
-                { id: '1j', sentence: "Ellos ______ del trabajo a las seis.",options:["vuelven","vuelvo","vuelve"],        correct: 0, tip: "'Volver' – o→ue except nosotros" },
-                { id: '1k', sentence: "Yo ______ la información.",         options: ["obtengo","obtiene","obtienes"],      correct: 0, tip: "'Obtener' – yo 'obtengo'" },
-                { id: '1l', sentence: "Tú ______ las instrucciones.",      options: ["sigues","sigo","sigue"],            correct: 0, tip: "'Seguir' – e→i, tú 'sigues'" },
-                { id: '1m', sentence: "Él ______ dormir tarde.",           options: ["puede","puedo","puedes"],           correct: 0, tip: "'Poder' – él 'puede'" },
-                { id: '1n', sentence: "Nosotros ______ el menú.",          options: ["pedimos","pido","pide"],            correct: 0, tip: "'Pedir' – nosotros regular" },
-                { id: '1o', sentence: "Ellos ______ siempre.",             options: ["mienten","miento","miente"],        correct: 0, tip: "'Mentir' – e→ie" },
-                { id: '1p', sentence: "Yo ______ el regalo en la mesa.",   options: ["pongo","pone","pones"],             correct: 0, tip: "'Poner' – yo 'pongo'" },
-                { id: '1q', sentence: "Tú ______ a las ocho.",             options: ["vienes","vengo","viene"],           correct: 0, tip: "'Venir' – tú 'vienes'" },
-                { id: '1r', sentence: "Ella ______ muy temprano.",         options: ["se despierta","me despierto","te despiertas"], correct:0, tip:"Reflexive 'despertarse'" },
-                { id: '1s', sentence: "Nosotros ______ esa ciudad.",       options: ["conocemos","conozco","conoce"],     correct: 0, tip: "'Conocer' irregular only in yo" },
-                { id: '1t', sentence: "Ellos ______ la verdad.",           options: ["dicen","digo","dices"],             correct: 0, tip: "'Decir' – ellos 'dicen'" }
+              1: [  // Multi-digit operations (Level 2)
+                { id: '1a', sentence: "23 + 17 = ?",                      options: ["40","42","38"],                     correct: 0 },
+                { id: '1b', sentence: "156 - 89 = ?",                     options: ["67","69","65"],                     correct: 0 },
+                { id: '1c', sentence: "37 × 8 = ?",                       options: ["296","294","298"],                  correct: 0 },
+                { id: '1d', sentence: "448 ÷ 8 = ?",                      options: ["56","54","58"],                     correct: 0 },
+                { id: '1e', sentence: "145 + 297 = ?",                    options: ["442","440","444"],                  correct: 0 },
+                { id: '1f', sentence: "512 - 186 = ?",                    options: ["326","324","328"],                  correct: 0 },
+                { id: '1g', sentence: "24 × 15 = ?",                      options: ["360","350","370"],                  correct: 0 },
+                { id: '1h', sentence: "684 ÷ 12 = ?",                     options: ["57","55","59"],                     correct: 0 },
+                { id: '1i', sentence: "278 + 394 = ?",                    options: ["672","670","674"],                  correct: 0 },
+                { id: '1j', sentence: "803 - 467 = ?",                    options: ["336","334","338"],                  correct: 0 },
+                { id: '1k', sentence: "43 × 19 = ?",                      options: ["817","815","819"],                  correct: 0 },
+                { id: '1l', sentence: "896 ÷ 16 = ?",                     options: ["56","54","58"],                     correct: 0 },
+                { id: '1m', sentence: "365 + 487 = ?",                    options: ["852","850","854"],                  correct: 0 },
+                { id: '1n', sentence: "700 - 338 = ?",                    options: ["362","360","364"],                  correct: 0 },
+                { id: '1o', sentence: "56 × 23 = ?",                      options: ["1288","1286","1290"],               correct: 0 },
+                { id: '1p', sentence: "1104 ÷ 24 = ?",                    options: ["46","44","48"],                     correct: 0 },
+                { id: '1q', sentence: "564 + 789 = ?",                    options: ["1353","1351","1355"],               correct: 0 },
+                { id: '1r', sentence: "1000 - 743 = ?",                   options: ["257","255","259"],                  correct: 0 },
+                { id: '1s', sentence: "72 × 14 = ?",                      options: ["1008","1006","1010"],               correct: 0 },
+                { id: '1t', sentence: "1365 ÷ 15 = ?",                    options: ["91","89","93"],                     correct: 0 },
+                { id: '1u', sentence: "89 + 76 = ?",                      options: ["165","163","167"],                  correct: 0 },
+                { id: '1v', sentence: "234 - 147 = ?",                    options: ["87","85","89"],                     correct: 0 },
+                { id: '1w', sentence: "29 × 7 = ?",                       options: ["203","201","205"],                  correct: 0 },
+                { id: '1x', sentence: "576 ÷ 9 = ?",                      options: ["64","62","66"],                     correct: 0 },
+                { id: '1y', sentence: "458 + 367 = ?",                    options: ["825","823","827"],                  correct: 0 },
+                { id: '1z', sentence: "892 - 456 = ?",                    options: ["436","434","438"],                  correct: 0 },
+                { id: '1aa', sentence: "38 × 17 = ?",                     options: ["646","644","648"],                  correct: 0 },
+                { id: '1bb', sentence: "714 ÷ 21 = ?",                    options: ["34","32","36"],                     correct: 0 },
+                { id: '1cc', sentence: "679 + 284 = ?",                   options: ["963","961","965"],                  correct: 0 },
+                { id: '1dd', sentence: "750 - 389 = ?",                   options: ["361","359","363"],                  correct: 0 },
+                { id: '1ee', sentence: "45 × 26 = ?",                     options: ["1170","1168","1172"],               correct: 0 },
+                { id: '1ff', sentence: "952 ÷ 17 = ?",                    options: ["56","54","58"],                     correct: 0 },
+                { id: '1gg', sentence: "327 + 596 = ?",                   options: ["923","921","925"],                  correct: 0 },
+                { id: '1hh', sentence: "1200 - 847 = ?",                  options: ["353","351","355"],                  correct: 0 },
+                { id: '1ii', sentence: "64 × 18 = ?",                     options: ["1152","1150","1154"],               correct: 0 },
+                { id: '1jj', sentence: "1274 ÷ 22 = ?",                   options: ["58","56","60"],                     correct: 0 },
+                { id: '1kk', sentence: "743 + 289 = ?",                   options: ["1032","1030","1034"],               correct: 0 },
+                { id: '1ll', sentence: "865 - 478 = ?",                   options: ["387","385","389"],                  correct: 0 },
+                { id: '1mm', sentence: "73 × 12 = ?",                     options: ["876","874","878"],                  correct: 0 },
+                { id: '1nn', sentence: "1316 ÷ 28 = ?",                   options: ["47","45","49"],                     correct: 0 }
               ],
 
-              2: [  // Preterite vs Imperfect
-                { id: '2a', sentence: "Ayer, yo ______ a la playa.",       options: ["fui","iba","voy"],                  correct: 0, tip: "Specific completed action → pretérito" },
-                { id: '2b', sentence: "Cuando era niño, ______ mucho.",    options: ["jugaba","jugué","juego"],           correct: 0, tip: "Habitual past → imperfecto" },
-                { id: '2c', sentence: "Anoche, la película ______ a las 9.",options:["empezó","empezaba","empieza"],        correct: 0, tip: "Start of event → pretérito" },
-                { id: '2d', sentence: "Mientras él estudiaba, ella ______ música.",options:["escuchaba","escuchó","escucha"],correct:0, tip:"Background action → imperfecto"},
-                { id: '2e', sentence: "El domingo pasado, nosotros ______ pizza.",options:["comimos","comíamos","comemos"], correct:0, tip:"Completed past meal → pretérito"},
-                { id: '2f', sentence: "De pequeños, mis hermanos ______ en el jardín cada día.",options:["jugaban","jugaron","juegan"],correct:0, tip:"Routine childhood → imperfecto"},
-                { id: '2g', sentence: "Hace un mes, ella ______ una carta.",options:["escribió","escribía","escribe"],     correct:0, tip:"One-time finished action → pretérito"},
-                { id: '2h', sentence: "Siempre ______ juntos los sábados.",options:["cenábamos","cenamos","cenan"],        correct:0, tip:"Siempre → imperfecto"},
-                { id: '2i', sentence: "Esta mañana, yo ______ temprano.",  options: ["me levanté","me levantaba","me levanto"], correct:0, tip:"Time-stamped → pretérito"},
-                { id: '2j', sentence: "Cuando vivíamos en Madrid, ______ al metro diario.",options:["tomábamos","tomamos","toman"],correct:0, tip:"Ongoing past → imperfecto"},
-                { id: '2k', sentence: "El año pasado, ellos ______ un coche nuevo.",options:["compraron","compraban","compran"],correct:0, tip:"Completed purchase → pretérito"},
-                { id: '2l', sentence: "Todos los veranos, nosotros ______ al campo.",options:["íbamos","fuimos","vamos"],   correct:0, tip:"Repeated summers → imperfecto"},
-                { id: '2m', sentence: "Anteayer, tú ______ la verdad.",    options: ["dijiste","decías","dices"],         correct: 0, tip: "Anteayer → pretérito" },
-                { id: '2n', sentence: "Ella siempre ______ café por la tarde.",options:["bebía","bebió","bebe"],           correct:0, tip:"Siempre → imperfecto"},
-                { id: '2o', sentence: "El lunes, la clase ______ tarde.",  options: ["terminó","terminaba","termina"],     correct: 0, tip: "Finished that day → pretérito"},
-                { id: '2p', sentence: "Cada noche, mi abuela me ______ historias.",options:["contaba","contó","cuenta"],   correct:0, tip:"Cada noche → imperfecto"},
-                { id: '2q', sentence: "A las cuatro, yo todavía ______.",  options: ["trabajaba","trabajé","trabajo"],     correct: 0, tip: "Past in-progress → imperfecto" },
-                { id: '2r', sentence: "Hace dos semanas, ellos ______ a París.",options:["viajaron","viajaban","viajan"],   correct:0, tip:"Hace + period → pretérito"},
-                { id: '2s', sentence: "Cuando era pequeño, yo ______ miedo a la oscuridad.",options:["tenía","tuve","tengo"],correct:0, tip:"Childhood state → imperfecto"},
-                { id: '2t', sentence: "Anoche, tú ______ la ventana.",     options: ["abriste","abrías","abres"],          correct: 0, tip: "Completed action → pretérito" }
+              2: [  // Linear equations (Level 3)
+                { id: '2a', sentence: "2x + 5 = 15, x = ?",               options: ["5","4","6"],                        correct: 0 },
+                { id: '2b', sentence: "3x - 7 = 14, x = ?",               options: ["7","6","8"],                        correct: 0 },
+                { id: '2c', sentence: "4x + 12 = 32, x = ?",              options: ["5","4","6"],                        correct: 0 },
+                { id: '2d', sentence: "5x - 8 = 27, x = ?",               options: ["7","6","8"],                        correct: 0 },
+                { id: '2e', sentence: "6x + 9 = 39, x = ?",               options: ["5","4","6"],                        correct: 0 },
+                { id: '2f', sentence: "2x - 11 = 5, x = ?",               options: ["8","7","9"],                        correct: 0 },
+                { id: '2g', sentence: "7x + 4 = 25, x = ?",               options: ["3","2","4"],                        correct: 0 },
+                { id: '2h', sentence: "3x - 15 = 0, x = ?",               options: ["5","4","6"],                        correct: 0 },
+                { id: '2i', sentence: "8x + 7 = 31, x = ?",               options: ["3","2","4"],                        correct: 0 },
+                { id: '2j', sentence: "4x - 9 = 11, x = ?",               options: ["5","4","6"],                        correct: 0 },
+                { id: '2k', sentence: "9x + 6 = 33, x = ?",               options: ["3","2","4"],                        correct: 0 },
+                { id: '2l', sentence: "5x - 12 = 18, x = ?",              options: ["6","5","7"],                        correct: 0 },
+                { id: '2m', sentence: "2x + 17 = 29, x = ?",              options: ["6","5","7"],                        correct: 0 },
+                { id: '2n', sentence: "6x - 4 = 26, x = ?",               options: ["5","4","6"],                        correct: 0 },
+                { id: '2o', sentence: "10x + 8 = 48, x = ?",              options: ["4","3","5"],                        correct: 0 },
+                { id: '2p', sentence: "3x - 21 = 6, x = ?",               options: ["9","8","10"],                       correct: 0 },
+                { id: '2q', sentence: "7x + 14 = 42, x = ?",              options: ["4","3","5"],                        correct: 0 },
+                { id: '2r', sentence: "4x - 16 = 12, x = ?",              options: ["7","6","8"],                        correct: 0 },
+                { id: '2s', sentence: "8x + 5 = 37, x = ?",               options: ["4","3","5"],                        correct: 0 },
+                { id: '2t', sentence: "5x - 25 = 10, x = ?",              options: ["7","6","8"],                        correct: 0 },
+                { id: '2u', sentence: "3x + 8 = 23, x = ?",               options: ["5","4","6"],                        correct: 0 },
+                { id: '2v', sentence: "6x - 18 = 12, x = ?",              options: ["5","4","6"],                        correct: 0 },
+                { id: '2w', sentence: "2x + 13 = 25, x = ?",              options: ["6","5","7"],                        correct: 0 },
+                { id: '2x', sentence: "9x - 27 = 18, x = ?",              options: ["5","4","6"],                        correct: 0 },
+                { id: '2y', sentence: "4x + 6 = 22, x = ?",               options: ["4","3","5"],                        correct: 0 },
+                { id: '2z', sentence: "7x - 21 = 14, x = ?",              options: ["5","4","6"],                        correct: 0 },
+                { id: '2aa', sentence: "3x + 15 = 36, x = ?",             options: ["7","6","8"],                        correct: 0 },
+                { id: '2bb', sentence: "8x - 32 = 24, x = ?",             options: ["7","6","8"],                        correct: 0 },
+                { id: '2cc', sentence: "5x + 10 = 35, x = ?",             options: ["5","4","6"],                        correct: 0 },
+                { id: '2dd', sentence: "6x - 12 = 24, x = ?",             options: ["6","5","7"],                        correct: 0 },
+                { id: '2ee', sentence: "2x + 22 = 38, x = ?",             options: ["8","7","9"],                        correct: 0 },
+                { id: '2ff', sentence: "4x - 20 = 16, x = ?",             options: ["9","8","10"],                       correct: 0 },
+                { id: '2gg', sentence: "7x + 28 = 56, x = ?",             options: ["4","3","5"],                        correct: 0 },
+                { id: '2hh', sentence: "3x - 18 = 9, x = ?",              options: ["9","8","10"],                       correct: 0 },
+                { id: '2ii', sentence: "5x + 20 = 45, x = ?",             options: ["5","4","6"],                        correct: 0 },
+                { id: '2jj', sentence: "8x - 24 = 32, x = ?",             options: ["7","6","8"],                        correct: 0 },
+                { id: '2kk', sentence: "6x + 18 = 48, x = ?",             options: ["5","4","6"],                        correct: 0 },
+                { id: '2ll', sentence: "9x - 36 = 27, x = ?",             options: ["7","6","8"],                        correct: 0 },
+                { id: '2mm', sentence: "4x + 16 = 36, x = ?",             options: ["5","4","6"],                        correct: 0 },
+                { id: '2nn', sentence: "10x - 30 = 50, x = ?",            options: ["8","7","9"],                        correct: 0 }
               ],
 
-              3: [  // Present Subjunctive
-                { id: '3a', sentence: "Espero que tú ______ un buen día.", options: ["tengas","tienes","tener"],           correct: 0, tip: "'Espero que' → subjuntivo" },
-                { id: '3b', sentence: "Es importante que nosotros ______.",options:["hablemos","hablamos","hablar"],       correct: 0, tip: "Impersonal expression → subjuntivo" },
-                { id: '3c', sentence: "Dudo que él ______ la verdad.",     options: ["diga","dice","dices"],               correct: 0, tip: "Doubt → subjuntivo" },
-                { id: '3d', sentence: "Quiero que ella me ______.",        options: ["ayude","ayuda","ayudas"],            correct: 0, tip: "Want → subjuntivo" },
-                { id: '3e', sentence: "Ojalá que ellos ______ pronto.",    options: ["lleguen","llegan","llegar"],         correct: 0, tip: "Ojalá → subjuntivo" },
-                { id: '3f', sentence: "Me alegra que tú ______ aquí.",     options: ["estés","estás","estar"],             correct: 0, tip: "Emotion → subjuntivo" },
-                { id: '3g', sentence: "Es posible que nosotros ______ tarde.",options:["lleguemos","llegamos","llegar"],   correct: 0, tip: "Possibility → subjuntivo" },
-                { id: '3h', sentence: "Temo que él no lo ______.",         options: ["entienda","entiende","entiendes"],   correct: 0, tip: "Fear → subjuntivo" },
-                { id: '3i', sentence: "Busco un libro que me ______.",     options: ["guste","gusta","gustar"],            correct: 0, tip: "Indefinite antecedent → subjuntivo" },
-                { id: '3j', sentence: "Antes de que tú ______, llámame.",  options: ["salgas","sales","salir"],            correct: 0, tip: "Antes de que → subjuntivo" },
-                { id: '3k', sentence: "No creo que ella ______ venir.",    options: ["pueda","puede","poder"],             correct: 0, tip: "Negation of belief → subjuntivo" },
-                { id: '3l', sentence: "Es bueno que ellos ______ ejercicio.",options:["hagan","hacen","hacer"],            correct: 0, tip: "Opinion → subjuntivo" },
-                { id: '3m', sentence: "Quiero un coche que ______ rápido.",options:["sea","es","ser"],                     correct: 0, tip: "Unknown characteristic → subjuntivo" },
-                { id: '3n', sentence: "Aunque ______ tarde, iremos.",      options: ["sea","es","ser"],                     correct: 0, tip: "Hypothetical aunque → subjuntivo" },
-                { id: '3o', sentence: "Para que lo ______, estudiarás.",   options: ["entiendas","entiendes","entender"],   correct: 0, tip: "Para que → subjuntivo" },
-                { id: '3p', sentence: "Ellos necesitan que tú les ______ ayuda.",options:["des","das","dar"],              correct: 0, tip: "Necessity → subjuntivo" },
-                { id: '3q', sentence: "Es malo que nosotros no ______ tiempo.",options:["tengamos","tenemos","tener"],     correct: 0, tip: "Value judgment → subjuntivo" },
-                { id: '3r', sentence: "Niego que él lo ______.",           options: ["sepa","sabe","saber"],               correct: 0, tip: "Denial → subjuntivo" },
-                { id: '3s', sentence: "A menos que tú ______, no iremos.", options: ["vengas","vienes","venir"],           correct: 0, tip: "A menos que → subjuntivo" },
-                { id: '3t', sentence: "Prefiero que ustedes me ______ mañana.",options:["llamen","llaman","llamar"],       correct: 0, tip: "Preference → subjuntivo" }
+              3: [  // Square roots & powers (Level 4)
+                { id: '3a', sentence: "√25 = ?",                          options: ["5","4","6"],                        correct: 0 },
+                { id: '3b', sentence: "3² = ?",                           options: ["9","8","10"],                       correct: 0 },
+                { id: '3c', sentence: "√36 = ?",                          options: ["6","5","7"],                        correct: 0 },
+                { id: '3d', sentence: "4³ = ?",                           options: ["64","62","66"],                     correct: 0 },
+                { id: '3e', sentence: "√49 = ?",                          options: ["7","6","8"],                        correct: 0 },
+                { id: '3f', sentence: "5² = ?",                           options: ["25","24","26"],                     correct: 0 },
+                { id: '3g', sentence: "√64 = ?",                          options: ["8","7","9"],                        correct: 0 },
+                { id: '3h', sentence: "2⁵ = ?",                           options: ["32","30","34"],                     correct: 0 },
+                { id: '3i', sentence: "√81 = ?",                          options: ["9","8","10"],                       correct: 0 },
+                { id: '3j', sentence: "6² = ?",                           options: ["36","35","37"],                     correct: 0 },
+                { id: '3k', sentence: "√100 = ?",                         options: ["10","9","11"],                      correct: 0 },
+                { id: '3l', sentence: "3⁴ = ?",                           options: ["81","80","82"],                     correct: 0 },
+                { id: '3m', sentence: "√121 = ?",                         options: ["11","10","12"],                     correct: 0 },
+                { id: '3n', sentence: "7² = ?",                           options: ["49","48","50"],                     correct: 0 },
+                { id: '3o', sentence: "√144 = ?",                         options: ["12","11","13"],                     correct: 0 },
+                { id: '3p', sentence: "2⁶ = ?",                           options: ["64","62","66"],                     correct: 0 },
+                { id: '3q', sentence: "√169 = ?",                         options: ["13","12","14"],                     correct: 0 },
+                { id: '3r', sentence: "8² = ?",                           options: ["64","63","65"],                     correct: 0 },
+                { id: '3s', sentence: "√196 = ?",                         options: ["14","13","15"],                     correct: 0 },
+                { id: '3t', sentence: "5³ = ?",                           options: ["125","124","126"],                  correct: 0 },
+                { id: '3u', sentence: "√225 = ?",                         options: ["15","14","16"],                     correct: 0 },
+                { id: '3v', sentence: "9² = ?",                           options: ["81","80","82"],                     correct: 0 },
+                { id: '3w', sentence: "√256 = ?",                         options: ["16","15","17"],                     correct: 0 },
+                { id: '3x', sentence: "2⁷ = ?",                           options: ["128","126","130"],                  correct: 0 },
+                { id: '3y', sentence: "√289 = ?",                         options: ["17","16","18"],                     correct: 0 },
+                { id: '3z', sentence: "10² = ?",                          options: ["100","99","101"],                   correct: 0 },
+                { id: '3aa', sentence: "√324 = ?",                        options: ["18","17","19"],                     correct: 0 },
+                { id: '3bb', sentence: "6³ = ?",                          options: ["216","214","218"],                  correct: 0 },
+                { id: '3cc', sentence: "√361 = ?",                        options: ["19","18","20"],                     correct: 0 },
+                { id: '3dd', sentence: "11² = ?",                         options: ["121","120","122"],                  correct: 0 },
+                { id: '3ee', sentence: "√400 = ?",                        options: ["20","19","21"],                     correct: 0 },
+                { id: '3ff', sentence: "2⁸ = ?",                          options: ["256","254","258"],                  correct: 0 },
+                { id: '3gg', sentence: "12² = ?",                         options: ["144","143","145"],                  correct: 0 },
+                { id: '3hh', sentence: "√441 = ?",                        options: ["21","20","22"],                     correct: 0 },
+                { id: '3ii', sentence: "7³ = ?",                          options: ["343","341","345"],                  correct: 0 },
+                { id: '3jj', sentence: "√484 = ?",                        options: ["22","21","23"],                     correct: 0 },
+                { id: '3kk', sentence: "13² = ?",                         options: ["169","168","170"],                  correct: 0 },
+                { id: '3ll', sentence: "√529 = ?",                        options: ["23","22","24"],                     correct: 0 },
+                { id: '3mm', sentence: "3⁵ = ?",                          options: ["243","241","245"],                  correct: 0 },
+                { id: '3nn', sentence: "√576 = ?",                        options: ["24","23","25"],                     correct: 0 }
+              ],
+
+              4: [  // Advanced operations (Level 5)
+                { id: '4a', sentence: "log₂(16) = ?",                     options: ["4","3","5"],                        correct: 0 },
+                { id: '4b', sentence: "3^x = 27, x = ?",                   options: ["3","2","4"],                        correct: 0 },
+                { id: '4c', sentence: "sin(30°) = ?",                     options: ["0.5","0.6","0.4"],                  correct: 0 },
+                { id: '4d', sentence: "∛64 = ?",                          options: ["4","3","5"],                        correct: 0 },
+                { id: '4e', sentence: "5! = ?",                           options: ["120","110","130"],                  correct: 0 },
+                { id: '4f', sentence: "2^x = 64, x = ?",                   options: ["6","5","7"],                        correct: 0 },
+                { id: '4g', sentence: "cos(60°) = ?",                     options: ["0.5","0.6","0.4"],                  correct: 0 },
+                { id: '4h', sentence: "log₁₀(1000) = ?",                  options: ["3","2","4"],                        correct: 0 },
+                { id: '4i', sentence: "∛125 = ?",                         options: ["5","4","6"],                        correct: 0 },
+                { id: '4j', sentence: "4! = ?",                           options: ["24","22","26"],                     correct: 0 },
+                { id: '4k', sentence: "tan(45°) = ?",                     options: ["1","0.8","1.2"],                    correct: 0 },
+                { id: '4l', sentence: "5^x = 125, x = ?",                  options: ["3","2","4"],                        correct: 0 },
+                { id: '4m', sentence: "√(x + 9) = 5, x = ?",              options: ["16","15","17"],                     correct: 0 },
+                { id: '4n', sentence: "e^x = e³, x = ?",                   options: ["3","2","4"],                        correct: 0 },
+                { id: '4o', sentence: "6! ÷ 4! = ?",                      options: ["30","28","32"],                     correct: 0 },
+                { id: '4p', sentence: "∛216 = ?",                         options: ["6","5","7"],                        correct: 0 },
+                { id: '4q', sentence: "log₃(81) = ?",                     options: ["4","3","5"],                        correct: 0 },
+                { id: '4r', sentence: "sin²(30°) + cos²(30°) = ?",        options: ["1","0.8","1.2"],                    correct: 0 },
+                { id: '4s', sentence: "∛(-27) = ?",                       options: ["-3","-2","-4"],                     correct: 0 },
+                { id: '4t', sentence: "log₂(32) = ?",                     options: ["5","4","6"],                        correct: 0 },
+                { id: '4u', sentence: "4^x = 256, x = ?",                  options: ["4","3","5"],                        correct: 0 },
+                { id: '4v', sentence: "sin(90°) = ?",                     options: ["1","0.9","1.1"],                    correct: 0 },
+                { id: '4w', sentence: "∛343 = ?",                         options: ["7","6","8"],                        correct: 0 },
+                { id: '4x', sentence: "7! ÷ 5! = ?",                      options: ["42","40","44"],                     correct: 0 },
+                { id: '4y', sentence: "6^x = 216, x = ?",                  options: ["3","2","4"],                        correct: 0 },
+                { id: '4z', sentence: "cos(0°) = ?",                      options: ["1","0.9","1.1"],                    correct: 0 },
+                { id: '4aa', sentence: "log₁₀(100) = ?",                  options: ["2","1","3"],                        correct: 0 },
+                { id: '4bb', sentence: "∛512 = ?",                        options: ["8","7","9"],                        correct: 0 },
+                { id: '4cc', sentence: "3! × 2! = ?",                     options: ["12","10","14"],                     correct: 0 },
+                { id: '4dd', sentence: "tan(0°) = ?",                     options: ["0","0.1","-0.1"],                   correct: 0 },
+                { id: '4ee', sentence: "7^x = 343, x = ?",                 options: ["3","2","4"],                        correct: 0 },
+                { id: '4ff', sentence: "sin(60°) = ?",                    options: ["0.866","0.8","0.9"],                correct: 0 },
+                { id: '4gg', sentence: "log₅(625) = ?",                   options: ["4","3","5"],                        correct: 0 },
+                { id: '4hh', sentence: "∛729 = ?",                        options: ["9","8","10"],                       correct: 0 },
+                { id: '4ii', sentence: "8! ÷ 6! = ?",                     options: ["56","54","58"],                     correct: 0 },
+                { id: '4jj', sentence: "cos(30°) = ?",                    options: ["0.866","0.8","0.9"],                correct: 0 },
+                { id: '4kk', sentence: "9^x = 729, x = ?",                 options: ["3","2","4"],                        correct: 0 },
+                { id: '4ll', sentence: "log₂(128) = ?",                   options: ["7","6","8"],                        correct: 0 },
+                { id: '4mm', sentence: "∛1000 = ?",                       options: ["10","9","11"],                      correct: 0 },
+                { id: '4nn', sentence: "sin(45°) = ?",                    options: ["0.707","0.7","0.75"],               correct: 0 }
               ]
             };
 
             
-            const piñataWords = {
-                correct: ['canto', 'bebes', 'vive', 'somos', 'están', 'hice', 'veía', 'compraste', 'sea', 'vayas'],
-                incorrect: ['habloyo', 'comesel', 'vivin', 'sernosotros', 'estoyellos', 'hico', 'veí', 'comprastes', 'seya', 'vayes']
-            };
+
 
             const achievements = {
-                "PERFECTO_PRESENTE": { name: "Perfecto Presente", description: "Beat Señor Presente without taking damage." },
+                "PERFECT_CALCULATOR": { name: "Perfect Calculator", description: "Beat The Calculator without taking damage." },
                 "COMBO_KING": { name: "Combo King", description: "Achieve a 20x combo." },
-                "LEGENDARIO": { name: "Legendario", description: "Complete the Tournament." },
+                "LEGENDARY": { name: "Legendary", description: "Complete the Tournament." },
             };
 
             function clearMechanicTimers() {
@@ -609,9 +697,9 @@
 
             // --- GAME STATE ---
             const getInitialState = () => ({
-                currentScreen: 'start', score: 0, combo: 0, maxCombo: 0, playerHealth: 100, opponentHealth: 100, specialMeter: 0,
+                currentScreen: 'start', score: 0, combo: 0, maxCombo: 0, playerHealth: 100, opponentHealth: 100,
                 currentOpponentIndex: 0, currentQuestion: null, timerInterval: null, timeLeft: 10, canAnswer: true,
-                isGrammarSlamActive: false, libroDeGramatica: new Set(), wins: 0, perfectWins: 0,
+                wins: 0, perfectWins: 0,
                 matchQuestions: [], isEndlessMode: false,
                 unlockedMasks: new Set(['👹', '😈']), earnedAchievements: new Set(),
                 playerMask: '👹',
@@ -655,9 +743,6 @@
 
                 ui.playerStamina.style.width = `${state.playerHealth}%`;
                 ui.opponentStamina.style.width = `${state.opponentHealth}%`;
-                
-                ui.specialMeter.style.width = `${state.specialMeter}%`;
-                ui.specialButton.classList.toggle('ready', state.specialMeter >= 100);
             }
 
             function startMatch(opponentIndex) {
@@ -673,8 +758,6 @@
                     state.score = 0;
                 }
                 state.combo = 0;
-                state.specialMeter = 0;
-                state.isGrammarSlamActive = false;
                 state.matchQuestions  = [...questionsByLevel[opponent.id]].sort(() => Math.random() - 0.5);
                 state.usedQuestionIds = new Set();
                 ui.opponentName.textContent = opponent.name;
@@ -768,7 +851,11 @@
 
             function startTimer() {
                 clearInterval(state.timerInterval);
-                state.timeLeft = 10;
+                
+                // Adjust time based on difficulty level
+                const baseTime = [24, 30, 40, 50, 60][state.currentOpponentIndex] || 20;
+                state.timeLeft = baseTime;
+                
                 ui.timerBar.style.transition = 'none';
                 ui.timerBar.style.width = '100%';
 
@@ -811,7 +898,6 @@
             function handleCorrectAnswer(basePoints, timeBonus) {
                 state.combo++;
                 if (state.combo > state.maxCombo) state.maxCombo = state.combo;
-                state.specialMeter = Math.min(100, state.specialMeter + 15 + state.combo);
                 
                 ui.playerLuchador.style.animation = 'attackLunge 0.2s ease-out forwards';
                 ui.playerLuchador.addEventListener('animationend', () => ui.playerLuchador.style.animation = '', { once: true });
@@ -822,14 +908,11 @@
             function handleIncorrectAnswer() {
                 state.combo = 0;
                 state.playerHealth = Math.max(0, state.playerHealth - 15);
-                state.isGrammarSlamActive = false;
-                
-                state.libroDeGramatica.add(state.currentQuestion.tip);
                 
                 const feedbackEl = document.createElement('div');
                 feedbackEl.id = 'incorrecto-feedback';
                 feedbackEl.className = 'feedback-text';
-                feedbackEl.innerHTML = `¡Incorrecto!<br><p style="font-size: 0.5em; font-family: var(--font-body); margin: 0;">Tip added to Libro de Gramática</p>`;
+                feedbackEl.innerHTML = `Incorrect!<br><p style="font-size: 0.5em; font-family: var(--font-body); margin: 0;">Keep trying!</p>`;
                 ui.effectsContainer.appendChild(feedbackEl);
                 setTimeout(() => feedbackEl.remove(), 1500);
 
@@ -854,8 +937,8 @@
             function startQTE(basePoints, timeBonus) {
                 ui.qteContainer.classList.remove('hidden');
                 const opponentRect = ui.opponentLuchador.getBoundingClientRect();
-                ui.qteContainer.style.left = `${opponentRect.left + opponentRect.width / 2}px`;
-                ui.qteContainer.style.top = `${opponentRect.top + opponentRect.height / 2}px`;
+                ui.qteContainer.style.left = `${opponentRect.left + opponentRect.width / 2 - 60}px`;
+                ui.qteContainer.style.top = `${opponentRect.top + opponentRect.height * 0.7 - 60}px`;
                 
                 const qteCircle = ui.qteTarget.querySelector('#qte-circle');
                 qteCircle.style.animation = 'none';
@@ -892,12 +975,8 @@
                 qteResultEl.style.color = '#cccccc';
                 
                 if (!missed) {
-                    if (currentScale < 0.35) { qteBonus = 50; damage = 25; resultText = "Perfecto!"; qteResultEl.style.color = 'gold'; } 
-                    else if (currentScale < 0.7) { qteBonus = 25; damage = 15; resultText = "Bueno!"; qteResultEl.style.color = 'lightgreen'; }
-                }
-
-                if (state.isGrammarSlamActive) {
-                    damage *= 3; basePoints += 1000; state.isGrammarSlamActive = false; resultText = "GRAMMAR SLAM!";
+                    if (currentScale < 0.35) { qteBonus = 50; damage = 25; resultText = "Perfect!"; qteResultEl.style.color = 'gold'; } 
+                    else if (currentScale < 0.7) { qteBonus = 25; damage = 15; resultText = "Good!"; qteResultEl.style.color = 'lightgreen'; }
                 }
                 
                 const totalPoints = basePoints + timeBonus + qteBonus;
@@ -938,7 +1017,7 @@
                 
                 if (playerWon) {
                     if (state.playerHealth === 100 && !state.isEndlessMode && state.currentOpponentIndex === 0) {
-                        state.earnedAchievements.add("PERFECTO_PRESENTE");
+                        state.earnedAchievements.add("PERFECT_CALCULATOR");
                         state.perfectWins++;
                     }
                     if (!state.isEndlessMode) {
@@ -946,14 +1025,14 @@
                         state.unlockedMasks.add(defeatedOpponent.mask);
                     }
                     state.wins++;
-                    ui.gameOverTitle.textContent = "¡VICTORIA!";
-                    ui.gameOverMessage.textContent = `You defeated ${opponents[state.currentOpponentIndex].name}!`;
+                                    ui.gameOverTitle.textContent = "VICTORY!";
+                ui.gameOverMessage.textContent = `You defeated ${opponents[state.currentOpponentIndex].name}!`;
                     setTimeout(() => {
-                        startPiñataFiesta();
+                        showGameOverScreen();
                     }, 2000);
                 } else {
-                    ui.gameOverTitle.textContent = "¡DERROTA!";
-                    ui.gameOverMessage.textContent = `You were pinned by ${opponents[state.currentOpponentIndex].name}.`;
+                                    ui.gameOverTitle.textContent = "DEFEAT!";
+                ui.gameOverMessage.textContent = `You were pinned by ${opponents[state.currentOpponentIndex].name}.`;
                     ui.rematchButton.style.display = 'inline-block';
                     showScreen('gameOver');
                 }
@@ -963,67 +1042,11 @@
             function checkAchievements() {
                 if (state.maxCombo >= 20) state.earnedAchievements.add("COMBO_KING");
                 if (state.currentOpponentIndex >= opponents.length - 1 && state.opponentHealth <= 0 && !state.isEndlessMode) {
-                    state.earnedAchievements.add("LEGENDARIO");
+                    state.earnedAchievements.add("LEGENDARY");
                 }
             }
 
-            function startPiñataFiesta() {
-                showScreen('piñata');
-                clearMechanicTimers();
-                let piñataTime = 15;
-                const piñataTimerUI = document.getElementById('piñata-timer');
-                piñataTimerUI.textContent = piñataTime;
-
-                const timerInterval = setInterval(() => {
-                    piñataTime--;
-                    piñataTimerUI.textContent = piñataTime;
-                    if (piñataTime <= 0) {
-                        clearInterval(timerInterval);
-                        endPiñataFiesta();
-                    }
-                }, 1000);
-                
-                const spawnInterval = setInterval(() => {
-                    if (piñataTime <= 0) {
-                        clearInterval(spawnInterval);
-                        document.querySelectorAll('.piñata-word').forEach(el => el.remove());
-                    } else { createPiñataWord(); }
-                }, 350);
-            }
-
-            function createPiñataWord() {
-                const wordEl = document.createElement('div');
-                wordEl.classList.add('piñata-word');
-                const isCorrect = Math.random() > 0.4;
-                wordEl.textContent = isCorrect ? piñataWords.correct[Math.floor(Math.random() * piñataWords.correct.length)] : piñataWords.incorrect[Math.floor(Math.random() * piñataWords.incorrect.length)];
-                
-                wordEl.style.top = `${Math.random() * 80 + 10}%`;
-                const duration = Math.random() * 7.2 + 10.8;
-                wordEl.style.animationDuration = `${duration}s`;
-                
-                wordEl.onclick = (e) => {
-                    const burst = document.createElement('div');
-                    burst.className = 'piñata-burst';
-                    burst.style.top = `${e.clientY}px`;
-                    burst.style.left = `${e.clientX}px`;
-                    ui.effectsContainer.appendChild(burst);
-                    setTimeout(() => burst.remove(), 500);
-
-                    if (isCorrect) {
-                        state.score += 10 * Math.max(1, state.combo);
-                        updateUI();
-                    } else {
-                        gameContainer.style.animation = 'screenShake 0.2s';
-                        gameContainer.addEventListener('animationend', () => gameContainer.style.animation = '', { once: true });
-                    }
-                    wordEl.remove();
-                };
-                
-                screens.piñata.appendChild(wordEl);
-                setTimeout(() => wordEl.remove(), duration * 1000);
-            }
-
-            function endPiñataFiesta() {
+            function showGameOverScreen() {
                 showScreen('gameOver');
                 clearMechanicTimers();
                 if (state.isEndlessMode) {
@@ -1033,7 +1056,7 @@
                     ui.nextMatchButton.style.display = 'inline-block';
                     ui.nextMatchButton.textContent = 'Next Opponent';
                 } else {
-                    ui.gameOverTitle.textContent = "¡CAMPEÓN!";
+                    ui.gameOverTitle.textContent = "CHAMPION!";
                     ui.gameOverMessage.textContent = "You've won the tournament!";
                     ui.endlessRumbleButton.style.display = 'inline-block';
                 }
@@ -1088,14 +1111,7 @@
             });
             document.getElementById('close-bracket-button').addEventListener('click', () => closeModal(modals.bracket));
 
-            document.getElementById('libro-button').addEventListener('click', () => {
-                const list = document.getElementById('libro-list');
-                list.innerHTML = '';
-                if (state.libroDeGramatica.size === 0) list.innerHTML = '<li>No tips collected yet. Answer a question incorrectly to add one!</li>';
-                else state.libroDeGramatica.forEach(tip => list.insertAdjacentHTML('beforeend', `<li>${tip}</li>`));
-                openModal(modals.libro);
-            });
-            document.getElementById('close-libro-button').addEventListener('click', () => closeModal(modals.libro));
+
             
             document.getElementById('stats-button').addEventListener('click', () => {
                 document.getElementById('stats-wins').textContent = state.wins;
@@ -1109,20 +1125,7 @@
             });
             document.getElementById('close-stats-button').addEventListener('click', () => closeModal(modals.stats));
 
-            // Special Move Logic
-            ui.specialButton.addEventListener('click', () => { if (state.specialMeter >= 100) openModal(modals.special); });
-            document.getElementById('cancel-special-button').addEventListener('click', () => closeModal(modals.special));
-            document.getElementById('grammar-slam-button').addEventListener('click', () => {
-                state.isGrammarSlamActive = true; state.specialMeter = 0; updateUI(); closeModal(modals.special);
-                ui.questionBox.style.boxShadow = '0 0 30px gold';
-                setTimeout(() => ui.questionBox.style.boxShadow = '0 0 15px rgba(0, 188, 212, 0.5)', 3000);
-            });
-            document.getElementById('clarity-kick-button').addEventListener('click', () => {
-                state.specialMeter = 0; updateUI();
-                const wrongButtons = Array.from(ui.answerButtons.querySelectorAll('.answer-button')).filter(b => b.textContent !== state.currentQuestion.options[state.currentQuestion.correct]);
-                if (wrongButtons.length > 0) wrongButtons[0].style.display = 'none';
-                closeModal(modals.special);
-            });
+
 
             // Customization
             function updatePlayerAppearance() {
