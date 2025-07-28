@@ -158,6 +158,7 @@
             padding-top: 10px;
             padding-bottom: 20px;
             gap: 10px;
+            max-height: 100vh;
         }
         #locker-room-screen h1 { margin-bottom: 15px; }
         #locker-room-screen .content-box { background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); padding: 15px; border-radius: 15px; margin-bottom: 0; width: 90%; max-width: 700px; border: 2px solid var(--ropes-posts); }
@@ -251,7 +252,7 @@
         .bracket-item.current::before { content: '▶'; color: var(--accent-gold); margin-right: 10px; }
 
         /* --- RESPONSIVE DESIGN --- */
-        @media (max-width: 768px) {
+        @media (max-width: 800px) {
             .player-info, .opponent-info { width: 40%; }
             .center-hud { order: 0; }
             .top-bar { flex-wrap: wrap; justify-content: center; }
@@ -261,66 +262,133 @@
             .luchador { width: 100px; height: 120px; }
             @keyframes attackLunge { 50% { transform: translate(80px, -20px) scale(1.15) rotate(15deg); z-index: 10; } }
             @keyframes opponentAttackLunge { 50% { transform: translate(-80px, -20px) scale(1.15) rotate(-15deg); z-index: 10; } }
-        }
-        
-        /* --- HUMAN/QA FEEDBACK IMPLEMENTATION for MOBILE --- */
-        @media (max-width: 480px) {
-            .top-bar { 
+            
+            #locker-room-screen {
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+            #locker-room-screen h1 { margin-bottom: 10px; }
+            #locker-room-screen .content-box { padding: 10px; margin-bottom: 5px; }
+            .swatches-container { gap: 10px; }
+            .swatch-group { gap: 8px; }
+            .locker-room-actions { margin-top: 5px; }
+            .locker-room-actions .button { margin: 5px; }
+            
+            #answer-buttons { 
                 flex-direction: row; 
                 flex-wrap: wrap;
-                gap: 8px; 
-                padding-top: 60px;
-                position: relative;
-            }
-            .player-info, .opponent-info { width: 42%; }
-            .center-hud { 
-                position: absolute; 
-                top: 10px; 
-                left: 50%; 
-                transform: translateX(-50%); 
-                width: 95%; /* HUMAN FEEDBACK FIX: Wider scoreboard */
-                z-index: 20;
-                 /* HUMAN FEEDBACK FIX: Horizontal layout for score and timer */
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 5px 10px;
-            }
-            #score {
-                font-size: 1.6rem;
-            }
-            #combo-meter {
-                font-size: 1rem;
-                height: auto;
-                flex-grow: 1;
-                text-align: center;
-                white-space: nowrap;
-                overflow: hidden;
-            }
-            .timer-container {
-                width: 100px;
-                margin: 0;
-            }
-            #question-box { 
-                padding: 12px;
-                min-height: 70px;
-                margin-top: 10px;
-                margin-bottom: 10px;
-            }
-            #answer-buttons { 
-                flex-direction: column; 
-                align-items: center; 
-                width: 100%;
-                gap: 8px;
+                justify-content: center;
+                gap: 10px;
             }
             .answer-button { 
-                width: 90%; 
-                padding: 12px;
+                min-width: 150px;
+                max-width: 200px;
+                flex: 1;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .top-bar { 
+                flex-direction: column; 
+                gap: 5px; 
+                padding-top: 5px;
+                padding-bottom: 5px;
+            }
+            .player-info, .opponent-info { 
+                width: 100%; 
+                flex-direction: row;
+                justify-content: center;
+                padding: 5px;
+            }
+            .luchador-portrait { 
+                width: 40px; 
+                height: 40px; 
+                font-size: 20px;
+                margin: 0 5px;
+            }
+            .center-hud { 
+                order: 0;
+                padding: 3px 8px;
+                margin: 5px 0;
+            }
+            #score {
+                font-size: 1.4rem;
+            }
+            #combo-meter {
+                font-size: 0.9rem;
+                height: auto;
+            }
+            .timer-container {
+                width: 80px;
                 margin: 0;
+            }
+            .ring-area { 
+                height: 120px; 
+                margin: 5px 0;
+            }
+            .luchador { 
+                width: 80px; 
+                height: 100px; 
+            }
+            #question-box { 
+                padding: 8px;
+                min-height: 50px;
+                margin: 5px 0;
+                font-size: 1rem;
+            }
+            #answer-buttons { 
+                flex-direction: row; 
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 5px;
+                margin: 5px 0;
+            }
+            .answer-button { 
+                min-width: 80px;
+                max-width: 120px;
+                padding: 8px;
+                margin: 0;
+                font-size: 1rem;
                 font-family: 'Arial', 'Helvetica', monospace; 
                 font-weight: bold;
+                flex: 1;
             }
-
+            
+            #locker-room-screen {
+                padding-top: 2px;
+                padding-bottom: 5px;
+                gap: 5px;
+            }
+            #locker-room-screen h1 { 
+                margin-bottom: 5px; 
+                font-size: 1.8rem;
+            }
+            #locker-room-screen .content-box { 
+                padding: 8px; 
+                margin-bottom: 3px; 
+            }
+            .swatches-container { 
+                gap: 5px; 
+            }
+            .swatch-group { 
+                gap: 5px; 
+                flex-wrap: wrap;
+            }
+            .swatch { 
+                width: 30px; 
+                height: 30px; 
+                font-size: 18px;
+            }
+            .locker-room-actions { 
+                margin-top: 3px; 
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+            .locker-room-actions .button { 
+                margin: 2px; 
+                font-size: 1rem;
+                padding: 5px 8px;
+            }
         }
     </style>
 </head>
@@ -334,7 +402,7 @@
         <!-- Start Screen -->
         <div id="start-screen" class="screen">
             <h1>Math Fight Game</h1>
-            <div style="font-size: 4rem; margin: 20px 0;">🤓</div>
+            <div style="font-size: 4rem; margin: 15px;">🤓</div>
             <div id="start-button" class="button" tabindex="0">Start Tournament</div>
         </div>
 
@@ -423,7 +491,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- DOM ELEMENTS ---
+
             const gameContainer = document.querySelector('.game-container');
             const screens = {
                 start: document.getElementById('start-screen'),
@@ -461,7 +529,7 @@
                 stats: document.getElementById('stats-modal'),
             };
 
-            // --- GAME DATA ---
+
             const opponents = [
                 { id: 0, name: "Numerito", health: 80, specialty: "Basic arithmetic", mechanic: null, mask: '💩', color1: '#28a745', color2: '#17a2b8' },
                 { id: 1, name: "Calculus Devil", health: 100, specialty: "Fractions & decimals", mechanic: null, mask: '😈', color1: '#c0392b', color2: '#f1c40f' },
@@ -471,7 +539,7 @@
                 { id: 5, name: "Formula Robot", health: 220, specialty: "Advanced operations", mechanic: 'shuffle', mask: '🤖', color1: '#6f42c1', color2: '#ffd700' },
             ];
 
-            // Random Question Generation System
+
             function random(min, max) {
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             }
@@ -509,7 +577,7 @@
                 const wrong = [];
                 const variations = type === 'decimal' ? [0.01, 0.02, 0.05, 0.1, 0.2] : [1, 2, 3, 5, 10];
                 let attempts = 0;
-                const maxAttempts = 50; // Prevent infinite loops
+                const maxAttempts = 50;
                 
                 while (wrong.length < count && attempts < maxAttempts) {
                     attempts++;
@@ -529,7 +597,6 @@
                     }
                 }
                 
-                // Fill remaining slots with backup answers if needed
                 while (wrong.length < count) {
                     const backup = type === 'decimal' ? 
                         Math.round((correct + (wrong.length + 1) * 0.1) * 100) / 100 :
@@ -548,18 +615,16 @@
                 const wrong = [];
                 const [simplifiedNum, simplifiedDen] = simplifyFraction(correctNum, correctDen);
                 let attempts = 0;
-                const maxAttempts = 50; // Prevent infinite loops
+                const maxAttempts = 50;
                 
                 while (wrong.length < count && attempts < maxAttempts) {
                     attempts++;
                     let candidateNum, candidateDen;
                     
                     if (random(0, 1)) {
-                        // Vary numerator
                         candidateNum = simplifiedNum + random(-3, 3);
                         candidateDen = simplifiedDen;
                     } else {
-                        // Vary denominator
                         candidateNum = simplifiedNum;
                         candidateDen = simplifiedDen + random(-3, 3);
                     }
@@ -575,7 +640,6 @@
                     }
                 }
                 
-                // Fill remaining slots with backup answers if needed
                 while (wrong.length < count) {
                     const backupNum = simplifiedNum + wrong.length + 1;
                     const backupStr = simplifiedDen === 1 ? backupNum.toString() : `${backupNum}/${simplifiedDen}`;
@@ -585,7 +649,7 @@
                 return wrong;
             }
 
-            // Level-specific question generators
+
             function generateNewLevel0Question() {
                 const questionTypes = ['twoDigitAdd', 'twoDigitSub', 'twoDigitMultOneDigit', 'twoDigitDivOneDigit'];
                 const type = questionTypes[random(0, questionTypes.length - 1)];
@@ -620,7 +684,6 @@
                         return createQuestion(`${a} ÷ ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
                     }
                     default: {
-                        // Fallback case
                         const a = random(15, 99);
                         const b = random(15, 99);
                         const correct = a + b;
@@ -690,7 +753,6 @@
                         return createQuestion(`${a} × ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
                     }
                     default: {
-                        // Fallback case
                         const a = (random(10, 99) / 10);
                         const b = (random(10, 99) / 10);
                         const correct = Math.round((a + b) * 100) / 100;
@@ -734,7 +796,6 @@
                         return createQuestion(`${a} - ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
                     }
                     default: {
-                        // Fallback case
                         const a = random(15, 99);
                         const b = random(12, 35);
                         const correct = a * b;
@@ -818,7 +879,6 @@
                         return createQuestion(`∛${cube} = ?`, correct.toString(), wrong.map(w => w.toString()));
                     }
                     default: {
-                        // Fallback case - perfect square
                         const base = random(2, 15);
                         const correct = base * base;
                         const wrong = generateWrongAnswers(correct, 'number');
@@ -865,7 +925,6 @@
                         return createQuestion(`${a} × ${b} + ${c} = ?`, correct.toString(), wrong.map(w => w.toString()));
                     }
                     default: {
-                        // Fallback case - factorial
                         const n = random(4, 7);
                         let correct = 1;
                         for (let i = 1; i <= n; i++) correct *= i;
@@ -875,7 +934,7 @@
                 }
             }
 
-            // Replace the static questions with generator functions
+
             const questionGenerators = {
                 0: generateNewLevel0Question,
                 1: generateLevel1Question,
@@ -885,18 +944,15 @@
                 5: generateLevel5Question
             };
 
-            // Helper function to get a random question for a level
+
             function getRandomQuestion(level) {
                 if (questionGenerators[level]) {
                     const question = questionGenerators[level]();
-                    // Safety check to ensure question was generated
                     if (question && typeof question === 'object') {
-                        // Add unique ID for tracking
                         question.id = `${level}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
                         return question;
                     } else {
                         console.error('Question generator returned invalid result for level', level);
-                        // Fallback to a simple question
                         return {
                             sentence: "2 + 2 = ?",
                             options: ["4", "3", "5"],
@@ -919,7 +975,7 @@
               state.mechanicTimers = [];
             }
 
-            // --- GAME STATE ---
+
             const getInitialState = () => ({
                 currentScreen: 'start', score: 0, combo: 0, maxCombo: 0, playerHealth: 100, opponentHealth: 100,
                 currentOpponentIndex: 0, currentQuestion: null, canAnswer: true, timerInterval: null, timerRemaining: 0,
@@ -929,7 +985,7 @@
 
             let state = getInitialState();
 
-            // --- SCREEN MANAGEMENT ---
+
             function showScreen(screenName) {
                 Object.values(screens).forEach(screen => screen.classList.add('hidden'));
                 if (screens[screenName]) {
@@ -938,7 +994,7 @@
                 }
             }
 
-            // --- GAME FUNCTIONS ---
+
             function startMatch(opponentIndex) {
                 state.currentOpponentIndex = opponentIndex;
                 const opponent = opponents[opponentIndex];
@@ -947,7 +1003,7 @@
                 state.combo = 0;
                 showScreen('game');
                 setupOpponent(opponent);
-                updateUI(); // Ensure health bars display correctly from the start
+                updateUI();
                 nextQuestion();
             }
 
@@ -973,7 +1029,6 @@
                 ui.answerButtons.innerHTML = '';
                 
                 setTimeout(() => {
-                    // Generate a random question for the current opponent level
                     state.currentQuestion = getRandomQuestion(state.currentOpponentIndex);
                     
                     if (!state.currentQuestion) {
@@ -984,7 +1039,6 @@
                     showQuestion();
                     startTimer();
                     
-                    // Apply opponent special mechanic
                     const opponent = opponents[state.currentOpponentIndex];
                     if (opponent.mechanic) applyOpponentMechanic(opponent.mechanic);
                     
@@ -1073,13 +1127,11 @@
                 ui.score.textContent = state.score;
                 ui.playerStamina.style.width = `${state.playerHealth}%`;
                 
-                // Calculate opponent health percentage based on their max health
                 const opponent = opponents[state.currentOpponentIndex];
                 if (opponent && opponent.health) {
                     const opponentHealthPercentage = (state.opponentHealth / opponent.health) * 100;
                     ui.opponentStamina.style.width = `${Math.max(0, opponentHealthPercentage)}%`;
                 } else {
-                    // Fallback if opponent not properly set yet
                     ui.opponentStamina.style.width = `${state.opponentHealth}%`;
                 }
                 
@@ -1097,8 +1149,6 @@
             function applyOpponentMechanic(mechanic) {
                 switch (mechanic) {
                     case 'shuffle':
-                        // Shuffle mechanic is now handled in question generation
-                        // Add a different mechanic instead - faster timer
                         setTimeout(() => {
                             if (state.timerRemaining > 5) {
                                 state.timerRemaining = Math.max(5, state.timerRemaining - 8);
@@ -1106,12 +1156,8 @@
                         }, 3000);
                         break;
                     case 'fade':
-                        // Fade mechanic disabled - was causing visual confusion
-                        // Instead, add extra wrong answers for more confusion
                         break;
                     case 'smokescreen':
-                        // Smokescreen mechanic disabled - was causing visual confusion
-                        // Instead, add more distraction through faster countdown
                         setTimeout(() => {
                             if (state.timerRemaining > 3) {
                                 state.timerRemaining = Math.max(3, state.timerRemaining - 5);
@@ -1193,7 +1239,6 @@
                 circle.style.animation = 'none';
 
                 let qteBonus = 0;
-                // Scale damage based on opponent level (10-20 base damage)
                 const baseDamage = 10 + (state.currentOpponentIndex * 2);
                 let damage = baseDamage;
                 let resultText = "Correct!";
@@ -1257,23 +1302,18 @@
                     ui.gameOverTitle.textContent = "VICTORY!";
                     ui.gameOverMessage.textContent = `You defeated ${opponents[state.currentOpponentIndex].name}!`;
                     
-                    // Always show victory screen first
                     showScreen('gameOver');
                     
-                    // Check if this was the final opponent (tournament complete)
                     if (state.currentOpponentIndex >= opponents.length - 1 && !state.isEndlessMode) {
-                        // Tournament complete - stay on victory screen
                         setTimeout(() => {
                             showGameOverScreen();
                         }, 2000);
                     } else if (!state.isEndlessMode) {
-                        // Auto-advance to locker room for next opponent after showing victory
                         setTimeout(() => {
                             state.currentOpponentIndex++;
                             setupLockerRoom();
                         }, 2000);
                     } else {
-                        // Endless mode - stay on victory screen
                         setTimeout(() => {
                             showGameOverScreen();
                         }, 2000);
@@ -1308,7 +1348,6 @@
                     ui.gameOverTitle.textContent = "🏆 CHAMPION! 🏆";
                     ui.gameOverMessage.textContent = "You've won the tournament!";
                     ui.mainMenuButton.style.display = 'inline-block';
-                    // Don't show endless rumble for tournament completion
                 }
             }
             
@@ -1322,7 +1361,7 @@
                 showScreen('lockerRoom');
             }
 
-            // --- EVENT LISTENERS ---
+
             document.getElementById('start-button').addEventListener('click', () => { state = getInitialState(); setupLockerRoom(); });
             document.getElementById('continue-to-match-button').addEventListener('click', () => startMatch(state.currentOpponentIndex));
             ui.rematchButton.addEventListener('click', () => startMatch(state.currentOpponentIndex));
@@ -1342,7 +1381,7 @@
             });
             ui.mainMenuButton.addEventListener('click', () => { state = getInitialState(); showScreen('start'); });
             
-            // Modals
+
             const openModal = (modal) => { modal.classList.add('active'); modal.querySelector('.button, .swatch')?.focus(); };
             const closeModal = (modal) => modal.classList.remove('active');
             
@@ -1377,7 +1416,7 @@
 
 
 
-            // Customization
+
             function updatePlayerAppearance() {
                 const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--player-color-primary');
                 const secondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--player-color-secondary');
@@ -1428,7 +1467,7 @@
                 updatePlayerAppearance();
             }
             
-            // Keyboard controls
+
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     if (document.activeElement && typeof document.activeElement.click === 'function') {
@@ -1450,7 +1489,7 @@
                 }
             });
 
-            // --- INITIALIZATION ---
+
             function init() {
                 showScreen('start');
             }
