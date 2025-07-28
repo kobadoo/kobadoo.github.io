@@ -68,7 +68,7 @@
             overflow: hidden;
             background: linear-gradient(to bottom, #87CEEB 0%, #B0E0E6 100%);
             box-shadow: 0 0 30px rgba(0,0,0,0.3);
-            transform: translateZ(0); /* GPU acceleration */
+            transform: translateZ(0);
         }
         
         #game-container.shake {
@@ -322,6 +322,8 @@
             gap: 15px;
             pointer-events: auto;
             flex-wrap: nowrap;
+            z-index: 100;
+            position: relative;
         }
 
         #score-display, #golden-seeds-display {
@@ -348,6 +350,14 @@
             flex-grow: 1;
             flex-shrink: 1;
             justify-content: flex-end;
+            cursor: pointer !important;
+            transition: background-color 0.2s ease;
+            pointer-events: auto !important;
+        }
+
+        #golden-seeds-display:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
         }
 
         #combo-display {
@@ -496,10 +506,14 @@
         .upgrade-item {
             background: var(--floor-dark); padding: 15px; border-radius: 10px;
             width: 150px; border: 3px solid var(--barrel-dark);
+            box-sizing: border-box; display: flex; flex-direction: column;
+            text-align: center;
         }
         .upgrade-item button {
-            width: 100%; padding: 10px; font-size: 2vh;
+            padding: 10px; font-size: 1.4vh;
             background: #ffca3a; color: var(--barrel-color); border-color: #e9a200;
+            text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            box-sizing: border-box; margin-top: auto;
         }
         .upgrade-item button:disabled {
             background: #999; color: #666;
@@ -545,7 +559,7 @@
             justify-content: center; align-items: center; font-size: 24px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.4);
         }
-        .shade-cloth-icon::before { content: '☂️'; }
+        .shade-cloth-icon::before { content: '⛱️'; }
         
         .helper-text {
             position: absolute;
@@ -620,11 +634,15 @@
                 margin-top: 10px;
             }
             .upgrade-item {
-                width: 44vw;
+                width: 42vw;
                 min-width: 120px;
-                max-width: 48vw;
+                max-width: 45vw;
                 padding: 8px;
                 font-size: 2.5vw;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+                text-align: center;
             }
             .upgrade-item h4 {
                 font-size: 3vw;
@@ -635,8 +653,19 @@
                 margin: 0 0 6px 0;
             }
             .upgrade-item button {
-                font-size: 2.5vw;
-                padding: 6px 0;
+                font-size: 1.4vh;
+                padding: 6px 4px;
+                white-space: normal !important;
+                word-wrap: break-word;
+                text-align: center;
+                line-height: 1.2;
+                min-height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: visible;
+                text-overflow: initial;
+                margin-top: auto;
             }
             #nursery-back-button {
                 position: relative;
@@ -743,6 +772,10 @@
                 justify-content: center;
                 align-items: center;
             }
+            #golden-seeds-display {
+                cursor: pointer !important;
+                pointer-events: auto !important;
+            }
             #score-display {
                 padding: 2vw 5vw !important;
             }
@@ -812,8 +845,8 @@
             <div class="popup">
                 <h1>Garden Master</h1>
                 <p>Your quirky plants are thirsty. Keep them happy!</p>
-                <p><b>Desktop:</b>Arrow keys to move. Space to water.</p>
-                <p><b>Mobile:</b> Drag gnome to move. Get close to the plants to water.</p>
+                <p><strong>Desktop:</strong> Arrow keys to move. Space to water.</p>
+                <p><strong>Mobile:</strong> Drag gnome to move. Get close to the plants to water.</p>
                 <button id="start-button">Start Gardening</button>
             </div>
         </div>
@@ -866,9 +899,9 @@
         -------------------------------------------- */
         const LEVELS = {
           start: 1,
-          scoreStep: 1200,          // +1 level every 1 200 pts
-          thirstStep: 0.06,         // +6 % plant-thirst / lvl
-          eventStep: 0.05           // −5 % event cooldown / lvl
+          scoreStep: 2000,
+          thirstStep: 0.06,
+          eventStep: 0.05
         };
         let currentLevel   = LEVELS.start;
         let nextLevelScore = LEVELS.scoreStep;
@@ -1091,7 +1124,6 @@
             updatePlants(deltaTime);
             updateEffects(deltaTime);
             updateUI();
-            maybeLevelUp(); // <-- Level up check after score update
             
             timeSurvived += deltaTime;
 
@@ -1313,6 +1345,8 @@
                     saveGameData();
                     updateGoldenSeedDisplays();
                 }
+                // Check for level up AFTER awarding point-based seeds
+                maybeLevelUp();
             }
         }
         /* Call this inside updateUI() (or wherever you tally score) */
@@ -1321,6 +1355,7 @@
             nextLevelScore += LEVELS.scoreStep;
             currentLevel++;
             applyLevelDifficulty();
+            
             // Award an extra golden seed for passing a level
             goldenSeeds += 1;
             saveGameData();
@@ -1569,7 +1604,7 @@
                 const u = upgrades[key]; const cost = getUpgradeCost(key);
                 const item = document.createElement('div'); item.className = 'upgrade-item';
                 const canAfford = goldenSeeds >= cost, isMaxed = (u.maxLevel && u.level >= u.maxLevel);
-                item.innerHTML = `<h4>${u.name}</h4><p>Level: ${u.level}</p><button data-upgrade-key="${key}" ${!canAfford || isMaxed ? 'disabled' : ''}>${isMaxed ? 'MAXED' : `Upgrade (<span class="upgrade-cost">${cost} 🌰</span>)`}</button>`;
+                item.innerHTML = `<h4>${u.name}</h4><p>Level: ${u.level}</p><button data-upgrade-key="${key}" ${!canAfford || isMaxed ? 'disabled' : ''}>${isMaxed ? 'MAXED' : `Buy ${cost} 🌰`}</button>`;
                 nurseryUpgradesContainer.appendChild(item);
             }
         }
@@ -1586,6 +1621,18 @@
         restartButton.addEventListener('click', () => setGameState('PLAYING'));
         nurseryButtonFromGameOver.addEventListener('click', () => { lastGameStateBeforeNursery = 'GAMEOVER'; setGameState('NURSERY'); });
         nurseryBackButton.addEventListener('click', () => setGameState(lastGameStateBeforeNursery === 'GAMEOVER' ? 'START' : lastGameStateBeforeNursery));
+        
+        // Click on golden seeds to open shop
+        goldenSeedsDisplay.addEventListener('click', () => {
+            if (gameState === 'PLAYING') {
+                // Pause the game by canceling the animation frame
+                cancelAnimationFrame(loopId);
+                lastGameStateBeforeNursery = 'PLAYING';
+            } else {
+                lastGameStateBeforeNursery = gameState;
+            }
+            setGameState('NURSERY');
+        });
 
         window.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; if ((e.key === ' ' || e.key === 'Spacebar') && !isActionKeyDown) { isActionKeyDown = true; handleWaterStart(); } });
         window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; if (e.key === ' ' || e.key === 'Spacebar') { isActionKeyDown = false; handleWaterEnd(); } });
