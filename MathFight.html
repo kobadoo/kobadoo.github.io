@@ -146,6 +146,10 @@
         .button { font-family: var(--font-display); background-color: var(--btn-bg); color: var(--text-light); border: 2px solid var(--btn-border); border-bottom: 6px solid #2c2a64; padding: 5px 10px; font-size: clamp(1.2rem, 4vw, 1.8rem); letter-spacing: 1px; cursor: pointer; border-radius: 12px; transition: all 0.1s ease-out; margin: 10px; text-shadow: 2px 2px 2px #000; text-transform: uppercase; }
         .button:hover, .button:focus { background-color: var(--btn-hover-bg); transform: translateY(-2px); border-bottom-width: 8px; outline: 2px solid var(--accent-gold); }
         .button:active { transform: translateY(2px); border-bottom-width: 4px; }
+        
+        /* Fight button - green call to action */
+        #continue-to-match-button { background-color: #28a745; border-bottom-color: #1e7e34; }
+        #continue-to-match-button:hover, #continue-to-match-button:focus { background-color: #218838; }
 
         /* --- LOCKER ROOM --- */
         #locker-room-screen {
@@ -248,7 +252,7 @@
 
         /* --- RESPONSIVE DESIGN --- */
         @media (max-width: 768px) {
-            .player-info, .opponent-info { width: 48%; }
+            .player-info, .opponent-info { width: 40%; }
             .center-hud { order: 0; }
             .top-bar { flex-wrap: wrap; justify-content: center; }
             #question-box { font-size: 1.2rem; }
@@ -360,7 +364,7 @@
                 <div class="player-info">
                     <div id="player-portrait" class="luchador-portrait"></div>
                     <div class="info-details">
-                        <h3>The Player</h3>
+                        <h3>You</h3>
                         <div class="stamina-bar-container"><div id="player-stamina" class="stamina-bar"></div></div>
                     </div>
                 </div>
@@ -685,7 +689,7 @@
 
 
             const achievements = {
-                "PERFECT_CALCULATOR": { name: "Perfect Calculator", description: "Beat The Calculator without taking damage." },
+                "PERFECT_CALCULATOR": { name: "Perfect Calculator", description: "Beat Ms Calculus without taking damage." },
                 "COMBO_KING": { name: "Combo King", description: "Achieve a 20x combo." },
                 "LEGENDARY": { name: "Legendary", description: "Complete the Tournament." },
             };
