@@ -204,7 +204,7 @@
         
         #question-box { background: rgba(0,0,0,0.7); padding: 20px; border-radius: 15px; font-size: clamp(1.3rem, 4vw, 2rem); font-weight: 600; margin-top: 20px; border: 3px solid var(--accent-cyan); box-shadow: 0 0 15px rgba(0, 188, 212, 0.5); min-height: 80px; display: flex; justify-content: center; align-items: center; width: 95%; max-width: 900px; transition: opacity 0.5s, filter 0.5s; font-family: 'Arial', 'Helvetica', monospace; }
         .bottom-bar { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        #answer-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; }
+        #answer-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; min-height: 80px; }
         .answer-button { min-width: 220px; padding: 20px; font-size: 1.5rem; font-family: 'Arial', 'Helvetica', monospace; font-weight: bold; }
         .answer-button.correct { background-color: var(--btn-correct-bg); border-color: #fff; animation: popIn 0.3s; }
         .answer-button.incorrect { background-color: var(--btn-incorrect-bg); border-color: #555; opacity: 0.6; }
@@ -259,6 +259,7 @@
                 flex-wrap: wrap;
                 justify-content: center;
                 gap: 10px;
+                min-height: 70px;
             }
             .answer-button { 
                 min-width: 180px; 
@@ -269,15 +270,23 @@
                 font-weight: bold; 
             }
             #locker-room-screen {
-                padding-bottom: 100px; /* Ensure buttons are visible */
+                justify-content: space-between;
+                padding: 10px;
+                gap: 5px;
+            }
+            #locker-room-screen h1 {
+                font-size: clamp(2rem, 5vw, 3rem);
+                margin-bottom: 10px;
+            }
+            #locker-room-screen h2 {
+                font-size: clamp(1.5rem, 3vw, 2rem);
+            }
+            #locker-room-screen .content-box {
+                padding: 0 8px;
+                margin-bottom: 5px;
             }
             .locker-room-actions {
-                position: sticky;
-                bottom: 20px;
-                background: rgba(0,0,0,0.8);
-                padding: 10px;
-                border-radius: 15px;
-                margin-top: 20px;
+                margin-top: 10px;
             }
         }
         
@@ -297,9 +306,7 @@
         @media (max-width: 320px) {
             /* Locker Room optimizations */
             .swatch-group { 
-                flex-direction: column; 
-                align-items: center;
-                gap: 5px;
+                gap: 1px;
             }
             .swatch { 
                 width: 35px; 
@@ -307,39 +314,76 @@
                 font-size: 20px; 
             }
             .locker-room-actions {
-                flex-direction: column;
-                align-items: center;
-                gap: 8px;
+                gap: 1px;
+                display: flex;
+                flex-wrap: nowrap;
             }
             .locker-room-actions .button {
                 width: 90%;
                 margin: 5px;
             }
+
+            #locker-room-screen .content-box {
+                padding: 5px;
+            }
+
+            #locker-room-screen h1 {
+                margin-bottom: 5px;
+            }
             
             /* Game screen optimizations */
             .top-bar { 
-                flex-direction: column;
-                gap: 5px; 
-                padding-top: 10px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto auto;
+                gap: 3px; 
+                padding: 3px 5px;
                 position: relative;
-            }
-            .player-info, .opponent-info { 
-                width: 90%; 
-                justify-content: center;
-                padding: 5px;
-            }
-            .luchador-portrait { 
-                width: 40px; 
-                height: 40px; 
-                font-size: 20px; 
-                margin: 0 5px; 
+                width: 100%;
+                box-sizing: border-box;
             }
             .center-hud { 
-                position: static; 
-                width: 90%; 
-                margin: 5px auto;
+                grid-column: 1 / -1;
+                grid-row: 1;
+                width: 100%; 
+                margin: 0;
                 transform: none;
-                order: -1;
+                padding: 2px 5px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                box-sizing: border-box;
+            }
+            .player-info { 
+                grid-column: 1;
+                grid-row: 2;
+                width: 100%; 
+                padding: 2px;
+                display: flex;
+                align-items: center;
+                font-size: 0.8rem;
+                box-sizing: border-box;
+            }
+            .opponent-info { 
+                grid-column: 2;
+                grid-row: 2;
+                width: 100%; 
+                padding: 2px;
+                display: flex;
+                align-items: center;
+                font-size: 0.8rem;
+                box-sizing: border-box;
+            }
+            .luchador-portrait { 
+                display: none; /* Remove profile pictures on very small screens */
+            }
+            .info-details h3 {
+                font-size: 0.8rem;
+                margin: 0 0 2px 0;
+            }
+            .stamina-bar-container {
+                height: 15px;
+                padding: 1px;
             }
             #score {
                 font-size: 1.4rem;
@@ -365,6 +409,7 @@
                 justify-content: center;
                 gap: 5px;
                 padding: 0 5px;
+                min-height: 90px;
             }
             .answer-button { 
                 width: calc(50% - 5px); 
@@ -447,6 +492,7 @@
                 align-items: center; 
                 width: 100%;
                 gap: 8px;
+                min-height: 160px;
             }
             .answer-button { 
                 width: 90%; 
@@ -468,7 +514,7 @@
         <!-- Start Screen -->
         <div id="start-screen" class="screen">
             <h1>Math Fight Game</h1>
-            <div style="font-size: 6rem; margin: 20px;">🤓</div>
+            <div style="font-size: 5rem; margin: 20px;">🤓</div>
             <div id="start-button" class="button" tabindex="0">Start Tournament</div>
         </div>
 
@@ -1092,7 +1138,16 @@
                 state.canAnswer = false;
                 ui.questionBox.style.opacity = '0.5';
                 ui.questionBox.style.filter = 'blur(2px)';
+                
+                // Create invisible placeholder buttons to maintain layout
                 ui.answerButtons.innerHTML = '';
+                for (let i = 0; i < 3; i++) {
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'answer-button button';
+                    placeholder.style.visibility = 'hidden';
+                    placeholder.textContent = 'Placeholder';
+                    ui.answerButtons.appendChild(placeholder);
+                }
                 
                 setTimeout(() => {
                     state.currentQuestion = getRandomQuestion(state.currentOpponentIndex);
