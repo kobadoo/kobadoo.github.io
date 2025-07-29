@@ -196,7 +196,7 @@
         #score { font-size: 2rem; font-weight: 700; color: var(--accent-gold); }
         #combo-meter { font-size: 1.5rem; color: var(--accent-cyan); font-family: var(--font-display); transition: transform 0.1s ease-out; height: 25px;}
         .timer-container { width: 120px; height: 10px; background-color: var(--timer-bar-bg); border-radius: 5px; margin: 5px auto 0; overflow: hidden; border: 1px solid #000; }
-        .timer-bar { width: 100%; height: 100%; background-color: var(--timer-bar-color); border-radius: 5px; }
+        .timer-bar { width: 100%; height: 100%; background-color: var(--timer-bar-color); border-radius: 5px; transition: width 0.3s ease-out; }
 
         .center-stage { width: 100%; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
         .ring-area { display: flex; justify-content: space-around; align-items: flex-end; width: 100%; max-width: 600px; height: 180px; position: relative; }
@@ -1138,7 +1138,10 @@
             }
 
             function nextQuestion() {
-                clearInterval(state.timerInterval);
+                if (state.timerInterval) {
+                    clearInterval(state.timerInterval);
+                    state.timerInterval = null;
+                }
                 clearMechanicTimers();
                 state.canAnswer = false;
                 ui.questionBox.style.opacity = '0.5';
@@ -1192,7 +1195,10 @@
             function selectAnswer(index) {
                 if (!state.canAnswer) return;
                 state.canAnswer = false;
-                clearInterval(state.timerInterval);
+                if (state.timerInterval) {
+                    clearInterval(state.timerInterval);
+                    state.timerInterval = null;
+                }
                 
                 const buttons = Array.from(ui.answerButtons.querySelectorAll('.answer-button'));
                 const selectedButton = buttons[index];
@@ -1212,6 +1218,12 @@
             }
 
             function startTimer() {
+                // Clear any existing timer first
+                if (state.timerInterval) {
+                    clearInterval(state.timerInterval);
+                    state.timerInterval = null;
+                }
+                
                 const baseTime = [10, 12, 15, 20, 25, 30];
                 const timeLimit = baseTime[state.currentOpponentIndex] || 30;
                 state.timerRemaining = timeLimit;
@@ -1225,6 +1237,7 @@
                     
                     if (state.timerRemaining <= 0) {
                         clearInterval(state.timerInterval);
+                        state.timerInterval = null;
                         if (state.canAnswer) handleTimeOut();
                     }
                 }, 1000);
@@ -1273,11 +1286,17 @@
             }
 
             function applyOpponentMechanic(mechanic) {
+                const baseTime = [10, 12, 15, 20, 25, 30];
+                const timeLimit = baseTime[state.currentOpponentIndex] || 30;
+                
                 switch (mechanic) {
                     case 'shuffle':
                         const shuffleTimer = setTimeout(() => {
                             if (state.timerRemaining > 5) {
                                 state.timerRemaining = Math.max(5, state.timerRemaining - 8);
+                                // Update timer bar immediately when mechanic triggers
+                                const percentage = (state.timerRemaining / timeLimit) * 100;
+                                ui.timerBar.style.width = `${Math.max(0, percentage)}%`;
                             }
                         }, 3000);
                         state.mechanicTimers.push(shuffleTimer);
@@ -1288,6 +1307,9 @@
                         const smokeTimer = setTimeout(() => {
                             if (state.timerRemaining > 3) {
                                 state.timerRemaining = Math.max(3, state.timerRemaining - 5);
+                                // Update timer bar immediately when mechanic triggers
+                                const percentage = (state.timerRemaining / timeLimit) * 100;
+                                ui.timerBar.style.width = `${Math.max(0, percentage)}%`;
                             }
                         }, 2000);
                         state.mechanicTimers.push(smokeTimer);
@@ -1412,7 +1434,10 @@
             }
 
             function endGame(playerWon) {
-                clearInterval(state.timerInterval);
+                if (state.timerInterval) {
+                    clearInterval(state.timerInterval);
+                    state.timerInterval = null;
+                }
                 ui.rematchButton.style.display = 'none';
                 ui.nextMatchButton.style.display = 'none';
                 ui.mainMenuButton.style.display = 'none';
