@@ -8,6 +8,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Math Fight Club" />
+    <meta property="og:description" content="Math Fight Club is a fun game where you solve math operations to win wrestling matches! Pick your own look, then fight math opponents in the ring. Answer questions to attack, earn points and collect your opponents' masks. See if you can beat all the math legends and become the tournament winner!"/>
+    <meta property="og:url" content="https://www.kobadoo.com/MathFightClub" />
+    <meta property="og:image" content="https://www.kobadoo.com/math_fight_club_socialmedia.jpg" />
+    <meta property="og:type" content="website" />
     <style>
         :root {
             --player-color-primary: #0d6efd;
@@ -1090,7 +1095,7 @@
             const getInitialState = () => ({
                 currentScreen: 'start', score: 0, combo: 0, maxCombo: 0, playerHealth: 100, opponentHealth: 100,
                 currentOpponentIndex: 0, currentQuestion: null, canAnswer: true, timerInterval: null, timerRemaining: 0,
-                wins: 0, perfectWins: 0, isEndlessMode: false, earnedAchievements: new Set(),
+                wins: 0, perfectWins: 0, earnedAchievements: new Set(),
                 unlockedMasks: new Set(['👹']), playerMask: '👹', mechanicTimers: []
             });
 
@@ -1410,32 +1415,26 @@
                 ui.mainMenuButton.style.display = 'none';
                 
                 if (playerWon) {
-                    if (state.playerHealth === 100 && !state.isEndlessMode && state.currentOpponentIndex === 1) {
+                    if (state.playerHealth === 100 && state.currentOpponentIndex === 1) {
                         state.earnedAchievements.add("PERFECT_CALCULATOR");
                         state.perfectWins++;
                     }
-                    if (!state.isEndlessMode) {
-                        const defeatedOpponent = opponents[state.currentOpponentIndex];
-                        state.unlockedMasks.add(defeatedOpponent.mask);
-                    }
+                    const defeatedOpponent = opponents[state.currentOpponentIndex];
+                    state.unlockedMasks.add(defeatedOpponent.mask);
                     state.wins++;
                     ui.gameOverTitle.textContent = "VICTORY!";
                     ui.gameOverMessage.textContent = `You defeated ${opponents[state.currentOpponentIndex].name}!`;
                     
                     showScreen('gameOver');
                     
-                    if (state.currentOpponentIndex >= opponents.length - 1 && !state.isEndlessMode) {
+                    if (state.currentOpponentIndex >= opponents.length - 1) {
                         setTimeout(() => {
                             showGameOverScreen();
-                        }, 2000);
-                    } else if (!state.isEndlessMode) {
-                        setTimeout(() => {
-                            state.currentOpponentIndex++;
-                            setupLockerRoom();
                         }, 2000);
                     } else {
                         setTimeout(() => {
-                            showGameOverScreen();
+                            state.currentOpponentIndex++;
+                            setupLockerRoom();
                         }, 2000);
                     }
                 } else {
@@ -1449,7 +1448,7 @@
 
             function checkAchievements() {
                 if (state.maxCombo >= 20) state.earnedAchievements.add("COMBO_KING");
-                if (state.currentOpponentIndex >= opponents.length - 1 && state.opponentHealth <= 0 && !state.isEndlessMode) {
+                if (state.currentOpponentIndex >= opponents.length - 1 && state.opponentHealth <= 0) {
                     state.earnedAchievements.add("LEGENDARY");
                 }
             }
@@ -1457,10 +1456,7 @@
             function showGameOverScreen() {
                 showScreen('gameOver');
                 clearMechanicTimers();
-                if (state.isEndlessMode) {
-                    ui.nextMatchButton.style.display = 'inline-block';
-                    ui.nextMatchButton.textContent = 'Next Rumble!';
-                } else if (state.currentOpponentIndex < opponents.length - 1) {
+                if (state.currentOpponentIndex < opponents.length - 1) {
                     ui.nextMatchButton.style.display = 'inline-block';
                     ui.nextMatchButton.textContent = 'Next Opponent';
                 } else {
@@ -1485,12 +1481,8 @@
             document.getElementById('continue-to-match-button').addEventListener('click', () => startMatch(state.currentOpponentIndex));
             ui.rematchButton.addEventListener('click', () => startMatch(state.currentOpponentIndex));
             ui.nextMatchButton.addEventListener('click', () => { 
-                if (state.isEndlessMode) {
-                    startMatch(Math.floor(Math.random() * opponents.length));
-                } else {
-                    state.currentOpponentIndex++; 
-                    setupLockerRoom(); 
-                }
+                state.currentOpponentIndex++; 
+                setupLockerRoom(); 
             });
 
             ui.mainMenuButton.addEventListener('click', () => { state = getInitialState(); showScreen('start'); });
@@ -1506,7 +1498,7 @@
                     const li = document.createElement('li');
                     li.className = 'bracket-item';
                     if(index < state.currentOpponentIndex) li.classList.add('defeated');
-                    if(index === state.currentOpponentIndex && !state.isEndlessMode) li.classList.add('current');
+                    if(index === state.currentOpponentIndex) li.classList.add('current');
                     li.innerHTML = `<span>${opp.name}</span> <span>${index < state.currentOpponentIndex ? 'DEFEATED' : 'UPCOMING'}</span>`;
                     list.appendChild(li);
                 });
