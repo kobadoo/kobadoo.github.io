@@ -1,0 +1,1607 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Math Fight Club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <meta property="og:title" content="Math Fight Club" />
+    <meta property="og:description" content="Math Fight Club is a fun game where you solve math operations to win wrestling matches! Pick your own look, then fight math opponents in the ring. Answer questions to attack, earn points and collect your opponents' masks. See if you can beat all the math legends and become the tournament winner!"/>
+    <meta property="og:url" content="https://www.kobadoo.com/MathFightClub" />
+    <meta property="og:image" content="https://www.kobadoo.com/math_fight_club_socialmedia.jpg" />
+    <meta property="og:type" content="website" />
+    <style>
+        :root {
+            --player-color-primary: #0d6efd;
+            --player-color-secondary: #ffc107;
+            --opponent-color-primary: #dc3545;
+            --opponent-color-secondary: #343a40;
+            
+            --background-dark: #100f1c;
+            --background-light: #1f1d36;
+            --ring-floor: #3f3351;
+            --ropes-color: #e94560;
+            --ropes-posts: #8675a9;
+
+            --text-light: #f0f0f0;
+            --text-dark: #1e1e1e;
+            --accent-gold: #ffd700;
+            --accent-cyan: #00bcd4;
+            
+            --stamina-bar-color: #20c997;
+            --stamina-bar-bg: #444;
+            --stamina-bar-damage: #ff4757;
+
+
+            
+            --timer-bar-color: var(--accent-cyan);
+            --timer-bar-bg: #444;
+
+            --btn-bg: #4a47a3;
+            --btn-hover-bg: #615dcf;
+            --btn-border: #c0c0c0;
+            --btn-correct-bg: #28a745;
+            --btn-incorrect-bg: #dc3545;
+
+            --font-display: 'Bangers', cursive;
+            --font-body: 'Montserrat', sans-serif;
+        }
+
+        /* --- KEYFRAMES --- */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes popIn {
+          0%   { transform: scale(0.5); opacity: 0; }
+          70%  { transform: scale(1.2); opacity: 1; }
+          100% { transform: scale(1);   opacity: 1; }
+        }
+        @keyframes popInCentered {
+          0%   { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+          70%  { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+          100% { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
+        }
+        @keyframes screenShake {
+            0%, 100% { transform: translate(0, 0); }
+            10%, 50%, 90% { transform: translate(-4px, 2px); }
+            30%, 70% { transform: translate(4px, -2px); }
+        }
+        @keyframes takeDamage {
+            0%, 100% { filter: brightness(1); transform: scale(1); }
+            50% { filter: brightness(2.5) contrast(2); transform: scale(1.05); }
+        }
+        @keyframes attackLunge {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(120px, -30px) scale(1.2) rotate(15deg); z-index: 10; }
+            100% { transform: translate(0, 0) scale(1) rotate(0deg); z-index: 1; }
+        }
+        @keyframes opponentAttackLunge {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(-120px, -30px) scale(1.2) rotate(-15deg); z-index: 10; }
+            100% { transform: translate(0, 0) scale(1) rotate(0deg); z-index: 1; }
+        }
+        @keyframes qteShrink {
+            from { transform: translate(-50%, -50%) scale(2.5); opacity: 0.9; }
+            to { transform: translate(-50%, -50%) scale(0.2); opacity: 1; }
+        }
+
+
+        @keyframes textFadeOut { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes comboPop {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.5); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes smokeDrift {
+            0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% { opacity: 0; transform: scale(2) rotate(45deg); }
+        }
+        @keyframes piñataBurst {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+        @keyframes incorrectoPop {
+            0% { transform: translate(-50%, 100%); opacity: 0; }
+            20% { transform: translate(-50%, -50%); opacity: 1; }
+            80% { transform: translate(-50%, -50%); opacity: 1; }
+            100% { transform: translate(-50%, -150%); opacity: 0; }
+        }
+
+        /* --- GENERAL STYLES --- */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: var(--font-body);
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .game-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: radial-gradient(ellipse at 50% 70%, var(--background-light) 30%, var(--background-dark) 80%);
+            isolation: isolate;
+        }
+        
+        .arena-background { position: absolute; inset: 0; overflow: hidden; }
+        .arena-background::before { content: ''; position: absolute; inset: 0; background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cg fill="%23000" fill-opacity="0.1"%3E%3Crect x="50" width="50" height="50"/%3E%3Crect y="50" width="50" height="50"/%3E%3C/g%3E%3C/svg%3E'); opacity: 0.3; transform: scale(1.5); }
+        .arena-background::after { content: ''; position: absolute; bottom: 0; left: -20%; width: 140%; height: 50%; background-color: var(--ring-floor); border-top: 10px solid var(--ropes-posts); border-radius: 50% / 20px; }
+        .ring-ropes { position: absolute; bottom: 25%; left: 0; width: 100%; height: 2px; background: var(--ropes-color); opacity: 0.7; box-shadow: 0 -15px 0 var(--ropes-color); }
+
+        .screen { width: 100%; height: 100%; position: absolute; top: 0; left: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; text-align: center; transition: opacity 0.4s ease-in-out, z-index 0.4s; z-index: 10; background: rgba(0,0,0,0.1); }
+        .hidden { opacity: 0; pointer-events: none; z-index: -1; }
+
+        h1, h2, h3 { font-family: var(--font-display); letter-spacing: 2px; text-transform: uppercase; }
+        h1 { font-size: clamp(3rem, 10vw, 6rem); color: var(--accent-gold); text-shadow: 5px 5px 0px var(--ropes-color), -2px -2px 0px #000; margin-bottom: 60px; line-height: 1; }
+        h2 { font-size: clamp(1.4rem, 5vw, 2.5rem); color: var(--accent-cyan); text-shadow: 3px 3px 0px #000; }
+
+        .button { font-family: var(--font-display); background-color: var(--btn-bg); color: var(--text-light); border: 2px solid var(--btn-border); border-bottom: 6px solid #2c2a64; padding: 5px 10px; font-size: clamp(1.2rem, 4vw, 1.8rem); letter-spacing: 1px; cursor: pointer; border-radius: 12px; transition: all 0.1s ease-out; margin: 10px; text-shadow: 2px 2px 2px #000; text-transform: uppercase; }
+        .button:hover, .button:focus { background-color: var(--btn-hover-bg); transform: translateY(-2px); border-bottom-width: 8px; outline: 2px solid var(--accent-gold); }
+        .button:active { transform: translateY(2px); border-bottom-width: 4px; }
+        
+        /* Fight button - green call to action */
+        #continue-to-match-button { background-color: #28a745; border-bottom-color: #1e7e34; }
+        #continue-to-match-button:hover, #continue-to-match-button:focus { background-color: #218838; }
+
+        /* --- LOCKER ROOM --- */
+        #locker-room-screen {
+            overflow-y: auto;
+            justify-content: flex-start;
+            padding-top: 10px;
+            padding-bottom: 20px;
+            gap: 10px;
+        }
+        #locker-room-screen h1 { margin-bottom: 15px; }
+        #locker-room-screen .content-box { background: rgba(0,0,0,0.4); backdrop-filter: blur(5px); padding: 15px; border-radius: 15px; margin-bottom: 0; width: 90%; max-width: 700px; border: 2px solid var(--ropes-posts); }
+        .swatches-container { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .swatch-group { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .swatch { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 3px solid #fff; transition: transform 0.2s; background-size: cover; background-position: center; display: flex; justify-content: center; align-items: center; font-family: sans-serif; font-size: 24px; }
+        .swatch:hover, .swatch:focus { transform: scale(1.1); outline: 2px solid var(--accent-gold); }
+        .swatch.selected { border-color: var(--accent-gold); transform: scale(1.2); }
+        .locker-room-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 0;
+        }
+
+        /* --- GAME SCREEN --- */
+        #game-screen { background: transparent; justify-content: space-between; padding: 10px; gap: 10px; }
+        .top-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 10px; box-sizing: border-box; gap: 10px; }
+        .player-info, .opponent-info { display: flex; align-items: center; width: 40%; background: rgba(0,0,0,0.5); padding: 8px; border-radius: 15px; border: 2px solid var(--ropes-posts); }
+        .opponent-info { flex-direction: row-reverse; }
+        .luchador-portrait { width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--text-light); margin: 0 10px; font-family: sans-serif; font-size: 30px; display: flex; justify-content: center; align-items: center; background-color: #333; }
+        #player-portrait { background-color: var(--player-color-primary); }
+        #opponent-portrait { background-color: var(--opponent-color-primary); }
+        .info-details { flex-grow: 1; text-align: left; }
+        .opponent-info .info-details { text-align: right; }
+        .info-details h3 { margin: 0 0 5px 0; font-size: 1rem; color: var(--text-light); text-shadow: 2px 2px 2px #000; }
+        .stamina-bar-container { width: 100%; height: 20px; background-color: var(--stamina-bar-bg); border-radius: 10px; overflow: hidden; border: 2px solid #222; padding: 2px; }
+        .stamina-bar { width: 100%; height: 100%; background: linear-gradient(to right, var(--stamina-bar-color), #66ffc2); border-radius: 6px; transition: width 0.3s ease-out; }
+        .stamina-bar.damaged { background-color: var(--stamina-bar-damage); transition: background-color 0.1s, width 0.3s; }
+        .center-hud { text-align: center; background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 15px; border: 2px solid var(--ropes-posts); }
+        #score { font-size: 2rem; font-weight: 700; color: var(--accent-gold); }
+        #combo-meter { font-size: 1.5rem; color: var(--accent-cyan); font-family: var(--font-display); transition: transform 0.1s ease-out; height: 25px;}
+        .timer-container { width: 120px; height: 10px; background-color: var(--timer-bar-bg); border-radius: 5px; margin: 5px auto 0; overflow: hidden; border: 1px solid #000; }
+        .timer-bar { width: 100%; height: 100%; background-color: var(--timer-bar-color); border-radius: 5px; }
+
+        .center-stage { width: 100%; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; }
+        .ring-area { display: flex; justify-content: space-around; align-items: flex-end; width: 100%; max-width: 600px; height: 180px; position: relative; }
+        .luchador { width: 120px; height: 150px; position: relative; transition: transform 0.3s ease; }
+        .luchador-body { width: 70px; height: 90px; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); border-radius: 35px 35px 10px 10px; }
+        .luchador-mask { width: 80px; height: 80px; border-radius: 50%; position: absolute; top: 0; left: 50%; transform: translateX(-50%); display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .luchador-mask .mask-icon { font-family: sans-serif; font-size: 40px; transform: translateY(2px); }
+        #player-luchador .luchador-mask { background-color: var(--player-color-primary); }
+        #player-luchador .luchador-body { background-color: var(--player-color-secondary); }
+        
+        #question-box { background: rgba(0,0,0,0.7); padding: 20px; border-radius: 15px; font-size: clamp(1.3rem, 4vw, 2rem); font-weight: 600; margin-top: 20px; border: 3px solid var(--accent-cyan); box-shadow: 0 0 15px rgba(0, 188, 212, 0.5); min-height: 80px; display: flex; justify-content: center; align-items: center; width: 95%; max-width: 900px; transition: opacity 0.5s, filter 0.5s; font-family: 'Arial', 'Helvetica', monospace; }
+        .bottom-bar { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        #answer-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; min-height: 80px; }
+        .answer-button { min-width: 220px; padding: 20px; font-size: 1.5rem; font-family: 'Arial', 'Helvetica', monospace; font-weight: bold; }
+        .answer-button.correct { background-color: var(--btn-correct-bg); border-color: #fff; animation: popIn 0.3s; }
+        .answer-button.incorrect { background-color: var(--btn-incorrect-bg); border-color: #555; opacity: 0.6; }
+
+
+        
+        /* --- EFFECTS & FEEDBACK --- */
+        #qte-container { position: absolute; z-index: 100; }
+        #qte-target { width: 120px; height: 120px; border: 5px dashed var(--ropes-color); border-radius: 50%; cursor: pointer; animation: popIn 0.3s; }
+        #qte-circle { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; background-color: rgba(255, 215, 0, 0.7); border-radius: 50%; animation: qteShrink 0.6s linear forwards; }
+        .feedback-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* QA FEEDBACK FIX: Proper centering to prevent jitter */
+            font-family: var(--font-display);
+            text-shadow: 3px 3px 0px #000;
+            z-index: 101;
+            pointer-events: none;
+        }
+        #qte-result {
+          font-size: 3rem;
+          animation: popInCentered 0.5s, textFadeOut 0.5s 0.5s forwards;
+        }
+        #incorrecto-feedback { font-size: 2.5rem; color: var(--ropes-color); animation: incorrectoPop 1.5s ease-out forwards; }
+
+        .smoke-overlay { position: absolute; width: 150px; height: 150px; background: radial-gradient(circle, rgba(200,200,200,0.6) 0%, rgba(200,200,200,0) 70%); border-radius: 50%; pointer-events: none; z-index: 50; animation: smokeDrift 3s ease-out forwards; }
+        .piñata-burst { position: absolute; width: 20px; height: 20px; background-color: var(--accent-gold); border-radius: 50%; pointer-events: none; z-index: 100; animation: piñataBurst 0.5s ease-out forwards; }
+
+
+
+        /* --- MODALS --- */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease-in-out; }
+        .modal.active { opacity: 1; pointer-events: auto; }
+        .modal-content { background: var(--background-light); padding: 30px; border-radius: 20px; border: 4px solid var(--ropes-color); width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; transform: scale(0.8); transition: transform 0.3s ease-in-out; }
+        .modal.active .modal-content { transform: scale(1); }
+        .modal-content h2 { margin-top: 0; }
+        .modal-content ul { list-style: none; padding: 0; }
+        .modal-content li { background: rgba(0,0,0,0.2); padding: 10px; margin-bottom: 10px; border-radius: 5px; font-weight: 600; border-left: 5px solid var(--accent-cyan); }
+        #special-choice-modal .button { display: block; width: 80%; margin: 15px auto; }
+        .achievement-list li { border-left-color: var(--accent-gold); }
+        .bracket-item { font-size: 1.2rem; display: flex; justify-content: space-between; align-items: center; }
+        .bracket-item.defeated { text-decoration: line-through; color: #888; }
+        .bracket-item.current::before { content: '▶'; color: var(--accent-gold); margin-right: 10px; }
+
+        /* --- RESPONSIVE DESIGN --- */
+        
+        /* 800x600 optimization - Keep answer buttons in one row, fix locker room scrolling */
+        @media (max-width: 800px) and (min-width: 481px) {
+            #answer-buttons { 
+                flex-direction: row; 
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+                min-height: 70px;
+            }
+            .answer-button { 
+                min-width: 180px; 
+                max-width: 200px;
+                font-size: 1.2rem; 
+                padding: 15px; 
+                font-family: 'Arial', 'Helvetica', monospace; 
+                font-weight: bold; 
+            }
+            #locker-room-screen {
+                justify-content: space-between;
+                padding: 10px;
+                gap: 5px;
+            }
+            #locker-room-screen h1 {
+                font-size: clamp(2rem, 5vw, 3rem);
+                margin-bottom: 10px;
+            }
+            #locker-room-screen h2 {
+                font-size: clamp(1.5rem, 3vw, 2rem);
+            }
+            #locker-room-screen .content-box {
+                padding: 0 8px 15px 8px;
+                margin-bottom: 5px;
+            }
+            .locker-room-actions {
+                margin-top: 10px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .player-info, .opponent-info { width: 40%; }
+            .center-hud { order: 0; }
+            .top-bar { flex-wrap: wrap; justify-content: center; }
+            #question-box { font-size: 1.2rem; }
+            .answer-button { min-width: 180px; font-size: 1.2rem; padding: 15px; font-family: 'Arial', 'Helvetica', monospace; font-weight: bold; }
+            .ring-area { height: 150px; }
+            .luchador { width: 100px; height: 120px; }
+            @keyframes attackLunge { 50% { transform: translate(80px, -20px) scale(1.15) rotate(15deg); z-index: 10; } }
+            @keyframes opponentAttackLunge { 50% { transform: translate(-80px, -20px) scale(1.15) rotate(-15deg); z-index: 10; } }
+        }
+        
+        /* 320x568 optimization - Very small screens */
+        @media (max-width: 320px) {
+            /* Locker Room optimizations */
+            .swatch-group { 
+                gap: 1px;
+            }
+            .swatch { 
+                width: 35px; 
+                height: 35px; 
+                font-size: 20px; 
+            }
+            .locker-room-actions {
+                gap: 1px;
+                display: flex;
+                flex-wrap: nowrap;
+            }
+            .locker-room-actions .button {
+                width: 90%;
+                margin: 5px;
+            }
+
+            #locker-room-screen .content-box {
+                padding: 5px;
+            }
+
+            #locker-room-screen h1 {
+                margin-bottom: 5px;
+                font-size: clamp(2rem, 3vw, 3rem);
+            }
+            
+            /* Game screen optimizations */
+            .top-bar { 
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto auto;
+                gap: 3px; 
+                padding: 3px 5px;
+                position: relative;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .center-hud { 
+                grid-column: 1 / -1;
+                grid-row: 1;
+                width: 100%; 
+                margin: 0;
+                transform: none;
+                padding: 2px 5px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                box-sizing: border-box;
+            }
+            .player-info { 
+                grid-column: 1;
+                grid-row: 2;
+                width: 100%; 
+                padding: 2px;
+                display: flex;
+                align-items: center;
+                font-size: 0.8rem;
+                box-sizing: border-box;
+            }
+            .opponent-info { 
+                grid-column: 2;
+                grid-row: 2;
+                width: 100%; 
+                padding: 2px;
+                display: flex;
+                align-items: center;
+                font-size: 0.8rem;
+                box-sizing: border-box;
+            }
+            .luchador-portrait { 
+                display: none; /* Remove profile pictures on very small screens */
+            }
+            .info-details h3 {
+                font-size: 0.8rem;
+                margin: 0 0 2px 0;
+            }
+            .stamina-bar-container {
+                height: 15px;
+                padding: 1px;
+            }
+            #score {
+                font-size: 1.4rem;
+            }
+            #combo-meter {
+                font-size: 0.9rem;
+            }
+            .timer-container {
+                width: 80px;
+            }
+            
+            /* Question and answer optimizations */
+            #question-box { 
+                padding: 8px;
+                min-height: 60px;
+                margin-top: 5px;
+                margin-bottom: 5px;
+                font-size: 1rem;
+            }
+            #answer-buttons { 
+                flex-direction: row; 
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 5px;
+                padding: 0 5px;
+                min-height: 90px;
+            }
+            .answer-button { 
+                width: calc(50% - 5px); 
+                min-width: 120px;
+                padding: 8px;
+                margin: 0;
+                font-size: 1rem;
+                font-family: 'Arial', 'Helvetica', monospace; 
+                font-weight: bold;
+            }
+            
+            /* Ring area adjustments */
+            .ring-area { 
+                height: 120px; 
+                max-width: 280px;
+            }
+            .luchador { 
+                width: 80px; 
+                height: 100px; 
+            }
+            .luchador-body { 
+                width: 50px; 
+                height: 70px; 
+            }
+            .luchador-mask { 
+                width: 60px; 
+                height: 60px; 
+            }
+            .luchador-mask .mask-icon { 
+                font-size: 30px; 
+            }
+        }
+        
+        /* --- HUMAN/QA FEEDBACK IMPLEMENTATION for MOBILE --- */
+        @media (max-width: 480px) and (min-width: 321px) {
+            .top-bar { 
+                flex-direction: row; 
+                flex-wrap: wrap;
+                gap: 8px; 
+                padding-top: 60px;
+                position: relative;
+            }
+            .player-info, .opponent-info { width: 42%; }
+            .center-hud { 
+                position: absolute; 
+                top: 10px; 
+                left: 50%; 
+                transform: translateX(-50%); 
+                width: 95%; /* HUMAN FEEDBACK FIX: Wider scoreboard */
+                z-index: 20;
+                 /* HUMAN FEEDBACK FIX: Horizontal layout for score and timer */
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 5px 10px;
+            }
+            #score {
+                font-size: 1.6rem;
+            }
+            #combo-meter {
+                font-size: 1rem;
+                height: auto;
+                flex-grow: 1;
+                text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            .timer-container {
+                width: 100px;
+                margin: 0;
+            }
+            #question-box { 
+                padding: 12px;
+                min-height: 70px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+            #answer-buttons { 
+                flex-direction: column; 
+                align-items: center; 
+                width: 100%;
+                gap: 8px;
+                min-height: 160px;
+            }
+            .answer-button { 
+                width: 90%; 
+                padding: 12px;
+                margin: 0;
+                font-family: 'Arial', 'Helvetica', monospace; 
+                font-weight: bold;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <div class="arena-background">
+            <div class="ring-ropes"></div>
+        </div>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen">
+            <h1>Math Fight Club</h1>
+            <div style="font-size: 5rem; margin: 20px;">🤓</div>
+            <div id="start-button" class="button" tabindex="0">Start Tournament</div>
+        </div>
+
+        <!-- Locker Room Screen -->
+        <div id="locker-room-screen" class="screen hidden">
+            <h1>Locker Room</h1>
+            <div class="content-box">
+                <h2>Customize Your Luchador</h2>
+                <div class="swatches-container">
+                    <div class="swatch-group"><span style="margin-right: 10px;">Mask:</span><div id="mask-swatches" class="swatch-group"></div></div>
+                    <div class="swatch-group"><span style="margin-right: 10px;">Top:</span><div id="primary-swatches" class="swatch-group"></div></div>
+                    <div class="swatch-group"><span style="margin-right: 10px;">Shorts:</span><div id="secondary-swatches" class="swatch-group"></div></div>
+                </div>
+            </div>
+            <div class="content-box">
+                <h2>Next Opponent: <span id="next-opponent-name" style="color: var(--ropes-color);"></span></h2>
+                <p style="font-weight: 600;">Talent: <span id="next-opponent-specialty" style="color: #fff;"></span></p>
+            </div>
+            <div class="locker-room-actions">
+                <div id="continue-to-match-button" class="button" tabindex="0">Fight!</div>
+                <div id="bracket-button" class="button" tabindex="0">Bracket</div>
+                <div id="stats-button" class="button" tabindex="0">Stats</div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen hidden">
+            <div class="top-bar">
+                <div class="player-info">
+                    <div id="player-portrait" class="luchador-portrait"></div>
+                    <div class="info-details">
+                        <h3>You</h3>
+                        <div class="stamina-bar-container"><div id="player-stamina" class="stamina-bar"></div></div>
+                    </div>
+                </div>
+                <div class="center-hud">
+                    <div id="score">0</div>
+                    <div id="combo-meter"></div>
+                    <div class="timer-container"><div id="timer-bar" class="timer-bar"></div></div>
+                </div>
+                <div class="opponent-info">
+                    <div id="opponent-portrait" class="luchador-portrait"></div>
+                    <div class="info-details">
+                        <h3 id="opponent-name">Señor Presente</h3>
+                        <div class="stamina-bar-container"><div id="opponent-stamina" class="stamina-bar"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="center-stage">
+                <div class="ring-area">
+                    <div id="player-luchador" class="luchador"><div class="luchador-body"></div><div class="luchador-mask"><span class="mask-icon"></span></div></div>
+                    <div id="opponent-luchador" class="luchador"><div class="luchador-body"></div><div class="luchador-mask"><span class="mask-icon"></span></div></div>
+                </div>
+                <div id="question-box">Loading question...</div>
+            </div>
+
+            <div class="bottom-bar">
+                <div id="answer-buttons"></div>
+            </div>
+        </div>
+
+
+
+        <!-- Game Over Screen -->
+        <div id="game-over-screen" class="screen hidden">
+            <h1 id="game-over-title"></h1>
+            <p id="game-over-message" style="font-size: 1.5rem; font-weight: 600;"></p>
+            <div id="rematch-button" class="button" tabindex="0">Rematch</div>
+            <div id="next-match-button" class="button" tabindex="0">Next Opponent</div>
+            <div id="main-menu-button" class="button" tabindex="0">Play Again</div>
+        </div>
+        
+        <!-- Effects Containers -->
+        <div id="qte-container" class="hidden"><div id="qte-target"><div id="qte-circle"></div></div></div>
+        <div id="effects-container"></div> <!-- For smoke, bursts, feedback text etc. -->
+
+        <!-- Modals -->
+        <div id="bracket-modal" class="modal"><div class="modal-content"><h2>Tournament Bracket</h2><ul id="bracket-list"></ul><div id="close-bracket-button" class="button" tabindex="0">Close</div></div></div>
+
+        <div id="stats-modal" class="modal"><div class="modal-content"><h2>Career Stats</h2><p>Wins: <span id="stats-wins">0</span></p><p>Perfect Rounds: <span id="stats-perfect">0</span></p><p>Highest Combo: <span id="stats-combo">0</span></p><h3>Champion Titles</h3><ul id="achievement-list" class="achievement-list"><li>None yet!</li></ul><div id="close-stats-button" class="button" tabindex="0">Close</div></div></div>
+
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const gameContainer = document.querySelector('.game-container');
+            const screens = {
+                start: document.getElementById('start-screen'),
+                lockerRoom: document.getElementById('locker-room-screen'),
+                game: document.getElementById('game-screen'),
+                gameOver: document.getElementById('game-over-screen'),
+            };
+
+            const ui = {
+                score: document.getElementById('score'),
+                comboMeter: document.getElementById('combo-meter'),
+                playerStamina: document.getElementById('player-stamina'),
+                opponentStamina: document.getElementById('opponent-stamina'),
+                questionBox: document.getElementById('question-box'),
+                answerButtons: document.getElementById('answer-buttons'),
+                timerBar: document.getElementById('timer-bar'),
+                playerLuchador: document.getElementById('player-luchador'),
+                opponentLuchador: document.getElementById('opponent-luchador'),
+                playerPortrait: document.getElementById('player-portrait'),
+                opponentPortrait: document.getElementById('opponent-portrait'),
+                opponentName: document.getElementById('opponent-name'),
+                qteContainer: document.getElementById('qte-container'),
+                qteTarget: document.getElementById('qte-target'),
+                effectsContainer: document.getElementById('effects-container'),
+                gameOverTitle: document.getElementById('game-over-title'),
+                gameOverMessage: document.getElementById('game-over-message'),
+                rematchButton: document.getElementById('rematch-button'),
+                nextMatchButton: document.getElementById('next-match-button'),
+                mainMenuButton: document.getElementById('main-menu-button'),
+            };
+            
+            const modals = {
+                bracket: document.getElementById('bracket-modal'),
+                stats: document.getElementById('stats-modal'),
+            };
+
+
+            const opponents = [
+                { id: 0, name: "Numerito", health: 80, specialty: "Basic arithmetic", mechanic: null, mask: '💩', color1: '#28a745', color2: '#17a2b8' },
+                { id: 1, name: "Ms Calculus", health: 100, specialty: "Fractions & decs", mechanic: null, mask: '😈', color1: '#c0392b', color2: '#f1c40f' },
+                { id: 2, name: "Digit Clown", health: 120, specialty: "Multi-digit ops", mechanic: 'shuffle', mask: '🤡', color1: '#8e44ad', color2: '#2ecc71' },
+                { id: 3, name: "Equation Alien", health: 150, specialty: "Linear equations", mechanic: 'fade', mask: '👽', color1: '#d35400', color2: '#bdc3c7' },
+                { id: 4, name: "Root Death", health: 180, specialty: "Roots & powers", mechanic: 'smokescreen', mask: '💀', color1: '#e83e8c', color2: '#ffffff' },
+                { id: 5, name: "Formula Robot", health: 220, specialty: "Advanced math", mechanic: 'shuffle', mask: '🤖', color1: '#6f42c1', color2: '#ffd700' },
+            ];
+
+
+            function random(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            function gcd(a, b) {
+                return b === 0 ? a : gcd(b, a % b);
+            }
+
+            function simplifyFraction(num, den) {
+                const divisor = gcd(Math.abs(num), Math.abs(den));
+                return [num / divisor, den / divisor];
+            }
+
+            function shuffleArray(array) {
+                const shuffled = [...array];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            }
+
+            function createQuestion(sentence, correctAnswer, wrongAnswers) {
+                const allOptions = [correctAnswer, ...wrongAnswers];
+                const shuffledOptions = shuffleArray(allOptions);
+                const correctIndex = shuffledOptions.indexOf(correctAnswer);
+                return {
+                    sentence,
+                    options: shuffledOptions,
+                    correct: correctIndex
+                };
+            }
+
+            function generateWrongAnswers(correct, type = 'number', count = 2) {
+                const wrong = [];
+                const variations = type === 'decimal' ? [0.01, 0.02, 0.05, 0.1, 0.2] : [1, 2, 3, 5, 10];
+                let attempts = 0;
+                const maxAttempts = 50;
+                
+                while (wrong.length < count && attempts < maxAttempts) {
+                    attempts++;
+                    const variation = variations[random(0, variations.length - 1)];
+                    const candidate = random(0, 1) ? correct + variation : correct - variation;
+                    
+                    if (type === 'decimal') {
+                        const rounded = Math.round(candidate * 100) / 100;
+                        if (rounded !== correct && rounded > 0 && !wrong.includes(rounded)) {
+                            wrong.push(rounded);
+                        }
+                    } else {
+                        const rounded = Math.round(candidate);
+                        if (rounded !== correct && rounded > 0 && !wrong.includes(rounded)) {
+                            wrong.push(rounded);
+                        }
+                    }
+                }
+                
+                while (wrong.length < count) {
+                    const backup = type === 'decimal' ? 
+                        Math.round((correct + (wrong.length + 1) * 0.1) * 100) / 100 :
+                        correct + (wrong.length + 1);
+                    if (!wrong.includes(backup)) {
+                        wrong.push(backup);
+                    } else {
+                        wrong.push(backup + 1);
+                    }
+                }
+                
+                return wrong;
+            }
+
+            function generateFractionWrongAnswers(correctNum, correctDen, count = 2) {
+                const wrong = [];
+                const [simplifiedNum, simplifiedDen] = simplifyFraction(correctNum, correctDen);
+                let attempts = 0;
+                const maxAttempts = 50;
+                
+                while (wrong.length < count && attempts < maxAttempts) {
+                    attempts++;
+                    let candidateNum, candidateDen;
+                    
+                    if (random(0, 1)) {
+                        candidateNum = simplifiedNum + random(-3, 3);
+                        candidateDen = simplifiedDen;
+                    } else {
+                        candidateNum = simplifiedNum;
+                        candidateDen = simplifiedDen + random(-3, 3);
+                    }
+                    
+                    if (candidateNum > 0 && candidateDen > 0) {
+                        const [simpNum, simpDen] = simplifyFraction(candidateNum, candidateDen);
+                        const fractionStr = simpDen === 1 ? simpNum.toString() : `${simpNum}/${simpDen}`;
+                        const correctStr = simplifiedDen === 1 ? simplifiedNum.toString() : `${simplifiedNum}/${simplifiedDen}`;
+                        
+                        if (fractionStr !== correctStr && !wrong.includes(fractionStr)) {
+                            wrong.push(fractionStr);
+                        }
+                    }
+                }
+                
+                while (wrong.length < count) {
+                    const backupNum = simplifiedNum + wrong.length + 1;
+                    const backupStr = simplifiedDen === 1 ? backupNum.toString() : `${backupNum}/${simplifiedDen}`;
+                    wrong.push(backupStr);
+                }
+                
+                return wrong;
+            }
+
+
+            function generateNewLevel0Question() {
+                const questionTypes = ['twoDigitAdd', 'twoDigitSub', 'twoDigitMultOneDigit', 'twoDigitDivOneDigit'];
+                const type = questionTypes[random(0, questionTypes.length - 1)];
+
+                switch (type) {
+                    case 'twoDigitAdd': {
+                        const a = random(15, 99);
+                        const b = random(15, 99);
+                        const correct = a + b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} + ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'twoDigitSub': {
+                        const correct = random(10, 80);
+                        const b = random(15, 60);
+                        const a = correct + b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} - ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'twoDigitMultOneDigit': {
+                        const a = random(12, 25);
+                        const b = random(2, 9);
+                        const correct = a * b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} × ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'twoDigitDivOneDigit': {
+                        const b = random(2, 9);
+                        const correct = random(4, 15);
+                        const a = b * correct;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} ÷ ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    default: {
+                        const a = random(15, 99);
+                        const b = random(15, 99);
+                        const correct = a + b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} + ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                }
+            }
+
+            function generateLevel1Question() {
+                const questionTypes = [
+                    'fractionAdd', 'fractionSub', 'fractionMult',
+                    'decimalAdd', 'decimalSub', 'decimalMult'
+                ];
+                const type = questionTypes[random(0, questionTypes.length - 1)];
+
+                switch (type) {
+                    case 'fractionAdd': {
+                        const den = random(2, 12);
+                        const num1 = random(1, den - 1);
+                        const num2 = random(1, den - num1);
+                        const resultNum = num1 + num2;
+                        const [simpNum, simpDen] = simplifyFraction(resultNum, den);
+                        const correct = simpDen === 1 ? simpNum.toString() : `${simpNum}/${simpDen}`;
+                        const wrong = generateFractionWrongAnswers(simpNum, simpDen);
+                        return createQuestion(`${num1}/${den} + ${num2}/${den} = ?`, correct, wrong);
+                    }
+                    case 'fractionSub': {
+                        const den = random(3, 12);
+                        const num1 = random(2, den - 1);
+                        const num2 = random(1, num1 - 1);
+                        const resultNum = num1 - num2;
+                        const [simpNum, simpDen] = simplifyFraction(resultNum, den);
+                        const correct = simpDen === 1 ? simpNum.toString() : `${simpNum}/${simpDen}`;
+                        const wrong = generateFractionWrongAnswers(simpNum, simpDen);
+                        return createQuestion(`${num1}/${den} - ${num2}/${den} = ?`, correct, wrong);
+                    }
+                    case 'fractionMult': {
+                        const num1 = random(1, 5), den1 = random(2, 8);
+                        const num2 = random(1, 5), den2 = random(2, 8);
+                        const resultNum = num1 * num2;
+                        const resultDen = den1 * den2;
+                        const [simpNum, simpDen] = simplifyFraction(resultNum, resultDen);
+                        const correct = simpDen === 1 ? simpNum.toString() : `${simpNum}/${simpDen}`;
+                        const wrong = generateFractionWrongAnswers(simpNum, simpDen);
+                        return createQuestion(`${num1}/${den1} × ${num2}/${den2} = ?`, correct, wrong);
+                    }
+                    case 'decimalAdd': {
+                        const a = (random(10, 99) / 10);
+                        const b = (random(10, 99) / 10);
+                        const correct = Math.round((a + b) * 100) / 100;
+                        const wrong = generateWrongAnswers(correct, 'decimal');
+                        return createQuestion(`${a} + ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'decimalSub': {
+                        const a = (random(20, 99) / 10);
+                        const b = (random(10, Math.floor(a * 10) - 1) / 10);
+                        const correct = Math.round((a - b) * 100) / 100;
+                        const wrong = generateWrongAnswers(correct, 'decimal');
+                        return createQuestion(`${a} - ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'decimalMult': {
+                        const a = (random(2, 9) / 10);
+                        const b = (random(2, 9) / 10);
+                        const correct = Math.round((a * b) * 100) / 100;
+                        const wrong = generateWrongAnswers(correct, 'decimal');
+                        return createQuestion(`${a} × ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    default: {
+                        const a = (random(10, 99) / 10);
+                        const b = (random(10, 99) / 10);
+                        const correct = Math.round((a + b) * 100) / 100;
+                        const wrong = generateWrongAnswers(correct, 'decimal');
+                        return createQuestion(`${a} + ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                }
+            }
+
+            function generateLevel2Question() {
+                const questionTypes = ['multDigitMult', 'multDigitDiv', 'largeAdd', 'largeSub'];
+                const type = questionTypes[random(0, questionTypes.length - 1)];
+
+                switch (type) {
+                    case 'multDigitMult': {
+                        const a = random(15, 99);
+                        const b = random(12, 35);
+                        const correct = a * b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} × ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'multDigitDiv': {
+                        const b = random(12, 25);
+                        const correct = random(15, 50);
+                        const a = b * correct;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} ÷ ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'largeAdd': {
+                        const a = random(150, 999);
+                        const b = random(150, 999);
+                        const correct = a + b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} + ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'largeSub': {
+                        const correct = random(100, 500);
+                        const b = random(100, 400);
+                        const a = correct + b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} - ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    default: {
+                        const a = random(15, 99);
+                        const b = random(12, 35);
+                        const correct = a * b;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} × ${b} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                }
+            }
+
+            function generateLevel3Question() {
+                const questionTypes = ['oneStepLinear', 'twoStepLinear', 'distributive'];
+                const type = questionTypes[random(0, questionTypes.length - 1)];
+
+                switch (type) {
+                    case 'oneStepLinear': {
+                        const x = random(2, 20);
+                        const a = random(2, 12);
+                        const c = a * x;
+                        const correct = x;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a}x = ${c}; x?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'twoStepLinear': {
+                        const x = random(3, 15);
+                        const a = random(2, 8);
+                        const b = random(5, 25);
+                        const c = a * x + b;
+                        const correct = x;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a}x + ${b} = ${c}; x?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'distributive': {
+                        const x = random(2, 10);
+                        const a = random(2, 6);
+                        const b = random(1, 8);
+                        const c = a * (x + b);
+                        const correct = x;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a}(x + ${b}) = ${c}; x?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    default: {
+                        // Fallback case
+                        const x = random(2, 20);
+                        const a = random(2, 12);
+                        const c = a * x;
+                        const correct = x;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a}x = ${c}; x?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                }
+            }
+
+            function generateLevel4Question() {
+                const questionTypes = ['perfectSquare', 'squareRoot', 'simplePower', 'cubeRoot'];
+                const type = questionTypes[random(0, questionTypes.length - 1)];
+
+                switch (type) {
+                    case 'perfectSquare': {
+                        const base = random(2, 15);
+                        const correct = base * base;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${base}² = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'squareRoot': {
+                        const correct = random(3, 12);
+                        const square = correct * correct;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`√${square} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'simplePower': {
+                        const base = random(2, 6);
+                        const exp = random(3, 4);
+                        const correct = Math.pow(base, exp);
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${base}^${exp} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'cubeRoot': {
+                        const correct = random(2, 6);
+                        const cube = correct * correct * correct;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`∛${cube} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    default: {
+                        const base = random(2, 15);
+                        const correct = base * base;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${base}² = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                }
+            }
+
+            function generateLevel5Question() {
+                const questionTypes = ['simpleLog', 'factorial', 'powerEquation', 'complexArithmetic'];
+                const type = questionTypes[random(0, questionTypes.length - 1)];
+
+                switch (type) {
+                    case 'simpleLog': {
+                        const base = random(2, 5);
+                        const correct = random(2, 4);
+                        const result = Math.pow(base, correct);
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`log₂(${result}) = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'factorial': {
+                        const n = random(4, 7);
+                        let correct = 1;
+                        for (let i = 1; i <= n; i++) correct *= i;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${n}! = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'powerEquation': {
+                        const x = random(2, 8);
+                        const exp = random(2, 3);
+                        const base = random(2, 4);
+                        const result = Math.pow(base, exp);
+                        const c = result * x;
+                        const correct = x;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${base}^${exp} × x = ${c}; x?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    case 'complexArithmetic': {
+                        const a = random(5, 15);
+                        const b = random(2, 8);
+                        const c = random(3, 7);
+                        const correct = a * b + c;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${a} × ${b} + ${c} = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                    default: {
+                        const n = random(4, 7);
+                        let correct = 1;
+                        for (let i = 1; i <= n; i++) correct *= i;
+                        const wrong = generateWrongAnswers(correct, 'number');
+                        return createQuestion(`${n}! = ?`, correct.toString(), wrong.map(w => w.toString()));
+                    }
+                }
+            }
+
+
+            const questionGenerators = {
+                0: generateNewLevel0Question,
+                1: generateLevel1Question,
+                2: generateLevel2Question,
+                3: generateLevel3Question,
+                4: generateLevel4Question,
+                5: generateLevel5Question
+            };
+
+
+            function getRandomQuestion(level) {
+                if (questionGenerators[level]) {
+                    const question = questionGenerators[level]();
+                    if (question && typeof question === 'object') {
+                        question.id = `${level}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                        return question;
+                    } else {
+                        console.error('Question generator returned invalid result for level', level);
+                        return {
+                            sentence: "2 + 2 = ?",
+                            options: ["4", "3", "5"],
+                            correct: 0,
+                            id: `fallback_${Date.now()}`
+                        };
+                    }
+                }
+                return null;
+            }
+
+            const achievements = {
+                "PERFECT_CALCULATOR": { name: "Perfect Calculator", description: "Beat Ms Calculus without taking damage." },
+                "COMBO_KING": { name: "Combo King", description: "Achieve a 20x combo." },
+                "LEGENDARY": { name: "Legendary", description: "Complete the Tournament." },
+            };
+
+            function clearMechanicTimers() {
+              state.mechanicTimers.forEach(id => clearTimeout(id));
+              state.mechanicTimers = [];
+            }
+
+
+            const getInitialState = () => ({
+                currentScreen: 'start', score: 0, combo: 0, maxCombo: 0, playerHealth: 100, opponentHealth: 100,
+                currentOpponentIndex: 0, currentQuestion: null, canAnswer: true, timerInterval: null, timerRemaining: 0,
+                wins: 0, perfectWins: 0, earnedAchievements: new Set(),
+                unlockedMasks: new Set(['👹']), playerMask: '👹', mechanicTimers: []
+            });
+
+            let state = getInitialState();
+
+
+            function showScreen(screenName) {
+                Object.values(screens).forEach(screen => screen.classList.add('hidden'));
+                if (screens[screenName]) {
+                    screens[screenName].classList.remove('hidden');
+                    state.currentScreen = screenName;
+                }
+            }
+
+
+            function startMatch(opponentIndex) {
+                state.currentOpponentIndex = opponentIndex;
+                const opponent = opponents[opponentIndex];
+                state.playerHealth = 100;
+                state.opponentHealth = opponent.health;
+                state.combo = 0;
+                showScreen('game');
+                setupOpponent(opponent);
+                updateUI();
+                nextQuestion();
+            }
+
+            function setupOpponent(opponent) {
+                ui.opponentName.textContent = opponent.name;
+                ui.opponentPortrait.textContent = opponent.mask;
+                ui.opponentPortrait.style.backgroundColor = opponent.color1;
+                
+                const opponentMask = ui.opponentLuchador.querySelector('.luchador-mask');
+                const opponentBody = ui.opponentLuchador.querySelector('.luchador-body');
+                const maskIcon = ui.opponentLuchador.querySelector('.mask-icon');
+                
+                opponentMask.style.backgroundColor = opponent.color1;
+                opponentBody.style.backgroundColor = opponent.color2;
+                maskIcon.textContent = opponent.mask;
+            }
+
+            function nextQuestion() {
+                clearInterval(state.timerInterval);
+                state.canAnswer = false;
+                ui.questionBox.style.opacity = '0.5';
+                ui.questionBox.style.filter = 'blur(2px)';
+                
+                // Create invisible placeholder buttons to maintain layout
+                ui.answerButtons.innerHTML = '';
+                for (let i = 0; i < 3; i++) {
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'answer-button button';
+                    placeholder.style.visibility = 'hidden';
+                    placeholder.textContent = 'Placeholder';
+                    ui.answerButtons.appendChild(placeholder);
+                }
+                
+                setTimeout(() => {
+                    state.currentQuestion = getRandomQuestion(state.currentOpponentIndex);
+                    
+                    if (!state.currentQuestion) {
+                        console.error('Failed to generate question for level', state.currentOpponentIndex);
+                        return;
+                    }
+                    
+                    showQuestion();
+                    startTimer();
+                    
+                    const opponent = opponents[state.currentOpponentIndex];
+                    if (opponent.mechanic) applyOpponentMechanic(opponent.mechanic);
+                    
+                    ui.questionBox.style.opacity = '1';
+                    ui.questionBox.style.filter = 'none';
+                    state.canAnswer = true;
+                }, 500);
+            }
+
+            function showQuestion() {
+                const { sentence, options } = state.currentQuestion;
+                ui.questionBox.textContent = sentence;
+                ui.answerButtons.innerHTML = '';
+                
+                options.forEach((option, index) => {
+                    const button = document.createElement('div');
+                    button.className = 'answer-button button';
+                    button.textContent = option;
+                    button.tabIndex = 0;
+                    button.addEventListener('click', () => selectAnswer(index));
+                    ui.answerButtons.appendChild(button);
+                });
+            }
+
+            function selectAnswer(index) {
+                if (!state.canAnswer) return;
+                state.canAnswer = false;
+                clearInterval(state.timerInterval);
+                
+                const buttons = Array.from(ui.answerButtons.querySelectorAll('.answer-button'));
+                const selectedButton = buttons[index];
+                const correctIndex = state.currentQuestion.correct;
+                const isCorrect = index === correctIndex;
+                
+                buttons.forEach((button, i) => {
+                    if (i === correctIndex) button.classList.add('correct');
+                    else if (i === index && !isCorrect) button.classList.add('incorrect');
+                    else button.style.opacity = '0.5';
+                });
+                
+                setTimeout(() => {
+                    if (isCorrect) handleCorrectAnswer();
+                    else handleIncorrectAnswer();
+                }, 800);
+            }
+
+            function startTimer() {
+                const baseTime = [10, 12, 15, 20, 25, 30];
+                const timeLimit = baseTime[state.currentOpponentIndex] || 30;
+                state.timerRemaining = timeLimit;
+                
+                ui.timerBar.style.width = '100%';
+                
+                state.timerInterval = setInterval(() => {
+                    state.timerRemaining--;
+                    const percentage = (state.timerRemaining / timeLimit) * 100;
+                    ui.timerBar.style.width = `${Math.max(0, percentage)}%`;
+                    
+                    if (state.timerRemaining <= 0) {
+                        clearInterval(state.timerInterval);
+                        if (state.canAnswer) handleTimeOut();
+                    }
+                }, 1000);
+            }
+
+            function handleTimeOut() {
+                state.canAnswer = false;
+                state.combo = 0;
+                state.playerHealth = Math.max(0, state.playerHealth - 20);
+                
+                const feedbackEl = document.createElement('div');
+                feedbackEl.className = 'feedback-text';
+                feedbackEl.style.cssText = 'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: var(--font-display); font-size: 2.5rem; color: var(--ropes-color); text-shadow: 3px 3px 0px #000; z-index: 101; pointer-events: none; animation: incorrectoPop 1.5s ease-out forwards;';
+                feedbackEl.textContent = 'Time\'s Up!';
+                ui.effectsContainer.appendChild(feedbackEl);
+                setTimeout(() => feedbackEl.remove(), 1500);
+                
+                updateUI();
+                setTimeout(() => {
+                    checkGameOver();
+                    if (state.playerHealth > 0) nextQuestion();
+                }, 1500);
+            }
+
+            function updateUI() {
+                ui.score.textContent = state.score;
+                ui.playerStamina.style.width = `${state.playerHealth}%`;
+                
+                const opponent = opponents[state.currentOpponentIndex];
+                if (opponent && opponent.health) {
+                    const opponentHealthPercentage = (state.opponentHealth / opponent.health) * 100;
+                    ui.opponentStamina.style.width = `${Math.max(0, opponentHealthPercentage)}%`;
+                } else {
+                    ui.opponentStamina.style.width = `${state.opponentHealth}%`;
+                }
+                
+                if (state.combo > 1) {
+                    ui.comboMeter.textContent = `${state.combo}x COMBO!`;
+                    ui.comboMeter.style.animation = 'comboPop 0.3s ease-out';
+                    setTimeout(() => ui.comboMeter.style.animation = '', 300);
+                } else {
+                    ui.comboMeter.textContent = '';
+                }
+                
+                if (state.combo > state.maxCombo) state.maxCombo = state.combo;
+            }
+
+            function applyOpponentMechanic(mechanic) {
+                switch (mechanic) {
+                    case 'shuffle':
+                        setTimeout(() => {
+                            if (state.timerRemaining > 5) {
+                                state.timerRemaining = Math.max(5, state.timerRemaining - 8);
+                            }
+                        }, 3000);
+                        break;
+                    case 'fade':
+                        break;
+                    case 'smokescreen':
+                        setTimeout(() => {
+                            if (state.timerRemaining > 3) {
+                                state.timerRemaining = Math.max(3, state.timerRemaining - 5);
+                            }
+                        }, 2000);
+                        break;
+                }
+            }
+
+            function handleCorrectAnswer() {
+                const timeBonus = Math.max(0, state.timerRemaining * 2);
+                const basePoints = 100;
+                state.combo++;
+
+                ui.playerLuchador.style.animation = 'attackLunge 0.2s ease-out forwards';
+                ui.playerLuchador.addEventListener('animationend', () => ui.playerLuchador.style.animation = '', { once: true });
+
+                setTimeout(() => startQTE(basePoints, timeBonus), 150);
+            }
+
+            function handleIncorrectAnswer() {
+                state.combo = 0;
+                state.playerHealth = Math.max(0, state.playerHealth - 15);
+                
+                const feedbackEl = document.createElement('div');
+                feedbackEl.id = 'incorrecto-feedback';
+                feedbackEl.className = 'feedback-text';
+                feedbackEl.textContent = 'Incorrect!';
+                ui.effectsContainer.appendChild(feedbackEl);
+                setTimeout(() => feedbackEl.remove(), 1500);
+
+                ui.opponentLuchador.style.animation = 'opponentAttackLunge 0.2s ease-out forwards';
+                ui.opponentLuchador.addEventListener('animationend', () => ui.opponentLuchador.style.animation = '', { once: true });
+                
+                setTimeout(() => {
+                    gameContainer.style.animation = 'screenShake 0.4s';
+                    gameContainer.addEventListener('animationend', () => gameContainer.style.animation = '', { once: true });
+                    ui.playerStamina.classList.add('damaged');
+                    setTimeout(() => ui.playerStamina.classList.remove('damaged'), 200);
+                }, 150);
+
+                updateUI();
+                
+                setTimeout(() => {
+                    checkGameOver();
+                    if (state.playerHealth > 0) nextQuestion();
+                }, 1500);
+            }
+
+            function startQTE(basePoints, timeBonus) {
+                ui.qteContainer.classList.remove('hidden');
+                const opponentRect = ui.opponentLuchador.getBoundingClientRect();
+                ui.qteContainer.style.left = `${opponentRect.left + opponentRect.width / 2 - 60}px`;
+                ui.qteContainer.style.top = `${opponentRect.top + opponentRect.height * 0.7 - 60}px`;
+                
+                const qteCircle = ui.qteTarget.querySelector('#qte-circle');
+                qteCircle.style.animation = 'none';
+                void qteCircle.offsetWidth;
+                qteCircle.style.animation = 'qteShrink 0.6s linear forwards';
+
+                const qteClickHandler = () => {
+                    ui.qteTarget.removeEventListener('click', qteClickHandler);
+                    handleQTEClick(basePoints, timeBonus);
+                };
+                ui.qteTarget.addEventListener('click', qteClickHandler);
+                
+                setTimeout(() => {
+                    if (!ui.qteContainer.classList.contains('hidden')) {
+                        ui.qteTarget.removeEventListener('click', qteClickHandler);
+                        handleQTEClick(basePoints, timeBonus, true);
+                    }
+                }, 600);
+            }
+
+            function handleQTEClick(basePoints, timeBonus, missed = false) {
+                const circle = ui.qteTarget.querySelector('#qte-circle');
+                const currentScale = circle.getBoundingClientRect().width / ui.qteTarget.getBoundingClientRect().width;
+                ui.qteContainer.classList.add('hidden');
+                circle.style.animation = 'none';
+
+                let qteBonus = 0;
+                const baseDamage = 10 + (state.currentOpponentIndex * 2);
+                let damage = baseDamage;
+                let resultText = "Correct!";
+                
+                const qteResultEl = document.createElement('div');
+                qteResultEl.id = 'qte-result';
+                qteResultEl.className = 'feedback-text';
+                qteResultEl.style.color = '#cccccc';
+                
+                if (!missed) {
+                    if (currentScale < 0.35) { qteBonus = 50; damage = baseDamage * 2.5; resultText = "Perfect!"; qteResultEl.style.color = 'gold'; } 
+                    else if (currentScale < 0.7) { qteBonus = 25; damage = baseDamage * 1.5; resultText = "Good!"; qteResultEl.style.color = 'lightgreen'; }
+                }
+                
+                const totalPoints = basePoints + timeBonus + qteBonus;
+                const comboMultiplier = state.combo > 1 ? state.combo : 1;
+                state.score += totalPoints * comboMultiplier;
+
+                state.opponentHealth = Math.max(0, state.opponentHealth - damage);
+                
+                qteResultEl.textContent = resultText;
+                ui.effectsContainer.appendChild(qteResultEl);
+                setTimeout(() => qteResultEl.remove(), 1000);
+                
+                ui.opponentLuchador.style.animation = 'takeDamage 0.5s';
+                ui.opponentLuchador.addEventListener('animationend', () => ui.opponentLuchador.style.animation = '', { once: true });
+                if(damage > 10) {
+                    gameContainer.style.animation = 'screenShake 0.4s';
+                    gameContainer.addEventListener('animationend', () => gameContainer.style.animation = '', { once: true });
+                }
+                
+                updateUI();
+                
+                setTimeout(() => {
+                    checkGameOver();
+                    if (state.opponentHealth > 0) nextQuestion();
+                }, 1000);
+            }
+
+            function checkGameOver() {
+                if (state.playerHealth <= 0) endGame(false);
+                else if (state.opponentHealth <= 0) endGame(true);
+            }
+
+            function endGame(playerWon) {
+                clearInterval(state.timerInterval);
+                ui.rematchButton.style.display = 'none';
+                ui.nextMatchButton.style.display = 'none';
+                ui.mainMenuButton.style.display = 'none';
+                
+                if (playerWon) {
+                    if (state.playerHealth === 100 && state.currentOpponentIndex === 1) {
+                        state.earnedAchievements.add("PERFECT_CALCULATOR");
+                        state.perfectWins++;
+                    }
+                    const defeatedOpponent = opponents[state.currentOpponentIndex];
+                    state.unlockedMasks.add(defeatedOpponent.mask);
+                    state.wins++;
+                    ui.gameOverTitle.textContent = "VICTORY!";
+                    ui.gameOverMessage.textContent = `You defeated ${opponents[state.currentOpponentIndex].name}!`;
+                    
+                    showScreen('gameOver');
+                    
+                    if (state.currentOpponentIndex >= opponents.length - 1) {
+                        setTimeout(() => {
+                            showGameOverScreen();
+                        }, 2000);
+                    } else {
+                        setTimeout(() => {
+                            state.currentOpponentIndex++;
+                            setupLockerRoom();
+                        }, 2000);
+                    }
+                } else {
+                    ui.gameOverTitle.textContent = "DEFEAT!";
+                    ui.gameOverMessage.textContent = `You were pinned by ${opponents[state.currentOpponentIndex].name}.`;
+                    ui.rematchButton.style.display = 'inline-block';
+                    showScreen('gameOver');
+                }
+                checkAchievements();
+            }
+
+            function checkAchievements() {
+                if (state.maxCombo >= 20) state.earnedAchievements.add("COMBO_KING");
+                if (state.currentOpponentIndex >= opponents.length - 1 && state.opponentHealth <= 0) {
+                    state.earnedAchievements.add("LEGENDARY");
+                }
+            }
+
+            function showGameOverScreen() {
+                showScreen('gameOver');
+                clearMechanicTimers();
+                if (state.currentOpponentIndex < opponents.length - 1) {
+                    ui.nextMatchButton.style.display = 'inline-block';
+                    ui.nextMatchButton.textContent = 'Next Opponent';
+                } else {
+                    ui.gameOverTitle.textContent = "🏆 CHAMPION! 🏆";
+                    ui.gameOverMessage.textContent = "You've won the tournament!";
+                    ui.mainMenuButton.style.display = 'inline-block';
+                }
+            }
+            
+            function setupLockerRoom() {
+                const nextOpponent = opponents[state.currentOpponentIndex];
+                if(nextOpponent) {
+                    document.getElementById('next-opponent-name').textContent = nextOpponent.name;
+                    document.getElementById('next-opponent-specialty').textContent = nextOpponent.specialty;
+                }
+                setupCustomization();
+                showScreen('lockerRoom');
+            }
+
+
+            document.getElementById('start-button').addEventListener('click', () => { state = getInitialState(); setupLockerRoom(); });
+            document.getElementById('continue-to-match-button').addEventListener('click', () => startMatch(state.currentOpponentIndex));
+            ui.rematchButton.addEventListener('click', () => startMatch(state.currentOpponentIndex));
+            ui.nextMatchButton.addEventListener('click', () => { 
+                state.currentOpponentIndex++; 
+                setupLockerRoom(); 
+            });
+
+            ui.mainMenuButton.addEventListener('click', () => { state = getInitialState(); showScreen('start'); });
+            
+
+            const openModal = (modal) => { modal.classList.add('active'); modal.querySelector('.button, .swatch')?.focus(); };
+            const closeModal = (modal) => modal.classList.remove('active');
+            
+            document.getElementById('bracket-button').addEventListener('click', () => {
+                const list = document.getElementById('bracket-list');
+                list.innerHTML = '';
+                opponents.forEach((opp, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'bracket-item';
+                    if(index < state.currentOpponentIndex) li.classList.add('defeated');
+                    if(index === state.currentOpponentIndex) li.classList.add('current');
+                    li.innerHTML = `<span>${opp.name}</span> <span>${index < state.currentOpponentIndex ? 'DEFEATED' : 'UPCOMING'}</span>`;
+                    list.appendChild(li);
+                });
+                openModal(modals.bracket);
+            });
+            document.getElementById('close-bracket-button').addEventListener('click', () => closeModal(modals.bracket));
+
+
+            
+            document.getElementById('stats-button').addEventListener('click', () => {
+                document.getElementById('stats-wins').textContent = state.wins;
+                document.getElementById('stats-perfect').textContent = state.perfectWins;
+                document.getElementById('stats-combo').textContent = state.maxCombo;
+                const achList = document.getElementById('achievement-list');
+                achList.innerHTML = '';
+                if(state.earnedAchievements.size === 0) achList.innerHTML = '<li>None yet!</li>';
+                else state.earnedAchievements.forEach(achId => achList.insertAdjacentHTML('beforeend', `<li>${achievements[achId].name}: ${achievements[achId].description}</li>`));
+                openModal(modals.stats);
+            });
+            document.getElementById('close-stats-button').addEventListener('click', () => closeModal(modals.stats));
+
+
+
+
+            function updatePlayerAppearance() {
+                const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--player-color-primary');
+                const secondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--player-color-secondary');
+                ui.playerPortrait.style.backgroundColor = primaryColor;
+                ui.playerPortrait.textContent = state.playerMask;
+                ui.playerLuchador.querySelector('.luchador-mask').style.backgroundColor = primaryColor;
+                ui.playerLuchador.querySelector('.mask-icon').textContent = state.playerMask;
+                ui.playerLuchador.querySelector('.luchador-body').style.backgroundColor = secondaryColor;
+            }
+
+            function setupCustomization() {
+                const colors = {
+                    primary: { "Lucha Blue":'#0d6efd', "Danger Red":'#dc3545', "Purple Pain":'#6f42c1', "Orange Fury":'#fd7e14', "Minty Fresh":'#20c997' },
+                    secondary: { "Gold Standard":'#ffc107', "Steel Gray":'#6c757d', "Cyber Cyan":'#0dcaf0', "Power Pink":'#d63384', "Cloudy Day":'#f8f9fa' }
+                };
+                
+                const createSwatches = (containerId, items, isColor, property) => {
+                    const container = document.getElementById(containerId);
+                    container.innerHTML = '';
+                    Object.entries(items).forEach(([name, value]) => {
+                        const swatch = document.createElement('div');
+                        swatch.className = 'swatch';
+                        swatch.tabIndex = 0;
+                        swatch.title = name;
+                        if(isColor) swatch.style.backgroundColor = value;
+                        else swatch.textContent = value;
+                        
+                        swatch.addEventListener('click', () => {
+                            if (isColor) document.documentElement.style.setProperty(property, value);
+                            else state.playerMask = value;
+                            container.querySelector('.selected')?.classList.remove('selected');
+                            swatch.classList.add('selected');
+                            updatePlayerAppearance();
+                        });
+                        container.appendChild(swatch);
+                    });
+                };
+
+                createSwatches('primary-swatches', colors.primary, true, '--player-color-primary');
+                createSwatches('secondary-swatches', colors.secondary, true, '--player-color-secondary');
+                createSwatches('mask-swatches', Object.fromEntries(Array.from(state.unlockedMasks).map(m => [m, m])), false);
+                
+                document.querySelector('#primary-swatches .swatch').classList.add('selected');
+                document.querySelector('#secondary-swatches .swatch').classList.add('selected');
+                const selectedMask = Array.from(document.querySelectorAll('#mask-swatches .swatch')).find(s => s.textContent === state.playerMask);
+                if (selectedMask) selectedMask.classList.add('selected'); else document.querySelector('#mask-swatches .swatch').classList.add('selected');
+
+                updatePlayerAppearance();
+            }
+            
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    if (document.activeElement && typeof document.activeElement.click === 'function') {
+                        e.preventDefault();
+                        document.activeElement.click();
+                    }
+                }
+
+                if (state.currentScreen === 'game') {
+                    if (e.code === 'Space' && !ui.qteContainer.classList.contains('hidden')) {
+                        ui.qteTarget.click();
+                    }
+                    if (!state.canAnswer) return;
+                    const answerButtons = Array.from(ui.answerButtons.querySelectorAll('.answer-button'));
+                    if (e.key >= '1' && e.key <= '3') {
+                        const button = answerButtons[parseInt(e.key) - 1];
+                        if (button && button.style.display !== 'none') button.click();
+                    }
+                }
+            });
+
+
+            function init() {
+                showScreen('start');
+            }
+
+            init();
+        });
+    </script>
+</body>
+</html>

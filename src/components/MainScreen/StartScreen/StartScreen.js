@@ -8,6 +8,7 @@ import MonkeyImg from '../../../images/monkey.png';
 import TrainImg from '../../../images/train.png';
 import BulbImg from '../../../images/bulb.png';
 import CastleImg from '../../../images/defend_the_castle_banner.png';
+import MFCImg from '../../../images/math_fight_club_banner.png';
 import GardenImg from '../../../images/garden_master_banner.png';
 import VeganImg from '../../../images/vegan_quest_banner.png';
 import FlagMatchImg from '../../../images/flag_match_banner.jpg';
@@ -106,6 +107,17 @@ const StartScreen = (props) => {
                 <button 
                     className={classes.CrystalBallButton} 
                     onClick={() => window.open('/GardenMaster', '_blank')}>Play Garden Master</button>
+            </div>
+
+            <div className={classes.BenefitsText}>
+                <div role="img">
+                    <a href="/MathFightClub" target="_blank"><img className={classes.VeganImage} src={MFCImg} alt="" /></a>
+                </div>
+                <h3>Math Fight Club</h3>
+                <p>Solve math operations to win wrestling matches! Pick your own look, then fight math opponents in the ring. Answer questions to attack, earn points and collect your opponents' masks.</p>
+                <button 
+                    className={classes.CrystalBallButton} 
+                    onClick={() => window.open('/MathFightClub', '_blank')}>Play Math Fight Club</button>
             </div>
 
             <div className={classes.BenefitsText}>
