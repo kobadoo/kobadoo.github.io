@@ -1293,10 +1293,28 @@
                     case 'shuffle':
                         const shuffleTimer = setTimeout(() => {
                             if (state.timerRemaining > 5) {
+                                // Add visual feedback for the mechanic
+                                ui.timerBar.style.backgroundColor = '#ff6b6b';
+                                ui.timerBar.style.boxShadow = '0 0 10px #ff6b6b';
+                                
                                 state.timerRemaining = Math.max(5, state.timerRemaining - 8);
                                 // Update timer bar immediately when mechanic triggers
                                 const percentage = (state.timerRemaining / timeLimit) * 100;
                                 ui.timerBar.style.width = `${Math.max(0, percentage)}%`;
+                                
+                                // Reset timer bar color after a short delay
+                                setTimeout(() => {
+                                    ui.timerBar.style.backgroundColor = '';
+                                    ui.timerBar.style.boxShadow = '';
+                                }, 500);
+                                
+                                // Show mechanic feedback text
+                                const mechanicFeedback = document.createElement('div');
+                                mechanicFeedback.className = 'feedback-text';
+                                mechanicFeedback.style.cssText = 'position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); font-family: var(--font-display); font-size: 2rem; color: #ff6b6b; text-shadow: 3px 3px 0px #000; z-index: 101; pointer-events: none; animation: incorrectoPop 1.5s ease-out forwards;';
+                                mechanicFeedback.textContent = 'SHUFFLE!';
+                                ui.effectsContainer.appendChild(mechanicFeedback);
+                                setTimeout(() => mechanicFeedback.remove(), 1500);
                             }
                         }, 3000);
                         state.mechanicTimers.push(shuffleTimer);
@@ -1306,10 +1324,28 @@
                     case 'smokescreen':
                         const smokeTimer = setTimeout(() => {
                             if (state.timerRemaining > 3) {
+                                // Add visual feedback for the mechanic
+                                ui.timerBar.style.backgroundColor = '#ff6b6b';
+                                ui.timerBar.style.boxShadow = '0 0 10px #ff6b6b';
+                                
                                 state.timerRemaining = Math.max(3, state.timerRemaining - 5);
                                 // Update timer bar immediately when mechanic triggers
                                 const percentage = (state.timerRemaining / timeLimit) * 100;
                                 ui.timerBar.style.width = `${Math.max(0, percentage)}%`;
+                                
+                                // Reset timer bar color after a short delay
+                                setTimeout(() => {
+                                    ui.timerBar.style.backgroundColor = '';
+                                    ui.timerBar.style.boxShadow = '';
+                                }, 500);
+                                
+                                // Show mechanic feedback text
+                                const smokeFeedback = document.createElement('div');
+                                smokeFeedback.className = 'feedback-text';
+                                smokeFeedback.style.cssText = 'position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); font-family: var(--font-display); font-size: 2rem; color: #ff6b6b; text-shadow: 3px 3px 0px #000; z-index: 101; pointer-events: none; animation: incorrectoPop 1.5s ease-out forwards;';
+                                smokeFeedback.textContent = 'SMOKE!';
+                                ui.effectsContainer.appendChild(smokeFeedback);
+                                setTimeout(() => smokeFeedback.remove(), 1500);
                             }
                         }, 2000);
                         state.mechanicTimers.push(smokeTimer);
