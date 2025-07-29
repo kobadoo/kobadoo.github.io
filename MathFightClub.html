@@ -585,8 +585,7 @@
             <p id="game-over-message" style="font-size: 1.5rem; font-weight: 600;"></p>
             <div id="rematch-button" class="button" tabindex="0">Rematch</div>
             <div id="next-match-button" class="button" tabindex="0">Next Opponent</div>
-            <div id="endless-rumble-button" class="button" tabindex="0">Endless Rumble</div>
-            <div id="main-menu-button" class="button" tabindex="0">Main Menu</div>
+            <div id="main-menu-button" class="button" tabindex="0">Play Again</div>
         </div>
         
         <!-- Effects Containers -->
@@ -1409,6 +1408,7 @@
                 ui.rematchButton.style.display = 'none';
                 ui.nextMatchButton.style.display = 'none';
                 ui.endlessRumbleButton.style.display = 'none';
+                ui.mainMenuButton.style.display = 'none';
                 
                 if (playerWon) {
                     if (state.playerHealth === 100 && !state.isEndlessMode && state.currentOpponentIndex === 1) {
@@ -1443,7 +1443,6 @@
                     ui.gameOverTitle.textContent = "DEFEAT!";
                     ui.gameOverMessage.textContent = `You were pinned by ${opponents[state.currentOpponentIndex].name}.`;
                     ui.rematchButton.style.display = 'inline-block';
-                    ui.mainMenuButton.style.display = 'none';
                     showScreen('gameOver');
                 }
                 checkAchievements();
