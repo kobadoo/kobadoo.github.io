@@ -1139,6 +1139,7 @@
 
             function nextQuestion() {
                 clearInterval(state.timerInterval);
+                clearMechanicTimers();
                 state.canAnswer = false;
                 ui.questionBox.style.opacity = '0.5';
                 ui.questionBox.style.filter = 'blur(2px)';
@@ -1274,20 +1275,22 @@
             function applyOpponentMechanic(mechanic) {
                 switch (mechanic) {
                     case 'shuffle':
-                        setTimeout(() => {
+                        const shuffleTimer = setTimeout(() => {
                             if (state.timerRemaining > 5) {
                                 state.timerRemaining = Math.max(5, state.timerRemaining - 8);
                             }
                         }, 3000);
+                        state.mechanicTimers.push(shuffleTimer);
                         break;
                     case 'fade':
                         break;
                     case 'smokescreen':
-                        setTimeout(() => {
+                        const smokeTimer = setTimeout(() => {
                             if (state.timerRemaining > 3) {
                                 state.timerRemaining = Math.max(3, state.timerRemaining - 5);
                             }
                         }, 2000);
+                        state.mechanicTimers.push(smokeTimer);
                         break;
                 }
             }
