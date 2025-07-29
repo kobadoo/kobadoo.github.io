@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Math Fight Game</title>
+    <title>Math Fight Club</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
@@ -513,7 +513,7 @@
 
         <!-- Start Screen -->
         <div id="start-screen" class="screen">
-            <h1>Math Fight Game</h1>
+            <h1>Math Fight Club</h1>
             <div style="font-size: 5rem; margin: 20px;">🤓</div>
             <div id="start-button" class="button" tabindex="0">Start Tournament</div>
         </div>
@@ -631,7 +631,6 @@
                 gameOverMessage: document.getElementById('game-over-message'),
                 rematchButton: document.getElementById('rematch-button'),
                 nextMatchButton: document.getElementById('next-match-button'),
-                endlessRumbleButton: document.getElementById('endless-rumble-button'),
                 mainMenuButton: document.getElementById('main-menu-button'),
             };
             
@@ -1407,7 +1406,6 @@
                 clearInterval(state.timerInterval);
                 ui.rematchButton.style.display = 'none';
                 ui.nextMatchButton.style.display = 'none';
-                ui.endlessRumbleButton.style.display = 'none';
                 ui.mainMenuButton.style.display = 'none';
                 
                 if (playerWon) {
@@ -1493,12 +1491,7 @@
                     setupLockerRoom(); 
                 }
             });
-            ui.endlessRumbleButton.addEventListener('click', () => {
-                state.isEndlessMode = true;
-                ui.gameOverTitle.textContent = "Endless Rumble";
-                ui.gameOverMessage.textContent = `Score: ${state.score}`;
-                startMatch(Math.floor(Math.random() * opponents.length));
-            });
+
             ui.mainMenuButton.addEventListener('click', () => { state = getInitialState(); showScreen('start'); });
             
 
