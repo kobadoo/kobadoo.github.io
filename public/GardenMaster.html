@@ -1039,6 +1039,11 @@
             clearTimeout(eventTimeout); clearTimeout(nextEventTimer);
             eventPreview.classList.remove('visible');
             oneTimeHelpers = { specialWater: false, gopher: false, sunbeam: false };
+
+            currentLevel = LEVELS.start;
+            nextLevelScore = LEVELS.scoreStep;
+            CONSTANTS.GARDEN_HEALTH_DEPLETE_RATE = 40;
+            EVENT_BASE_COOLDOWN = 12000;
             
             playerState.maxWater = getUpgradeValue('waterCap');
             playerState.water = playerState.maxWater;
