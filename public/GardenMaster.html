@@ -1537,12 +1537,13 @@
         }
         
         function setGameState(newState) {
+            const previousState = gameState;
             gameState = newState;
             [startScreen, gameOverScreen, nurseryScreen].forEach(o => o.style.display = 'none');
             switch(newState) {
                 case 'PLAYING':
-                    lastSeedScore = 0; // Reset for new game
-                    if (lastGameStateBeforeNursery === 'PLAYING') {
+                    lastSeedScore = 0;
+                    if (previousState === 'NURSERY' && lastGameStateBeforeNursery === 'PLAYING') {
                         lastTime = performance.now();
                         requestAnimationFrame(gameLoop);
                     } else {
